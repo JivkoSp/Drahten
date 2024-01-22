@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Drahten</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DrahtenWeb.styles.css" asp-append-version="true" />
+</head>
+<body>
+    
+    <!--  Header Start  -->
+
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white">
+            <div class="container-fluid mx-1">
+                <div class="row w-100">
+                    <div class="col-md-2 col-sm-3">
+                        <a href="#" class="navbar-brand">
+                            Drahten Logo
+                        </a>
+                    </div>
+                    <div class="col-md-10 col-sm-9">
+                        <div class="d-grid">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div id="navbarNavDropdown" class="collapse navbar-collapse">
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link fw-bold">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link fw-bold">Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link fw-bold">Contact</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--  Header End  -->
+
+
+    <!-- Main -->
+    <main>
+        @RenderBody()
+    </main>
+
+
+    <!-- Footer Start -->
+
+    <footer class="text-center text-white bg-dark shadow border-top border-light">
+
+        <!-- Grid container Start -->
+
+        <div class="container-fluid">
+
+            <!-- Section - Links Start -->
+
+            <section>
+                <div class="row text-center d-flex justify-content-center pt-5 gy-4">
+                    <div class="col-md-2">
+                        <h6 class="fw-bold">
+                            <a href="#">About us</a>
+                        </h6>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="fw-bold">
+                            <a href="#">Contact</a>
+                        </h6>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="fw-bold">
+                            <a href="#">Help</a>
+                        </h6>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section - Links End -->
+
+            <hr class="my-5" />
+
+            <!-- Section - Text Start -->
+
+            <section class="mb-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <p>
+                          rigmfbldmfiekkddoldrfdkldfjgirnfdosdierwpwrweropwnl;fndsfpsdojrewr
+                          fdgjdfpgdfutprotjerpnmgl;dfjgpdfguprtjerpwmgpdofgipoerkt[pigd[f
+                          fdgdfgopidfgdfjgpdofgjpdofgjpdof
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section - Text End -->
+
+        </div>
+
+        <!-- Grid container End -->
+
+        
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            <div>
+                Logo Img
+            </div>
+            Copyright &copy; Drahten 2023
+        </div>
+
+    </footer>
+
+    <!-- Footer End -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
