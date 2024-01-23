@@ -1,8 +1,18 @@
+using Drahten_Services_UserService.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//Add services for Npgsql and register the dbcontext to the di container. 
+builder.Services.AddEntityFrameworkNpgsql()
+    .AddDbContext<AppDbContext>(options => {
+
+        options.UseNpgsql(builder.Configuration.GetConnectionString("UserServiceDbConnection"));
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 
