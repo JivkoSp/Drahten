@@ -1,7 +1,14 @@
+using DrahtenWeb.Services;
+using DrahtenWeb.Services.IServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<IUserService, UserService>();
+
+builder.Services.AddScoped<IUserService, UserService>();    
 
 var app = builder.Build();
 
