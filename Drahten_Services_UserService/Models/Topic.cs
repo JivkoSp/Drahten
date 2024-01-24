@@ -8,6 +8,7 @@
 
         //Relationships
         public virtual HashSet<UserTopic>? Users { get; set; }
-        public virtual HashSet<SearchedTopicData>? SearchedTopicData { get; set; }
+        public virtual HashSet<SearchedTopicDataPrivateHist>? SearchedTopicDataPrivateHist { get; set; }
+        public virtual HashSet<SearchedTopicDataPublicHist>? SearchedTopicDataPublicHist { get; set; }
     }
 }
