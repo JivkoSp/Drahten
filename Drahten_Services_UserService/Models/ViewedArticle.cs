@@ -4,7 +4,7 @@
     {
         //Primary and foreign key
         public int ArticleId { get; set; }
-        public DateTime VisitTime { get; set; }
+        public DateTime ViewTime { get; set; }
 
         //Relationships
         public int UserId { get; set; }
