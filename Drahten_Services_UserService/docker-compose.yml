@@ -13,7 +13,14 @@ services:
     ports:
       - "127.0.0.1:5433:5432"
       - "127.0.0.1:2223:22"
-
+  
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    env_file:
+      - ./database.dev.env
+    ports:
+      - "127.0.0.1:5500:80"
 
 volumes:
   user_service_postgredb_vlm:
