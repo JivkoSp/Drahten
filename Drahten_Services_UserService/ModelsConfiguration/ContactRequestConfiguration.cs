@@ -22,13 +22,13 @@ namespace Drahten_Services_UserService.ModelsConfiguration
 
             //Relationships
             builder.HasOne(p => p.Sender)
-                .WithMany(p => p.ContactRequests)
+                .WithMany()
                 .HasForeignKey(p => p.SenderId)
                 .HasConstraintName("FK_Sender_ContactRequest")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Receiver)
-                .WithMany(p => p.ContactRequests)
+                .WithMany()
                 .HasForeignKey(p => p.ReceiverId)
                 .HasConstraintName("FK_Receiver_ContactRequest")
                 .OnDelete(DeleteBehavior.Cascade);
