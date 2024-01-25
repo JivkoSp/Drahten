@@ -8,11 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 //Add services for Npgsql and register the dbcontext to the di container. 
-builder.Services.AddEntityFrameworkNpgsql()
-    .AddDbContext<AppDbContext>(options => {
+builder.Services.AddDbContext<AppDbContext>(options => {
 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("UserServiceDbConnection"));
-    });
+    options.UseNpgsql(builder.Configuration.GetConnectionString("UserServiceDbConnection"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 
