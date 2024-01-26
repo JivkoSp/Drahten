@@ -17,6 +17,13 @@ namespace Drahten_Services_UserService.ModelsConfiguration
             //Property config
             builder.Property(p => p.TopicName)
                 .IsRequired();
+
+            //Relationships
+            builder.HasOne(p => p.Parent)
+                .WithMany(p => p.Children)
+                .HasForeignKey(p => p.ParentTopicId)
+                .HasConstraintName("FK_ParentTopic_ChildTopics")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
