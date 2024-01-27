@@ -1,4 +1,5 @@
-﻿using Drahten_Services_UserService.Models;
+﻿using Drahten_Services_UserService.Extensions;
+using Drahten_Services_UserService.Models;
 using Drahten_Services_UserService.ModelsConfiguration;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,8 @@ namespace Drahten_Services_UserService.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //Applying configurations for the entity models - START 
+
             modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration());
@@ -50,6 +53,25 @@ namespace Drahten_Services_UserService.Data
             modelBuilder.ApplyConfiguration(new ViewedArticlePublicHistConfiguration());
             modelBuilder.ApplyConfiguration(new ViewedUserPrivateHistConfiguration());
             modelBuilder.ApplyConfiguration(new ViewedUserPublicHistConfiguration());
+
+            //Applying configurations for the entity models - END
+
+
+            //Seeding information to the database
+            modelBuilder.SeedData(new List<Topic> { 
+            
+                new Topic { TopicId = 1, TopicName = "Cybersecurity" },
+                new Topic { TopicId = 2, TopicName = "Programming" },
+                new Topic { TopicId = 3, TopicName = "News", ParentTopicId = 1 },
+                new Topic { TopicId = 4, TopicName = "Projects", ParentTopicId = 1 },
+                new Topic { TopicId = 5, TopicName = "Laws", ParentTopicId = 1 },
+                new Topic { TopicId = 6, TopicName = "Law regulations", ParentTopicId = 1 },
+                new Topic { TopicId = 7, TopicName = "News", ParentTopicId = 2 },
+                new Topic { TopicId = 8, TopicName = "Projects", ParentTopicId = 2 },
+                new Topic { TopicId = 9, TopicName = "America", ParentTopicId = 3 },
+                new Topic { TopicId = 10, TopicName = "Asia", ParentTopicId= 3 },
+                new Topic { TopicId = 11, TopicName = "Europe", ParentTopicId = 3 }
+            });
         }
     }
 }
