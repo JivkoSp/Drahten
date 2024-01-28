@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<TopicDto>
+
 <section>
     <div class="container-fluid bg-dark text-white">
         <div class="row home_body overflow-hidden">
@@ -7,58 +8,75 @@
                     <header class="mb-3">
                         <span class="text-center">Configure your search options</span>
                     </header>
-                    <nav class="search_options_dashboard-nav-list h-75 overflow-auto gap-4">
-                        <div class="search_options_dashboard-nav-dropdown">
-                            <button class="btn btn-primary search_options_dashboard-nav-item ms-2 me-2 mb-4"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#cbrsec_menu"
-                                    aria-expanded="false" aria-controls="cbrsec_menu">
-                                Cybersecurity
-                            </button>
-                            <div id="cbrsec_menu" class="search_options_dashboard-nav-dropdown-menu collapse">
-                                <a href="#cbrsec_menu_news" class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2"
-                                    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cbrsec_menu_news">
-                                    News
-                                </a>
+                    <nav class="search_options_dashboard-nav-list h-75 overflow-auto gap-3">
 
-                                <div id="cbrsec_menu_news" class="search_options_dashboard-nav-dropdown-menu collapse mt-3 mb-3">
-                                    <a class="text-decoration-none search_options_dashboard-nav-dropdown-item border-top ms-2 me-2">
-                                        America
-                                    </a>
-                                    <a class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                        Asia
-                                    </a>
-                                    <a  id="cbrsec_menu_news_europe"
-                                        class="text-decoration-none search_options_dashboard-nav-dropdown-item border-bottom ms-2 me-2">
-                                        Europe
-                                    </a>
-                                </div>
+                        @{
+                            void InitializeTopicsMenu()
+                            {
+                                //Initialization of list with hex color values.
+                                //The purpose of this list is to provide colors for every level, that is deeper than 0 (the ground level).
+                                var menu_colors = new List<string>
+                                {
+                                    "#22385d",
+                                    "#294370"
+                                };
 
-                                <a href="#" class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                    Projects
-                                </a>
-                                <a href="#" class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                    Laws
-                                </a>
-                                <a href="#" class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                    Law regulations
-                                </a>
-                            </div>
-                        </div>
-                        <div class="search_options_dashboard-nav-dropdown">
-                            <button class="btn btn-primary search_options_dashboard-nav-item ms-2 me-2 mb-4"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#programming_menu"
-                                    aria-expanded="false" aria-controls="programming_menu">
-                                Programming
-                            </button>
-                            <div id="programming_menu" class="search_options_dashboard-nav-dropdown-menu collapse">
-                                <a class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                    News
-                                </a>
-                                <a class="text-decoration-none search_options_dashboard-nav-dropdown-item ms-2 me-2">
-                                    Projects
-                                </a>
-                            </div>
-                        </div>
+                                foreach(var topic in Model)
+                                {
+                                    @if(topic.ParentTopicId == null)
+                                     {
+                                        void InitializeSubTopics(TopicDto topicDto, int menuLevel, string topicFullName)
+                                        {
+                                            topicFullName += topicDto.TopicName;
+
+                                            <div lass="search_options_dashboard-nav-dropdown">
+                                                                
+                                                @if(topicDto.ParentTopicId == null)
+                                                {
+                                                    <div class="d-grid mt-2">
+                                                        <button class="btn btn-primary search_options_dashboard-nav-item ms-2 me-2 mb-4"
+                                                                type="button" data-bs-toggle="collapse" data-bs-target="#menu-@topicDto.TopicId"
+                                                                aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
+                                                             @topicDto.TopicName
+                                                        </button>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
+                                                           style="background-color: @menu_colors[menuLevel]"
+                                                           data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
+                                                         @topicDto.TopicName
+                                                     </a>
+                                                }
+
+                                                @if(topicDto?.Children == null)
+                                                {
+                                                    return;
+                                                }
+                                                else {
+
+                                                    <div id="menu-@topicDto.TopicId" class="search_options_dashboard-nav-dropdown-menu collapse">
+
+                                                        @foreach (var childtopic in topicDto.Children)
+                                                        {
+                                                            InitializeSubTopics(childtopic, menuLevel + 1, topicFullName);
+                                                        }
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        }
+
+                                        InitializeSubTopics(topic, -1, "");
+                                    }
+                                }
+
+                            }
+
+                            InitializeTopicsMenu();
+                        }
 
                         <div class="search_options_nav-item-divider"></div>
 
@@ -76,10 +94,9 @@
                                 <h3 class="text-center">Currently subscribed topics</h3>
                                 <hr />
                                 <div class="row mt-4">
-                                    <!--    
+                                    <!--
                                         Here goes the list of subscribed topics for the user.
                                     -->
-
                                     <!--
                                         Example Start
                                     -->
@@ -105,3 +122,40 @@
         </div>
     </div>
 </section>
+
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("document").ready(() => { 
+            
+            $("#CybersecurityNewsEurope").click(() => { 
+            
+                //Get the topic id
+                topic_id = $("#CybersecurityNewsEurope").attr("href");
+
+                //Send async POST http request to <endpoint-name>
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data: {
+                        'topic_id': topic_id
+                    },
+                    //TODO: Log the messages for success, failure or error to logging service.
+                    success: (response) => {
+
+                        console.log("success", response);
+                    },
+                    failure: (reponse) => {
+
+                        console.log("failure", response);
+                    },
+                    error: (response) => {
+
+                        console.log("error", response);
+                    }
+                });
+            });
+        });
+    </script>
+}
