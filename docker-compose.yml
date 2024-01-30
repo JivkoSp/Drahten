@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  keycloak:
+    container_name: "keycloak_auth_service"
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    env_file:
+      - ./keycloak.dev.env
+    depends_on:
+      keycloak_postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8787:8787" #port for debugging
+    networks:
+      - authorization_network
+
+
+  keycloak_postgres:
+    container_name: "keycloak_postgres"
+    image: postgres:latest
+    volumes:
+      - keycloak_postgres_vlm:/var/lib/postgresql/data/
+    env_file:
+      - ./keycloak_database.dev.env
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:2222:22"
+    networks:
+      - authorization_network
+
+
+volumes:
+  keycloak_postgres_vlm:
+  
+networks:
+  authorization_network:
+    name: authorization_network
+    driver: bridge
