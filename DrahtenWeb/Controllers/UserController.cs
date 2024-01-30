@@ -1,11 +1,15 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace DrahtenWeb.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -19,7 +23,10 @@ namespace DrahtenWeb.Controllers
         public async Task<IActionResult> UserSearchOptions()
         {
             var topics = new List<TopicDto>();
-            var response = await _userService.GetUserTopics<ResponseDto>("");
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var response = await _userService.GetTopics<ResponseDto>(accessToken ?? "");
 
             if(response != null && response.IsSuccess)
             {
@@ -30,11 +37,30 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserTopicSubscription()
+        public async Task<IActionResult> UserTopicSubscription(int topic_id)
         {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+                if (userId == null)
+                {
+                    //throw exception
+                }
 
-            return new JsonResult(new { });
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _userService.RegisterUserTopic<ResponseDto>(
+                    new WriteUserDto { UserId = userId, TopicId = topic_id }, accessToken ?? "");
+
+                return new JsonResult(new { Message = response.IsSuccess });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

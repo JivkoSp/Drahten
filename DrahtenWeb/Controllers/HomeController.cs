@@ -1,11 +1,15 @@
 using DrahtenWeb.Models;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace DrahtenWeb.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,20 +26,14 @@ namespace DrahtenWeb.Controllers
             return View();
         }
 
-        //Testing the api gateway with user service endpoint.
-        //TODO: Remove this endpoint after testing.
-        public async Task SendGet()
+        public IActionResult Logout()
         {
-            var response = await _userService.GetEndpointAsync<string>("");
-
-            if(response != null)
-            {
-                Console.WriteLine($"Response from USER SERVICE: {response}");
-            }
-            else
-            {
-                Console.WriteLine($"Response from USER SERVICE: Null");
-            }
+            return new SignOutResult(
+                new[]{
+                        OpenIdConnectDefaults.AuthenticationScheme,
+                        CookieAuthenticationDefaults.AuthenticationScheme
+                }
+            );
         }
 
         public IActionResult Privacy()
