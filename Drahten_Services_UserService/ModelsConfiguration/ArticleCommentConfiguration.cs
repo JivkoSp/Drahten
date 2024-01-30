@@ -21,7 +21,6 @@ namespace Drahten_Services_UserService.ModelsConfiguration
 
             builder.Property(p => p.DateTime)
                 .HasColumnType("timestamp without time zone")
-                .ValueGeneratedOnAddOrUpdate()
                 .IsRequired();
 
             //Property config - End

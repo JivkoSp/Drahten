@@ -17,7 +17,6 @@ namespace Drahten_Services_UserService.ModelsConfiguration
             //Property config
             builder.Property(p => p.SubscriptionTime)
              .HasColumnType("timestamp without time zone")
-             .ValueGeneratedOnAddOrUpdate()
              .IsRequired();
 
             //Relationships
