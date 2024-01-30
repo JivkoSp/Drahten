@@ -43,6 +43,7 @@
                                                 }
                                                 else
                                                 {
+                                                    <input id="Topic-@topicFullName" type="hidden" value="@topicDto.TopicId" />
                                                     <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
                                                            style="background-color: @menu_colors[menuLevel]"
                                                            data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
@@ -132,12 +133,12 @@
             $("#CybersecurityNewsEurope").click(() => { 
             
                 //Get the topic id
-                topic_id = $("#CybersecurityNewsEurope").attr("href");
+                topic_id = $("#Topic-CybersecurityNewsEurope").val();
 
-                //Send async POST http request to <endpoint-name>
+                //Send async POST http request to /User/UserTopicSubscription
                 $.ajax({
                     type: 'POST',
-                    url: '',
+                    url: '/User/UserTopicSubscription',
                     data: {
                         'topic_id': topic_id
                     },
