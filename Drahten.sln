@@ -13,7 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drahten_ApiGateway_Yarp", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F8EA9051-7503-4355-B896-497AC12E0AFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drahten_Services_UserService", "Drahten_Services_UserService\Drahten_Services_UserService.csproj", "{0B8D4A83-99F1-460A-A89F-268E47D12997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drahten_Services_UserService", "Drahten_Services_UserService\Drahten_Services_UserService.csproj", "{0B8D4A83-99F1-460A-A89F-268E47D12997}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compose", "Compose", "{05108EA8-7338-436D-AA4C-0A57D40F9678}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		keycloak.dev.env = keycloak.dev.env
+		keycloak_database.dev.env = keycloak_database.dev.env
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
