@@ -1,6 +1,8 @@
 using Drahten_Services_UserService.Data;
 using Drahten_Services_UserService.Profiles;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,42 @@ builder.Services.AddControllers()
 .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 
+builder.Services.AddAuthentication(options => {
+
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+
+    options.Authority = "http://127.0.0.1:8080/realms/drahten";
+    // *** IMPORTANT ***
+    //This is for development ONLY. The reason is that the OpenID provider uses http.
+    //In production this should be removed, becouse the OpenID provider must use https.
+    options.RequireHttpsMetadata = false;
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = authFailedContext =>
+        {
+            if (authFailedContext.HttpContext.Request != null)
+            {
+                Console.WriteLine("Jwt token validation failed from UserService.");
+                //TODO: Log information, about this event to logging service.
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // *** IMPORTANT ***
+        //For development ONLY
+        ValidateAudience = false
+    };
+});
+
+
+builder.Services.AddAuthorization();
+
+
 //Add services for Npgsql and register the dbcontext to the di container. 
 builder.Services.AddDbContext<AppDbContext>(options => {
 
@@ -28,6 +66,8 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 builder.Services.AddAutoMapper(configAction => {
 
     configAction.AddProfile<TopicProfile>();
+    configAction.AddProfile<UserProfile>();
+    configAction.AddProfile<UserTopicProfile>();
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
