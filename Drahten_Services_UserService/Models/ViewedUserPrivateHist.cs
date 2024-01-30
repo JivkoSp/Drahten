@@ -3,12 +3,12 @@
     public class ViewedUserPrivateHist
     {
         //Primary and foreign key 
-        public int ViewedUserId { get; set; }
+        public string ViewedUserId { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
 
         //Relationships
-        public int PrivateHistoryId { get; set; }
-        public virtual User? User { get; set; }
+        public string PrivateHistoryId { get; set; } = string.Empty;
+        public virtual User? User { get; set; } 
         public virtual PrivateHistory? PrivateHistory { get; set; }
     }
 }

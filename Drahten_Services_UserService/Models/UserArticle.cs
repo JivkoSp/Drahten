@@ -3,8 +3,8 @@
     public class UserArticle
     {
         //Composite primary key { UserId, ArticleId }
-        public int UserId { get; set; }
-        public int ArticleId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public string ArticleId { get; set; } = string.Empty;
 
         //Relationships
         public virtual User? User { get; set; }

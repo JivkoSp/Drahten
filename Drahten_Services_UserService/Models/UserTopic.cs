@@ -3,7 +3,7 @@
     public class UserTopic
     {
         //Composite primary key { UserId, TopicId }
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public int TopicId { get; set; }
         public DateTime SubscriptionTime { get; set; }
 

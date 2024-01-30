@@ -3,7 +3,7 @@
     public class User
     {
         //Primary key
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;  
 
         //Relationships
         public virtual HashSet<UserTopic>? Topics { get; set; }

@@ -3,7 +3,7 @@
     public class PublicHistory
     {
         //Primary and foreign key
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         //Relationships
         public virtual User? User { get; set; }

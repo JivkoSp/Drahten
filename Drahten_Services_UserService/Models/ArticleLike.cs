@@ -7,8 +7,8 @@
         public DateTime DateTime { get; set; }
 
         //Relationships
-        public int ArticleId { get; set; }
-        public int UserId { get; set; }
+        public string ArticleId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
         public virtual Article? Article { get; set; }
         public virtual User? User { get; set; }
     }

@@ -9,7 +9,7 @@
 
         //Relationships
         public int TopicId { get; set; }
-        public int PrivateHistoryId { get; set; }
+        public string PrivateHistoryId { get; set; } = string.Empty;
         public virtual Topic? Topic { get; set; }
         public virtual PrivateHistory? PrivateHistory { get; set; }
     }

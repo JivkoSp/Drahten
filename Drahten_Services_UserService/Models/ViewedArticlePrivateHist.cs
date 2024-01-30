@@ -3,11 +3,11 @@
     public class ViewedArticlePrivateHist
     {
         //Primary and foreign key
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; } = string.Empty;
         public DateTime ViewTime { get; set; }
 
         //Relationships
-        public int PrivateHistoryId { get; set; }
+        public string PrivateHistoryId { get; set; } = string.Empty;
         public virtual Article? Article { get; set; }
         public virtual PrivateHistory? PrivateHistory { get; set; }
     }

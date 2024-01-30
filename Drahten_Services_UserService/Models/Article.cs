@@ -3,7 +3,7 @@
     public class Article
     {
         //Primary key
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; } = string.Empty;
         public string ArticleData { get; set; } = string.Empty;
 
         //Relationships
