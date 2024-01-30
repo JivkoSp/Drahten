@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using Drahten_Services_UserService.Data;
 using Drahten_Services_UserService.Dtos;
+using Drahten_Services_UserService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Drahten_Services_UserService.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("user-service/topics")]
     public class TopicsController : ControllerBase
@@ -23,6 +27,7 @@ namespace Drahten_Services_UserService.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
+        [ProducesResponseType(typeof(ResponseDto), 400)]
         public IActionResult GetAllTopics()
         {
             try
@@ -34,11 +39,13 @@ namespace Drahten_Services_UserService.Controllers
                 if(topics != null)
                 {
                     responseDto.IsSuccess = true;
+
                     responseDto.Result = _mapper.Map<List<ReadTopicDto>>(topics);
                 }
                 else
                 {
                     responseDto.Result = "No topics found.";
+
                     return NotFound(responseDto);
                 }
 
@@ -46,9 +53,44 @@ namespace Drahten_Services_UserService.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                responseDto.ErrorMessages = new List<string>
+                {
+                    ex.ToString()
+                };
 
-                return BadRequest(ex.Message);
+                return BadRequest(responseDto);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        [ProducesResponseType(typeof(ResponseDto), 400)]
+        public IActionResult RegisterUserTopic(WriteUserDto user)
+        {
+            try
+            {
+                var userTopicModel = _mapper.Map<UserTopic>(user);
+
+                userTopicModel.SubscriptionTime = DateTime.Now;
+
+                _appDbContext.UserTopics?.Add(userTopicModel);
+
+                _appDbContext.SaveChanges();
+
+                responseDto.IsSuccess = true;
+
+                responseDto.Result = user;
+
+                return Created(HttpContext.Request.Path, responseDto);
+            }
+            catch(Exception ex)
+            {
+                responseDto.ErrorMessages = new List<string>
+                {
+                    ex.ToString()
+                };
+
+                return BadRequest(responseDto);
             }
         }
     }
