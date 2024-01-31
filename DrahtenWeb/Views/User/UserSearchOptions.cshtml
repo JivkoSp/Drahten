@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TopicDto>
+﻿@model UserSearchOptionsViewModel
 
 <section>
     <div class="container-fluid bg-dark text-white">
@@ -13,7 +13,7 @@
                         @{
                             void InitializeTopicsMenu()
                             {
-                                //Initialization of list with hex color values.
+                            //Initialization of list with hex color values.
                                 //The purpose of this list is to provide colors for every level, that is deeper than 0 (the ground level).
                                 var menu_colors = new List<string>
                                 {
@@ -21,7 +21,7 @@
                                     "#294370"
                                 };
 
-                                foreach(var topic in Model)
+                                foreach(var topic in Model.Topics)
                                 {
                                     @if(topic.ParentTopicId == null)
                                      {
@@ -43,12 +43,25 @@
                                                 }
                                                 else
                                                 {
-                                                    <input id="Topic-@topicFullName" type="hidden" value="@topicDto.TopicId" />
-                                                    <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
+                                                    var subscribedTopic = Model.UserTopics.FirstOrDefault(x => x.TopicId == topicDto.TopicId);
+
+                                                    if(subscribedTopic == null)
+                                                    {
+                                                        <input id="Topic-@topicFullName" type="hidden" value="@topicDto.TopicId" />
+                                                        <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
                                                            style="background-color: @menu_colors[menuLevel]"
                                                            data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
-                                                         @topicDto.TopicName
-                                                     </a>
+                                                            @topicDto.TopicName
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
+                                                           style="background-color: #004d4d"
+                                                           data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
+                                                            @topicDto.TopicName
+                                                        </a>
+                                                    }
                                                 }
 
                                                 @if(topicDto?.Children == null)
@@ -131,7 +144,7 @@
         $("document").ready(() => { 
             
             $("#CybersecurityNewsEurope").click(() => { 
-            
+
                 //Get the topic id
                 topic_id = $("#Topic-CybersecurityNewsEurope").val();
 
