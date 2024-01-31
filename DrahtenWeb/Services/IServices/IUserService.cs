@@ -8,5 +8,6 @@ namespace DrahtenWeb.Services.IServices
         Task<TEntity> RegisterUser<TEntity>(WriteUserDto user, string accessToken);
         Task<TEntity> RegisterUserTopic<TEntity>(WriteUserDto user, string accessToken);
         Task<TEntity> GetTopics<TEntity>(string accessToken);
+        Task<TEntity> GetUserTopics<TEntity>(string userId, string accessToken);
     }
 }
