@@ -1,6 +1,7 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
+using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,18 +23,37 @@ namespace DrahtenWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> UserSearchOptions()
         {
-            var topics = new List<TopicDto>();
-
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            var response = await _userService.GetTopics<ResponseDto>(accessToken ?? "");
-
-            if(response != null && response.IsSuccess)
+            try
             {
-                topics = JsonConvert.DeserializeObject<List<TopicDto>>(Convert.ToString(response.Result));
-            }
+                var userSearchOptionsViewModel = new UserSearchOptionsViewModel();
 
-            return View(topics);
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _userService.GetTopics<ResponseDto>(accessToken ?? "");
+
+                if (response != null && response.IsSuccess)
+                {
+                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<TopicDto>>(Convert.ToString(response.Result));
+                }
+
+                response = await _userService.GetUserTopics<ResponseDto>(userId ?? "", accessToken ?? "");
+
+                if (response != null && response.IsSuccess)
+                {
+                    userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
+                }
+
+                return View(userSearchOptionsViewModel);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]
@@ -45,15 +65,10 @@ namespace DrahtenWeb.Controllers
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (userId == null)
-                {
-                    //throw exception
-                }
-
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var response = await _userService.RegisterUserTopic<ResponseDto>(
-                    new WriteUserDto { UserId = userId, TopicId = topic_id }, accessToken ?? "");
+                    new WriteUserDto { UserId = userId ?? "", TopicId = topic_id }, accessToken ?? "");
 
                 return new JsonResult(new { Message = response.IsSuccess });
             }
