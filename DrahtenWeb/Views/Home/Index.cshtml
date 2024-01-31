@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<ReadUserTopicDto>
+
 <section>
     <div class="container-fluid bg-dark text-white mt-5">
         <div class="row home_body overflow-hidden">
@@ -12,17 +13,19 @@
                             <span class="input-group-text rounded-start-5">
                                <!-- TODO: Search icon -->
                             </span>
+                            <!-- TODO: Add hidden input field, that has the topicid, 
+                            that corresponds to the topic that the user has clicked as value -->
                             <input type="text" class="form-control rounded-end-5 shadow" placeholder="Search something"/>
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-1">
                         <div class="d-grid">
-                            <a asp-controller="Home" asp-action="SendGet" class="btn btn-primary">Person</a>
+                            <a href="#" class="btn btn-primary">Person</a>
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-1">
                         <div class="d-grid">
-                            <a href="#" class="btn btn-primary">Topic</a>
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-1">
@@ -33,6 +36,25 @@
                     <div class="col-lg-2 col-sm-2">
                         <div class="d-grid">
                             <a asp-controller="User" asp-action="UserSearchOptions" class="btn btn-primary">Search options</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="topicModal" class="modal fade" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-dark text-white">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Subscribed topics</h5>
+                                <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    @foreach(var userTopic in Model)
+                                    {
+                                        <li>@userTopic.TopicName</li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
