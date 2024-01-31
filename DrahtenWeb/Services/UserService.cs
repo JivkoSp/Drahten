@@ -60,5 +60,17 @@ namespace DrahtenWeb.Services
 
             return response;
         }
+
+        public async Task<TEntity> GetUserTopics<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/topics/{userId}",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
     }
 }

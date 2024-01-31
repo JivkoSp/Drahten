@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compose", "Compose", "{0510
 		keycloak_database.dev.env = keycloak_database.dev.env
 	EndProjectSection
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Drahten_Services_SerarchService", "Drahten_Services_SerarchService\Drahten_Services_SerarchService.pyproj", "{E9079892-22C7-4D2D-9B95-30CD94C644CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{0B8D4A83-99F1-460A-A89F-268E47D12997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B8D4A83-99F1-460A-A89F-268E47D12997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B8D4A83-99F1-460A-A89F-268E47D12997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9079892-22C7-4D2D-9B95-30CD94C644CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9079892-22C7-4D2D-9B95-30CD94C644CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9079892-22C7-4D2D-9B95-30CD94C644CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9079892-22C7-4D2D-9B95-30CD94C644CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{FDA54710-8EFC-4AE8-BCFD-E4EDB96F1355} = {B9E27AE6-B1B4-4DC9-826C-005252E6C7B1}
 		{66E92D34-E55F-4A86-9BC4-1D40A7EEBFF7} = {3CCFB910-51C6-4ECC-8F10-B716B745752E}
 		{0B8D4A83-99F1-460A-A89F-268E47D12997} = {F8EA9051-7503-4355-B896-497AC12E0AFA}
+		{E9079892-22C7-4D2D-9B95-30CD94C644CF} = {F8EA9051-7503-4355-B896-497AC12E0AFA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6C9AC8C-2975-4FB7-A54D-1A923FB284A9}
