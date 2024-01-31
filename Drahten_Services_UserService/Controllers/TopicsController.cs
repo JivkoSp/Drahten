@@ -62,6 +62,67 @@ namespace Drahten_Services_UserService.Controllers
             }
         }
 
+        [HttpGet("{userId}")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        [ProducesResponseType(typeof(ResponseDto), 400)]
+        public IActionResult GetAllUserTopics(string userId)
+        {
+            try
+            {
+                //This query performs two inner joins between three tables, who are in many-to-many relationship.
+                //The UserTopic table is join table between the User and Topic tables.
+                //The User table is joined with the UserTopic table on the condition that UserId from the User table
+                //is equal to the UserId from the UserTopic table.
+                //The Topic table is then joined on the condition that the TopicId from the UserTopic table
+                //is equal to the TopicId from the Topic table.
+                var userTopics = _appDbContext.Users?
+                    .Join(_appDbContext.UserTopics,
+                          left_side => left_side.UserId,
+                          right_side => right_side.UserId,
+                          (left_side, right_side) => new { UserId = left_side.UserId, 
+                                                           TopicId = right_side.TopicId, 
+                                                           SubscriptionTime = right_side.SubscriptionTime 
+                     }).Where(x => x.UserId == userId)
+                       .Join(_appDbContext.Topics,
+                             left_side => left_side.TopicId,
+                             right_side => right_side.TopicId,
+                             (left_side, right_side) => new { UserId = left_side.UserId, 
+                                                              TopicId = left_side.TopicId, 
+                                                              SubscriptionTime = left_side.SubscriptionTime, 
+                                                              TopicName = right_side.TopicName 
+                       }).Select(x => new ReadUserTopicDto { UserId = x.UserId, 
+                                                             TopicId = x.TopicId, 
+                                                             TopicName = x.TopicName, 
+                                                             SubscriptionTime = x.SubscriptionTime }).ToList();
+
+
+                if(userTopics != null) 
+                { 
+                    responseDto.IsSuccess = true;
+
+                    responseDto.Result = userTopics;
+                }
+                else
+                {
+                    responseDto.Result = $"No topics were found for user with id: {userId}";
+
+                    return NotFound(responseDto);
+                }
+
+                return Ok(responseDto);
+            }
+            catch (Exception ex)
+            {
+                responseDto.ErrorMessages = new List<string>
+                {
+                    ex.ToString()
+                };
+
+                return BadRequest(responseDto);
+            }
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         [ProducesResponseType(typeof(ResponseDto), 400)]
