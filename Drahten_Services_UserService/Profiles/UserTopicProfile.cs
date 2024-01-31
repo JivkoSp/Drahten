@@ -8,6 +8,8 @@ namespace Drahten_Services_UserService.Profiles
     {
         public UserTopicProfile()
         {
+            CreateMap<UserTopic, ReadUserTopicDto>();
+            //TODO: This must be WriteUserTopicDto to UserTopic.
             CreateMap<WriteUserDto, UserTopic>();
         }
     }
