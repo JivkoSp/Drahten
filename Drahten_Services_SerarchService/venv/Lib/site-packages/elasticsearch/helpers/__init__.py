@@ -15,11 +15,18 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-from .._async.helpers import async_bulk, async_reindex, async_scan, async_streaming_bulk
-from .._utils import fixup_module_metadata
-from .actions import _chunk_actions  # noqa: F401
-from .actions import _process_bulk_chunk  # noqa: F401
-from .actions import bulk, expand_action, parallel_bulk, reindex, scan, streaming_bulk
+import sys
+
+from .actions import (
+    _chunk_actions,
+    _process_bulk_chunk,
+    bulk,
+    expand_action,
+    parallel_bulk,
+    reindex,
+    scan,
+    streaming_bulk,
+)
 from .errors import BulkIndexError, ScanError
 
 __all__ = [
@@ -31,11 +38,23 @@ __all__ = [
     "parallel_bulk",
     "scan",
     "reindex",
-    "async_scan",
-    "async_bulk",
-    "async_reindex",
-    "async_streaming_bulk",
+    "_chunk_actions",
+    "_process_bulk_chunk",
 ]
 
-fixup_module_metadata(__name__, globals())
-del fixup_module_metadata
+
+try:
+    # Asyncio only supported on Python 3.6+
+    if sys.version_info < (3, 6):
+        raise ImportError
+
+    from .._async.helpers import (
+        async_bulk,
+        async_reindex,
+        async_scan,
+        async_streaming_bulk,
+    )
+
+    __all__ += ["async_scan", "async_bulk", "async_reindex", "async_streaming_bulk"]
+except (ImportError, SyntaxError):
+    pass
