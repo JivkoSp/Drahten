@@ -61,12 +61,24 @@ namespace DrahtenWeb.Services
             return response;
         }
 
+        public async Task<TEntity> GetRootTopicWithChildren<TEntity>(int topicId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/topics/root-topic/{topicId}",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
         public async Task<TEntity> GetUserTopics<TEntity>(string userId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
                 ApiType = ApiType.GET,
-                Url = $"https://localhost:7076/user-service/topics/{userId}",
+                Url = $"https://localhost:7076/user-service/topics/user-topics/{userId}",
                 AccessToken = accessToken
             });
 
