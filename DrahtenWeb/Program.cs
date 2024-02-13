@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IUserService, UserService>();
 
+builder.Services.AddHttpClient<ISearchService, SearchService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<ISearchService, SearchService>();
 
 builder.Services.AddAuthentication(options => {
 
