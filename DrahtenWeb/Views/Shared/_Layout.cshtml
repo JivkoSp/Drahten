@@ -4,50 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Drahten</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DrahtenWeb.styles.css" asp-append-version="true" />
 </head>
 <body>
     
-    <!--  Header Start  -->
-
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white">
-            <div class="container-fluid mx-1">
-                <div class="row w-100">
-                    <div class="col-md-2 col-sm-3">
-                        <a href="#" class="navbar-brand">
-                            Drahten Logo
-                        </a>
-                    </div>
-                    <div class="col-md-10 col-sm-9">
-                        <div class="d-grid">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div id="navbarNavDropdown" class="collapse navbar-collapse">
-                                <ul class="navbar-nav ms-auto">
-                                    <li class="nav-item">
-                                        <a asp-controller="Home" asp-action="Logout" class="nav-link fw-bold">Logout</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <partial name="_SideHomeMenu" />
+            <div class="col py-3">
+                <!-- Main -->
+                <main>
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-
-    <!--  Header End  -->
-
-
-    <!-- Main -->
-    <main>
-        @RenderBody()
-    </main>
-
+        </div>
+    </div>
 
     <!-- Footer Start -->
 
@@ -89,9 +64,9 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <p>
-                          rigmfbldmfiekkddoldrfdkldfjgirnfdosdierwpwrweropwnl;fndsfpsdojrewr
-                          fdgjdfpgdfutprotjerpnmgl;dfjgpdfguprtjerpwmgpdofgipoerkt[pigd[f
-                          fdgdfgopidfgdfjgpdofgjpdofgjpdof
+                            rigmfbldmfiekkddoldrfdkldfjgirnfdosdierwpwrweropwnl;fndsfpsdojrewr
+                            fdgjdfpgdfutprotjerpnmgl;dfjgpdfguprtjerpwmgpdofgipoerkt[pigd[f
+                            fdgdfgopidfgdfjgpdofgjpdofgjpdof
                         </p>
                     </div>
                 </div>
@@ -102,8 +77,6 @@
         </div>
 
         <!-- Grid container End -->
-
-        
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
             <div>
