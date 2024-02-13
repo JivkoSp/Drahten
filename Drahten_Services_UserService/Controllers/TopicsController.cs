@@ -5,6 +5,7 @@ using Drahten_Services_UserService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Security.Claims;
 
 namespace Drahten_Services_UserService.Controllers
@@ -62,7 +63,73 @@ namespace Drahten_Services_UserService.Controllers
             }
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("root-topic/{topicId}")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        [ProducesResponseType(typeof(ResponseDto), 400)]
+        public IActionResult GetRootTopicWithChildren(int topicId)
+        {
+            try
+            {
+                //Find all parents for topic with id: topicId and select ONLY the root parent topic.
+                //This is recursive function, that will be executed in the database.
+                //The table and column names are written with double quotes, becouse there names must be interpreted by postgresql literally.
+                //CAUTION: If the table and column names are written without double quotes there names will be lower cased by postgresql and the query will NOT be valid.
+                var topic = _appDbContext.Topics?
+                            .FromSqlRaw("WITH RECURSIVE ancestors AS (" +
+                                        "   SELECT \"Topic\".\"TopicId\", \"Topic\".\"TopicName\", \"Topic\".\"ParentTopicId\"\t\n" +
+                                        "   FROM \"Topic\"" +
+                                        "   WHERE \"Topic\".\"TopicId\" = @topicId" +
+                                        "   UNION ALL" +
+                                        "   SELECT t.\"TopicId\", t.\"TopicName\", t.\"ParentTopicId\"" +
+                                        "   FROM \"Topic\" AS t" +
+                                        "   JOIN ancestors ON t.\"TopicId\" = ancestors.\"ParentTopicId\"" +
+                                        "   )" +
+                                        "   SELECT * FROM ancestors",
+                             new NpgsqlParameter("@topicId", topicId)) //Include the topicId. The documentation specifies that this is safer than $"{}".
+                            .Where(x => x.Parent == null) //Include ONLY the root parent topic.
+                            .FirstOrDefault(); 
+
+                //Find all topics and include there children.
+                var alltopics = _appDbContext.Topics?
+                        .Include(x => x.Children)
+                        .ToList();
+
+                //Find the topic, that has id equal to the id of the root parent topic.
+                //The effect is that the topic variable will hold the root parent topic of the child topic with id: topicId
+                //and will include all of its children topics (including the child topic with id: topicId).
+                topic = alltopics?.Where(x => x.TopicId == topic.TopicId).FirstOrDefault();
+
+
+                //Check if the variable topic has null value.
+                if (topic != null)
+                {
+                    //The variable topic is NOT null.
+                    responseDto.IsSuccess = true;
+                    responseDto.Result = _mapper.Map<ReadTopicDto>(topic);
+                }
+                else
+                {
+                    //The variable topic IS null.
+                    responseDto.Result = $"No topic with id: {topicId} was found.";
+
+                    return BadRequest(responseDto);
+                }
+
+                return Ok(responseDto);
+            }
+            catch (Exception ex)
+            {
+                responseDto.ErrorMessages = new List<string>
+                {
+                    ex.ToString()
+                };
+
+                return BadRequest(responseDto);
+            }
+        }
+
+        [HttpGet("user-topics/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         [ProducesResponseType(typeof(ResponseDto), 400)]
