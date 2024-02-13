@@ -1,26 +1,37 @@
-﻿
-<div class="col-md-2 d-none d-md-block shadow mt-5">
+﻿<div id="home-menu-container" class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <a href="#" class="nav-link" style="font-size:30px;">
+            Drahten <i class="fa fa-cubes" aria-hidden="true"></i>
+        </a>
 
-    <div class="row border-bottom border-primary rounded-bottom">
-        <div class="col py-4">
-            <a>Get Up To Date</a>
+        <div id="searchoptions-menu-container" class="mt-4">
         </div>
-    </div>
-    <div class="row border-bottom border-primary rounded-bottom">
-        <div class="col py-4">
-            <a>Chat</a>
-        </div>
-    </div>
-    <div class="row border-bottom border-primary rounded-bottom">
-        <div class="col py-4">
-            <a>Personal History</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col py-4">
-            <div class="d-grid">
-                <a href="#">Profile</a>
-            </div>
-        </div>
+
+        <ul class="home-menu nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-hashtag"></i> Explore</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-bell"></i> Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fa fa-book" aria-hidden="true"></i> History</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-envelope"></i> Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="home-menu-content nav-link" href="#"><i class="fas fa-ellipsis-h"></i> More</a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Home" asp-action="Logout" class="home-menu-content nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </li>
+        </ul>
     </div>
 </div>
