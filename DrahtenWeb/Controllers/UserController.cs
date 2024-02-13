@@ -21,7 +21,13 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserSearchOptions()
+        public IActionResult UserSearchOptions()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadPartialViewUserSearchOptions()
         {
             try
             {
@@ -47,12 +53,11 @@ namespace DrahtenWeb.Controllers
                     userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
                 }
 
-                return View(userSearchOptionsViewModel);
+                return PartialView(viewName: "_SideSearchOptionsMenu", model: userSearchOptionsViewModel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return BadRequest(ex.Message);
             }
         }
 
