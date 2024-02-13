@@ -2,6 +2,7 @@ using DrahtenWeb.Dtos;
 using DrahtenWeb.Models;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
+using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -28,7 +29,7 @@ namespace DrahtenWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userTopics = new List<ReadUserTopicDto>();
+            var userSearchOptionsViewModel = new UserSearchOptionsViewModel();
 
             //Get the user id.
             //Here the NameIdentifier claim type represents the user id.
@@ -40,10 +41,20 @@ namespace DrahtenWeb.Controllers
 
             if(response != null && response.IsSuccess)
             {
-                userTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
+                userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
             }
 
-            return View(userTopics);
+            foreach(var userTopic in userSearchOptionsViewModel.UserTopics ?? new List<ReadUserTopicDto>())
+            {
+                response = await _userService.GetRootTopicWithChildren<ResponseDto>(userTopic.TopicId, accessToken ?? "");
+
+                if(response != null && response.IsSuccess)
+                {
+                    userSearchOptionsViewModel.Topics.Add(JsonConvert.DeserializeObject<TopicDto>(Convert.ToString(response.Result)));
+                }
+            }
+
+            return View(userSearchOptionsViewModel);
         }
 
         public IActionResult Logout()
