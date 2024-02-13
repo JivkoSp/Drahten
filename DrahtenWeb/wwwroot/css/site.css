@@ -25,9 +25,22 @@ body {
     height:100vh;
 }
 
-.home_body_content{
-    height: 90%;
-    background-color: #212020;
+.home-upper-nav{
+    width:10vw;
+    height:5vh;
+}
+
+.home-menu{
+    margin-top: 25px;
+}
+
+.home-menu-content{
+    margin-left:5px;
+    font-size: 19px;
+}
+
+.home-menu-content:hover{
+    color:aqua;
 }
 
 .search_options_dashboard{
@@ -177,4 +190,103 @@ body {
     -webkit-flex-grow: 2;
     flex-grow: 2;
     margin-top: 84px;
+}
+
+.article-data {
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.search-input {
+    margin-bottom: 10px;
+}
+
+.subscribed-topic-card {
+    width: 8vw;
+    height: 10vh;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.card-icon {
+    font-size: 3em;
+    color: #007bff;
+}
+
+.card-title {
+    font-weight: bold;
+    margin: 10px;
+}
+
+.subscribed-topic-card:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.subscribed-topic-card:hover .card-icon {
+    color: white;
+}
+
+.subscribed-topic-card:hover .card-title {
+    font-weight: normal;
+ }
+
+
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db; 
+    border-radius: 50%; 
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite; /* Rotate animation */
+}
+
+.article-question-list-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-image: linear-gradient(to right, #343a40, #f8f9fa);
+    background-size: 300%;
+    background-position: right;
+    transition: background-position 1.5s ease, color 1.5s ease;
+}
+
+.article-question-list-item:hover {
+    background-position: left;
+    color:white;
+    cursor: pointer;
+}
+
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+/* Define a media query for medium screens */
+@media (max-width: 1000px) {
+    div.subscribed-topic-card{
+        width: 100px;
+        height: 100px;
+    }
 }
