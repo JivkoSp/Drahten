@@ -1,148 +1,38 @@
-﻿@model UserSearchOptionsViewModel
+﻿<div class="row">
+    <div class="col">
+        <h3 class="text-center">Currently subscribed topics</h3>
+        <hr />
+        <div class="row mt-4">
+            <!--
+                Here goes the list of subscribed topics for the user.
+            -->
+            <!--
+                Example Start
+            -->
 
-<section>
-    <div class="container-fluid bg-dark text-white">
-        <div class="row home_body overflow-hidden">
-            <div class="search_options_dashboard mt-3">
-                <div class="search_options_dashboard-nav mt-5">
-                    <header class="mb-3">
-                        <span class="text-center">Configure your search options</span>
-                    </header>
-                    <nav class="search_options_dashboard-nav-list h-75 overflow-auto gap-3">
-
-                        @{
-                            void InitializeTopicsMenu()
-                            {
-                            //Initialization of list with hex color values.
-                                //The purpose of this list is to provide colors for every level, that is deeper than 0 (the ground level).
-                                var menu_colors = new List<string>
-                                {
-                                    "#22385d",
-                                    "#294370"
-                                };
-
-                                foreach(var topic in Model.Topics)
-                                {
-                                    @if(topic.ParentTopicId == null)
-                                     {
-                                        void InitializeSubTopics(TopicDto topicDto, int menuLevel, string topicFullName)
-                                        {
-                                            topicFullName += topicDto.TopicName;
-
-                                            <div lass="search_options_dashboard-nav-dropdown">
-                                                                
-                                                @if(topicDto.ParentTopicId == null)
-                                                {
-                                                    <div class="d-grid mt-2">
-                                                        <button class="btn btn-primary search_options_dashboard-nav-item ms-2 me-2 mb-4"
-                                                                type="button" data-bs-toggle="collapse" data-bs-target="#menu-@topicDto.TopicId"
-                                                                aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
-                                                             @topicDto.TopicName
-                                                        </button>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    var subscribedTopic = Model.UserTopics.FirstOrDefault(x => x.TopicId == topicDto.TopicId);
-
-                                                    if(subscribedTopic == null)
-                                                    {
-                                                        <input id="Topic-@topicFullName" type="hidden" value="@topicDto.TopicId" />
-                                                        <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
-                                                           style="background-color: @menu_colors[menuLevel]"
-                                                           data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
-                                                            @topicDto.TopicName
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="#menu-@topicDto.TopicId" class="text-decoration-none search_options_dashboard-nav-dropdown-item mt-4 mb-4 border-bottom ms-3 me-3"
-                                                           style="background-color: #004d4d"
-                                                           data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
-                                                            @topicDto.TopicName
-                                                        </a>
-                                                    }
-                                                }
-
-                                                @if(topicDto?.Children == null)
-                                                {
-                                                    return;
-                                                }
-                                                else {
-
-                                                    <div id="menu-@topicDto.TopicId" class="search_options_dashboard-nav-dropdown-menu collapse">
-
-                                                        @foreach (var childtopic in topicDto.Children)
-                                                        {
-                                                            InitializeSubTopics(childtopic, menuLevel + 1, topicFullName);
-                                                        }
-
-                                                    </div>
-                                                }
-
-                                            </div>
-                                        }
-
-                                        InitializeSubTopics(topic, -1, "");
-                                    }
-                                }
-
-                            }
-
-                            InitializeTopicsMenu();
-                        }
-
-                        <div class="search_options_nav-item-divider"></div>
-
-                        <a href="#" class="btn btn-secondary search_options_dashboard-nav-item text-center ms-2 me-2 ps-5 w-50">
-                            Back
-                        </a>
-
-                    </nav>
-                </div>
-
-                <div class="search_options_dashboard-app">
-                    <div class="container ms-2 me-2">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="text-center">Currently subscribed topics</h3>
-                                <hr />
-                                <div class="row mt-4">
-                                    <!--
-                                        Here goes the list of subscribed topics for the user.
-                                    -->
-                                    <!--
-                                        Example Start
-                                    -->
-
-                                    <div class="col">
-                                        <h5>Cybersecurity</h5>
-                                    </div>
-                                    <div class="col">
-                                        <h5>Programming</h5>
-                                    </div>
-
-                                    <!--
-                                        Example End
-                                    -->
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="col">
+                <h5>Cybersecurity</h5>
             </div>
+            <div class="col">
+                <h5>Programming</h5>
+            </div>
+
+            <!--
+                Example End
+            -->
+
         </div>
     </div>
-</section>
+</div>
 
 
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
-        $("document").ready(() => { 
-            
+        $("document").ready(() => {
+
+            $("#searchoptions-menu-container").load("@Url.Action("LoadPartialViewUserSearchOptions", "User")");
+
             $("#CybersecurityNewsEurope").click(() => { 
 
                 //Get the topic id
