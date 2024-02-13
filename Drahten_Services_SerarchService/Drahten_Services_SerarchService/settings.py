@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import posixpath
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +35,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'django_celery_beat',
+    'drahten_scraper',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,3 +115,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+#############################################
+### CELERY BROKER DEFINITION  
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "pyamqp://guest:guest@rabbitmq")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "rpc://guest:guest@rabbitmq")
+
+############################################
+### SCHEDULING TASKS FOR CELERY - START
+
+CELERY_BEAT_SCHEDULE = {
+    "scheduled_task": {
+        "task": "drahten_scraper.tasks.start_crawler",
+        "schedule": crontab(minute=35, hour=20),
+    }
+}
+
+### SCHEDULING TASKS FOR CELERY - END
+############################################
