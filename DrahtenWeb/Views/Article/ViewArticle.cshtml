@@ -1,0 +1,177 @@
+﻿@model ArticleViewModel
+
+<div class="container">
+    <div class="row mt-1">
+        <div class="col-md-8 offset-md-2">
+            <input id="articleId" type="hidden" value="@Model.DocumentId" />
+            <!-- Display the article title, author, date, and link -->
+            <div class="article-header">
+                <h1 class="display-5">@Model.Document?.article_title</h1>
+                <p class="lead">By @Model.Document?.article_author on @Model.Document?.article_published_date</p>
+                <p><a href="@Model.Document?.article_link" target="_blank">Read more</a></p>
+            </div>
+            <!-- Display the search bar -->
+            <div class="search-bar mb-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                </div>
+            </div>
+            <hr>
+            <!-- Display the article data -->
+            <div id="article-data" class="article-data">
+                @Model.Document?.article_data
+            </div>
+            <hr>
+            <!-- Display the article summary -->
+            <div class="article-summary">
+                <h2>Article Summary</h2>
+                <p id="article-summary">Generating summary for the article ...</p>
+                <div id="article-summary-loader" class="loader"></div>
+            </div>
+            <hr>
+            <!-- Display the questions section -->
+            <div id="article-questions-container" class="questions">
+                <h2>Questions about this article</h2>
+                <p id="article-questions-user-message">Generating questions for the article ...</p>
+                <div id="article-questions-loader" class="loader"></div>
+               @*  <ul class="mt-3">
+                    <li>Question 1</li>
+                    <li>Question 2</li>
+                    <li>Question 3</li>
+                    <!-- Add more questions as needed -->
+                </ul> *@
+            </div>
+            <hr>
+            <!-- Display the comment and like section -->
+            <div class="comment-like">
+                <!-- Display the number of comments and likes -->
+                <p><span id="comment-count">0</span> comments | <span id="like-count">0</span> likes</p>
+                <!-- Display a button to toggle the comment form -->
+                <button id="comment-button" class="btn btn-primary">Leave a comment</button>
+                <!-- Display a button to like the article -->
+                <button id="like-button" class="btn btn-success">Like this article</button>
+                <!-- Display a list of comments -->
+                <div id="comment-list" class="mt-3">
+                    <!-- No comments yet -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("document").ready(() => {
+
+            const articleId = $("#articleId").val();
+
+            //Send ajax HTTP GET request to /Article/ArticleSummary.
+            $.ajax({
+                type: 'GET',
+                url: '/Article/ArticleSummary',
+                data: {
+                    'articleId': articleId
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#article-summary").text(response.documentSummary);
+                    }
+                },
+                complete: () => {
+
+                    $("#article-summary-loader").hide(); 
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+
+
+            //Send ajax HTTP GET request to /Article/ArticleQuestions.
+            $.ajax({
+                type: 'GET',
+                url: '/Article/ArticleQuestions',
+                data: {
+                    'articleId': articleId
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#article-questions-user-message").hide();
+
+                        const ulElementArticleQuestionsList = $("<ul>", {
+                            class: "list-group gap-3"
+                        });
+
+                        response.forEach((element) => {
+
+                            const liElementArticleQuestion = $("<li>", {                               
+                                class: "list-group-item article-question-list-item"
+                            });
+
+                            liElementArticleQuestion.text(element);
+
+                            liElementArticleQuestion.on("click", () => {
+
+                                //Send ajax HTTP GET request to /Article/ArticleSemanticSearch.
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/Article/ArticleSemanticSearch',
+                                    data: {
+                                        'articleId': articleId,
+                                        'question': element
+                                    },
+                                    success: (response) => {
+
+                                        if (response != null) {
+
+                                            const highlightedText = highlightMatchingText(response.document.article_data, 
+                                                                                          response.context,
+                                                                                          response.answer);
+
+                                            $("#article-data").html(highlightedText);
+                                        }
+                                    },
+                                    complete: () => {
+
+                                       
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                    }
+                                });
+                            });
+
+                            ulElementArticleQuestionsList.append(liElementArticleQuestion);
+                        });
+
+                        $("#article-questions-container").append(ulElementArticleQuestionsList);
+                    }
+                },
+                complete: () => {
+
+                    $("#article-questions-loader").hide();
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        });
+
+    </script>
+}
