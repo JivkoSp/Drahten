@@ -1,75 +1,223 @@
-﻿@model IEnumerable<ReadUserTopicDto>
+﻿@model UserSearchOptionsViewModel
 
-<section>
-    <div class="container-fluid bg-dark text-white mt-5">
-        <div class="row home_body overflow-hidden">
+    <div class="row mx-2 mt-1 gy-2">
+        <div class="col-md-12 col-lg-4">
+            <div class="card-text input-group input-group-md">
+                <span id="home-search-span" class="input-group-text rounded-start-5">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+                <input id="home-search-input-endpoint" type="hidden" />
+                <input id="home-search-input" type="text" class="form-control rounded-end-5 shadow" placeholder="Search something..." />
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <div class="d-grid">
+                <a href="#" class="btn btn-primary">Person</a>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <div class="d-grid">
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <div class="d-grid">
+                <a href="#" class="btn btn-primary">Public Meetings</a>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <div class="d-grid">
+                <a id="search-options" asp-controller="User" asp-action="UserSearchOptions" class="btn btn-primary">Search options</a>
+            </div>
+        </div>
+    </div>
 
-            <partial name="_SideHomeMenu" />
-
-            <div class="col-md-10 mb-2 overflow-auto">
-                <div class="row mx-2 mt-5 gy-2">
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="card-text input-group input-group-md">
-                            <span class="input-group-text rounded-start-5">
-                               <!-- TODO: Search icon -->
-                            </span>
-                            <!-- TODO: Add hidden input field, that has the topicid, 
-                            that corresponds to the topic that the user has clicked as value -->
-                            <input type="text" class="form-control rounded-end-5 shadow" placeholder="Search something"/>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-1">
-                        <div class="d-grid">
-                            <a href="#" class="btn btn-primary">Person</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-1">
-                        <div class="d-grid">
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-1">
-                        <div class="d-grid">
-                            <a href="#" class="btn btn-primary">Public Meetings</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-2">
-                        <div class="d-grid">
-                            <a asp-controller="User" asp-action="UserSearchOptions" class="btn btn-primary">Search options</a>
-                        </div>
-                    </div>
+    <div id="topicModal" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Subscribed topics</h5>
+                    <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
-
-                <div id="topicModal" class="modal fade" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content bg-dark text-white">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Subscribed topics</h5>
-                                <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    @foreach(var userTopic in Model)
-                                    {
-                                        <li>@userTopic.TopicName</li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
+                <div class="modal-body">
+                    <div class="card-text input-group input-group-md">
+                        <span class="input-group-text rounded-start-5">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                        <input type="text" class="form-control rounded-end-5 shadow" placeholder="Search topic..." />
                     </div>
-                </div>
 
-                <!-- Content about user topics -->
-
-                <div class="row home_body_content border-top border-light shadow mt-3 mx-2">
-                    <div class="col">
-                        <!--
-                            TDOD:
-                            Search content goes here.
-                        -->
+                    <div class="text-dark d-flex flex-wrap mt-2 justify-content-center">
+                        @foreach (var userTopic in Model.UserTopics)
+                        {
+                            <input id="subscribedTopicFullName-@userTopic.TopicId" type="hidden" />
+                            <div id="subscribedTopicName-@userTopic.TopicId" class="subscribed-topic-card card shadow" 
+                                 onclick="selectTopicSearch(@userTopic.TopicId)">
+                                <i class="fa fa-globe card-icon" aria-hidden="true"></i>
+                                <span class="card-title">@userTopic.TopicName</span>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+
+    <!-- Content about user topics -->
+
+    <div id="article-list" class="row text-black border-top border-dark shadow mt-3 mx-2 overflow-auto">
+        <!--
+           Search content goes here.
+        -->
+    </div>
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("document").ready(() => {
+
+            @{
+                //This method constructs endpoint name, based on the full name of the user-subscribed topic (All parents names+user-topic-name).
+                //When the endpoint name is contructed the method sends ajax HTTP GET request to '/Search/' + endpoint.
+                //Bootstrap card element is created for each element that is received from the response (from the ajax request). 
+                void GetAllTopicData(TopicDto topicDto, string endpointName)
+                {
+                    var currentUserTopic = Model.UserTopics.FirstOrDefault(x => x.TopicId == topicDto.TopicId);
+
+                    endpointName += topicDto.TopicName;
+
+                    if (topicDto.Children == null && currentUserTopic == null || topicDto.Children?.Count == 0 && currentUserTopic == null)
+                    {
+                        return;
+                    }
+
+                    if(topicDto.Children == null && currentUserTopic != null || topicDto.Children?.Count == 0 && currentUserTopic != null)
+                    {
+                        <text>
+                            var endpoint = "@endpointName";
+
+                            $("#subscribedTopicFullName-@currentUserTopic.TopicId").val(endpoint);
+
+                            $.ajax({
+                                type: 'GET',
+                                url: '/Search/' + endpoint,
+                                data: {},
+                                success: (response) => {
+
+                                    if (response != null) {
+
+                                    let divElementArticleList = $("#article-list");
+
+                                    response.forEach((element) => {
+
+                                        CreateDocumentCard(divElementArticleList, element, endpoint);
+                                    });
+                                 }
+                              },
+                              failure: (reponse) => {
+                                console.log("failure", response);
+                              },
+                              error: (response) => {
+                                console.log("error", response);
+                              }
+                          });
+
+                        </text>
+
+                        return;
+                    }
+
+                    foreach(var topic in topicDto.Children)
+                    {
+                        GetAllTopicData(topic, endpointName);
+                    }
+                }
+
+                foreach(var topic in Model.Topics)
+                {
+                    GetAllTopicData(topicDto:topic, endpointName:"");
+                }
+           }
+
+                $("#home-search-span").click(() => {
+
+                    $("#home-search-span").css("background-color", "lightgreen");
+
+                    // Set a timeout to revert the color after 1 second
+                    setTimeout(() => {
+                        $("#home-search-span").css("background-color", ""); // Remove the color
+                    }, 1000); // 1000 milliseconds = 1 second
+
+                    const homeSearchInputValue = $("#home-search-input").val(); //Get the input text from the user.
+                    const endpointName = $("#home-search-input-endpoint").val();
+
+                    //Send ajax HTTP GET request to the endpoint specified by <endpointName>Query.
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Search/' + endpointName + 'Query',
+                        data: {
+                            'query': homeSearchInputValue
+                        },
+                        success: (response) => {
+
+                            if (response != null) {
+
+                                $("#article-list").empty();
+
+                                let divElementArticleList = $("#article-list");
+
+                                const divElementArticleCol = $("<div>", {
+                                    class: "col-md-12 text-center"
+                                });
+
+                                const divElementArticleHeader = $("<div>", {
+                                    class: "article-header"
+                                });
+
+                                const hArticleTitle = $("<h1>", {
+                                    class: "display-5"
+                                });
+
+                                hArticleTitle.text("We found these documents matching your request.");
+
+                                divElementArticleHeader.append(hArticleTitle);
+                                divElementArticleCol.append(divElementArticleHeader);
+                                divElementArticleList.append(divElementArticleCol);
+
+                                response.forEach((element) => {
+
+                                    CreateDocumentCard(divElementArticleList, element, endpointName);
+                                });
+                            }
+                        },
+                        failure: (reponse) => {
+                            console.log("failure", response);
+                        },
+                        error: (response) => {
+                            console.log("error", response);
+                        }
+                    });
+                });
+        });
+
+        function selectTopicSearch(userTopicId) {
+
+            const endpointName = $("#subscribedTopicFullName-" + userTopicId).val();
+            $("#home-search-input-endpoint").val(endpointName);
+            $("#subscribedTopicName-" + userTopicId).css("background-color", "lightgreen");
+        }
+
+
+        function submitCardForm() {
+
+            const cardFormId = this.event.target.dataset.formid;
+
+            var cardForm = document.getElementById(cardFormId);
+
+            cardForm.submit();
+        }
+
+    </script>
+}
