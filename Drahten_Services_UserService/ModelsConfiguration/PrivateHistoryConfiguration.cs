@@ -27,7 +27,7 @@ namespace Drahten_Services_UserService.ModelsConfiguration
 
             //Relationships
             builder.HasOne(p => p.User)
-                .WithOne()
+                .WithOne(p => p.PrivateHistory)
                 .HasForeignKey<PrivateHistory>(p => p.UserId)
                 .HasConstraintName("FK_User_PrivateHistory")
                 .OnDelete(DeleteBehavior.Cascade);
