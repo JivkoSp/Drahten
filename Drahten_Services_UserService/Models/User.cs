@@ -6,6 +6,7 @@
         public string UserId { get; set; } = string.Empty;  
 
         //Relationships
+        public virtual PrivateHistory? PrivateHistory { get; set; }
         public virtual HashSet<UserTopic>? Topics { get; set; }
         public virtual HashSet<UserArticle>? UserArticles { get; set; }
         public virtual HashSet<ArticleComment>? ArticleComments { get; set; }
