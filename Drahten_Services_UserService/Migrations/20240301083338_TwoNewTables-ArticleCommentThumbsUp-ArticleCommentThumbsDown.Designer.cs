@@ -3,6 +3,7 @@ using System;
 using Drahten_Services_UserService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Drahten_Services_UserService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240301083338_TwoNewTables-ArticleCommentThumbsUp-ArticleCommentThumbsDown")]
+    partial class TwoNewTablesArticleCommentThumbsUpArticleCommentThumbsDown
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,6 +87,12 @@ namespace Drahten_Services_UserService.Migrations
                     b.Property<int?>("ParentArticleCommentId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("ThumbsDown")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ThumbsUp")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -105,11 +114,13 @@ namespace Drahten_Services_UserService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ArticleCommentId", "UserId");
+                    b.HasKey("ArticleCommentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ArticleCommentThumbsDown", (string)null);
                 });
@@ -120,11 +131,13 @@ namespace Drahten_Services_UserService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ArticleCommentId", "UserId");
+                    b.HasKey("ArticleCommentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ArticleCommentThumbsUp", (string)null);
                 });
@@ -563,15 +576,15 @@ namespace Drahten_Services_UserService.Migrations
             modelBuilder.Entity("Drahten_Services_UserService.Models.ArticleCommentThumbsDown", b =>
                 {
                     b.HasOne("Drahten_Services_UserService.Models.ArticleComment", "ArticleComment")
-                        .WithMany("ArticleCommentThumbsDown")
-                        .HasForeignKey("ArticleCommentId")
+                        .WithOne()
+                        .HasForeignKey("Drahten_Services_UserService.Models.ArticleCommentThumbsDown", "ArticleCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_ArticleComment_ArticleCommentThumbsDown");
 
                     b.HasOne("Drahten_Services_UserService.Models.User", "User")
-                        .WithMany("ArticleCommentThumbsDown")
-                        .HasForeignKey("UserId")
+                        .WithOne()
+                        .HasForeignKey("Drahten_Services_UserService.Models.ArticleCommentThumbsDown", "UserId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired()
                         .HasConstraintName("FK_User_ArticleCommentThumbsDown");
@@ -584,15 +597,15 @@ namespace Drahten_Services_UserService.Migrations
             modelBuilder.Entity("Drahten_Services_UserService.Models.ArticleCommentThumbsUp", b =>
                 {
                     b.HasOne("Drahten_Services_UserService.Models.ArticleComment", "ArticleComment")
-                        .WithMany("ArticleCommentThumbsUp")
-                        .HasForeignKey("ArticleCommentId")
+                        .WithOne()
+                        .HasForeignKey("Drahten_Services_UserService.Models.ArticleCommentThumbsUp", "ArticleCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_ArticleComment_ArticleCommentThumbsUp");
 
                     b.HasOne("Drahten_Services_UserService.Models.User", "User")
-                        .WithMany("ArticleCommentThumbsUp")
-                        .HasForeignKey("UserId")
+                        .WithOne()
+                        .HasForeignKey("Drahten_Services_UserService.Models.ArticleCommentThumbsUp", "UserId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired()
                         .HasConstraintName("FK_User_ArticleCommentThumbsUp");
@@ -874,10 +887,6 @@ namespace Drahten_Services_UserService.Migrations
 
             modelBuilder.Entity("Drahten_Services_UserService.Models.ArticleComment", b =>
                 {
-                    b.Navigation("ArticleCommentThumbsDown");
-
-                    b.Navigation("ArticleCommentThumbsUp");
-
                     b.Navigation("Children");
                 });
 
@@ -912,10 +921,6 @@ namespace Drahten_Services_UserService.Migrations
 
             modelBuilder.Entity("Drahten_Services_UserService.Models.User", b =>
                 {
-                    b.Navigation("ArticleCommentThumbsDown");
-
-                    b.Navigation("ArticleCommentThumbsUp");
-
                     b.Navigation("ArticleComments");
 
                     b.Navigation("ArticleLikes");
