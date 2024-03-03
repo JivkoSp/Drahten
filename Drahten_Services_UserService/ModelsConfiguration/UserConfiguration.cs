@@ -16,6 +16,17 @@ namespace Drahten_Services_UserService.ModelsConfiguration
 
             builder.Property(p => p.UserId)
                 .ValueGeneratedNever();
+
+            builder.Property(p => p.FullName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(p => p.NickName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(p => p.EmailAddress)
+                .IsRequired();
         }
     }
 }

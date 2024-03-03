@@ -36,7 +36,13 @@ namespace Drahten_Services_UserService.ModelsConfiguration
                 .WithMany(p => p.ArticleComments)
                 .HasForeignKey(p => p.UserId)
                 .HasConstraintName("FK_User_ArticleComment")
-                .OnDelete(DeleteBehavior.Cascade);  
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Parent)
+              .WithMany(p => p.Children)
+              .HasForeignKey(p => p.ParentArticleCommentId)
+              .HasConstraintName("FK_ParentArticleComment_ChildArticleComments")
+              .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

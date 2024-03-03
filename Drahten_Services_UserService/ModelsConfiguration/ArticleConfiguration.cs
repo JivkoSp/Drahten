@@ -14,9 +14,27 @@ namespace Drahten_Services_UserService.ModelsConfiguration
             //Primary key
             builder.HasKey(key => key.ArticleId);
 
-            //Property config
-            builder.Property(p => p.ArticleData)
+            //Property config - START
+
+            builder.Property(p => p.PrevTitle)
                 .IsRequired();
+
+            builder.Property(p => p.Title)
+                .IsRequired();
+
+            builder.Property(p => p.Data)
+                .IsRequired();
+
+            builder.Property(p => p.Date)
+                .IsRequired();
+
+            builder.Property(p => p.Author)
+                .IsRequired();
+
+            builder.Property(p => p.Link)
+                .IsRequired();
+
+            //Property config - END
 
             //Relationships
             builder.HasOne(p => p.Topic)
