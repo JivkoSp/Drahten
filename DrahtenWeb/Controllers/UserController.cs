@@ -72,8 +72,14 @@ namespace DrahtenWeb.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _userService.RegisterUserTopic<ResponseDto>(
-                    new WriteUserDto { UserId = userId ?? "", TopicId = topic_id }, accessToken ?? "");
+                var userTopicDto = new WriteUserTopicDto
+                {
+                    UserId = userId ?? "",
+                    TopicId = topic_id,
+                    SubscriptionTime = DateTime.Now
+                };
+
+                var response = await _userService.RegisterUserTopic<ResponseDto>(userTopicDto, accessToken ?? "");
 
                 return new JsonResult(new { Message = response.IsSuccess });
             }
