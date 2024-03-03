@@ -2,7 +2,7 @@
 {
     public class SearchedTopicDataPrivateHist
     {
-        //Private key
+        //Primary key
         public int SearchedTopicDataPrivateHistId { get; set; }
         public string SearchedData { get; set; } = string.Empty;
         public DateTime SearchTime { get; set; }
