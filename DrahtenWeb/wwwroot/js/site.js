@@ -6,7 +6,7 @@
 // - element: document object returned from SearchService.
 // - cardTitle: name of the card element.
 //Returns: void.
-function CreateDocumentCard(divElementArticleList, element, cardTitle) {
+function CreateDocumentCard(divElementArticleList, document_topic_id, element, articleInfo, cardTitle) {
 
     const divElementCardContainer = $("<div>", {
         class: "col mt-4"
@@ -40,7 +40,8 @@ function CreateDocumentCard(divElementArticleList, element, cardTitle) {
         class: "text-muted"
     });
 
-    smallElementCardFooterInfo.text("Comments: 12 | Views: 34 | Likes: 56");
+    smallElementCardFooterInfo.text(`Comments: ${articleInfo.comments} | Views: ${articleInfo.views} 
+    | Likes: ${articleInfo.likes} | Dislikes: ${articleInfo.disLikes}`);
 
     const buttonElementCardFooter = $("<button>", {
         type: "button",
@@ -56,6 +57,12 @@ function CreateDocumentCard(divElementArticleList, element, cardTitle) {
         action: "/Article/ViewArticle",
         class: "shadow rounded",
         method: "post"
+    });
+
+    const inputElementTopicId = $("<input>", {
+        type: "hidden",
+        name: "document_topic_id",
+        value: document_topic_id
     });
 
     const inputElementArticleId = $("<input>", {
@@ -100,6 +107,7 @@ function CreateDocumentCard(divElementArticleList, element, cardTitle) {
         value: element.document.article_link
     });
 
+    formElement.append(inputElementTopicId);
     formElement.append(inputElementArticleId);
     formElement.append(inputElementArticlePrevTitle);
     formElement.append(inputElementArticleTitle);
