@@ -35,25 +35,88 @@
                 <h2>Questions about this article</h2>
                 <p id="article-questions-user-message">Generating questions for the article ...</p>
                 <div id="article-questions-loader" class="loader"></div>
-               @*  <ul class="mt-3">
-                    <li>Question 1</li>
-                    <li>Question 2</li>
-                    <li>Question 3</li>
-                    <!-- Add more questions as needed -->
-                </ul> *@
             </div>
             <hr>
             <!-- Display the comment and like section -->
             <div class="comment-like">
                 <!-- Display the number of comments and likes -->
-                <p><span id="comment-count">0</span> comments | <span id="like-count">0</span> likes</p>
+                <p><span id="comment-count">@Model.ArticleComments?.Count</span> comments | <span id="like-count">@Model.ArticleLikes?.Count</span> likes</p>
                 <!-- Display a button to toggle the comment form -->
-                <button id="comment-button" class="btn btn-primary">Leave a comment</button>
+                <button id="article-viewcomment-button" class="btn btn-primary">Comment section</button>
                 <!-- Display a button to like the article -->
-                <button id="like-button" class="btn btn-success">Like this article</button>
+                <button id="article-like-button" class="btn btn-success">Like this article</button>
                 <!-- Display a list of comments -->
                 <div id="comment-list" class="mt-3">
-                    <!-- No comments yet -->
+                    <div id="comments-container" class="container mt-2">
+
+                        @{
+                            void DisplayChildArticles(ReadArticleCommentDto articleComment)
+                            {
+                                    <div class="comment mt-3">
+                                        <h6 class="card-subtitle mb-2 text-muted">@articleComment.UserDto?.NickName</h6>
+                                        <p class="card-text shadow-sm rounded-3">@articleComment.Comment</p>
+                                        <div id="comment-actions-@articleComment.ArticleCommentId" class="actions">
+                                        <i id="thumbs-up-@articleComment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentThumbsUp(@articleComment.ArticleCommentId)"></i> @articleComment.ArticleCommentThumbsUp?.Count
+                                        <i id="thumbs-down-@articleComment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentThumbsDown(@articleComment.ArticleCommentId)"></i> @articleComment.ArticleCommentThumbsDown?.Count
+                                            <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment(@articleComment.ArticleCommentId)">Reply</button>
+                                            <span>@articleComment.Children?.Count replies</span>
+
+                                            @{
+                                                if(articleComment.Children != null)
+                                                {
+                                                    foreach(var childComment in articleComment.Children)
+                                                    {
+                                                        DisplayChildArticles(childComment);
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                            }
+
+                            if(Model.ArticleComments != null)
+                            {
+                                foreach(var comment in Model.ArticleComments)
+                                {
+                                    if(comment.ParentArticleCommentId == null)
+                                    {
+                                            <div class="card shadow rounded-3 mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@comment.UserDto?.NickName</h5>
+                                                    <p class="card-text shadow-sm rounded-3">@comment.Comment</p>
+                                                    <div id="comment-actions-@comment.ArticleCommentId" class="actions">
+                                                    <i id="thumbs-up-@comment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentThumbsUp(@comment.ArticleCommentId)"></i> @comment.ArticleCommentThumbsUp?.Count
+                                                    <i id="thumbs-down-@comment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentThumbsDown(@comment.ArticleCommentId)"></i> @comment.ArticleCommentThumbsDown?.Count
+                                                        <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment(@comment.ArticleCommentId)">Reply</button>
+                                                        <span>@comment.Children?.Count replies</span>
+
+                                                        @{
+                                                        if (comment.Children != null)
+                                                        {
+                                                            foreach (var childComment in comment.Children)
+                                                            {
+                                                                DisplayChildArticles(childComment);
+                                                            }
+                                                        }
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    }        
+                                } 
+                            }
+                        }
+
+                        <div class="input-group mb-3">
+                            <textarea id="user-comment" class="form-control comment-textarea" placeholder="Write a comment..." rows="3"></textarea>
+                            <span class="ms-1">
+                                <button id="user-comment-button" type="button" class="btn btn-primary">Comment</button>
+                            </span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,7 +234,194 @@
                     console.log("error", response);
                 }
             });
+
+
+            $("#article-like-button").click(() => {
+
+                //Send ajax HTTP GET request to /Article/ArticleLike.
+                $.ajax({
+                    type: 'POST',
+                    url: '/Article/ArticleLike',
+                    data: {
+                        'articleId': articleId
+                    },
+                    success: (response) => {
+
+                    },
+                    complete: () => {
+
+                    },
+                    failure: (reponse) => {
+                        console.log("failure", response);
+                    },
+                    error: (response) => {
+                        console.log("error", response);
+                    }
+                });
+            });
+
+            $("#user-comment-button").click(() => {
+
+                const userComment = $("#user-comment").val();
+
+                //Send ajax HTTP GET request to /Article/ArticleComment.
+                $.ajax({
+                    type: 'POST',
+                    url: '/Article/ArticleComment',
+                    data: {
+                        'articleId': articleId,
+                        'comment': userComment
+                    },
+                    success: (response) => {
+                        //TODO: Load the response.
+                    },
+                    complete: () => {
+
+                    },
+                    failure: (reponse) => {
+                        console.log("failure", response);
+                    },
+                    error: (response) => {
+                        console.log("error", response);
+                    }
+                });
+            });
         });
+
+        function registerUserComment(articleCommentId) {
+
+            if($("#user-comment-inputGroup-" + articleCommentId).length == 0){
+
+                const divElementInputGroup = $("<div>", {
+                    id: "user-comment-inputGroup-" + articleCommentId,
+                    class: "input-group mt-2 mb-3"
+                });
+
+                const textareaElementComment = $("<textarea>", {
+                    class: "form-control comment-textarea",
+                    placeholder: "Write a comment..."
+                });
+
+                const spanElementButtonHolder = $("<span>", {
+                    class: "ms-1"
+                });
+
+                const buttonElementComment = $("<button>", {
+                    type: "button",
+                    class: "btn btn-outline-dark btn-sm",
+                    text: "Comment"
+                });
+
+                buttonElementComment.on("click", () => {
+
+                    const articleId = $("#articleId").val();
+                    const userComment = textareaElementComment.val();
+
+                    //Send ajax HTTP GET request to /Article/ArticleChildComment.
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Article/ArticleChildComment',
+                        data: {
+                            'articleId': articleId,
+                            'articleCommentId': articleCommentId, //this is the id of the parent comment.
+                            'comment': userComment
+                        },
+                        success: (response) => {
+                            //TODO: Load the response.
+                        },
+                        complete: () => {
+
+                        },
+                        failure: (reponse) => {
+                            console.log("failure", response);
+                        },
+                        error: (response) => {
+                            console.log("error", response);
+                        }
+                    });
+                });
+
+                const buttonElementCommentCancel = $("<button>", {
+                    type: "button",
+                    class: "btn btn-outline-dark btn-sm",
+                    text: "Cancel"
+                });
+
+                buttonElementCommentCancel.on("click", () => {
+
+                    
+                });
+
+                spanElementButtonHolder.append(buttonElementComment);
+                spanElementButtonHolder.append(buttonElementCommentCancel);
+                divElementInputGroup.append(textareaElementComment);
+                divElementInputGroup.append(spanElementButtonHolder);
+
+                $("#comment-actions-" + articleCommentId).append(divElementInputGroup);
+            }
+        }
+
+        function registerUserCommentThumbsUp(articleCommentId) {
+
+            this.event.target.style.color = "green";
+
+            $("#thumbs-down-" + articleCommentId).css("color", "black");
+
+            const articleId = $("#articleId").val();
+
+            //Send ajax HTTP GET request to /Article/ArticleCommentThumbsUp.
+            $.ajax({
+                type: 'POST',
+                url: '/Article/ArticleCommentThumbsUp',
+                data: {
+                    'articleId': articleId,
+                    'articleCommentId': articleCommentId
+                },
+                success: (response) => {
+                    //TODO: Load the response.
+                },
+                complete: () => {
+
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+        function registerUserCommentThumbsDown(articleCommentId) {
+
+            this.event.target.style.color = "red";
+
+            $("#thumbs-up-" + articleCommentId).css("color", "black");
+
+            const articleId = $("#articleId").val();
+
+            //Send ajax HTTP GET request to /Article/ArticleCommentThumbsDown.
+            $.ajax({
+                type: 'POST',
+                url: '/Article/ArticleCommentThumbsDown',
+                data: {
+                    'articleId': articleId,
+                    'articleCommentId': articleCommentId
+                },
+                success: (response) => {
+                    //TODO: Load the response.
+                },
+                complete: () => {
+
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
 
     </script>
 }
