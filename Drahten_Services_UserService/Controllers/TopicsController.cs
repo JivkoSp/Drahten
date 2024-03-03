@@ -193,13 +193,11 @@ namespace Drahten_Services_UserService.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         [ProducesResponseType(typeof(ResponseDto), 400)]
-        public IActionResult RegisterUserTopic(WriteUserDto user)
+        public IActionResult RegisterUserTopic(WriteUserTopicDto user)
         {
             try
             {
                 var userTopicModel = _mapper.Map<UserTopic>(user);
-
-                userTopicModel.SubscriptionTime = DateTime.Now;
 
                 _appDbContext.UserTopics?.Add(userTopicModel);
 
