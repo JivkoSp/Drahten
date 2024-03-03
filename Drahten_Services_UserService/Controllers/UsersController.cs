@@ -4,6 +4,7 @@ using Drahten_Services_UserService.Dtos;
 using Drahten_Services_UserService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Drahten_Services_UserService.Controllers
 {
@@ -40,7 +41,7 @@ namespace Drahten_Services_UserService.Controllers
                 }
                 else
                 {
-                    responseDto.Result = "No users found.";
+                    responseDto.Result = new List<ReadUserDto>();
 
                     return NotFound(responseDto);
                 }
@@ -76,7 +77,7 @@ namespace Drahten_Services_UserService.Controllers
                 }
                 else
                 {
-                    responseDto.Result = $"No user with id {userId} was found.";
+                    responseDto.Result = null;
 
                     return NotFound(responseDto);
                 }
@@ -109,9 +110,46 @@ namespace Drahten_Services_UserService.Controllers
 
                 responseDto.IsSuccess = true;
 
-                responseDto.Result = user;
-               
+                responseDto.Result = _mapper.Map<ReadUserDto>(userModel);
+
                 return Created(HttpContext.Request.Path, responseDto);
+            }
+            catch (Exception ex)
+            {
+                responseDto.ErrorMessages = new List<string>
+                {
+                    ex.ToString()
+                };
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+        [HttpGet("articles/{articleId}")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        [ProducesResponseType(typeof(ResponseDto), 400)]
+        public IActionResult GetUsersRelatedToArticle(string articleId)
+        {
+            try
+            {
+                var userArticleList = _appDbContext.UserArticles?
+                                      .Where(x => x.ArticleId == articleId)
+                                      .Include(x => x.User)
+                                      .Include(x => x.Article)
+                                      .ToList();
+
+                if(userArticleList == null)
+                {
+                    return NotFound();
+                }
+
+                responseDto.IsSuccess = true;
+
+                responseDto.Result = _mapper.Map<List<ReadUserArticleDto>>(userArticleList);
+
+                return Ok(responseDto);
             }
             catch (Exception ex)
             {
