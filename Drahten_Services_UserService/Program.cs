@@ -68,6 +68,12 @@ builder.Services.AddAutoMapper(configAction => {
     configAction.AddProfile<TopicProfile>();
     configAction.AddProfile<UserProfile>();
     configAction.AddProfile<UserTopicProfile>();
+    configAction.AddProfile<ArticleProfile>();
+    configAction.AddProfile<UserArticleProfile>();
+    configAction.AddProfile<ArticleLikeProfile>();
+    configAction.AddProfile<ArticleCommentProfile>();
+    configAction.AddProfile<ArticleCommentThumbsUpProfile>();
+    configAction.AddProfile<ArticleCommentThumbsDownProfile>();
 });
 
 builder.Services.AddEndpointsApiExplorer();
