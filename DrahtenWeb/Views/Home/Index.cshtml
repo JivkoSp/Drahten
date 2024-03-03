@@ -108,12 +108,31 @@
 
                                     if (response != null) {
 
-                                    let divElementArticleList = $("#article-list");
+                                        let divElementArticleList = $("#article-list");
 
-                                    response.forEach((element) => {
+                                        response.forEach((element) => {
 
-                                        CreateDocumentCard(divElementArticleList, element, endpoint);
-                                    });
+                                            let articleInfo = null;
+
+                                            //Send ajax HTTP GET request to /Article/ArticleInfo.
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: '/Article/ArticleInfo',
+                                                data: {
+                                                    'articleId': element.document_id
+                                                },
+                                                success: (response) => {
+
+                                                    CreateDocumentCard(divElementArticleList, @currentUserTopic.TopicId, element, response, endpoint);
+                                                },
+                                                failure: (reponse) => {
+                                                    console.log("failure", response);
+                                                },
+                                                error: (response) => {
+                                                    console.log("error", response);
+                                                }
+                                            });
+                                        });
                                  }
                               },
                               failure: (reponse) => {
