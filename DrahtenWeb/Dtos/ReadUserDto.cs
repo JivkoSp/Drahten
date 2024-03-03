@@ -1,6 +1,6 @@
 ﻿namespace DrahtenWeb.Dtos
 {
-    public class WriteUserDto
+    public class ReadUserDto
     {
         public string UserId { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
