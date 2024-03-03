@@ -14,6 +14,8 @@ namespace Drahten_Services_UserService.Data
 
         public virtual DbSet<Article>? Articles { get; set; }
         public virtual DbSet<ArticleComment>? ArticleComments { get; set; }
+        public virtual DbSet<ArticleCommentThumbsUp>? ArticleCommentThumbsUp { get; set; }
+        public virtual DbSet<ArticleCommentThumbsDown>? ArticleCommentThumbsDown { get; set; }
         public virtual DbSet<ArticleLike>? ArticleLikes { get; set; }
         public virtual DbSet<ContactRequest>? ContactRequests { get; set; }
         public virtual DbSet<PrivateHistory>? PrivateHistories { get; set; }
@@ -37,6 +39,8 @@ namespace Drahten_Services_UserService.Data
             //Applying configurations for the entity models - START 
 
             modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleCommentThumbsUpConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleCommentThumbsDownConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration());
             modelBuilder.ApplyConfiguration(new ContactRequestConfiguration());
