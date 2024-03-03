@@ -14,9 +14,9 @@
                 //The purpose of this list is to provide colors for every level, that is deeper than 0 (the ground level).
                 var menu_colors = new List<string>
                 {
-                "#0d6efd",
-                "#81b3fe",
-                "#cde1fe"
+                    "#0d6efd",
+                    "#81b3fe",
+                    "#cde1fe"
                 };
 
                 foreach (var topic in Model.Topics)
@@ -34,10 +34,13 @@
 
                                     if (subscribedTopic == null)
                                     {
-                                        <input id="Topic-@topicFullName" type="hidden" value="@topicDto.TopicId" />
+                                        //Check if the topicDto has any children. If true assign 1, if false assign 0.
+                                        var haveChildren = topicDto.Children?.Count > 0 ? 1 : 0;
+
                                         <a id="@topicFullName" href="#menu-@topicDto.TopicId" class="text-decoration-none home-menu-content nav-link"
                                            style="color: @menu_colors[menuLevel]"
-                                           data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menu-@topicDto.TopicId">
+                                           data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                           aria-controls="menu-@topicDto.TopicId" onclick="subscribeToTopic(@topicDto.TopicId, @haveChildren)">
                                             @topicDto.TopicName
                                         </a>
                                     }
@@ -51,13 +54,13 @@
                                     }
                                 }
 
-                                @if (topicDto?.Children == null)
+                                @if (topicDto?.Children == null || topicDto?.Children.Count == 0)
                                 {
                                     return;
                                 }
                                 else
                                 {
-                                    <div id="menu-@topicDto.TopicId" class="collapse">
+                                    <div id="menu-@topicDto?.TopicId" class="collapse">
                                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
                                             @foreach (var childtopic in topicDto.Children)
                                             {
