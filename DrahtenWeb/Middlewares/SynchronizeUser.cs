@@ -2,6 +2,7 @@
 using DrahtenWeb.Exceptions;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace DrahtenWeb.Middlewares
@@ -34,12 +35,22 @@ namespace DrahtenWeb.Middlewares
 
                 var response = await userService.GetUserById<ResponseDto>(userId, accessToken);
 
-                if (response != null && response.IsSuccess == false)
+                var userModel = JsonConvert.DeserializeObject<ReadUserDto>(Convert.ToString(response.Result));
+
+                if (userModel == null)
                 {
                     //The user is NOT registered in UserService.
                     //Register the user (synchronize the user in UserService).
 
-                    await userService.RegisterUser<ResponseDto>(new WriteUserDto { UserId = userId }, accessToken);
+                    var writeUserDto = new WriteUserDto
+                    {
+                        UserId = userId,
+                        FullName = context.User.FindFirstValue("name") ?? "",
+                        NickName = context.User.FindFirstValue("preferred_username") ?? "",
+                        EmailAddress = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress") ?? ""
+                    };
+
+                    await userService.RegisterUser<ResponseDto>(writeUserDto, accessToken);
                 }
             }
             catch(ClaimsPrincipalNameIdentifierNotFoundException ex)
