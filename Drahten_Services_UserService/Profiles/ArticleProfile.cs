@@ -4,13 +4,13 @@ using Drahten_Services_UserService.Models;
 
 namespace Drahten_Services_UserService.Profiles
 {
-    public class UserTopicProfile : Profile
+    public class ArticleProfile : Profile
     {
-        public UserTopicProfile()
+        public ArticleProfile()
         {
-            CreateMap<UserTopic, ReadUserTopicDto>();
+            CreateMap<WriteArticleDto, Article>();
 
-            CreateMap<WriteUserTopicDto, UserTopic>();
+            CreateMap<Article, ReadArticleDto>();
         }
     }
 }
