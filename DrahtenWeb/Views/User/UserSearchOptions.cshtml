@@ -33,17 +33,50 @@
 
             $("#searchoptions-menu-container").load("@Url.Action("LoadPartialViewUserSearchOptions", "User")");
 
-            $("#CybersecurityNewsEurope").click(() => { 
+            // $("#CybersecurityNewsEurope").click(() => {
 
-                //Get the topic id
-                topic_id = $("#Topic-CybersecurityNewsEurope").val();
+            //     //Get the topic id
+            //     topic_id = $("#Topic-CybersecurityNewsEurope").val();
+
+            //     console.log(topic_id);
+
+            //     //Send async POST http request to /User/UserTopicSubscription
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/User/UserTopicSubscription',
+            //         data: {
+            //             'topic_id': topic_id
+            //         },
+            //         //TODO: Log the messages for success, failure or error to logging service.
+            //         success: (response) => {
+
+            //             console.log("success", response);
+            //         },
+            //         failure: (reponse) => {
+
+            //             console.log("failure", response);
+            //         },
+            //         error: (response) => {
+
+            //             console.log("error", response);
+            //         }
+            //     });
+            //});
+        });
+
+        function subscribeToTopic(topicId, haveChildren) {
+
+            //Check if the topic has any children topics.
+            if(haveChildren == 0){
+
+                //The topic does NOT have children topics.
 
                 //Send async POST http request to /User/UserTopicSubscription
                 $.ajax({
                     type: 'POST',
                     url: '/User/UserTopicSubscription',
                     data: {
-                        'topic_id': topic_id
+                        'topic_id': topicId
                     },
                     //TODO: Log the messages for success, failure or error to logging service.
                     success: (response) => {
@@ -59,7 +92,9 @@
                         console.log("error", response);
                     }
                 });
-            });
-        });
+            }
+        }
+
+
     </script>
 }
