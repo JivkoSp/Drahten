@@ -246,5 +246,99 @@ namespace DrahtenWeb.Services
 
             return response;
         }
+        public async Task<TEntity> GetUserPrivateHistory<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/private-history/{userId}",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> CreateUserPrivateHistory<TEntity>(WritePrivateHistoryDto writePrivateHistoryDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/user-service/private-history/",
+                Data = writePrivateHistoryDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> GetUserPublicHistory<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/public-history/{userId}",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> CreateUserPublicHistory<TEntity>(WritePublicHistoryDto writePublicHistoryDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/user-service/public-history/",
+                Data = writePublicHistoryDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> GetViewedArticlesPrivateHistory<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/private-history/{userId}/viewed_articles/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> RegisterViewedArticlePrivateHistory<TEntity>(WriteViewedArticleHistoryDto writeViewedArticleHistoryDto, 
+            string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/user-service/private-history/{writeViewedArticleHistoryDto.HistoryId}/viewed_articles/",
+                Data = writeViewedArticleHistoryDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> GetSearchedTopicsDataPrivateHistory<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/user-service/private-history/{userId}/searched-topics-data/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+        public async Task<TEntity> RegisterSearchedTopicsDataPrivateHistory<TEntity>(WriteSearchedTopicDataHistoryDto writeSearchedTopicDataHistoryDto, 
+            string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/user-service/private-history/{writeSearchedTopicDataHistoryDto.HistoryId}/searched-topics-data/",
+                Data = writeSearchedTopicDataHistoryDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
     }
 }
