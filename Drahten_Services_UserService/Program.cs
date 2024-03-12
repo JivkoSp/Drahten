@@ -1,4 +1,6 @@
+using Drahten_Services_UserService.AsyncDataServices;
 using Drahten_Services_UserService.Data;
+using Drahten_Services_UserService.EventProcessing;
 using Drahten_Services_UserService.Profiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,9 @@ builder.Services.AddControllers()
 //if the object depth is larger than the maximum allowed depth of 32.
 .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+
+builder.Services.AddHostedService<MessageBusSubscriber>();
 
 builder.Services.AddAuthentication(options => {
 
@@ -74,6 +79,11 @@ builder.Services.AddAutoMapper(configAction => {
     configAction.AddProfile<ArticleCommentProfile>();
     configAction.AddProfile<ArticleCommentThumbsUpProfile>();
     configAction.AddProfile<ArticleCommentThumbsDownProfile>();
+    configAction.AddProfile<PrivateHistoryProfile>();
+    configAction.AddProfile<PublicHistoryProfile>();
+    configAction.AddProfile<ViewedArticleHistProfile>();
+    configAction.AddProfile<SearchedTopicDataHistProfile>();
+    configAction.AddProfile<SearchedArticleDataHistProfile>();
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -90,11 +100,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
