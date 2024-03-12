@@ -17,5 +17,7 @@
         public virtual ICollection<UserArticle>? UserArticles { get; set; }
         public virtual ICollection<ArticleComment>? ArticleComments { get; set; }
         public virtual ICollection<ArticleLike>? ArticleLikes { get; set; }
+        public virtual HashSet<SearchedArticleDataPrivateHist>? SearchedArticleDataPrivateHist { get; set; }
+        public virtual HashSet<SearchedArticleDataPublicHist>? SearchedArticleDataPublicHist { get; set; }
     }
 }

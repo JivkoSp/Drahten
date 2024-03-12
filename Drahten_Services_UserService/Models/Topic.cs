@@ -13,6 +13,7 @@
         public virtual ICollection<Topic>? Children { get; set; }
         //Self relationship [one-to-many], represents hierarchy of topics - END
         public virtual HashSet<UserTopic>? Users { get; set; }
+        public virtual HashSet<Article>? Articles { get; set; }
         public virtual HashSet<SearchedTopicDataPrivateHist>? SearchedTopicDataPrivateHist { get; set; }
         public virtual HashSet<SearchedTopicDataPublicHist>? SearchedTopicDataPublicHist { get; set; }
     }

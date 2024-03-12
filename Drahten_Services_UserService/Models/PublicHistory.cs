@@ -8,6 +8,7 @@
         //Relationships
         public virtual User? User { get; set; }
         public virtual ICollection<ViewedArticlePublicHist>? ViewedArticles { get; set; }
+        public virtual ICollection<SearchedArticleDataPublicHist>? SearchedArticleData { get; set; }
         public virtual ICollection<ViewedUserPublicHist>? ViewedUsers { get; set; }
         public virtual ICollection<SearchedTopicDataPublicHist>? SearchedTopicData { get; set; }
     }
