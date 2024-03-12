@@ -24,5 +24,13 @@ namespace DrahtenWeb.Services.IServices
         Task<TEntity> DeleteArticleCommentThumbsUp<TEntity>(string articleId, int articleCommentId, string userId, string accessToken);
         Task<TEntity> DeleteArticleCommentThumbsDown<TEntity>(string articleId, int articleCommentId, string userId, string accessToken);
         Task<TEntity> GetUsersRelatedToArticle<TEntity>(string articleId, string accessToken);
+        Task<TEntity> GetUserPrivateHistory<TEntity>(string userId, string accessToken);
+        Task<TEntity> CreateUserPrivateHistory<TEntity>(WritePrivateHistoryDto writePrivateHistoryDto, string accessToken);
+        Task<TEntity> GetUserPublicHistory<TEntity>(string userId, string accessToken);
+        Task<TEntity> CreateUserPublicHistory<TEntity>(WritePublicHistoryDto writePublicHistoryDto, string accessToken);
+        Task<TEntity> GetViewedArticlesPrivateHistory<TEntity>(string userId, string accessToken);
+        Task<TEntity> RegisterViewedArticlePrivateHistory<TEntity>(WriteViewedArticleHistoryDto writeViewedArticleHistoryDto, string accessToken);
+        Task<TEntity> GetSearchedTopicsDataPrivateHistory<TEntity>(string userId, string accessToken);
+        Task<TEntity> RegisterSearchedTopicsDataPrivateHistory<TEntity>(WriteSearchedTopicDataHistoryDto writeSearchedTopicDataHistoryDto, string accessToken);
     }
 }
