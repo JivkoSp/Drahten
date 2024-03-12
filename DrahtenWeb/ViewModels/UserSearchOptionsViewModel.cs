@@ -4,7 +4,7 @@ namespace DrahtenWeb.ViewModels
 {
     public class UserSearchOptionsViewModel
     {
-        public List<TopicDto> Topics { get; set; } = new List<TopicDto>();
+        public List<ReadTopicDto> Topics { get; set; } = new List<ReadTopicDto>();
         public List<ReadUserTopicDto> UserTopics { get; set; } = new List<ReadUserTopicDto>();
     }
 }
