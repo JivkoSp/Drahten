@@ -3,6 +3,7 @@ using DrahtenWeb.Exceptions;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace DrahtenWeb.Middlewares
@@ -20,6 +21,7 @@ namespace DrahtenWeb.Middlewares
         {
             try
             {
+                var response = new ResponseDto();
                 var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var accessToken = await context.GetTokenAsync("access_token");
 
@@ -33,11 +35,11 @@ namespace DrahtenWeb.Middlewares
                     throw new HttpContextAccessTokenNotFoundException();
                 }
 
-                var response = await userService.GetUserById<ResponseDto>(userId, accessToken);
+                response = await userService.GetUserById<ResponseDto>(userId, accessToken);
 
-                var userModel = JsonConvert.DeserializeObject<ReadUserDto>(Convert.ToString(response.Result));
+                var userDto = JsonConvert.DeserializeObject<ReadUserDto>(Convert.ToString(response.Result));
 
-                if (userModel == null)
+                if (userDto == null)
                 {
                     //The user is NOT registered in UserService.
                     //Register the user (synchronize the user in UserService).
@@ -51,6 +53,35 @@ namespace DrahtenWeb.Middlewares
                     };
 
                     await userService.RegisterUser<ResponseDto>(writeUserDto, accessToken);
+                }
+
+                response = await userService.GetUserPrivateHistory<ResponseDto>(userId, accessToken);
+
+                var userPrivateHistoryDto = JsonConvert.DeserializeObject<ReadPrivateHistoryDto>(Convert.ToString(response.Result));
+
+                if(userPrivateHistoryDto == null) 
+                {
+                    var writeUserPrivateHistoryDto = new WritePrivateHistoryDto
+                    {
+                        PrivateHistoryId = userId,
+                        HistoryLiveTime = DateTime.Now.AddHours(24),
+                    };
+
+                    await userService.CreateUserPrivateHistory<ResponseDto>(writeUserPrivateHistoryDto, accessToken);
+                }
+
+                response = await userService.GetUserPublicHistory<ResponseDto>(userId, accessToken);
+
+                var userPublicHistoryDto = JsonConvert.DeserializeObject<ReadPublicHistoryDto>(Convert.ToString(response.Result));
+
+                if(userPublicHistoryDto == null)
+                {
+                    var writeUserPublicHistoryDto = new WritePublicHistoryDto
+                    {
+                        PublicHistoryId = userId
+                    };
+
+                    await userService.CreateUserPublicHistory<ResponseDto>(writeUserPublicHistoryDto, accessToken);
                 }
             }
             catch(ClaimsPrincipalNameIdentifierNotFoundException ex)
