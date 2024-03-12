@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(options => {
 
     options.ClientId = "drahten-client";
     options.Authority = "http://127.0.0.1:8080/realms/drahten";
-    options.ClientSecret = "haSjplfSXStnxk3WTF9fKNQvdxiLUKh5";
+    options.ClientSecret = "8L2FkUCnCgc5940DarL4CrApmQXv4jCc";
     options.ResponseType = OpenIdConnectResponseType.Code;
     options.SaveTokens = true;
     options.Scope.Add("openid");
