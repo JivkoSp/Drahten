@@ -43,7 +43,7 @@ namespace DrahtenWeb.Controllers
 
                 if (response != null && response.IsSuccess)
                 {
-                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<TopicDto>>(Convert.ToString(response.Result));
+                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<ReadTopicDto>>(Convert.ToString(response.Result));
                 }
 
                 response = await _userService.GetUserTopics<ResponseDto>(userId ?? "", accessToken ?? "");
