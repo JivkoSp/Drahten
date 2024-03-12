@@ -17,7 +17,7 @@ namespace DrahtenWeb.Services
             var response = await SendAsync<TEntity>(new ApiRequest
             {
                 ApiType = ApiType.GET,
-                Url = "https://localhost:7076/search_service/news/cybersecurity/europe",
+                Url = "https://localhost:7076/search_service/news/cybersecurity/europe/",
                 AccessToken = accessToken
             });
 
