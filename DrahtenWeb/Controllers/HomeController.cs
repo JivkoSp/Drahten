@@ -50,7 +50,7 @@ namespace DrahtenWeb.Controllers
 
                 if(response != null && response.IsSuccess)
                 {
-                    userSearchOptionsViewModel.Topics.Add(JsonConvert.DeserializeObject<TopicDto>(Convert.ToString(response.Result)));
+                    userSearchOptionsViewModel.Topics.Add(JsonConvert.DeserializeObject<ReadTopicDto>(Convert.ToString(response.Result)));
                 }
             }
 
