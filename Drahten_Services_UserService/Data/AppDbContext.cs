@@ -20,6 +20,8 @@ namespace Drahten_Services_UserService.Data
         public virtual DbSet<ContactRequest>? ContactRequests { get; set; }
         public virtual DbSet<PrivateHistory>? PrivateHistories { get; set; }
         public virtual DbSet<PublicHistory>? PublicHistories { get; set; }
+        public virtual DbSet<SearchedArticleDataPrivateHist>? SearchedArticleDataPrivateHists { get; set; }
+        public virtual DbSet<SearchedArticleDataPublicHist>? SearchedArticleDataPublicHists { get; set; }
         public virtual DbSet<SearchedTopicDataPrivateHist>? SearchedTopicDataPrivateHists { get; set; }
         public virtual DbSet<SearchedTopicDataPublicHist>? SearchedTopicDataPublicHists { get; set; }
         public virtual DbSet<Topic>? Topics { get; set; }
@@ -46,6 +48,8 @@ namespace Drahten_Services_UserService.Data
             modelBuilder.ApplyConfiguration(new ContactRequestConfiguration());
             modelBuilder.ApplyConfiguration(new PrivateHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new PublicHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new SearchedArticleDataPrivateHistConfiguration());
+            modelBuilder.ApplyConfiguration(new SearchedArticleDataPublicHistConfiguration());
             modelBuilder.ApplyConfiguration(new SearchedTopicDataPrivateHistConfiguration());
             modelBuilder.ApplyConfiguration(new SearchedTopicDataPublicHistConfiguration());
             modelBuilder.ApplyConfiguration(new TopicConfiguration());
