@@ -38,8 +38,8 @@ namespace Drahten_Services_UserService.ModelsConfiguration
 
             //Relationships
             builder.HasOne(p => p.Topic)
-                .WithOne()
-                .HasForeignKey<Article>(p => p.TopicId)
+                .WithMany(p => p.Articles)
+                .HasForeignKey(p => p.TopicId)
                 .HasConstraintName("FK_Topic_Article")
                 .OnDelete(DeleteBehavior.SetNull);
         }
