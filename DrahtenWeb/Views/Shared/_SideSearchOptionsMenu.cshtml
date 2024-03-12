@@ -23,7 +23,7 @@
                 {
                     @if (topic.ParentTopicId == null)
                     {
-                        void InitializeSubTopics(TopicDto topicDto, int menuLevel, string topicFullName)
+                        void InitializeSubTopics(ReadTopicDto topicDto, int menuLevel, string topicFullName)
                         {
                             topicFullName += topicDto.TopicName;
 
