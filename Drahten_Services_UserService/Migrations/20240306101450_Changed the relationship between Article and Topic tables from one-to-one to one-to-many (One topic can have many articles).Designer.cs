@@ -3,6 +3,7 @@ using System;
 using Drahten_Services_UserService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Drahten_Services_UserService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240306101450_Changed the relationship between Article and Topic tables from one-to-one to one-to-many (One topic can have many articles)")]
+    partial class ChangedtherelationshipbetweenArticleandTopictablesfromonetoonetoonetomanyOnetopiccanhavemanyarticles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,70 +216,6 @@ namespace Drahten_Services_UserService.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("PublicHistory", (string)null);
-                });
-
-            modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedArticleDataPrivateHist", b =>
-                {
-                    b.Property<int>("SearchedArticleDataPrivateHistId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SearchedArticleDataPrivateHistId"));
-
-                    b.Property<string>("ArticleId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PrivateHistoryId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("SearchTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("SearchedData")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("SearchedArticleDataPrivateHistId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("PrivateHistoryId");
-
-                    b.ToTable("SearchedArticleDataPrivateHist", (string)null);
-                });
-
-            modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedArticleDataPublicHist", b =>
-                {
-                    b.Property<int>("SearchedArticleDataPublicHistId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SearchedArticleDataPublicHistId"));
-
-                    b.Property<string>("ArticleId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PublicHistoryId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("SearchTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("SearchedData")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("SearchedArticleDataPublicHistId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("PublicHistoryId");
-
-                    b.ToTable("SearchedArticleDataPublicHist", (string)null);
                 });
 
             modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedTopicDataPrivateHist", b =>
@@ -735,48 +674,6 @@ namespace Drahten_Services_UserService.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedArticleDataPrivateHist", b =>
-                {
-                    b.HasOne("Drahten_Services_UserService.Models.Article", "Article")
-                        .WithMany("SearchedArticleDataPrivateHist")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("FK_Article_SearchedArticleDataPrivateHist");
-
-                    b.HasOne("Drahten_Services_UserService.Models.PrivateHistory", "PrivateHistory")
-                        .WithMany("SearchedArticleData")
-                        .HasForeignKey("PrivateHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_PrivateHistory_SearchedArticleDataPrivateHist");
-
-                    b.Navigation("Article");
-
-                    b.Navigation("PrivateHistory");
-                });
-
-            modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedArticleDataPublicHist", b =>
-                {
-                    b.HasOne("Drahten_Services_UserService.Models.Article", "Article")
-                        .WithMany("SearchedArticleDataPublicHist")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("FK_Article_SearchedArticleDataPublicHist");
-
-                    b.HasOne("Drahten_Services_UserService.Models.PublicHistory", "PublicHistory")
-                        .WithMany("SearchedArticleData")
-                        .HasForeignKey("PublicHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_PublicHistory_SearchedArticleDataPublicHist");
-
-                    b.Navigation("Article");
-
-                    b.Navigation("PublicHistory");
-                });
-
             modelBuilder.Entity("Drahten_Services_UserService.Models.SearchedTopicDataPrivateHist", b =>
                 {
                     b.HasOne("Drahten_Services_UserService.Models.PrivateHistory", "PrivateHistory")
@@ -974,10 +871,6 @@ namespace Drahten_Services_UserService.Migrations
 
                     b.Navigation("ArticleLikes");
 
-                    b.Navigation("SearchedArticleDataPrivateHist");
-
-                    b.Navigation("SearchedArticleDataPublicHist");
-
                     b.Navigation("UserArticles");
                 });
 
@@ -992,8 +885,6 @@ namespace Drahten_Services_UserService.Migrations
 
             modelBuilder.Entity("Drahten_Services_UserService.Models.PrivateHistory", b =>
                 {
-                    b.Navigation("SearchedArticleData");
-
                     b.Navigation("SearchedTopicData");
 
                     b.Navigation("ViewedArticles");
@@ -1003,8 +894,6 @@ namespace Drahten_Services_UserService.Migrations
 
             modelBuilder.Entity("Drahten_Services_UserService.Models.PublicHistory", b =>
                 {
-                    b.Navigation("SearchedArticleData");
-
                     b.Navigation("SearchedTopicData");
 
                     b.Navigation("ViewedArticles");
