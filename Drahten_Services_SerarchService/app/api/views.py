@@ -5,7 +5,11 @@ from haystack.nodes import EmbeddingRetriever
 from sentence_transformers import SentenceTransformer
 from haystack.schema import Document as HaystackDocument
 from app import models, dtos
+from app.asyncDataServices import messageBusClient
 from . import serializers
+from app.security import authorization, ratelimiting
+import requests
+from ratelimit import RateLimitException
 import json
 import re
 
@@ -158,7 +162,7 @@ class CybersecurityNewsEuropeSemanticSearchDataViewSet(viewsets.ViewSet):
 
 
 class CybersecurityNewsEuropeViewSet(viewsets.ViewSet):
-    
+
     def FilterDuplicates(self, documents):
         document_dict = {}    
 
@@ -177,27 +181,64 @@ class CybersecurityNewsEuropeViewSet(viewsets.ViewSet):
     #ProducesResponseType(HTTP_400_BAD_REQUEST, ResponseDto)
     def list(self, request):
         try:
-            query_response = models.search_engine_cybersecurity_news_europe.document_store.get_all_documents()
+            # Apply request rate limiting.
+            ratelimiting.rate_limiter()
 
-            print(query_response)
+            print(f"Request headers: {request.headers}\n\n")
 
-            if not query_response:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            # Get the access token from the request headers
+            authorization_header = request.headers.get("Authorization")
+
+            print(f"Authorization header: {authorization_header}")
+
+            if authorization_header:
+                # Extract the token part from the Authorization header.
+                token = authorization_header.split(" ")[1]  
+                
+                # Call the authorize function and initialize the variable decoded_token
+                # with the result. The decoded_token will contain the decoded information from token if the token is valid.
+                # Possible values for decoded_token: None, dict[str, str].
+                decoded_token = authorization.authorize(token)
+
+                if decoded_token is None:
+                     #### TODO
+                     #### Throw custom exception.
+                    pass
+
+                query_response = models.search_engine_cybersecurity_news_europe.document_store.get_all_documents()
+
+                if not query_response:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
     
-            answers = []
+                messageBusClient.publishSearchEvent()
 
-            for answer in query_response:
-                query_answer = models.QueryAnswer(answer.to_dict())
-                answers.append(query_answer)
+                answers = []
 
-            serialized_query_answer = serializers.QueryAnswerSerializer(answers, many=True)
+                for answer in query_response:
+                    query_answer = models.QueryAnswer(answer.to_dict())
+                    answers.append(query_answer)
 
-            responseDto = dtos.ResponseDto(IsSuccess=True, Result=serialized_query_answer.data)
+                serialized_query_answer = serializers.QueryAnswerSerializer(answers, many=True)
 
-            serialized_responseDto = serializers.ResponseDtoSerializer(responseDto)
+                responseDto = dtos.ResponseDto(IsSuccess=True, Result=serialized_query_answer.data)
 
-            return Response(status=status.HTTP_200_OK, data=serialized_responseDto.data)
+                serialized_responseDto = serializers.ResponseDtoSerializer(responseDto)
 
+                return Response(status=status.HTTP_200_OK, data=serialized_responseDto.data)
+
+            else:
+                return Response("Unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+        except RateLimitException as e:
+            # Handle rate limit exception
+            return Response("Rate limit exceeded", status=status.HTTP_429_TOO_MANY_REQUESTS)
+        except requests.RequestException as e:
+            print(f"Error fetching JWKS: {e}")
+
+            #### TODO
+            #### Throw custom exception.
+
+            return None  # Unable to fetch JWKS, token validation failed
         except Exception as ex:
             print(f"Exception {ex}")
             #TODO: Log the exception to logging service.
