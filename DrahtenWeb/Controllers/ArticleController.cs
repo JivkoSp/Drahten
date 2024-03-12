@@ -3,6 +3,7 @@ using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Xml.Linq;
 
 namespace DrahtenWeb.Controllers
 {
+    [Authorize]
     public class ArticleController : Controller
     {
         private readonly ISearchService _searchService;
@@ -69,6 +71,7 @@ namespace DrahtenWeb.Controllers
             var articleLikes = new List<ReadArticleLikeDto>();
             var articleComments = new List<ReadArticleCommentDto>();
             var userArticleList = new List<ReadUserArticleDto>();
+            var readViewArticlesPrivateHist = new List<ReadViewedArticleHistoryDto>();
 
             //Get the user id.
             //Here the NameIdentifier claim type represents the user id.
@@ -128,6 +131,24 @@ namespace DrahtenWeb.Controllers
                     //TODO:
                     //throw custom exception
                 }
+            }
+
+            response = await _userService.GetViewedArticlesPrivateHistory<ResponseDto>(userId ?? "", accessToken ?? "");
+
+            readViewArticlesPrivateHist = JsonConvert.DeserializeObject<List<ReadViewedArticleHistoryDto>>(Convert.ToString(response.Result));
+
+            var viewedArticle = readViewArticlesPrivateHist?.FirstOrDefault(x => x.Article?.ArticleId == document_id);
+
+            if(viewedArticle == null)
+            {
+                var writeViewedArticleHistoryDto = new WriteViewedArticleHistoryDto
+                {
+                    ArticleId = document_id,
+                    ViewTime = DateTime.Now,
+                    HistoryId = userId ?? ""
+                };
+
+                await _userService.RegisterViewedArticlePrivateHistory<ResponseDto>(writeViewedArticleHistoryDto, accessToken ?? "");
             }
 
             //Get all likes for article with id: document_id.
