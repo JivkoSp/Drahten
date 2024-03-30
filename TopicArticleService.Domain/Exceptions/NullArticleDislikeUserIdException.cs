@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class NullArticleDislikeUserIdException : DomainException
+    internal class NullArticleDislikeUserIdException : DomainException
     {
-        public NullArticleDislikeUserIdException() : base(message: "ArticleDislike userId cannot be null!")
+        internal NullArticleDislikeUserIdException() : base(message: "ArticleDislike userId cannot be null!")
         {
         }
     }

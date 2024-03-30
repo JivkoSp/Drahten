@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class EmptyArticleAuthorException : DomainException
+    internal class EmptyArticleAuthorException : DomainException
     {
-        public EmptyArticleAuthorException() : base(message: "Article author cannot be empty!")
+        internal EmptyArticleAuthorException() : base(message: "Article author cannot be empty!")
         {
         }
     }

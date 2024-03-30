@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class ArticleCommentAlreadyExistsException : DomainException
+    internal class ArticleCommentAlreadyExistsException : DomainException
     {
-        public ArticleCommentAlreadyExistsException(Guid articleId, string userId) 
+        internal ArticleCommentAlreadyExistsException(Guid articleId, Guid userId) 
             : base(message: $"Article #{articleId} already has comment from user #{userId}!")
         {
         }

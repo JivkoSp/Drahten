@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class EmptyUserIdException : DomainException
+    internal class EmptyUserIdException : DomainException
     {
-        public EmptyUserIdException() : base(message: "User id cannot be empty!")
+        internal EmptyUserIdException() : base(message: "User id cannot be empty!")
         {
         }
     }

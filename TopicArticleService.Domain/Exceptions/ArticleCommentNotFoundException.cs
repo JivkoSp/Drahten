@@ -1,10 +1,10 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class ArticleCommentNotFoundException : DomainException
+    internal class ArticleCommentNotFoundException : DomainException
     {
-        public ArticleCommentNotFoundException(Guid articleCommentId, string userId) 
-            : base(message: $"ArticleComment #{articleCommentId} from user #{userId} was NOT found!")
+        internal ArticleCommentNotFoundException(Guid articleCommentId) 
+            : base(message: $"ArticleComment #{articleCommentId} was NOT found!")
         {
         }
     }

@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class InvalidArticleLikeDateTimeException : DomainException
+    internal class InvalidArticleLikeDateTimeException : DomainException
     {
-        public InvalidArticleLikeDateTimeException() : base(message: "Invalid ArticleLike datetime!")
+        internal InvalidArticleLikeDateTimeException() : base(message: "Invalid ArticleLike datetime!")
         {
         }
     }

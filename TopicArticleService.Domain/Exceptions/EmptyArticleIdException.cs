@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class EmptyArticleIdException : DomainException
+    internal class EmptyArticleIdException : DomainException
     {
-        public EmptyArticleIdException() : base(message: "Article id cannot be empty!")
+        internal EmptyArticleIdException() : base(message: "Article id cannot be empty!")
         {
         }
     }

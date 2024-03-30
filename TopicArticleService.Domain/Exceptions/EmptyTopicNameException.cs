@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    public class EmptyTopicNameException : DomainException
+    internal class EmptyTopicNameException : DomainException
     {
-        public EmptyTopicNameException() : base(message: "Topic name cannot be empty!")
+        internal EmptyTopicNameException() : base(message: "Topic name cannot be empty!")
         {
         }
     }
