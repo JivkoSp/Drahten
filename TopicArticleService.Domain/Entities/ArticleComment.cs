@@ -1,52 +1,41 @@
-﻿using TopicArticleService.Domain.Events;
+﻿using System.Collections.ObjectModel;
+using TopicArticleService.Domain.Events;
 using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Domain.Entities
 {
-    public class ArticleComment : AggregateRoot<ArticleCommentId>
+    public class ArticleComment : AggregateRoot<ArticleCommentID>
     {
         private ArticleCommentValue _commentValue;
         private ArticleCommentDateTime _dateTime;
-        private UserId _userId;
-        private List<ArticleComment> _articleComments = new List<ArticleComment>();
+        private UserID _userId;
+        private ArticleCommentID _parentArticleCommentId;
         private HashSet<ArticleCommentLike> _articleCommentLikes = new HashSet<ArticleCommentLike>();
         private HashSet<ArticleCommentDislike> _articleCommentDislikes = new HashSet<ArticleCommentDislike>();
 
-        public ArticleComment(ArticleCommentId id, ArticleCommentValue commentValue, ArticleCommentDateTime dateTime, UserId userId)
+        public IReadOnlyCollection<ArticleCommentLike> ArticleCommentLikes
+        {
+            get { return new ReadOnlyCollection<ArticleCommentLike>(_articleCommentLikes.ToList()); }
+        }
+
+        public IReadOnlyCollection<ArticleCommentDislike> ArticleCommentDislikes
+        {
+            get { return new ReadOnlyCollection<ArticleCommentDislike>(_articleCommentDislikes.ToList()); }
+        }
+
+        private ArticleComment()
+        {
+        }
+        
+        internal ArticleComment(ArticleCommentID id, ArticleCommentValue commentValue, ArticleCommentDateTime dateTime, UserID userId,
+                ArticleCommentID parentId)
         {
             Id = id;
             _commentValue = commentValue;
             _dateTime = dateTime;
             _userId = userId;
-        }
-
-        public void AddChildComment(ArticleComment comment)
-        {
-            var alreadyExists = _articleComments.Any(x => x._userId == comment._userId);
-
-            if (alreadyExists)
-            {
-                throw new ArticleCommentChildAlreadyExistsException(Id, comment._userId);
-            }
-
-            _articleComments.Add(comment);
-
-            AddEvent(new ArticleCommentChildAdded(this, comment));
-        }
-
-        public void RemoveChildComment(ArticleCommentId id)
-        {
-            var childComment = _articleComments.FirstOrDefault(x => x.Id == id);
-
-            if(childComment == null)
-            {
-                throw new ArticleCommentNotFoundException(id, _userId);
-            }
-
-            _articleComments.Remove(childComment);
-
-            AddEvent(new ArticleCommentChildRemoved(this, childComment));
+            _parentArticleCommentId = parentId;
         }
 
         public void AddLike(ArticleCommentLike articleCommentLike)
@@ -55,11 +44,11 @@ namespace TopicArticleService.Domain.Entities
 
             if(alreadyExists)
             {
-                throw new ArticleCommentLikeAlreadyExistsException(Id, articleCommentLike.UserId);
+                throw new ArticleCommentLikeAlreadyExistsException(Id, articleCommentLike.UserID);
             }
 
             //Search for user dislike from _articleCommentDislikes for this comment.
-            var userDislike = _articleCommentDislikes.FirstOrDefault(x => x.UserId == articleCommentLike.UserId);
+            var userDislike = _articleCommentDislikes.FirstOrDefault(x => x.UserID == articleCommentLike.UserID);
 
             //Check if the user for this like has dislike in _articleCommentDislikes.
             if(userDislike != null)
@@ -81,11 +70,11 @@ namespace TopicArticleService.Domain.Entities
 
             if( alreadyExists)
             {
-                throw new ArticleCommentDisLikeAlreadyExistsException(Id, articleCommentDislike.UserId);
+                throw new ArticleCommentDisLikeAlreadyExistsException(Id, articleCommentDislike.UserID);
             }
 
             //Search for user like from _articleCommentLikes for this comment.
-            var userLike = _articleCommentLikes.FirstOrDefault(x => x.UserId == articleCommentDislike.UserId);
+            var userLike = _articleCommentLikes.FirstOrDefault(x => x.UserID == articleCommentDislike.UserID);
 
             //Check if the user for this dislike has like in _articleCommentLikes.
             if(userLike != null)
@@ -101,10 +90,13 @@ namespace TopicArticleService.Domain.Entities
             AddEvent(new ArticleCommentDislikeAdded(this, articleCommentDislike));  
         }
 
-        public bool HasUserId(ArticleComment articleComment)
+        internal bool HasUserId(ArticleComment articleComment)
             => _userId == articleComment._userId;
 
-        public UserId GetUserId()
+        internal UserID GetUserId()
             => _userId;
+
+        internal ArticleCommentID GetParentCommentId()
+            => _parentArticleCommentId;
     }
 }

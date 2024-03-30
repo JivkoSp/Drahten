@@ -1,4 +1,5 @@
-﻿using TopicArticleService.Domain.Exceptions;
+﻿using TopicArticleService.Domain.Events;
+using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Domain.Entities
@@ -6,12 +7,18 @@ namespace TopicArticleService.Domain.Entities
     public class Topic : AggregateRoot<TopicId>
     {
         private TopicName _topicName;
+        private TopicId _parentTopicId;
         private List<Topic> _topicChildren = new List<Topic>();
 
-        public Topic(TopicId id, TopicName topicName)
+        private Topic()
+        {   
+        }
+
+        internal Topic(TopicId id, TopicName topicName, TopicId parentTopicId = null)
         {
             Id = id;
             _topicName = topicName;
+            _parentTopicId = parentTopicId;
         }
 
         public void AddTopicChild(Topic topic)
@@ -24,6 +31,8 @@ namespace TopicArticleService.Domain.Entities
             }
 
             _topicChildren.Add(topic);
+
+            AddEvent(new TopicChildAdded(this, topic));
         }
     }
 }

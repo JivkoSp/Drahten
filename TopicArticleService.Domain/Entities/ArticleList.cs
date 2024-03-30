@@ -16,7 +16,7 @@ namespace TopicArticleService.Domain.Entities
 
         }
 
-        public void RemoveArticle(ArticleId articleId)
+        public void RemoveArticle(ArticleID articleId)
         {
 
         }
