@@ -1,0 +1,6 @@
+@TopicArticleService.Presentation_HostAddress = http://localhost:5095
+
+GET {{TopicArticleService.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
