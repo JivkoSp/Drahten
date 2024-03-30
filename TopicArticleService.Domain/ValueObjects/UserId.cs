@@ -2,13 +2,13 @@
 
 namespace TopicArticleService.Domain.ValueObjects
 {
-    public record UserId
+    public record UserID
     {
-        public string Value { get; }
+        public Guid Value { get; }
 
-        public UserId(string value)
+        public UserID(Guid value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (value == Guid.Empty)
             {
                 throw new EmptyUserIdException();
             }
@@ -16,12 +16,12 @@ namespace TopicArticleService.Domain.ValueObjects
             Value = value;
         }
 
-        //Conversion from ValueObject to String.
-        public static implicit operator string(UserId userId)
+        //Conversion from ValueObject to Guid.
+        public static implicit operator Guid(UserID userId)
             => userId.Value;
 
-        //Conversion from String to ValueObject.
-        public static implicit operator UserId(string userId)
-            => new UserId(userId);
+        //Conversion from Guid to ValueObject.
+        public static implicit operator UserID(Guid userId)
+            => new UserID(userId);
     }
 }

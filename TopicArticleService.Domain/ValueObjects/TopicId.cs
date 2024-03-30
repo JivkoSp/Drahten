@@ -6,6 +6,10 @@ namespace TopicArticleService.Domain.ValueObjects
     {
         public Guid Value { get; }
 
+        private TopicId()
+        {
+        }
+
         public TopicId(Guid value)
         {
             if (value == Guid.Empty)

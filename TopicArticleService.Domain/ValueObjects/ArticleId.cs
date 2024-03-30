@@ -2,11 +2,11 @@
 
 namespace TopicArticleService.Domain.ValueObjects
 {
-    public record ArticleId
+    public record ArticleID
     {
         public Guid Value { get; }
 
-        public ArticleId(Guid value)
+        public ArticleID(Guid value)
         {
             if(value == Guid.Empty)
             {
@@ -17,11 +17,11 @@ namespace TopicArticleService.Domain.ValueObjects
         }
 
         //Conversion from ValueObject to Guid.
-        public static implicit operator Guid(ArticleId id)
+        public static implicit operator Guid(ArticleID id)
             => id.Value;
 
         //Conversion from Guid to ValueObject.
-        public static implicit operator ArticleId(Guid id)
-            => new ArticleId(id);
+        public static implicit operator ArticleID(Guid id)
+            => new ArticleID(id);
     }
 }

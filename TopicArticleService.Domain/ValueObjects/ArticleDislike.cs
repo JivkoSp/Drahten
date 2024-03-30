@@ -4,14 +4,19 @@ namespace TopicArticleService.Domain.ValueObjects
 {
     public record ArticleDislike
     {
+        public ArticleID ArticleID { get; }
+        public UserID UserID { get; }
         public DateTime DateTime { get; }
-        public UserId UserId { get; }
 
-        public ArticleDislike(string dateTimeString, UserId userId)
+        private ArticleDislike()
         {
-            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime) || dateTime == default || dateTime > DateTime.Now)
+        }
+
+        public ArticleDislike(ArticleID articleId, UserID userId, string dateTimeString)
+        {
+            if (articleId == null)
             {
-                throw new InvalidArticleDislikeDateTimeException();
+                throw new NullArticleDislikeArticleIdException();
             }
 
             if (userId == null)
@@ -19,19 +24,25 @@ namespace TopicArticleService.Domain.ValueObjects
                 throw new NullArticleDislikeUserIdException();
             }
 
+            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime) || dateTime == default || dateTime > DateTime.Now)
+            {
+                throw new InvalidArticleDislikeDateTimeException();
+            }
+
+            ArticleID = articleId;
+            UserID = userId;
             DateTime = dateTime;
-            UserId = userId;
         }
 
         //Conversion from ValueObject to String.
         public override string ToString()
-            => $"{DateTime}, {UserId}";
+            => $"{ArticleID}, {UserID}, {DateTime}";
 
         //Conversion from String to ValueObject.
         public static ArticleDislike Create(string value)
         {
             var splitArticleDislike = value.Split(',');
-            return new ArticleDislike(splitArticleDislike[0], splitArticleDislike[1]);
+            return new ArticleDislike(Guid.Parse(splitArticleDislike[0]), Guid.Parse(splitArticleDislike[1]), splitArticleDislike[2]);
         }
     }
 }
