@@ -3,7 +3,8 @@ namespace TopicArticleService.Application.Dtos
 {
     public class ArticleCommentLikeDto
     {
+        public Guid ArticleCommentId { get; set; }
+        public string UserId { get; set; }
         public DateTime DateTime { get; set; }
-        public Guid UserId { get; set; }
     }
 }
