@@ -59,10 +59,9 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Property config - End
 
             //Relationships
+            builder.HasMany(p => p.ArticleCommentLikes);
 
-            //builder.HasMany(typeof(ArticleCommentLike), "_articleCommentLikes");
-
-            //builder.HasMany(typeof(ArticleCommentDislike), "_articleCommentDislikes");
+            builder.HasMany(p => p.ArticleCommentDislikes);
         }
     }
 }
