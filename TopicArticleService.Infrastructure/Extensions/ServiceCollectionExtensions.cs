@@ -43,6 +43,9 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleProfile>();
                 configAction.AddProfile<UserProfile>();
                 configAction.AddProfile<UserArticleProfile>();
+                configAction.AddProfile<ArticleCommentProfile>();
+                configAction.AddProfile<ArticleCommentLikeProfile>();
+                configAction.AddProfile<ArticleCommentDislikeProfile>();
             });
 
             return services;
