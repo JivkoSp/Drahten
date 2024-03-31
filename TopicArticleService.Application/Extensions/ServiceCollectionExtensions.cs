@@ -50,6 +50,8 @@ namespace TopicArticleService.Application.Extensions
             services.AddSingleton<IArticleCommentFactory, ArticleCommentFactory>();
             services.AddSingleton<ITopicFactory, TopicFactory>();
             services.AddSingleton<IUserArticleFactory, UserArticleFactory>();
+            services.AddSingleton<IArticleCommentLikeFactory, ArticleCommentLikeFactory>();
+            services.AddSingleton<IArticleCommentDislikeFactory, ArticleCommentDislikeFactory>();
 
             return services;
         }
