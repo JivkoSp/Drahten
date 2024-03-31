@@ -21,6 +21,9 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Repositories
                 .Include(x => x.ArticleLikes)
                 .Include(x => x.ArticleDislikes)
                 .Include(x => x.ArticleComments)
+                .ThenInclude(x => x.ArticleCommentLikes)
+                .Include(x => x.ArticleComments)
+                .ThenInclude(x => x.ArticleCommentDislikes)
                 .SingleOrDefaultAsync(x => x.Id == articleId);
 
         public async Task AddArticleAsync(Article article)
