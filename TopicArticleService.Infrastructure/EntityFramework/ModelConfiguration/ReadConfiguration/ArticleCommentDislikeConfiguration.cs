@@ -14,6 +14,11 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Composite primary key
             builder.HasKey(key => new { key.ArticleCommentId, key.UserId });
 
+            //Property config
+            builder.Property(p => p.DateTime)
+             .HasColumnType("timestamp without time zone")
+             .IsRequired();
+
             //Relationships
             builder.HasOne(p => p.User)
                 .WithMany(p => p.ArticleCommentDislikes)
