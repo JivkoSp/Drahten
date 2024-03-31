@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TopicArticleService.Application.Services.ReadServices;
-using TopicArticleService.Domain.Entities;
 using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.Services
@@ -16,10 +15,5 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Services
 
         public Task<bool> ExistsByIdAsync(Guid id)
             => _readDbContext.Articles.AnyAsync(x => x.ArticleId == id.ToString());
-
-        public Task<ArticleComment> FindArticleCommentByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
