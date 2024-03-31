@@ -33,12 +33,25 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{ArticleId:guid}/comments/")]
+        public async Task<ActionResult> GetArticleComments([FromRoute] GetArticleCommentsQuery getArticleCommentsQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getArticleCommentsQuery);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> RegisterArticle([FromBody] CreateArticleCommand createArticleCommand)
         {
             await _commandDispatcher.DispatchAsync(createArticleCommand);
 
-            return CreatedAtAction(nameof(GetArticle), new { Id = createArticleCommand.ArticleId }, null);
+            return Created(HttpContext.Request.Path, null);
         }
 
         [HttpPost("{ArticleId:guid}/likes/")]
@@ -61,6 +74,22 @@ namespace TopicArticleService.Presentation.Controllers
         public async Task<ActionResult> RegisterArticleComment([FromBody] AddArticleCommentCommand addArticleCommentCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
+
+        [HttpPost("{ArticleId:guid}/comments/{ArticleCommentId:guid}/likes")]
+        public async Task<ActionResult> RegisterArticleCommentLike([FromBody] AddArticleCommentLikeCommand addArticleCommentLikeCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addArticleCommentLikeCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
+
+        [HttpPost("{ArticleId:guid}/comments/{ArticleCommentId:guid}/dislikes")]
+        public async Task<ActionResult> RegisterArticleCommentDislike([FromBody] AddArticleCommentDislikeCommand addArticleCommentDislikeCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addArticleCommentDislikeCommand);
 
             return Created(HttpContext.Request.Path, null);
         }
