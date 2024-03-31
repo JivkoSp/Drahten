@@ -32,7 +32,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(result);
         }
 
-        [HttpPost("articles/")]
+        [HttpPost("{UserId:guid}/articles/")]
         public async Task<ActionResult> RegisterUserArticle([FromBody] RegisterUserArticleCommand registerUserArticleCommand)
         {
             await _commandDispatcher.DispatchAsync(registerUserArticleCommand);
