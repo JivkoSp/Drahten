@@ -1,9 +1,5 @@
 ﻿
 namespace TopicArticleService.Application.Commands
 {
-    public record AddArticleCommentLikeCommand(Guid ArticleId, Guid ArticleCommentId) : ICommand;
+    public record AddArticleCommentLikeCommand(Guid ArticleId, Guid ArticleCommentId, string DateTime, Guid UserId) : ICommand;
 }
-
-
-//IArticleService.FindArticleCommentByIdAsync(ArticleCommentId) -> ArticleComment
-//ArticleComment.AddLike() / AddDisLike()
