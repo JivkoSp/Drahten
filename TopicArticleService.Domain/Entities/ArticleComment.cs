@@ -40,7 +40,7 @@ namespace TopicArticleService.Domain.Entities
 
         public void AddLike(ArticleCommentLike articleCommentLike)
         {
-            var alreadyExists = _articleCommentLikes.Contains(articleCommentLike);
+            var alreadyExists = _articleCommentLikes.Any(x => x.UserID == articleCommentLike.UserID);
 
             if(alreadyExists)
             {
@@ -48,7 +48,7 @@ namespace TopicArticleService.Domain.Entities
             }
 
             //Search for user dislike from _articleCommentDislikes for this comment.
-            var userDislike = _articleCommentDislikes.FirstOrDefault(x => x.UserID == articleCommentLike.UserID);
+            var userDislike = _articleCommentDislikes.SingleOrDefault(x => x.UserID == articleCommentLike.UserID);
 
             //Check if the user for this like has dislike in _articleCommentDislikes.
             if(userDislike != null)
@@ -66,15 +66,15 @@ namespace TopicArticleService.Domain.Entities
 
         public void AddDislike(ArticleCommentDislike articleCommentDislike)
         {
-            var alreadyExists = _articleCommentDislikes.Contains(articleCommentDislike);
+            var alreadyExists = _articleCommentDislikes.Any(x => x.UserID == articleCommentDislike.UserID);
 
-            if( alreadyExists)
+            if ( alreadyExists)
             {
                 throw new ArticleCommentDisLikeAlreadyExistsException(Id, articleCommentDislike.UserID);
             }
 
             //Search for user like from _articleCommentLikes for this comment.
-            var userLike = _articleCommentLikes.FirstOrDefault(x => x.UserID == articleCommentDislike.UserID);
+            var userLike = _articleCommentLikes.SingleOrDefault(x => x.UserID == articleCommentDislike.UserID);
 
             //Check if the user for this dislike has like in _articleCommentLikes.
             if(userLike != null)
