@@ -11,6 +11,8 @@ using TopicArticleService.Infrastructure.EntityFramework.Initialization;
 using TopicArticleService.Infrastructure.EntityFramework.Options;
 using TopicArticleService.Infrastructure.EntityFramework.Repositories;
 using TopicArticleService.Infrastructure.EntityFramework.Services;
+using TopicArticleService.Infrastructure.Exceptions;
+using TopicArticleService.Infrastructure.Exceptions.Interfaces;
 
 namespace TopicArticleService.Infrastructure.Extensions
 {
@@ -49,6 +51,8 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentLikeProfile>();
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
             });
+
+            services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
             return services;
         }
