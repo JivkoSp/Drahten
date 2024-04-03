@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Infrastructure.Exceptions
 {
-    internal abstract class InfrastructureException : Exception
+    public abstract class InfrastructureException : Exception
     {
         public virtual string ErrorCode { get; set; }
 
