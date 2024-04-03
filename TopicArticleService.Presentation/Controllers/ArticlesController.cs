@@ -78,7 +78,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{ArticleId:guid}/comments/{ArticleCommentId:guid}/likes")]
+        [HttpPost("comments/{ArticleCommentId:guid}/likes")]
         public async Task<ActionResult> RegisterArticleCommentLike([FromBody] AddArticleCommentLikeCommand addArticleCommentLikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentLikeCommand);
@@ -86,7 +86,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{ArticleId:guid}/comments/{ArticleCommentId:guid}/dislikes")]
+        [HttpPost("comments/{ArticleCommentId:guid}/dislikes")]
         public async Task<ActionResult> RegisterArticleCommentDislike([FromBody] AddArticleCommentDislikeCommand addArticleCommentDislikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentDislikeCommand);
