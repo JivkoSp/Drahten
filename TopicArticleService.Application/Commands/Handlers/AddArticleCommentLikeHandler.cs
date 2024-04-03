@@ -1,5 +1,4 @@
 ﻿using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
@@ -7,25 +6,19 @@ namespace TopicArticleService.Application.Commands.Handlers
 {
     public class AddArticleCommentLikeHandler : ICommandHandler<AddArticleCommentLikeCommand>
     {
-        private readonly IArticleRepository _articleRepository;
+        private readonly IArticleCommentRepository _articleCommentRepository;
         private readonly IArticleCommentLikeFactory _articleCommentLikeFactory;
 
-        public AddArticleCommentLikeHandler(IArticleRepository articleRepository, IArticleCommentLikeFactory articleCommentLikeFactory)
+        public AddArticleCommentLikeHandler(IArticleCommentRepository articleCommentRepository,
+                IArticleCommentLikeFactory articleCommentLikeFactory)
         {
-            _articleRepository = articleRepository;
+            _articleCommentRepository = articleCommentRepository;
             _articleCommentLikeFactory = articleCommentLikeFactory;
         }
 
         public async Task HandleAsync(AddArticleCommentLikeCommand command)
         {
-            var article = await _articleRepository.GetArticleByIdAsync(command.ArticleId);
-
-            if (article == null)
-            {
-                throw new ArticleNotFoundException(command.ArticleId);
-            }
-
-            var articleComment = article.ArticleComments.SingleOrDefault(x => x.Id.Value == command.ArticleCommentId);
+            var articleComment = await _articleCommentRepository.GetArticleCommentByIdAsync(command.ArticleCommentId);
 
             if(articleComment == null)
             {
@@ -36,7 +29,7 @@ namespace TopicArticleService.Application.Commands.Handlers
 
             articleComment.AddLike(articleCommentLike);
 
-            await _articleRepository.UpdateArticleAsync(article);
+            await _articleCommentRepository.UpdateArticleCommentAsync(articleComment);
         }
     }
 }

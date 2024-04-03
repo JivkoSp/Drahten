@@ -6,25 +6,19 @@ namespace TopicArticleService.Application.Commands.Handlers
 {
     public class AddArticleCommentDislikeHandler : ICommandHandler<AddArticleCommentDislikeCommand>
     {
-        private readonly IArticleRepository _articleRepository;
+        private readonly IArticleCommentRepository _articleCommentRepository;
         private readonly IArticleCommentDislikeFactory _articleCommentDislikeFactory;
 
-        public AddArticleCommentDislikeHandler(IArticleRepository articleRepository, IArticleCommentDislikeFactory articleCommentDislikeFactory)
+        public AddArticleCommentDislikeHandler(IArticleCommentRepository articleCommentRepository, 
+                IArticleCommentDislikeFactory articleCommentDislikeFactory)
         {
-            _articleRepository = articleRepository;
+            _articleCommentRepository = articleCommentRepository;
             _articleCommentDislikeFactory = articleCommentDislikeFactory;
         }
 
         public async Task HandleAsync(AddArticleCommentDislikeCommand command)
         {
-            var article = await _articleRepository.GetArticleByIdAsync(command.ArticleId);
-
-            if (article == null)
-            {
-                throw new ArticleNotFoundException(command.ArticleId);
-            }
-
-            var articleComment = article.ArticleComments.SingleOrDefault(x => x.Id.Value == command.ArticleCommentId);
+            var articleComment = await _articleCommentRepository.GetArticleCommentByIdAsync(command.ArticleCommentId);
 
             if (articleComment == null)
             {
@@ -35,7 +29,7 @@ namespace TopicArticleService.Application.Commands.Handlers
 
             articleComment.AddDislike(articleCommentDislike);
 
-            await _articleRepository.UpdateArticleAsync(article);
+            await _articleCommentRepository.UpdateArticleCommentAsync(articleComment);
         }
     }
 }
