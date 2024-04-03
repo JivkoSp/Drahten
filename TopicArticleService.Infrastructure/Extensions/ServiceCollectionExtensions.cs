@@ -28,6 +28,8 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddScoped<IArticleRepository, PostgresArticleRepository>();
 
+            services.AddScoped<IArticleCommentRepository, PostgresArticleCommentRepository>();
+
             services.AddScoped<ITopicRepository, PostgresTopicRepository>();
 
             services.AddScoped<IArticleReadService, PostgresArticleReadService>();
