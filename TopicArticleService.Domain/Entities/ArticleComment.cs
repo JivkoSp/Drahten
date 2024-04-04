@@ -90,9 +90,9 @@ namespace TopicArticleService.Domain.Entities
             AddEvent(new ArticleCommentDislikeAdded(this, articleCommentDislike));  
         }
 
-        internal bool HasUserId(ArticleComment articleComment)
+        internal bool HasSameUserId(ArticleComment articleComment)
             => _userId == articleComment._userId;
-
+        
         internal UserID GetUserId()
             => _userId;
 
