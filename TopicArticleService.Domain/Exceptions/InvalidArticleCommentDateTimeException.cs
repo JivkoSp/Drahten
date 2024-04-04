@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class InvalidArticleCommentDateTimeException : DomainException
+    public sealed class InvalidArticleCommentDateTimeException : DomainException
     {
         internal InvalidArticleCommentDateTimeException() : base(message: "Invalid ArticleComment datetime!")
         {

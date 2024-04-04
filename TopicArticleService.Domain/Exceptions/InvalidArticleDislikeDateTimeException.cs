@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class InvalidArticleDislikeDateTimeException : DomainException
+    public sealed class InvalidArticleDislikeDateTimeException : DomainException
     {
         internal InvalidArticleDislikeDateTimeException() : base(message: "Invalid ArticleDislike datetime!")
         {

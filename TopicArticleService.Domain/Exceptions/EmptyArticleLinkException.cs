@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class EmptyArticleLinkException : DomainException
+    public sealed class EmptyArticleLinkException : DomainException
     {
         internal EmptyArticleLinkException() : base(message: "Article link cannot be empty!")
         {

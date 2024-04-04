@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class NullArticleLikeArticleIdException : DomainException
+    public sealed class NullArticleLikeArticleIdException : DomainException
     {
-        public NullArticleLikeArticleIdException() : base(message: "ArticleLike articleId cannot be null!")
+        internal NullArticleLikeArticleIdException() : base(message: "ArticleLike articleId cannot be null!")
         {
         }
     }

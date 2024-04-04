@@ -1,9 +1,9 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class UserArticleAlreadyExistsException : DomainException
+    public sealed class UserArticleAlreadyExistsException : DomainException
     {
-        public UserArticleAlreadyExistsException(Guid userId, Guid articleId) 
+        internal UserArticleAlreadyExistsException(Guid userId, Guid articleId) 
             : base(message: $"User #{userId} already viewed article #{articleId}!")
         {
         }

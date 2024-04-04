@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Domain.Exceptions
 {
-    internal class EmptyArticleCommentValueException : DomainException
+    public sealed class EmptyArticleCommentValueException : DomainException
     {
         internal EmptyArticleCommentValueException() : base(message: "Article comment value cannot be empty!")
         {
