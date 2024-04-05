@@ -7,7 +7,7 @@ using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.ValueObjects;
 using Xunit;
 
-namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
+namespace TopicArticleService.Tests.Unit.Domain.ArticleTests
 {
     public sealed class AddComment
     {
@@ -28,7 +28,7 @@ namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
 
         private ArticleComment GetArticleCommentWithParentComment(ArticleCommentID parentCommentId)
         {
-            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now, 
+            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now,
                     Guid.NewGuid(), parentCommentId);
 
             articleComment.ClearEvents();

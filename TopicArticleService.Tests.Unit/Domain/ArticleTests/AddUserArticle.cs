@@ -6,7 +6,7 @@ using TopicArticleService.Domain.ValueObjects;
 using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.Events;
 
-namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
+namespace TopicArticleService.Tests.Unit.Domain.ArticleTests
 {
     public sealed class AddUserArticle
     {
@@ -17,7 +17,7 @@ namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
 
         private Article GetArticle()
         {
-            var article = _articleFactory.Create(Guid.NewGuid(), "some title", "main title", "some content", "no date", 
+            var article = _articleFactory.Create(Guid.NewGuid(), "some title", "main title", "some content", "no date",
                     "no author", "no link", Guid.NewGuid());
 
             article.ClearEvents();

@@ -6,7 +6,7 @@ using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.ValueObjects;
 using Xunit;
 
-namespace TopicArticleService.Domain.Tests.Unit.ArticleCommentTests
+namespace TopicArticleService.Tests.Unit.Domain.ArticleCommentTests
 {
     public sealed class AddDislike
     {
