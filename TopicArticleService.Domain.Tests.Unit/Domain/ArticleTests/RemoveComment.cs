@@ -6,7 +6,7 @@ using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.ValueObjects;
 using Xunit;
 
-namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
+namespace TopicArticleService.Tests.Unit.Domain.ArticleTests
 {
     public sealed class RemoveComment
     {
@@ -97,10 +97,10 @@ namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
 
             article.ArticleComments.Count().ShouldBe(0);
 
-           var articleCommentAddedEvent = article.DomainEvents.FirstOrDefault(x => 
-                x.GetType() == typeof(ArticleCommentAdded)) as ArticleCommentAdded;
+            var articleCommentAddedEvent = article.DomainEvents.FirstOrDefault(x =>
+                 x.GetType() == typeof(ArticleCommentAdded)) as ArticleCommentAdded;
 
-            var articleCommentRemovedEvent = article.DomainEvents.FirstOrDefault(x => 
+            var articleCommentRemovedEvent = article.DomainEvents.FirstOrDefault(x =>
                 x.GetType() == typeof(ArticleCommentRemoved)) as ArticleCommentRemoved;
 
 
@@ -201,7 +201,7 @@ namespace TopicArticleService.Domain.Tests.Unit.ArticleTests
 
             articleCommentChildAddedEventList.Count().ShouldBe(2);
 
-            foreach(var articleCommentChildAddedEvent in articleCommentChildAddedEventList)
+            foreach (var articleCommentChildAddedEvent in articleCommentChildAddedEventList)
             {
                 articleCommentChildAddedEvent.ArticleParentComment.ShouldBeSameAs(articleComment);
 
