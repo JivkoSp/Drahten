@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using TopicArticleService.Application.Commands.Dispatcher;
 using TopicArticleService.Application.Commands.Handlers;
 using TopicArticleService.Application.Queries.Dispatcher;
 using TopicArticleService.Application.Queries.Handlers;
 using TopicArticleService.Domain.Factories;
 
+[assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.Unit")]
 namespace TopicArticleService.Application.Extensions
 {
     public static class ServiceCollectionExtensions
