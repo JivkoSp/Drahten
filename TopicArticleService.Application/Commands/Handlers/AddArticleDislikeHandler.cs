@@ -4,12 +4,12 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public class AddArticleDislikeHandler : ICommandHandler<AddArticleDislikeCommand>
+    internal sealed class AddArticleDislikeHandler : ICommandHandler<AddArticleDislikeCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleDislikeFactory _articleDislikeFactory;
 
-        public AddArticleDislikeHandler(IArticleRepository articleRepository, IArticleDislikeFactory articleDislikeFactory)
+        internal AddArticleDislikeHandler(IArticleRepository articleRepository, IArticleDislikeFactory articleDislikeFactory)
         {
             _articleRepository = articleRepository;
             _articleDislikeFactory = articleDislikeFactory;

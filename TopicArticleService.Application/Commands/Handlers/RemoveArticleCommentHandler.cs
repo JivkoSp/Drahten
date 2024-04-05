@@ -3,11 +3,11 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
+    internal sealed class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
     {
         private IArticleRepository _articleRepository;
 
-        public RemoveArticleCommentHandler(IArticleRepository articleRepository)
+        internal RemoveArticleCommentHandler(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
         }

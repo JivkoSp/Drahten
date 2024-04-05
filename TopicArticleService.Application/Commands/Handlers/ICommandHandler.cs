@@ -1,7 +1,7 @@
 ﻿
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public interface ICommandHandler<in TCommand> where TCommand : class, ICommand
+    internal interface ICommandHandler<in TCommand> where TCommand : class, ICommand
     {
         Task HandleAsync(TCommand command);
     }

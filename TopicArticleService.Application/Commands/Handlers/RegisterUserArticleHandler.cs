@@ -3,12 +3,12 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public class RegisterUserArticleHandler : ICommandHandler<RegisterUserArticleCommand>
+    internal sealed class RegisterUserArticleHandler : ICommandHandler<RegisterUserArticleCommand>
     {
         private IArticleRepository _articleRepository;
         private IUserArticleFactory _userArticleFactory;
 
-        public RegisterUserArticleHandler(IArticleRepository articleRepository, IUserArticleFactory userArticleFactory)
+        internal RegisterUserArticleHandler(IArticleRepository articleRepository, IUserArticleFactory userArticleFactory)
         {
             _articleRepository = articleRepository;
             _userArticleFactory = userArticleFactory;
