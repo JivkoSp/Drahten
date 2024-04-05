@@ -12,7 +12,7 @@ using Xunit;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
-    public class CreateArticleHandler
+    public class CreateArticleHandlerTests
     {
         #region GLOBAL ARRANGE
 
@@ -29,12 +29,12 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             return command;
         }
 
-        public CreateArticleHandler()
+        public CreateArticleHandlerTests()
         {
             _articleRepository = Substitute.For<IArticleRepository>();
             _articleFactory = Substitute.For<IArticleFactory>();
             _articleService = Substitute.For<IArticleReadService>();
-            _handler = new TopicArticleService.Application.Commands.Handlers.CreateArticleHandler(_articleRepository, _articleFactory, _articleService);
+            _handler = new CreateArticleHandler(_articleRepository, _articleFactory, _articleService);
         }
 
         #endregion
