@@ -1,0 +1,1 @@
+This directory contains unit tests for the COMMAND handlers in the application layer.

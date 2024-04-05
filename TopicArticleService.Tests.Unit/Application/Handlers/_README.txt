@@ -1,0 +1,1 @@
+Each class in this directory contains unit tests related to a HandleAsync(...) public method of command handler with the same name.

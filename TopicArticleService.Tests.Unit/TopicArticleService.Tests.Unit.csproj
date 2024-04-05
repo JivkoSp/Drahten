@@ -24,11 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TopicArticleService.Application\TopicArticleService.Application.csproj" />
     <ProjectReference Include="..\TopicArticleService.Domain\TopicArticleService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\" />
   </ItemGroup>
 
 </Project>
