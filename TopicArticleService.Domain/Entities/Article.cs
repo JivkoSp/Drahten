@@ -172,6 +172,8 @@ namespace TopicArticleService.Domain.Entities
 
                 //Delete the like from _likes.
                 _articleLikes.Remove(userLike);
+
+                AddEvent(new ArticleLikeRemoved(this, userLike));
             }
 
             _articleDislikes.Add(dislike);
