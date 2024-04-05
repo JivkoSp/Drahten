@@ -57,6 +57,8 @@ namespace TopicArticleService.Domain.Entities
 
                 //Delete the dislike from _articleCommentDislikes.
                 _articleCommentDislikes.Remove(userDislike);
+
+                AddEvent(new ArticleCommentDislikeRemoved(this, userDislike));
             }
 
             _articleCommentLikes.Add(articleCommentLike);
@@ -83,6 +85,8 @@ namespace TopicArticleService.Domain.Entities
 
                 //Delete the like from _articleCommentLikes.
                 _articleCommentLikes.Remove(userLike);
+
+                AddEvent(new ArticleCommentLikeRemoved(this, userLike));
             }
 
             _articleCommentDislikes.Add(articleCommentDislike);
