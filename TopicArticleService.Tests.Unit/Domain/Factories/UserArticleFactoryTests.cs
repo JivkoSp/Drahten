@@ -52,13 +52,13 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
             _userArticleMockFactory.Create(_userId, _articleId).Returns(userArticle);
 
-            var returnedUserArticle = _userArticleMockFactory.Create(_userId, _articleId);
+            var userArticleFromMockFactory = _userArticleMockFactory.Create(_userId, _articleId);
 
             //ASSERT
-            returnedUserArticle.ShouldNotBeNull();
+            userArticleFromMockFactory.ShouldNotBeNull();
 
             //Comparing the values of the userArticle object that is created by _userArticleConcreteFactory with the values of
-            //the returnedUserArticle object that is created by _userArticleMockFactory. 
+            //the userArticleFromMockFactory object that is created by _userArticleMockFactory. 
             var userArticleType = userArticle.GetType();
             var fields = userArticleType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -66,9 +66,10 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
             {
                 var value = field.GetValue(userArticle);
 
-                var returnedValue = field.GetValue(returnedUserArticle);
+                var returnedValue = field.GetValue(userArticleFromMockFactory);
 
-                //Assert that the value of the property in the original article is equal to the value of the property in the returned article.
+                //Assert that the value of the property in the original userArticle is equal to the value of the property
+                //in the userArticleFromMockFactory.
                 value.ShouldBe(returnedValue, $"Field {field.Name} should be equal!");
             }
         }
@@ -82,9 +83,10 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
             _userArticleMockFactory.Create(_userId, _articleId).Returns(userArticle);
 
-            var returnedUserArticle = _userArticleMockFactory.Create(_userId, _articleId);
+            _userArticleMockFactory.Create(_userId, _articleId);
 
             //ASSERT
+
             //Verify interaction with the mock factory and ensure that it is called with the the specified arguments.
             _userArticleMockFactory.Received(1).Create(
                 Arg.Is<UserID>(id => id == _userId),
