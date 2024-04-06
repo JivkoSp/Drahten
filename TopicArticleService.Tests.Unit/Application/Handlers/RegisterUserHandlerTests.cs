@@ -54,5 +54,26 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
             exception.ShouldBeOfType<UserAlreadyExistsException>();
         }
+
+        //Should create new User if there is NOT already user with the same UserId as the UserId
+        //from the RegisterUserCommand (e.g If the UserId from the RegisterUserCommand is valid).
+        //--------------------------------------------------------------------------
+        //The user write service (IUserWriteService) must be called one time.
+        [Fact]
+        public async Task GivenValidUserId_Calls_UserWriteService_On_Success()
+        {
+            //ARRANGE
+            var command = GetRegisterUserCommand();
+
+            _userReadService.ExistsByIdAsync(command.UserId).Returns(false);
+
+            //ACT
+            var exception = await Record.ExceptionAsync(async () => await Act(command));
+
+            //ASSERT
+            exception.ShouldBeNull();
+
+            await _userWriteService.Received(1).AddUserAsync(command.UserId);
+        }
     }
 }
