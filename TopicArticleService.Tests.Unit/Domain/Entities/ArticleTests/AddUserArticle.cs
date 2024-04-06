@@ -6,7 +6,7 @@ using TopicArticleService.Domain.ValueObjects;
 using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.Events;
 
-namespace TopicArticleService.Tests.Unit.Domain.ArticleTests
+namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
 {
     public sealed class AddUserArticle
     {

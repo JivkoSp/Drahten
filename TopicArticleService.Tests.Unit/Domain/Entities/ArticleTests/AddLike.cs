@@ -6,7 +6,7 @@ using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.ValueObjects;
 using Xunit;
 
-namespace TopicArticleService.Tests.Unit.Domain.ArticleTests
+namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
 {
     public sealed class AddLike
     {
