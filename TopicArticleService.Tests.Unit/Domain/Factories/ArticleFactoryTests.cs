@@ -92,7 +92,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
             //ASSERT
             returnedArticle.ShouldNotBeNull();
 
-            //Comparing values of the article object that is created by _articleConcreteFactory with the values of
+            //Comparing the values of the article object that is created by _articleConcreteFactory with the values of
             //the returnedArticle object that is created by _articleMockFactory. 
             var articleType = article.GetType();
             var fields = articleType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
