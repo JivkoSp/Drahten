@@ -80,7 +80,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         //Should create two article instances with equal values when equal values are given to the concrete factory (_articleConcreteFactory)
         //and to the mock factory (_articleMockFactory).
         [Fact]
-        public void Should_Create_Equal_Article_Instances_From_Concrete_Factory_And_Mock_Factory()
+        public void Should_Create_Equal_Article_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
             var article = _articleConcreteFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
