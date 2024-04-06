@@ -87,13 +87,13 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
             _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId).Returns(article);
 
-            var returnedArticle = _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
+            var articleFromMockFactory = _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
 
             //ASSERT
-            returnedArticle.ShouldNotBeNull();
+            articleFromMockFactory.ShouldNotBeNull();
 
             //Comparing the values of the article object that is created by _articleConcreteFactory with the values of
-            //the returnedArticle object that is created by _articleMockFactory. 
+            //the articleFromMockFactory object that is created by _articleMockFactory. 
             var articleType = article.GetType();
             var fields = articleType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -101,9 +101,10 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
             {
                 var value = field.GetValue(article);
 
-                var returnedValue = field.GetValue(returnedArticle);
+                var returnedValue = field.GetValue(articleFromMockFactory);
 
-                //Assert that the value of the property in the original article is equal to the value of the property in the returned article.
+                //Assert that the value of the property in the original article is equal to the value of the property
+                //in the articleFromMockFactory.
                 value.ShouldBe(returnedValue, $"Field {field.Name} should be equal!");
             }
         }
