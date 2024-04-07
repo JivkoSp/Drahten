@@ -1,12 +1,13 @@
-﻿using TopicArticleService.Domain.Factories;
+﻿using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
     internal sealed class RegisterUserArticleHandler : ICommandHandler<RegisterUserArticleCommand>
     {
-        private IArticleRepository _articleRepository;
-        private IUserArticleFactory _userArticleFactory;
+        private readonly IArticleRepository _articleRepository;
+        private readonly IUserArticleFactory _userArticleFactory;
 
         internal RegisterUserArticleHandler(IArticleRepository articleRepository, IUserArticleFactory userArticleFactory)
         {
@@ -20,7 +21,7 @@ namespace TopicArticleService.Application.Commands.Handlers
 
             if(article == null)
             {
-                //TODO: throw exception
+                throw new ArticleNotFoundException(command.ArticleId);
             }
 
             var userArticle = _userArticleFactory.Create(command.UserId, command.ArticleId);
