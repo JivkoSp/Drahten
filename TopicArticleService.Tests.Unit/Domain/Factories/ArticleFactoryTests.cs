@@ -27,6 +27,56 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         private readonly IArticleFactory _articleConcreteFactory;
         private readonly IArticleFactory _articleMockFactory;
 
+        /// <summary>
+        /// Creates an instance of the Article class using reflection, based on the provided parameters.
+        /// This method retrieves a reference to the constructor of the Article class that matches the specified parameters,
+        /// and then invokes the constructor with the provided values to instantiate an Article object.
+        /// </summary>
+        /// <param name="articleId">The ID of the article.</param>
+        /// <param name="_prevTitle">The previous title of the article.</param>
+        /// <param name="_title">The title of the article.</param>
+        /// <param name="_content">The content of the article.</param>
+        /// <param name="_publishingDate">The publishing date of the article.</param>
+        /// <param name="_author">The author of the article.</param>
+        /// <param name="_link">The link of the article.</param>
+        /// <param name="_topicId">The ID of the topic associated with the article.</param>
+        /// <returns>An instance of the Article class created with the specified parameters.</returns>
+        private Article CreateArticleWithReflection(ArticleID articleId, ArticlePrevTitle _prevTitle, ArticleTitle _title, 
+            ArticleContent _content, ArticlePublishingDate _publishingDate, ArticleAuthor _author, ArticleLink _link, TopicId _topicId)
+        {
+            //Retrieve a reference to the constructor of the Article class that matches the specified parameters.
+            var constructor = typeof(Article).GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[]
+                {
+                    typeof(ArticleID),
+                    typeof(ArticlePrevTitle),
+                    typeof(ArticleTitle),
+                    typeof(ArticleContent),
+                    typeof(ArticlePublishingDate),
+                    typeof(ArticleAuthor),
+                    typeof(ArticleLink),
+                    typeof(TopicId)
+                },
+                null);
+
+            //Invoke the retrieved constructor with the values that are provided when the CreateArticleWithReflection is called.
+            var article = (Article)constructor.Invoke(new object[]
+            {
+                articleId,
+                _prevTitle,
+                _title,
+                _content,
+                _publishingDate,
+                _author,
+                _link,
+                _topicId
+            });
+
+            return article;
+        }
+
         public ArticleFactoryTests()
         {
              Id = new ArticleID(Guid.NewGuid());
@@ -79,13 +129,27 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         //Should create two article instances with equal values when equal values are given to the concrete factory (_articleConcreteFactory)
         //and to the mock factory (_articleMockFactory).
+        //--------------
+        //This test ensures that both factories produce equivalent Article instances when provided with the same input parameters,
+        //thus validating the correctness of the concrete factory implementation.
+        //The mock factory sets the way that article instance should be created. 
+        //This is needed becouse the concrete factory may not create article instance as expected (for example it may use different constructor).
         [Fact]
         public void Should_Create_Equal_Article_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
             var article = _articleConcreteFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
 
-            _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId).Returns(article);
+            _articleMockFactory.Create(Arg.Any<ArticleID>(), Arg.Any<ArticlePrevTitle>(), Arg.Any<ArticleTitle>(), Arg.Any<ArticleContent>(), 
+                Arg.Any<ArticlePublishingDate>(), Arg.Any<ArticleAuthor>(), Arg.Any<ArticleLink>(), Arg.Any<TopicId>()).Returns(
+                    callInfo =>
+                    {
+                        var article = CreateArticleWithReflection(callInfo.Arg<ArticleID>(), callInfo.Arg<ArticlePrevTitle>(), 
+                            callInfo.Arg<ArticleTitle>(), callInfo.Arg<ArticleContent>(), callInfo.Arg<ArticlePublishingDate>(), 
+                            callInfo.Arg<ArticleAuthor>(), callInfo.Arg<ArticleLink>(), callInfo.Arg<TopicId>());
+
+                        return article;
+                    });
 
             var articleFromMockFactory = _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
 
@@ -107,32 +171,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
                 //in the articleFromMockFactory.
                 value.ShouldBe(returnedValue, $"Field {field.Name} should be equal!");
             }
-        }
-
-        //Should call the mock factory _articleMockFactory only once and ensure that it is called with the the specified arguments.
-        [Fact]
-        public void Given_Valid_Article_Parameters_Calls_Mock_Factory_And_Ensures_That_The_Call_Is_Made_With_The_Provided_Parameters()
-        {
-            //ACT
-            var article = _articleConcreteFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
-
-            _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId).Returns(article);
-
-            _articleMockFactory.Create(Id, _prevTitle, _title, _content, _publishingDate, _author, _link, _topicId);
-
-            //ASSERT
-
-            //Verify interaction with the mock factory and ensure that it is called with the the specified arguments.
-            _articleMockFactory.Received(1).Create(
-                Arg.Is<ArticleID>(id => id.Value == Id.Value),
-                Arg.Is<ArticlePrevTitle>(prevTitle => prevTitle.Value == _prevTitle.Value),
-                Arg.Is<ArticleTitle>(title => title.Value == _title.Value),
-                Arg.Is<ArticleContent>(content => content.Value == _content.Value),
-                Arg.Is<ArticlePublishingDate>(date => date.Value == _publishingDate.Value),
-                Arg.Is<ArticleAuthor>(author => author.Value == _author.Value),
-                Arg.Is<ArticleLink>(link => link.Value == _link.Value),
-                Arg.Is<TopicId>(id => id.Value == _topicId.Value)
-            );
         }
     }
 }
