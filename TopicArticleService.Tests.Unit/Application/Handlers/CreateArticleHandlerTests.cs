@@ -4,7 +4,6 @@ using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Commands.Handlers;
 using TopicArticleService.Application.Exceptions;
 using TopicArticleService.Application.Services.ReadServices;
-using TopicArticleService.Domain.Entities;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 using Xunit;
@@ -17,7 +16,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         #region GLOBAL ARRANGE
 
         private readonly IArticleRepository _articleRepository;
-        private readonly IArticleFactory _articleFactory;
+        private readonly IArticleFactory _articleConcreteFactory;
+        private readonly IArticleFactory _articleMockFactory;
         private readonly IArticleReadService _articleService;
         private readonly ICommandHandler<CreateArticleCommand> _handler;
 
@@ -28,13 +28,14 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
             return command;
         }
-
+        
         public CreateArticleHandlerTests()
         {
             _articleRepository = Substitute.For<IArticleRepository>();
-            _articleFactory = Substitute.For<IArticleFactory>();
+            _articleConcreteFactory = new ArticleFactory();
+            _articleMockFactory = Substitute.For<IArticleFactory>();
             _articleService = Substitute.For<IArticleReadService>();
-            _handler = new CreateArticleHandler(_articleRepository, _articleFactory, _articleService);
+            _handler = new CreateArticleHandler(_articleRepository, _articleMockFactory, _articleService);
         }
 
         #endregion
@@ -65,24 +66,32 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         //ArticleId as the ArticleId from the CreateArticleCommand (e.g If the ArticleId from the CreateArticleCommand is valid).
         //--------------------------------------------------------------------------
         //If the Article entity is created successfully the repository must also be called one time.
+        //--------------------------------------------------------------------------
+        //*** IMPORTANT *** - Check the _README.txt file in this directory for additional context about this method.
         [Fact]
         public async Task GivenValidArticleId_Calls_Repository_On_Success()
         {
             //ARRANGE
             var command = GetCreateArticleCommand();
 
+            var article = _articleConcreteFactory.Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, 
+                command.PublishingDate, command.Author, command.Link, command.TopicId);
+
             _articleService.ExistsByIdAsync(command.ArticleId).Returns(false);
 
             //ACT
+            _articleMockFactory.Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, command.PublishingDate,
+                   command.Author, command.Link, command.TopicId).Returns(article);
+
             var exception = await Record.ExceptionAsync(async () => await Act(command));
 
             //ASSERT
             exception.ShouldBeNull();
 
-            _articleFactory.Received(1).Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, command.PublishingDate,
+            _articleMockFactory.Received(1).Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, command.PublishingDate,
                     command.Author, command.Link, command.TopicId);
 
-            await _articleRepository.Received(1).AddArticleAsync(Arg.Any<Article>());
+            await _articleRepository.Received(1).AddArticleAsync(article);
         }
     }
 }
