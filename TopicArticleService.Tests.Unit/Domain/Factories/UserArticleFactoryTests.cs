@@ -44,13 +44,25 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         //Should create two UserArticle instances with equal values when equal values are given to the concrete factory
         //(_userArticleConcreteFactory) and to the mock factory (_userArticleMockFactory).
+        //--------------
+        //This test ensures that both factories produce equivalent UserArticle instances when provided with the same input parameters,
+        //thus validating the correctness of the concrete factory implementation.
+        //The mock factory sets the way that UserArticle instance should be created. 
+        //This is needed becouse the concrete factory may not create UserArticle instance as expected
+        //(for example it may use different constructor).
         [Fact]
         public void Should_Create_Equal_UserArticle_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
             var userArticle = _userArticleConcreteFactory.Create(_userId, _articleId);
 
-            _userArticleMockFactory.Create(_userId, _articleId).Returns(userArticle);
+            _userArticleMockFactory.Create(Arg.Any<UserID>(), Arg.Any<ArticleID>()).Returns(
+                callInfo =>
+                {
+                    var userArticle = new UserArticle(callInfo.Arg<UserID>(), callInfo.Arg<ArticleID>());
+
+                    return userArticle;
+                });
 
             var userArticleFromMockFactory = _userArticleMockFactory.Create(_userId, _articleId);
 
@@ -72,26 +84,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
                 //in the userArticleFromMockFactory.
                 value.ShouldBe(returnedValue, $"Field {field.Name} should be equal!");
             }
-        }
-
-        //Should call the mock factory _userArticleMockFactory only once and ensure that it is called with the the specified arguments.
-        [Fact]
-        public void Given_Valid_UserArticle_Parameters_Calls_Mock_Factory_And_Ensures_That_The_Call_Is_Made_With_The_Provided_Parameters()
-        {
-            //ACT
-            var userArticle = _userArticleConcreteFactory.Create(_userId, _articleId);
-
-            _userArticleMockFactory.Create(_userId, _articleId).Returns(userArticle);
-
-            _userArticleMockFactory.Create(_userId, _articleId);
-
-            //ASSERT
-
-            //Verify interaction with the mock factory and ensure that it is called with the the specified arguments.
-            _userArticleMockFactory.Received(1).Create(
-                Arg.Is<UserID>(id => id == _userId),
-                Arg.Is<ArticleID>(id => id == _articleId)
-            );
         }
     }
 }
