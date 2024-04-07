@@ -74,9 +74,6 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _articleService.ExistsByIdAsync(command.ArticleId).Returns(false);
 
             //ACT
-            _articleFactory.Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, command.PublishingDate,
-                    command.Author, command.Link, command.TopicId).Returns(default(Article));
-
             var exception = await Record.ExceptionAsync(async () => await Act(command));
 
             //ASSERT
