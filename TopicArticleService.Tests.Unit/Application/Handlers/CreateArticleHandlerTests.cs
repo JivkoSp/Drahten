@@ -82,6 +82,9 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ASSERT
             exception.ShouldBeNull();
 
+            _articleFactory.Received(1).Create(command.ArticleId, command.PrevTitle, command.Title, command.Content, command.PublishingDate,
+                    command.Author, command.Link, command.TopicId);
+
             await _articleRepository.Received(1).AddArticleAsync(Arg.Any<Article>());
         }
     }
