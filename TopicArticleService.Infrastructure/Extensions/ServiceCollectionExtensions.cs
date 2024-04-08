@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Application.Services.WriteServices;
@@ -14,6 +15,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Services;
 using TopicArticleService.Infrastructure.Exceptions;
 using TopicArticleService.Infrastructure.Exceptions.Interfaces;
 
+[assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.EndToEnd")]
 namespace TopicArticleService.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
