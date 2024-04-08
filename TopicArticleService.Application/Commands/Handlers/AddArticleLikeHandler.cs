@@ -4,12 +4,12 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    internal sealed class AddArticleLikeHandler : ICommandHandler<AddArticleLikeCommand>
+    public sealed class AddArticleLikeHandler : ICommandHandler<AddArticleLikeCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleLikeFactory _articleLikeFactory;
 
-        internal AddArticleLikeHandler(IArticleRepository articleRepository, IArticleLikeFactory articleLikeFactory)
+        public AddArticleLikeHandler(IArticleRepository articleRepository, IArticleLikeFactory articleLikeFactory)
         {
             _articleRepository = articleRepository;
             _articleLikeFactory = articleLikeFactory;

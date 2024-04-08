@@ -3,11 +3,11 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    internal sealed class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
+    public sealed class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
     {
         private IArticleRepository _articleRepository;
 
-        internal RemoveArticleCommentHandler(IArticleRepository articleRepository)
+        public RemoveArticleCommentHandler(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
         }
@@ -21,7 +21,7 @@ namespace TopicArticleService.Application.Commands.Handlers
                 throw new ArticleNotFoundException(command.ArticleId);
             }
 
-            article.RemoveComment(command.ArticleCommentId, command.ParentArticleCommentId);
+            //article.RemoveComment(command.ArticleCommentId, command.ParentArticleCommentId);
 
             await _articleRepository.UpdateArticleAsync(article);
         }

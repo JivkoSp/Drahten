@@ -4,12 +4,12 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    internal sealed class AddArticleCommentHandler : ICommandHandler<AddArticleCommentCommand>
+    public sealed class AddArticleCommentHandler : ICommandHandler<AddArticleCommentCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleCommentFactory _articleCommentFactory;
 
-        internal AddArticleCommentHandler(IArticleRepository articleRepository, IArticleCommentFactory articleCommentFactory)
+        public AddArticleCommentHandler(IArticleRepository articleRepository, IArticleCommentFactory articleCommentFactory)
         {
             _articleRepository = articleRepository;
             _articleCommentFactory = articleCommentFactory;

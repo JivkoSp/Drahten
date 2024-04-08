@@ -4,12 +4,12 @@ using TopicArticleService.Application.Services.WriteServices;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    internal sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
+    public sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
     {
         private readonly IUserReadService _userReadService;
         private readonly IUserWriteService _userWriteService;
 
-        internal RegisterUserHandler(IUserReadService userReadService, IUserWriteService userWriteService)
+        public RegisterUserHandler(IUserReadService userReadService, IUserWriteService userWriteService)
         {
             _userReadService = userReadService;
             _userWriteService = userWriteService;

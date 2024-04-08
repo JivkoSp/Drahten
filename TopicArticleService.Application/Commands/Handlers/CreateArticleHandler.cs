@@ -5,13 +5,13 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    internal sealed class CreateArticleHandler : ICommandHandler<CreateArticleCommand>
+    public sealed class CreateArticleHandler : ICommandHandler<CreateArticleCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleFactory _articleFactory;
         private readonly IArticleReadService _articleService;
 
-        internal CreateArticleHandler(IArticleRepository articleRepository, IArticleFactory articleFactory, IArticleReadService articleService)
+        public CreateArticleHandler(IArticleRepository articleRepository, IArticleFactory articleFactory, IArticleReadService articleService)
         {
             _articleRepository = articleRepository;
             _articleFactory = articleFactory;
