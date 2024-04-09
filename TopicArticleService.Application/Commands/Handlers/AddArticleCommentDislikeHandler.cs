@@ -1,10 +1,11 @@
 ﻿using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Application.Extensions;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public sealed class AddArticleCommentDislikeHandler : ICommandHandler<AddArticleCommentDislikeCommand>
+    internal sealed class AddArticleCommentDislikeHandler : ICommandHandler<AddArticleCommentDislikeCommand>
     {
         private readonly IArticleCommentRepository _articleCommentRepository;
         private readonly IArticleCommentDislikeFactory _articleCommentDislikeFactory;
@@ -25,7 +26,8 @@ namespace TopicArticleService.Application.Commands.Handlers
                 throw new ArticleCommentNotFoundException(command.ArticleCommentId);
             }
 
-            var articleCommentDislike = _articleCommentDislikeFactory.Create(command.ArticleCommentId, command.UserId, command.DateTime);
+            var articleCommentDislike = _articleCommentDislikeFactory.Create(command.ArticleCommentId, 
+                command.UserId, command.DateTime.ToUtc());
 
             articleComment.AddDislike(articleCommentDislike);
 

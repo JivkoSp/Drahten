@@ -5,7 +5,7 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public sealed class CreateArticleHandler : ICommandHandler<CreateArticleCommand>
+    internal sealed class CreateArticleHandler : ICommandHandler<CreateArticleCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleFactory _articleFactory;

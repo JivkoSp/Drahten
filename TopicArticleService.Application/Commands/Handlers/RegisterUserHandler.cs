@@ -4,7 +4,7 @@ using TopicArticleService.Application.Services.WriteServices;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
+    internal sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
     {
         private readonly IUserReadService _userReadService;
         private readonly IUserWriteService _userWriteService;

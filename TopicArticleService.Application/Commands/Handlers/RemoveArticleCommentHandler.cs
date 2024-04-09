@@ -3,7 +3,7 @@ using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public sealed class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
+    internal sealed class RemoveArticleCommentHandler : ICommandHandler<RemoveArticleCommentCommand>
     {
         private IArticleRepository _articleRepository;
 

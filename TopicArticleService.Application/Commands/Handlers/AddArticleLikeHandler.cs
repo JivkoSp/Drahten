@@ -1,10 +1,11 @@
 ﻿using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Application.Extensions;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
-    public sealed class AddArticleLikeHandler : ICommandHandler<AddArticleLikeCommand>
+    internal sealed class AddArticleLikeHandler : ICommandHandler<AddArticleLikeCommand>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleLikeFactory _articleLikeFactory;
@@ -24,7 +25,7 @@ namespace TopicArticleService.Application.Commands.Handlers
                 throw new ArticleNotFoundException(command.ArticleId);
             }
 
-            var articleLike = _articleLikeFactory.Create(command.ArticleId, command.UserId, command.DateTime);
+            var articleLike = _articleLikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUtc());
 
             article.AddLike(articleLike);
 
