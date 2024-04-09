@@ -14,3 +14,16 @@ Due to this reason, the time comparison is done with a tolerance of 1 millisecon
 --------------------------------------------------------
 *** Special features for RegisterArticleCommentTests *** 
 --------------------------------------------------------
+
+
+--------------------------------------------------------
+*** Special features for RegisterArticleLikeTests *** 
+--------------------------------------------------------
+About the Register_ArticleLike_Endpoint_Should_Add_ArticleLike_With_Given_ArticleId_And_UserId_To_The_Database(...) method:
+------------
+The time comaprison of the objects addArticleLikeCommand and articleLike is NOT done like this: 
+articleLike.DateTime.ShouldBe(addArticleLikeCommand.DateTime);
+This is because of the reasons mentioned in the section - Special features for RegisterArticleCommentTests in this document.
+--------------------------------------------------------
+*** Special features for RegisterArticleLikeTests *** 
+--------------------------------------------------------
