@@ -18,7 +18,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             var commentValueConverter = new ValueConverter<ArticleCommentValue, string>(x => x.Value, x => new ArticleCommentValue(x));
 
-            var commentDateTimeConverter = new ValueConverter<ArticleCommentDateTime, DateTime>(x => x.DateTime, 
+            var commentDateTimeConverter = new ValueConverter<ArticleCommentDateTime, DateTimeOffset>(x => x.DateTime, 
                 x => new ArticleCommentDateTime(x));
 
             var userIdConverter = new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x)));

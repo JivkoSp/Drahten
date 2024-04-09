@@ -32,7 +32,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                .IsRequired();
 
             builder.Property(p => p.DateTime)
-                .HasColumnType("timestamp without time zone")
                 .IsRequired();
 
             //Property config - End
