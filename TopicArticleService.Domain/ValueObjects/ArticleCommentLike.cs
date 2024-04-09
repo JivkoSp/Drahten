@@ -6,20 +6,20 @@ namespace TopicArticleService.Domain.ValueObjects
     {
         public ArticleCommentID ArticleCommentID { get; }
         public UserID UserID { get; }
-        public DateTime DateTime { get; }
+        public DateTimeOffset DateTime { get; }
       
         private ArticleCommentLike()
         {
         }
 
-        public ArticleCommentLike(ArticleCommentID articleCommentId, UserID userId, string dateTimeString)
+        public ArticleCommentLike(ArticleCommentID articleCommentId, UserID userId, DateTimeOffset dateTime)
         {
             if (userId == null)
             {
                 throw new NullArticleCommentLikeUserIdException();
             }
 
-            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime) || dateTime == default || dateTime > DateTime.Now)
+            if (dateTime == default || dateTime > DateTimeOffset.Now)
             {
                 throw new InvalidArticleCommentLikeDateTimeException();
             }
@@ -37,7 +37,7 @@ namespace TopicArticleService.Domain.ValueObjects
         public static ArticleCommentLike Create(string value)
         {
             var splitArticleCommentLike = value.Split(',');
-            return new ArticleCommentLike(Guid.Parse(splitArticleCommentLike[0]), Guid.Parse(splitArticleCommentLike[1]), splitArticleCommentLike[2]);
+            return new ArticleCommentLike(Guid.Parse(splitArticleCommentLike[0]), Guid.Parse(splitArticleCommentLike[1]), DateTimeOffset.Parse(splitArticleCommentLike[2]));
         }
     }
 }

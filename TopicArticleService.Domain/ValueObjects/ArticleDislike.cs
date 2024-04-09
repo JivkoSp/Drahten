@@ -6,13 +6,13 @@ namespace TopicArticleService.Domain.ValueObjects
     {
         public ArticleID ArticleID { get; }
         public UserID UserID { get; }
-        public DateTime DateTime { get; }
+        public DateTimeOffset DateTime { get; }
 
         private ArticleDislike()
         {
         }
 
-        public ArticleDislike(ArticleID articleId, UserID userId, string dateTimeString)
+        public ArticleDislike(ArticleID articleId, UserID userId, DateTimeOffset dateTime)
         {
             if (articleId == null)
             {
@@ -24,7 +24,7 @@ namespace TopicArticleService.Domain.ValueObjects
                 throw new NullArticleDislikeUserIdException();
             }
 
-            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime) || dateTime == default || dateTime > DateTime.Now)
+            if (dateTime == default || dateTime > DateTimeOffset.Now)
             {
                 throw new InvalidArticleDislikeDateTimeException();
             }
@@ -42,7 +42,8 @@ namespace TopicArticleService.Domain.ValueObjects
         public static ArticleDislike Create(string value)
         {
             var splitArticleDislike = value.Split(',');
-            return new ArticleDislike(Guid.Parse(splitArticleDislike[0]), Guid.Parse(splitArticleDislike[1]), splitArticleDislike[2]);
+            return new ArticleDislike(Guid.Parse(splitArticleDislike[0]), Guid.Parse(splitArticleDislike[1]), 
+                DateTimeOffset.Parse(splitArticleDislike[2]));
         }
     }
 }

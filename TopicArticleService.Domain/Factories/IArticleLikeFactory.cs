@@ -4,6 +4,6 @@ namespace TopicArticleService.Domain.Factories
 {
     public interface IArticleLikeFactory
     {
-        ArticleLike Create(ArticleID articleId, UserID userId, string dateTime);
+        ArticleLike Create(ArticleID articleId, UserID userId, DateTimeOffset dateTime);
     }
 }

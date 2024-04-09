@@ -5,7 +5,7 @@ namespace TopicArticleService.Domain.Factories
 {
     public sealed class ArticleLikeFactory : IArticleLikeFactory
     {
-        public ArticleLike Create(ArticleID articleId, UserID userId, string dateTime)
+        public ArticleLike Create(ArticleID articleId, UserID userId, DateTimeOffset dateTime)
             => new ArticleLike(articleId, userId, dateTime);
     }
 }
