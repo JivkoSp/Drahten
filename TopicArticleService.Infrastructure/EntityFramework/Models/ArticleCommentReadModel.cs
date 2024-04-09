@@ -7,7 +7,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
         public Guid ArticleCommentId { get; set; }
         public int Version { get; set; }
         public string Comment { get; set; } 
-        public DateTime DateTime { get; set; }
+        public DateTimeOffset DateTime { get; set; }
 
         //Relationships
         //Self relationship [one-to-many], represents hierarchy of comments - START
