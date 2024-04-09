@@ -8,7 +8,9 @@ namespace TopicArticleService.Infrastructure.Automapper.Profiles
     {
         public ArticleProfile()
         {
-            CreateMap<ArticleReadModel, ArticleDto>();
+            CreateMap<ArticleReadModel, ArticleDto>()
+                .ForMember(dest => dest.ArticleLikeDtos, options => options.MapFrom(source => source.ArticleLikes))
+                .ForMember(dest => dest.ArticleDislikeDtos, options => options.MapFrom(source => source.ArticleDislikes));
         }
     }
 }
