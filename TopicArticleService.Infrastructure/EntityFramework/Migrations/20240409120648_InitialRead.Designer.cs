@@ -12,7 +12,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReadDbContext))]
-    [Migration("20240331150327_InitialRead")]
+    [Migration("20240409120648_InitialRead")]
     partial class InitialRead
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("topic-article-service")
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -34,8 +34,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ArticleCommentId", "UserId");
 
@@ -52,8 +52,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ArticleCommentId", "UserId");
 
@@ -75,8 +75,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("ParentArticleCommentId")
                         .HasColumnType("uuid");
@@ -106,8 +106,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ArticleId", "UserId");
 
@@ -124,8 +124,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ArticleId", "UserId");
 
@@ -201,76 +201,76 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            TopicId = new Guid("c7b236dc-ebfd-4de2-ab5d-b15a25a77b2c"),
+                            TopicId = new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"),
                             TopicName = "Cybersecurity",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("4e75ec3e-b827-4322-a07c-9d555befe301"),
+                            TopicId = new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"),
                             TopicName = "Programming",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("be782bb9-3591-4206-8052-76e5112576b7"),
-                            ParentTopicId = new Guid("c7b236dc-ebfd-4de2-ab5d-b15a25a77b2c"),
+                            TopicId = new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"),
+                            ParentTopicId = new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"),
                             TopicName = "News",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("e22e67b5-af49-4e4e-b488-7c41681ac7d8"),
-                            ParentTopicId = new Guid("c7b236dc-ebfd-4de2-ab5d-b15a25a77b2c"),
+                            TopicId = new Guid("2670e81a-8bd7-423a-acd4-5892660934d8"),
+                            ParentTopicId = new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"),
                             TopicName = "Projects",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("1a926c80-aac1-4b44-8992-d8e6359736d6"),
-                            ParentTopicId = new Guid("c7b236dc-ebfd-4de2-ab5d-b15a25a77b2c"),
+                            TopicId = new Guid("45f672df-8bdb-456c-8ea1-dd5b0b867df7"),
+                            ParentTopicId = new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"),
                             TopicName = "Laws",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("b2a03f3d-6d0a-4ca4-8220-94cc2d09e10a"),
-                            ParentTopicId = new Guid("c7b236dc-ebfd-4de2-ab5d-b15a25a77b2c"),
+                            TopicId = new Guid("4204c27a-aed5-459e-a245-58978895875f"),
+                            ParentTopicId = new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"),
                             TopicName = "Law regulations",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("4a21e2a8-a20a-4177-a98e-44c1d3e8dd5f"),
-                            ParentTopicId = new Guid("4e75ec3e-b827-4322-a07c-9d555befe301"),
+                            TopicId = new Guid("edd8a756-6238-45cf-9275-4037af21b388"),
+                            ParentTopicId = new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"),
                             TopicName = "News",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("ce9a643a-d3e0-4e7f-a3f6-dc0f193f2ae0"),
-                            ParentTopicId = new Guid("4e75ec3e-b827-4322-a07c-9d555befe301"),
+                            TopicId = new Guid("c9523aef-2faa-4e89-8599-43b3089b5960"),
+                            ParentTopicId = new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"),
                             TopicName = "Projects",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("d76aa768-d06d-4485-bcdb-498105b1ee92"),
-                            ParentTopicId = new Guid("be782bb9-3591-4206-8052-76e5112576b7"),
+                            TopicId = new Guid("76681b14-e42a-47c7-b19f-954cba4c5dd9"),
+                            ParentTopicId = new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"),
                             TopicName = "America",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("9587a7ea-ee3c-49d5-b809-824211f4c2df"),
-                            ParentTopicId = new Guid("be782bb9-3591-4206-8052-76e5112576b7"),
+                            TopicId = new Guid("80dfc5a1-7813-456d-a7b2-4b8e93e81f16"),
+                            ParentTopicId = new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"),
                             TopicName = "Asia",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("fcf49b1c-e8d1-4134-a4cd-9ee01fac7383"),
-                            ParentTopicId = new Guid("be782bb9-3591-4206-8052-76e5112576b7"),
+                            TopicId = new Guid("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"),
+                            ParentTopicId = new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"),
                             TopicName = "Europe",
                             Version = 0
                         });
@@ -309,8 +309,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid>("TopicId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("SubscriptionTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("SubscriptionTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("UserId", "TopicId");
 
