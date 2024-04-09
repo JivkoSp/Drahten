@@ -16,7 +16,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             //Property config
             builder.Property(p => p.SubscriptionTime)
-             .HasColumnType("timestamp without time zone")
              .IsRequired();
 
             //Relationships
