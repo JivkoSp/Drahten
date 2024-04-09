@@ -22,6 +22,8 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
         {
             var articleReadModel = await _readDbContext.Articles
                 .Where(x => x.ArticleId == query.ArticleId)
+                .Include(x => x.ArticleLikes)
+                .Include(x => x.ArticleDislikes)
                 .AsNoTracking()
                 .SingleOrDefaultAsync();
 
