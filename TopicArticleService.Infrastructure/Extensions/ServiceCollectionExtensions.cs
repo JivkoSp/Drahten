@@ -47,6 +47,8 @@ namespace TopicArticleService.Infrastructure.Extensions
             services.AddAutoMapper(configAction => {
 
                 configAction.AddProfile<ArticleProfile>();
+                configAction.AddProfile<ArticleLikeProfile>();
+                configAction.AddProfile<ArticleDislikeProfile>();
                 configAction.AddProfile<UserProfile>();
                 configAction.AddProfile<UserArticleProfile>();
                 configAction.AddProfile<ArticleCommentProfile>();
