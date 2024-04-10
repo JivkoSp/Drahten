@@ -38,6 +38,19 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 ---------------------------------------------------------------
 
 
+---------------------------------------------------------------
+*** Special features for RegisterArticleCommentDislikeTests *** 
+---------------------------------------------------------------
+About the Register_ArticleCommentDislike_Endpoint_Should_Add_ArticleCommentDislike_With_Given_ArticleCommentId_And_UserId_To_The_Database(...) method:
+------------
+The time comaprison of the objects addArticleCommentDislikeCommand and articleCommentDislike is NOT done like this:
+articleCommentDislike.DateTime.ShouldBe(addArticleCommentDislikeCommand.DateTime);
+This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
+---------------------------------------------------------------
+*** Special features for RegisterArticleCommentDislikeTests *** 
+---------------------------------------------------------------
+
+
 --------------------------------------------------------
 *** Special features for RegisterArticleLikeTests *** 
 --------------------------------------------------------
