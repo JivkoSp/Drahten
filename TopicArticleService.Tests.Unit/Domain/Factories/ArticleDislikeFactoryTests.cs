@@ -12,7 +12,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         private ArticleID _articleId;
         private UserID _userId;
-        private string _dateTime;
+        private DateTimeOffset _dateTime;
         private readonly IArticleDislikeFactory _articleDislikeConcreteFactory;
         private readonly IArticleDislikeFactory _articleDislikeMockFactory;
 
@@ -20,7 +20,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         {
             _articleId = new ArticleID(Guid.NewGuid());
             _userId = new UserID(Guid.NewGuid());
-            _dateTime = DateTime.Now.ToString();
+            _dateTime = DateTimeOffset.Now;
             
             _articleDislikeConcreteFactory = new ArticleDislikeFactory();
             _articleDislikeMockFactory = Substitute.For<IArticleDislikeFactory>();
@@ -34,14 +34,16 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Given_Valid_ArticleDislike_Parameters_Should_Create_ArticleDislike_Instance_From_Concrete_Factory()
         {
             //ACT
-            var articleDislike = _articleDislikeConcreteFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleDislike = _articleDislikeConcreteFactory.Create(_articleId, _userId, _dateTime);
 
             //ASSERT
             articleDislike.ShouldNotBeNull();
 
-            articleDislike.ArticleID.ShouldBeSameAs(_articleId);
+            articleDislike.ArticleID.ShouldBe(_articleId);
 
-            articleDislike.UserID.ShouldBeSameAs(_userId);
+            articleDislike.UserID.ShouldBe(_userId);
+
+            articleDislike.DateTime.ShouldBe(_dateTime);
         }
 
         //Should create two ArticleDislike instances with equal values when equal values are given to the concrete factory
@@ -56,17 +58,18 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Should_Create_Equal_ArticleDislike_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
-            var articleDislike = _articleDislikeConcreteFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleDislike = _articleDislikeConcreteFactory.Create(_articleId, _userId, _dateTime);
 
-            _articleDislikeMockFactory.Create(Arg.Any<ArticleID>(), Arg.Any<UserID>(), Arg.Any<string>()).Returns(
+            _articleDislikeMockFactory.Create(Arg.Any<ArticleID>(), Arg.Any<UserID>(), Arg.Any<DateTimeOffset>()).Returns(
                 callInfo =>
                 {
-                    var articleDislike = new ArticleDislike(callInfo.Arg<ArticleID>(), callInfo.Arg<UserID>(), callInfo.Arg<string>());
+                    var articleDislike = new ArticleDislike(callInfo.ArgAt<ArticleID>(0),
+                        callInfo.ArgAt<UserID>(1), callInfo.ArgAt<DateTimeOffset>(2));
 
                     return articleDislike;
                 });
 
-            var articleLikeFromMockFactory = _articleDislikeMockFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleLikeFromMockFactory = _articleDislikeMockFactory.Create(_articleId, _userId, _dateTime);
 
             //ASSERT
             articleLikeFromMockFactory.ShouldNotBeNull();

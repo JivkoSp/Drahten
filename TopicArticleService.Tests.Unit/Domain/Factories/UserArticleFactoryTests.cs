@@ -37,9 +37,9 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
             //ASSERT
             userArticle.ShouldNotBeNull();
 
-            userArticle.UserID.ShouldBeSameAs(_userId);
+            userArticle.UserID.ShouldBe(_userId);
 
-            userArticle.ArticleId.ShouldBeSameAs(_articleId);
+            userArticle.ArticleId.ShouldBe(_articleId);
         }
 
         //Should create two UserArticle instances with equal values when equal values are given to the concrete factory

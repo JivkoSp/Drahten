@@ -68,7 +68,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         {
             _articleCommentId = new ArticleCommentID(Guid.NewGuid());
             _commentValue = new ArticleCommentValue("some comment");
-            _dateTime = new ArticleCommentDateTime(DateTime.Now);
+            _dateTime = new ArticleCommentDateTime(DateTimeOffset.Now);
             _userId = new UserID(Guid.NewGuid());
             _parentArticleCommentId = null;
 
@@ -128,11 +128,13 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
             var articleComment = _articleCommentConcreteFactory.Create(_articleCommentId, _commentValue, _dateTime,
                 _userId, _parentArticleCommentId);
 
-            _articleCommentMockFactory.Create(_articleCommentId, _commentValue, _dateTime, _userId, _parentArticleCommentId).Returns(
+            _articleCommentMockFactory.Create(Arg.Any<ArticleCommentID>(), Arg.Any<ArticleCommentValue>(), 
+                Arg.Any<ArticleCommentDateTime>(), Arg.Any<UserID>(), Arg.Any<ArticleCommentID>()).Returns(
                     callInfo =>
                     {
-                        var articleComment = CreateArticleCommentWithReflection(_articleCommentId, _commentValue, _dateTime,
-                            _userId, _parentArticleCommentId);
+                        var articleComment = CreateArticleCommentWithReflection(callInfo.ArgAt<ArticleCommentID>(0), 
+                            callInfo.ArgAt<ArticleCommentValue>(1), callInfo.ArgAt<ArticleCommentDateTime>(2), 
+                            callInfo.ArgAt<UserID>(3), callInfo.ArgAt<ArticleCommentID>(4));
 
                         return articleComment;
                     });

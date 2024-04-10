@@ -12,7 +12,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         private ArticleCommentID _articleCommentId;
         private UserID _userId;
-        private string _dateTime;
+        private DateTimeOffset _dateTime;
         private readonly IArticleCommentLikeFactory _articleCommentLikeConcreteFactory;
         private readonly IArticleCommentLikeFactory _articleCommentLikeMockFactory;
 
@@ -20,7 +20,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         {
             _articleCommentId = new ArticleCommentID(Guid.NewGuid());
             _userId = new UserID(Guid.NewGuid());
-            _dateTime = DateTime.Now.ToString();
+            _dateTime = DateTimeOffset.Now;
             
             _articleCommentLikeConcreteFactory = new ArticleCommentLikeFactory();
             _articleCommentLikeMockFactory = Substitute.For<IArticleCommentLikeFactory>();
@@ -34,14 +34,16 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Given_Valid_ArticleCommentLike_Parameters_Should_Create_ArticleCommentLike_Instance_From_Concrete_Factory()
         {
             //ACT
-            var articleCommentLike = _articleCommentLikeConcreteFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentLike = _articleCommentLikeConcreteFactory.Create(_articleCommentId, _userId, _dateTime);
 
             //ASSERT
             articleCommentLike.ShouldNotBeNull();
 
-            articleCommentLike.ArticleCommentID.ShouldBeSameAs(_articleCommentId);
+            articleCommentLike.ArticleCommentID.ShouldBe(_articleCommentId);
 
-            articleCommentLike.UserID.ShouldBeSameAs(_userId);
+            articleCommentLike.UserID.ShouldBe(_userId);
+
+            articleCommentLike.DateTime.ShouldBe(_dateTime);
         }
 
         //Should create two ArticleCommentLike instances with equal values when equal values are given to the concrete factory
@@ -56,18 +58,18 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Should_Create_Equal_ArticleCommentLike_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
-            var articleCommentLike = _articleCommentLikeConcreteFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentLike = _articleCommentLikeConcreteFactory.Create(_articleCommentId, _userId, _dateTime);
 
-            _articleCommentLikeMockFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString()).Returns(
+            _articleCommentLikeMockFactory.Create(Arg.Any<ArticleCommentID>(), Arg.Any<UserID>(), Arg.Any<DateTimeOffset>()).Returns(
                 callInfo =>
                 {
-                    var articleCommentLike = new ArticleCommentLike(_articleCommentId, _userId, DateTime.Now.ToString());
+                    var articleCommentLike = new ArticleCommentLike(callInfo.ArgAt<ArticleCommentID>(0),
+                        callInfo.ArgAt<UserID>(1), callInfo.ArgAt<DateTimeOffset>(2));
 
                     return articleCommentLike;
                 });
 
-            var articleCommentLikeFromMockFactory = _articleCommentLikeMockFactory
-                .Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentLikeFromMockFactory = _articleCommentLikeMockFactory.Create(_articleCommentId, _userId, _dateTime);
 
             //ASSERT
             articleCommentLikeFromMockFactory.ShouldNotBeNull();

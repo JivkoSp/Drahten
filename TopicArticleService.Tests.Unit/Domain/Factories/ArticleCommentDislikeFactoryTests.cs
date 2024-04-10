@@ -12,7 +12,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         private ArticleCommentID _articleCommentId;
         private UserID _userId;
-        private string _dateTime;
+        private DateTimeOffset _dateTime;
         private readonly IArticleCommentDislikeFactory _articleCommentDislikeConcreteFactory;
         private readonly IArticleCommentDislikeFactory _articleCommentDislikeMockFactory;
 
@@ -20,7 +20,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         {
             _articleCommentId = new ArticleCommentID(Guid.NewGuid());
             _userId = new UserID(Guid.NewGuid());
-            _dateTime = DateTime.Now.ToString();
+            _dateTime = DateTimeOffset.Now;
             
             _articleCommentDislikeConcreteFactory = new ArticleCommentDislikeFactory();
             _articleCommentDislikeMockFactory = Substitute.For<IArticleCommentDislikeFactory>();
@@ -34,14 +34,16 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Given_Valid_ArticleCommentDislike_Parameters_Should_Create_ArticleCommentDislike_Instance_From_Concrete_Factory()
         {
             //ACT
-            var articleCommentDislike = _articleCommentDislikeConcreteFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentDislike = _articleCommentDislikeConcreteFactory.Create(_articleCommentId, _userId, _dateTime);
 
             //ASSERT
             articleCommentDislike.ShouldNotBeNull();
 
-            articleCommentDislike.ArticleCommentID.ShouldBeSameAs(_articleCommentId);
+            articleCommentDislike.ArticleCommentID.ShouldBe(_articleCommentId);
 
-            articleCommentDislike.UserID.ShouldBeSameAs(_userId);
+            articleCommentDislike.UserID.ShouldBe(_userId);
+
+            articleCommentDislike.DateTime.ShouldBe(_dateTime);   
         }
 
         //Should create two ArticleCommentDislike instances with equal values when equal values are given to the concrete factory
@@ -56,18 +58,18 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Should_Create_Equal_ArticleCommentDislike_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
-            var articleCommentDislike = _articleCommentDislikeConcreteFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentDislike = _articleCommentDislikeConcreteFactory.Create(_articleCommentId, _userId, _dateTime);
 
-            _articleCommentDislikeMockFactory.Create(_articleCommentId, _userId, DateTime.Now.ToString()).Returns(
+            _articleCommentDislikeMockFactory.Create(Arg.Any<ArticleCommentID>(), Arg.Any<UserID>(), Arg.Any<DateTimeOffset>()).Returns(
                 callInfo =>
                 {
-                    var articleCommentDislike = new ArticleCommentDislike(_articleCommentId, _userId, DateTime.Now.ToString());
+                    var articleCommentDislike = new ArticleCommentDislike(callInfo.ArgAt<ArticleCommentID>(0),
+                        callInfo.ArgAt<UserID>(1), callInfo.ArgAt<DateTimeOffset>(2));
 
                     return articleCommentDislike;
                 });
 
-            var articleCommentDislikeFromMockFactory = _articleCommentDislikeMockFactory
-                .Create(_articleCommentId, _userId, DateTime.Now.ToString());
+            var articleCommentDislikeFromMockFactory = _articleCommentDislikeMockFactory.Create(_articleCommentId, _userId, _dateTime);
 
             //ASSERT
             articleCommentDislikeFromMockFactory.ShouldNotBeNull();

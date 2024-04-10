@@ -12,7 +12,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
 
         private ArticleID _articleId;
         private UserID _userId;
-        private string _dateTime;
+        private DateTimeOffset _dateTime;
         private readonly IArticleLikeFactory _articleLikeConcreteFactory;
         private readonly IArticleLikeFactory _articleLikeMockFactory;
 
@@ -20,7 +20,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         {
             _articleId = new ArticleID(Guid.NewGuid());
             _userId = new UserID(Guid.NewGuid());
-            _dateTime = DateTime.Now.ToString();
+            _dateTime = DateTimeOffset.Now;
             _articleLikeConcreteFactory = new ArticleLikeFactory();
             _articleLikeMockFactory = Substitute.For<IArticleLikeFactory>();
         }
@@ -33,14 +33,16 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Given_Valid_ArticleLike_Parameters_Should_Create_ArticleLike_Instance_From_Concrete_Factory()
         {
             //ACT
-            var articleLike = _articleLikeConcreteFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleLike = _articleLikeConcreteFactory.Create(_articleId, _userId, _dateTime);
 
             //ASSERT
             articleLike.ShouldNotBeNull();
 
-            articleLike.ArticleID.ShouldBeSameAs(_articleId);
+            articleLike.ArticleID.ShouldBe(_articleId);
 
-            articleLike.UserID.ShouldBeSameAs(_userId);
+            articleLike.UserID.ShouldBe(_userId);
+
+            articleLike.DateTime.ShouldBe(_dateTime);
         }
 
         //Should create two ArticleLike instances with equal values when equal values are given to the concrete factory
@@ -55,17 +57,18 @@ namespace TopicArticleService.Tests.Unit.Domain.Factories
         public void Should_Create_Equal_ArticleLike_Instances_From_Concrete_And_Mock_Factories()
         {
             //ACT
-            var articleLike = _articleLikeConcreteFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleLike = _articleLikeConcreteFactory.Create(_articleId, _userId, _dateTime);
 
-            _articleLikeMockFactory.Create(Arg.Any<ArticleID>(), Arg.Any<UserID>(), Arg.Any<string>()).Returns(
+            _articleLikeMockFactory.Create(Arg.Any<ArticleID>(), Arg.Any<UserID>(), Arg.Any<DateTimeOffset>()).Returns(
                 callInfo =>
                 {
-                    var articleLike = new ArticleLike(callInfo.Arg<ArticleID>(), callInfo.Arg<UserID>(), callInfo.Arg<string>());
+                    var articleLike = new ArticleLike(callInfo.ArgAt<ArticleID>(0),
+                        callInfo.ArgAt<UserID>(1), callInfo.ArgAt<DateTimeOffset>(2));
 
                     return articleLike;
                 });
 
-            var articleLikeFromMockFactory = _articleLikeMockFactory.Create(_articleId, _userId, DateTime.Now.ToString());
+            var articleLikeFromMockFactory = _articleLikeMockFactory.Create(_articleId, _userId, _dateTime);
 
             //ASSERT
             articleLikeFromMockFactory.ShouldNotBeNull();
