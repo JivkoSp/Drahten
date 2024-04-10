@@ -23,7 +23,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private AddArticleCommentCommand GetAddArticleCommentCommand(ArticleID articleId)
         {
-            var command = new AddArticleCommentCommand(articleId, Guid.NewGuid(), "some comment", DateTime.Now, Guid.NewGuid(), null);
+            var command = new AddArticleCommentCommand(articleId, Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
+                Guid.NewGuid(), null);
 
             return command;
         }

@@ -22,7 +22,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private AddArticleCommentDislikeCommand GetAddArticleCommentDislikeCommand(ArticleCommentID articleCommentId)
         {
-            var command = new AddArticleCommentDislikeCommand(articleCommentId, "2022-10-10T14:38:00", Guid.NewGuid());
+            var command = new AddArticleCommentDislikeCommand(articleCommentId, DateTimeOffset.Now, Guid.NewGuid());
 
             return command;
         }
@@ -48,7 +48,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         public async Task Throws_ArticleCommentNotFoundException_When_ArticleComment_Is_Not_Returned_From_Repository()
         {
             //ARRANGE
-            var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now, Guid.NewGuid(), null);
+            var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
+                Guid.NewGuid(), null);
 
             var addArticleCommentDislikeCommand = GetAddArticleCommentDislikeCommand(articleComment.Id);
 
@@ -72,7 +73,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         public async Task Given_Valid_ArticleCommentId_Creates_And_Adds_ArticleCommentDislike_Instance_To_ArticleComment_And_Calls_Repository_On_Success()
         {
             //ARRANGE
-            var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now, Guid.NewGuid(), null);
+            var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
+                Guid.NewGuid(), null);
 
             var addArticleCommentDislikeCommand = GetAddArticleCommentDislikeCommand(articleComment.Id);
 

@@ -22,7 +22,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private AddArticleLikeCommand GetAddArticleLikeCommand(ArticleID articleId)
         {
-            var command = new AddArticleLikeCommand(articleId, "2022-10-10T14:38:00", Guid.NewGuid());
+            var command = new AddArticleLikeCommand(articleId, DateTimeOffset.Now, Guid.NewGuid());
 
             return command;
         }

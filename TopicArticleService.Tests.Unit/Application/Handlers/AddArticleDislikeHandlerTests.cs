@@ -22,7 +22,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private AddArticleDislikeCommand GetAddArticleDislikeCommand(ArticleID articleId)
         {
-            var command = new AddArticleDislikeCommand(articleId, "2022-10-10T14:38:00", Guid.NewGuid());
+            var command = new AddArticleDislikeCommand(articleId, DateTimeOffset.Now, Guid.NewGuid());
 
             return command;
         }
