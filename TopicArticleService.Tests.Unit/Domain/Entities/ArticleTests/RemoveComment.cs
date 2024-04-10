@@ -27,7 +27,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
 
         private ArticleComment GetArticleCommentWithParentComment(ArticleCommentID parentCommentId)
         {
-            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now,
+            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now,
                     Guid.NewGuid(), parentCommentId);
 
             articleComment.ClearEvents();
@@ -37,7 +37,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
 
         private ArticleComment GetArticleCommentWithoutParentComment()
         {
-            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now,
+            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now,
                     Guid.NewGuid(), null);
 
             articleComment.ClearEvents();

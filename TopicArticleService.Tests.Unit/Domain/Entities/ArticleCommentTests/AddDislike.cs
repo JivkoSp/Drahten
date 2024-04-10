@@ -18,7 +18,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
 
         private ArticleComment GetArticleComment()
         {
-            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTime.Now,
+            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now,
                     Guid.NewGuid(), null);
 
             articleComment.ClearEvents();
@@ -30,7 +30,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleCommentLike = _articleCommentLikeFactory.Create(articleCommentId, userId, "2022-08-10T14:38:00");
+            var articleCommentLike = _articleCommentLikeFactory.Create(articleCommentId, userId, DateTimeOffset.Now);
 
             return articleCommentLike;
         }
@@ -39,7 +39,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleCommentDislike = _articleCommentDislikeFactory.Create(articleCommentId, userId, "2022-08-10T14:39:00");
+            var articleCommentDislike = _articleCommentDislikeFactory.Create(articleCommentId, userId, DateTimeOffset.Now);
 
             return articleCommentDislike;
         }

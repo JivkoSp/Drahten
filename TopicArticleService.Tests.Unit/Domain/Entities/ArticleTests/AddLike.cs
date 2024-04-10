@@ -30,14 +30,14 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleLike = _articleLikeFactory.Create(articleId, userId, "2021-02-04T00:00:00");
+            var articleLike = _articleLikeFactory.Create(articleId, userId, DateTimeOffset.Now);
 
             return articleLike;
         }
 
         private ArticleDislike GetArticleDislike(ArticleID articleId)
         {
-            var articleDislike = _articleDislikeFactory.Create(articleId, Guid.NewGuid(), "2021-02-03T00:00:00");
+            var articleDislike = _articleDislikeFactory.Create(articleId, Guid.NewGuid(), DateTimeOffset.Now);
 
             return articleDislike;
         }
