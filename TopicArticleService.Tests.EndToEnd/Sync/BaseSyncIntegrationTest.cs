@@ -19,11 +19,14 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             _httpClient = factory.CreateClient();
         }
 
+        protected Task<HttpResponseMessage> Get(string requestUri)
+            => _httpClient.GetAsync(requestUri);
+
         protected Task<HttpResponseMessage> Post<TCommand>(TCommand command, string requestUri)
             where TCommand : ICommand
             => _httpClient.PostAsync(requestUri, GetContent(command));
 
-        protected Task<HttpResponseMessage> Get(string requestUri)
-            => _httpClient.GetAsync(requestUri);
+        protected Task<HttpResponseMessage> Delete(string requestUri)
+             => _httpClient.DeleteAsync(requestUri);
     }
 }
