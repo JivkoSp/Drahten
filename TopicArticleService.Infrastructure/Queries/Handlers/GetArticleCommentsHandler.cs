@@ -29,7 +29,7 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
                 .AsNoTracking()
                 .ToListAsync();
 
-            return articleCommentReadModels.Count != 0 ? _mapper.Map<List<ArticleCommentDto>>(articleCommentReadModels) : null;
+            return _mapper.Map<List<ArticleCommentDto>>(articleCommentReadModels);
         }
     }
 }
