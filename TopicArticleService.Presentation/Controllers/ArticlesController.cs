@@ -99,7 +99,7 @@ namespace TopicArticleService.Presentation.Controllers
         {
             await _commandDispatcher.DispatchAsync(removeArticleCommentCommand);
 
-            return Created(HttpContext.Request.Path, null);
+            return NoContent();
         }
     }
 }
