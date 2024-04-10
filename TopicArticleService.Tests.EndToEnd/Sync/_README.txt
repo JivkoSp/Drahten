@@ -11,6 +11,7 @@ Due to this reason, the time comparison is done with a tolerance of 1 millisecon
 				**** PostgreSQL ****
 --------------------------------------------------------
 
+
 --------------------------------------------------------
 *** Special features for RegisterArticleCommentTests *** 
 --------------------------------------------------------
@@ -22,6 +23,19 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 --------------------------------------------------------
 *** Special features for RegisterArticleCommentTests *** 
 --------------------------------------------------------
+
+
+---------------------------------------------------------------
+*** Special features for RegisterArticleCommentLikeTests *** 
+---------------------------------------------------------------
+About the Register_ArticleCommentLike_Endpoint_Should_Add_ArticleCommentLike_With_Given_ArticleCommentId_And_UserId_To_The_Database(...) method:
+------------
+The time comaprison of the objects addArticleCommentLikeCommand and articleCommentLike is NOT done like this:
+articleCommentLike.DateTime.ShouldBe(addArticleCommentLikeCommand.DateTime);
+This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
+---------------------------------------------------------------
+*** Special features for RegisterArticleCommentLikeTests *** 
+---------------------------------------------------------------
 
 
 --------------------------------------------------------
