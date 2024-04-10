@@ -60,6 +60,8 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             var response = await Delete($"/topic-article-service/articles/{removeArticleCommentCommand.ArticleId}/comments/{removeArticleCommentCommand.ArticleCommentId}");
 
             //ASSERT
+            response.ShouldNotBeNull();
+
             response.ReasonPhrase.ShouldBe("No Content");
 
             response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -78,6 +80,8 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             var response = await Get($"/topic-article-service/articles/{removeArticleCommentCommand.ArticleId}/comments/");
 
             //ASSERT
+            response.ShouldNotBeNull();
+
             response.ReasonPhrase.ShouldBe("Not Found");
 
             response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
