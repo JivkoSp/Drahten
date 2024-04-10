@@ -93,5 +93,13 @@ namespace TopicArticleService.Presentation.Controllers
 
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpDelete("{ArticleId:guid}/comments/{ArticleCommentId:guid}")]
+        public async Task<ActionResult> RemoveArticleComment([FromBody] RemoveArticleCommentCommand removeArticleCommentCommand)
+        {
+            await _commandDispatcher.DispatchAsync(removeArticleCommentCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
