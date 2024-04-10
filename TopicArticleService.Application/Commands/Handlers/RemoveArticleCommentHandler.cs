@@ -21,7 +21,7 @@ namespace TopicArticleService.Application.Commands.Handlers
                 throw new ArticleNotFoundException(command.ArticleId);
             }
 
-            //article.RemoveComment(command.ArticleCommentId, command.ParentArticleCommentId);
+            article.RemoveComment(command.ArticleCommentId);
 
             await _articleRepository.UpdateArticleAsync(article);
         }
