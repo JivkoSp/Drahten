@@ -10,14 +10,14 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
     {
         private readonly HttpClient _httpClient;
 
+        private static StringContent GetContent(object value)
+           => new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
+
         public BaseSyncIntegrationTest(DrahtenApplicationFactory factory)
         {
             factory.Server.AllowSynchronousIO = true;
             _httpClient = factory.CreateClient();
         }
-
-        protected static StringContent GetContent(object value)
-            => new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
 
         protected Task<HttpResponseMessage> Post<TCommand>(TCommand command, string requestUri)
             where TCommand : ICommand
