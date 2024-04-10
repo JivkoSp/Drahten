@@ -95,7 +95,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpDelete("{ArticleId:guid}/comments/{ArticleCommentId:guid}")]
-        public async Task<ActionResult> RemoveArticleComment([FromBody] RemoveArticleCommentCommand removeArticleCommentCommand)
+        public async Task<ActionResult> RemoveArticleComment([FromRoute] RemoveArticleCommentCommand removeArticleCommentCommand)
         {
             await _commandDispatcher.DispatchAsync(removeArticleCommentCommand);
 
