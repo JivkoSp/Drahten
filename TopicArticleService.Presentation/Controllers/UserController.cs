@@ -24,7 +24,7 @@ namespace TopicArticleService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getUsersRelatedToArticleQuery);
 
-            if(result == null)
+            if(result.Count == 0)
             {
                 return NotFound();
             }
