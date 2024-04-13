@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using UserService.Domain.Events;
 using UserService.Domain.Exceptions;
 using UserService.Domain.ValueObjects;
 
@@ -55,7 +56,7 @@ namespace UserService.Domain.Entities
 
             _bannedUsers.Add(bannedUser);
 
-            //TODO: Add event
+            AddEvent(new BannedUserAdded(this, bannedUser));
         }
 
         public void AddContactRequest(ContactRequest contactRequest)
@@ -69,7 +70,7 @@ namespace UserService.Domain.Entities
 
             _contactRequests.Add(contactRequest);
 
-            //TODO: Add event
+            AddEvent(new ContactRequestAdded(this, contactRequest));
         }
 
         public void AddToAuditTrail(UserTracking userTracking)
@@ -83,7 +84,7 @@ namespace UserService.Domain.Entities
 
             _auditTrail.Add(userTracking);
 
-            //TODO: Add event
+            AddEvent(new UserTrackingAuditAdded(this, userTracking));
         }
     }
 }
