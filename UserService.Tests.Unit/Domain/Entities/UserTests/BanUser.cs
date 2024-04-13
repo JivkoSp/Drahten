@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using UserService.Domain.Entities;
+using UserService.Domain.Events;
 using UserService.Domain.Exceptions;
 using UserService.Domain.Factories;
 using UserService.Domain.Factories.Interfaces;
@@ -58,6 +59,36 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
             exception.ShouldBeOfType<BannedUserAlreadyExistsException>();
         }
 
-        
+        //Should add banned user (BannedUser value object) to internal collection of BannedUser value objects
+        //and produce BannedUserAdded domain event.
+        //The BannedUserAdded domain event should contain:
+        //1. The same user entity that the banned user was added to.
+        //2. The same banned user value object that was added to the internal collection of BannedUser value objects.
+        [Fact]
+        public void Adds_BannedUser_And_Produces_BannedUserAdded_Domain_Event_On_Success()
+        {
+            //ARRANGE
+            var user = GetUser();
+
+            var bannedUser = GetBannedUser();
+
+            //ACT
+            var exception = Record.Exception(() => user.BanUser(bannedUser));
+
+            //ASSERT
+            exception.ShouldBeNull();
+
+            user.DomainEvents.Count().ShouldBe(1);
+
+            user.BannedUsers.Count().ShouldBe(1);
+
+            var bannedUserAddedEvent = user.DomainEvents.FirstOrDefault() as BannedUserAdded;
+
+            bannedUserAddedEvent.ShouldNotBeNull();
+
+            bannedUserAddedEvent.User.ShouldBeSameAs(user);
+
+            bannedUserAddedEvent.BannedUser.ShouldBeSameAs(bannedUser);
+        }
     }
 }
