@@ -91,7 +91,7 @@ namespace UserService.Domain.Entities
         {
             var alreadyExists = _contactRequests.Any(x => x.UserId == contactRequest.UserId);
 
-            if (alreadyExists)
+            if (alreadyExists == false)
             {
                 throw new ContactRequestNotFoundException(Id, contactRequest.UserId);
             }
