@@ -87,6 +87,20 @@ namespace UserService.Domain.Entities
             AddEvent(new ContactRequestAdded(this, contactRequest));
         }
 
+        public void RemoveContactRequest(ContactRequest contactRequest)
+        {
+            var alreadyExists = _contactRequests.Any(x => x.UserId == contactRequest.UserId);
+
+            if (alreadyExists)
+            {
+                throw new ContactRequestNotFoundException(Id, contactRequest.UserId);
+            }
+
+            _contactRequests.Remove(contactRequest);
+
+            AddEvent(new ContactRequestRemoved(this, contactRequest));
+        }
+
         public void AddToAuditTrail(UserTracking userTracking)
         {
             var alreadyExists = _auditTrail.Contains(userTracking);
