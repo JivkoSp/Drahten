@@ -1,4 +1,6 @@
-﻿using UserService.Domain.Events;
+﻿using System.Reflection;
+using UserService.Domain.Events;
+using UserService.Domain.Exceptions;
 
 namespace UserService.Domain.Entities
 {
@@ -33,6 +35,17 @@ namespace UserService.Domain.Entities
 
             Version++;
             _versionIncremented = true;
+        }
+
+        protected void ValidateConstructorParameters<TException>(params object[] parameters)
+            where TException : DomainException
+        {
+            if (parameters.Any(x => x == null))
+            {
+                TException exceptionInstance = Activator.CreateInstance(typeof(TException), true) as TException;
+
+                throw exceptionInstance;
+            }
         }
     }
 }
