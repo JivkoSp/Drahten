@@ -88,13 +88,13 @@ namespace UserService.Domain.Entities
             AddEvent(new ContactRequestAdded(this, contactRequest));
         }
 
-        public void RemoveContactRequest(ContactRequest contactRequest)
+        public void RemoveContactRequest(UserID issuerUserId)
         {
-            var alreadyExists = _contactRequests.Any(x => x.UserId == contactRequest.UserId);
+            var contactRequest = _contactRequests.SingleOrDefault(x => x.UserId == issuerUserId);
 
-            if (alreadyExists == false)
+            if (contactRequest == null)
             {
-                throw new ContactRequestNotFoundException(Id, contactRequest.UserId);
+                throw new ContactRequestNotFoundException(Id, issuerUserId);
             }
 
             _contactRequests.Remove(contactRequest);
