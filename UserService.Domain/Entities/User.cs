@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using UserService.Domain.Events;
 using UserService.Domain.Exceptions;
 using UserService.Domain.ValueObjects;
@@ -36,6 +35,8 @@ namespace UserService.Domain.Entities
 
         internal User(UserID userId, UserFullName userFullName, UserNickName userNickName, UserEmailAddress userEmailAddress)
         {
+            ValidateConstructorParameters<NullUserParameterException>([userId, userFullName, userNickName, userEmailAddress]);
+
             Id = userId;
             _userFullName = userFullName;
             _userNickName = userNickName;
