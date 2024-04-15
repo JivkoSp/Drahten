@@ -37,7 +37,7 @@ namespace UserService.Domain.Entities
             _versionIncremented = true;
         }
 
-        protected void ValidateConstructorParameters<TException>(params object[] parameters)
+        protected void ValidateConstructorParameters<TException>(object[] parameters)
             where TException : DomainException
         {
             if (parameters.Any(x => x == null))
