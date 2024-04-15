@@ -1,4 +1,5 @@
-﻿using UserService.Application.Services.ReadServices;
+﻿using UserService.Application.Exceptions;
+using UserService.Application.Services.ReadServices;
 using UserService.Domain.Factories.Interfaces;
 using UserService.Domain.Repositories;
 
@@ -23,7 +24,7 @@ namespace UserService.Application.Commands.Handlers
 
             if (alreadyExists)
             {
-                //TODO: Throw exception
+                throw new UserAlreadyExistsException(command.UserId);
             }
 
             var user = _userFactory.Create(command.UserId, command.UserFullName, command.UserNickName, command.UserEmailAddress);
