@@ -60,13 +60,13 @@ namespace UserService.Domain.Entities
             AddEvent(new BannedUserAdded(this, bannedUser));
         }
 
-        public void UnbanUser(BannedUser bannedUser)
+        public void UnbanUser(UserID bannedUserId)
         {
-            var alreadyExists = _bannedUsers.Contains(bannedUser);
+            var bannedUser = _bannedUsers.SingleOrDefault(x => x.UserId == bannedUserId);
 
-            if (alreadyExists == false)
+            if (bannedUser == null)
             {
-                throw new BannedUserNotFoundException(Id, bannedUser.UserId);
+                throw new BannedUserNotFoundException(Id, bannedUserId);
             }
 
             _bannedUsers.Remove(bannedUser);
