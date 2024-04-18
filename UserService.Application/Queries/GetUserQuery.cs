@@ -2,8 +2,5 @@
 
 namespace UserService.Application.Queries
 {
-    public record GetUserQuery : IQuery<UserDto>
-    {
-        public string UserId { get; set; }
-    }
+    public record GetUserQuery(Guid UserId) : IQuery<UserDto>;
 }
