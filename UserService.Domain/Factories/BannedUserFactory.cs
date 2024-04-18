@@ -5,7 +5,7 @@ namespace UserService.Domain.Factories
 {
     public sealed class BannedUserFactory : IBannedUserFactory
     {
-        public BannedUser Create(UserID userId)
-            => new BannedUser(userId);
+        public BannedUser Create(UserID issuerUserId, UserID receiverUserId, DateTimeOffset dateTime)
+            => new BannedUser(issuerUserId, receiverUserId, dateTime);
     }
 }
