@@ -15,18 +15,20 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConf
             builder.HasKey(key => new { key.IssuerUserId, key.ReceiverUserId });
 
             //Property config
+            builder.Property(p => p.Message);
+
             builder.Property(p => p.DateTime)
              .IsRequired();
 
             //Relationships
             builder.HasOne(p => p.Issuer)
-                .WithMany(p => p.ContactRequests)
+                .WithMany(p => p.IssuedContactRequests)
                 .HasForeignKey(p => p.IssuerUserId)
                 .HasConstraintName("FK_Issuer_ContactRequests")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Receiver)
-               .WithMany(p => p.ContactRequests)
+               .WithMany(p => p.ReceivedContactRequests)
                .HasForeignKey(p => p.ReceiverUserId)
                .HasConstraintName("FK_Receiver_ContactRequests")
                .OnDelete(DeleteBehavior.Cascade);
