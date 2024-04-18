@@ -14,15 +14,19 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConf
             //Composite primary key
             builder.HasKey(key => new { key.IssuerUserId, key.ReceiverUserId });
 
+            //Property config
+            builder.Property(p => p.DateTime)
+             .IsRequired();
+
             //Relationships
             builder.HasOne(p => p.Issuer)
-                .WithMany(p => p.BannedUsers)
+                .WithMany(p => p.IssuedBansByUser)
                 .HasForeignKey(p => p.IssuerUserId)
                 .HasConstraintName("FK_Issuer_BannedUsers")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Receiver)
-                .WithMany(p => p.BannedUsers)
+                .WithMany(p => p.ReceivedBansForUser)
                 .HasForeignKey(p => p.ReceiverUserId)
                 .HasConstraintName("FK_Receiver_BannedUsers")
                 .OnDelete(DeleteBehavior.Cascade);
