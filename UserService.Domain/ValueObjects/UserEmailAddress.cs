@@ -4,7 +4,7 @@ namespace UserService.Domain.ValueObjects
 {
     public record UserEmailAddress
     {
-        public string Value { get; }
+        internal string Value { get; }
 
         public UserEmailAddress(string value)
         {
