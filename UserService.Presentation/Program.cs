@@ -1,10 +1,25 @@
+using UserService.Application.Extensions;
+using UserService.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Add logging configuration
+builder.Logging.ClearProviders(); // Clear default logging providers
+
+builder.Logging.AddConsole(); // Add Console logger
+
+builder.Logging.SetMinimumLevel(LogLevel.Debug); // Set minimum log level to Debug
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddApplication();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
