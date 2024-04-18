@@ -10,18 +10,24 @@ namespace UserService.Domain.Entities
         private UserFullName _userFullName;
         private UserNickName _userNickName;
         private UserEmailAddress _userEmailAddress;
-        private HashSet<BannedUser> _bannedUsers;
-        private List<ContactRequest> _contactRequests;
+        private HashSet<BannedUser> _issuedUserBans;
+        private List<ContactRequest> _issuedContactRequests;
+        private List<ContactRequest> _receivedContactRequests;
         private HashSet<UserTracking> _auditTrail;
 
-        public IReadOnlyCollection<BannedUser> BannedUsers
+        public IReadOnlyCollection<BannedUser> IssuedUserBans
         {
-            get { return new ReadOnlyCollection<BannedUser>(_bannedUsers.ToList()); }
+            get { return new ReadOnlyCollection<BannedUser>(_issuedUserBans.ToList()); }
         }
 
-        public IReadOnlyCollection<ContactRequest> ContactRequests
+        public IReadOnlyCollection<ContactRequest> IssuedContactRequests
         {
-            get { return new ReadOnlyCollection<ContactRequest>(_contactRequests); }
+            get { return new ReadOnlyCollection<ContactRequest>(_issuedContactRequests); }
+        }
+
+        public IReadOnlyCollection<ContactRequest> ReceivedContactRequests
+        {
+            get { return new ReadOnlyCollection<ContactRequest>(_receivedContactRequests); }
         }
 
         public IReadOnlyCollection<UserTracking> AuditTrail
@@ -41,63 +47,77 @@ namespace UserService.Domain.Entities
             _userFullName = userFullName;
             _userNickName = userNickName;
             _userEmailAddress = userEmailAddress;
-            _bannedUsers = new HashSet<BannedUser>();
-            _contactRequests = new List<ContactRequest>();
+            _issuedUserBans = new HashSet<BannedUser>();
+            _issuedContactRequests = new List<ContactRequest>();
+            _receivedContactRequests = new List<ContactRequest>();
             _auditTrail = new HashSet<UserTracking>();
         }
 
         public void BanUser(BannedUser bannedUser)
         {
-            var alreadyExists = _bannedUsers.Contains(bannedUser);
+            var alreadyExists = _issuedUserBans.Contains(bannedUser);
 
             if (alreadyExists)
             {
-                throw new BannedUserAlreadyExistsException(Id, bannedUser.UserId);
+                throw new BannedUserAlreadyExistsException(Id, bannedUser.ReceiverUserId);
             }
 
-            _bannedUsers.Add(bannedUser);
+            _issuedUserBans.Add(bannedUser);
 
             AddEvent(new BannedUserAdded(this, bannedUser));
         }
 
         public void UnbanUser(UserID bannedUserId)
         {
-            var bannedUser = _bannedUsers.SingleOrDefault(x => x.UserId == bannedUserId);
+            var bannedUser = _issuedUserBans.SingleOrDefault(x => x.ReceiverUserId == bannedUserId);
 
             if (bannedUser == null)
             {
                 throw new BannedUserNotFoundException(Id, bannedUserId);
             }
 
-            _bannedUsers.Remove(bannedUser);
+            _issuedUserBans.Remove(bannedUser);
 
             AddEvent(new BannedUserRemoved(this, bannedUser));
         }
 
         public void AddContactRequest(ContactRequest contactRequest)
         {
-            var alreadyExists = _contactRequests.Any(x => x.UserId == contactRequest.UserId);
+            var alreadyExists = _receivedContactRequests.Any(x => x.IssuerUserId == contactRequest.IssuerUserId);
 
             if (alreadyExists)
             {
-                throw new ContactRequestAlreadyExistsException(Id, contactRequest.UserId);
+                throw new ContactRequestAlreadyExistsException(Id, contactRequest.IssuerUserId);
             }
 
-            _contactRequests.Add(contactRequest);
+            _receivedContactRequests.Add(contactRequest);
 
             AddEvent(new ContactRequestAdded(this, contactRequest));
         }
-
-        public void RemoveContactRequest(UserID issuerUserId)
+        public void RemoveIssuedContactRequest(UserID receiverUserId)
         {
-            var contactRequest = _contactRequests.SingleOrDefault(x => x.UserId == issuerUserId);
+            var contactRequest = _issuedContactRequests.SingleOrDefault(x => x.ReceiverUserId == receiverUserId);
+
+            if (contactRequest == null)
+            {
+                throw new ContactRequestNotFoundException(Id, receiverUserId);
+            }
+
+            _issuedContactRequests.Remove(contactRequest);
+
+            AddEvent(new ContactRequestRemoved(this, contactRequest));
+        }
+
+        public void RemoveReceivedContactRequest(UserID issuerUserId)
+        {
+            var contactRequest = _receivedContactRequests.SingleOrDefault(x => x.IssuerUserId == issuerUserId);
 
             if (contactRequest == null)
             {
                 throw new ContactRequestNotFoundException(Id, issuerUserId);
             }
 
-            _contactRequests.Remove(contactRequest);
+            _receivedContactRequests.Remove(contactRequest);
 
             AddEvent(new ContactRequestRemoved(this, contactRequest));
         }
