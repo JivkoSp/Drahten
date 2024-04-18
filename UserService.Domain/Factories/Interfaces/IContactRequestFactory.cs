@@ -4,6 +4,6 @@ namespace UserService.Domain.Factories.Interfaces
 {
     public interface IContactRequestFactory
     {
-        ContactRequest Create(UserID userId, DateTimeOffset dateTime);
+        ContactRequest Create(UserID issuerUserId, UserID receiverUserId, DateTimeOffset dateTime, string message);
     }
 }
