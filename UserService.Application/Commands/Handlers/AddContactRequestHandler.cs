@@ -35,7 +35,8 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.IssuerUserId);
             }
 
-            var contactRequest = _contactRequestFactory.Create(command.IssuerUserId, command.DateTime);
+            var contactRequest = _contactRequestFactory.Create(command.IssuerUserId, command.ReceiverUserId, 
+                command.DateTime, command.Message);
 
             receiver.AddContactRequest(contactRequest);
 
