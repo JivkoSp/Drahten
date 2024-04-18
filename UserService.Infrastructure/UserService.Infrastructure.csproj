@@ -24,4 +24,8 @@
     <ProjectReference Include="..\UserService.Application\UserService.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntityFramework\Services\WriteServices\" />
+  </ItemGroup>
+
 </Project>
