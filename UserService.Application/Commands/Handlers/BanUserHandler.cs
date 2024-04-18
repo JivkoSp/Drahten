@@ -34,7 +34,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ReceiverUserId);
             }
 
-            var banUser = _bannedUserFactory.Create(command.ReceiverUserId);
+            var banUser = _bannedUserFactory.Create(command.IssuerUserId, command.ReceiverUserId, command.DateTime);
 
             issuer.BanUser(banUser);
 
