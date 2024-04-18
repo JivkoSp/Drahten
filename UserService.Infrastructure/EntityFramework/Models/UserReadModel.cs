@@ -11,8 +11,10 @@ namespace UserService.Infrastructure.EntityFramework.Models
         public string UserEmailAddress { get; set; }
 
         //Relationships
-        public virtual ICollection<BannedUserReadModel> BannedUsers { get; set; }
-        public virtual ICollection<ContactRequestReadModel> ContactRequests { get; set; }
+        public virtual ICollection<BannedUserReadModel> IssuedBansByUser { get; set; }
+        public virtual ICollection<BannedUserReadModel> ReceivedBansForUser { get; set; }
+        public virtual ICollection<ContactRequestReadModel> IssuedContactRequests { get; set; }
+        public virtual ICollection<ContactRequestReadModel> ReceivedContactRequests { get; set; }
         public virtual ICollection<UserTrackingReadModel> AuditTrail { get; set; }
     }
 }
