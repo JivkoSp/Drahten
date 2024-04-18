@@ -9,6 +9,10 @@ namespace UserService.Domain.ValueObjects
         internal DateTimeOffset DateTime { get; }
         internal string Referrer { get; }
 
+        private UserTracking()
+        {
+        }
+
         public UserTracking(UserID userId, string action, DateTimeOffset dateTime, string referrer)
         {
             if(userId == null)
