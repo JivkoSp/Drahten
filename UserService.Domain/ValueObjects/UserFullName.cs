@@ -4,7 +4,7 @@ namespace UserService.Domain.ValueObjects
 {
     public record UserFullName
     {
-        public string Value { get; }
+        internal string Value { get; }
 
         public UserFullName(string value)
         {
