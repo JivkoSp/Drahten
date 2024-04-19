@@ -87,7 +87,8 @@ namespace UserService.Tests.Unit.Domain.Factories
 
                 //This fields are skipped becouse the fields that are important for the check are the fields that are set by
                 //the Create method of the _userConcreteFactory.
-                if (fieldName == "_bannedUsers" || fieldName == "_contactRequests" || fieldName == "_auditTrail")
+                if (fieldName == "_issuedUserBans" || fieldName == "_issuedContactRequests" 
+                    || fieldName == "_receivedContactRequests" || fieldName == "_auditTrail")
                 {
                     continue;
                 }
