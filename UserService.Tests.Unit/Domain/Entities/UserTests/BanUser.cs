@@ -25,7 +25,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private BannedUser GetBannedUser()
         {
-            var bannedUser = _bannedUserFactory.Create(Guid.NewGuid());
+            var bannedUser = _bannedUserFactory.Create(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now);
 
             return bannedUser;
         }
@@ -62,31 +62,31 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         //Should add banned user (BannedUser value object) to internal collection of BannedUser value objects
         //and produce BannedUserAdded domain event.
         //The BannedUserAdded domain event should contain:
-        //1. The same user entity that the banned user was added to.
+        //1. The same user entity that the banned user was added to (The issuer).
         //2. The same banned user value object that was added to the internal collection of BannedUser value objects.
         [Fact]
         public void Adds_BannedUser_And_Produces_BannedUserAdded_Domain_Event_On_Success()
         {
             //ARRANGE
-            var user = GetUser();
+            var issuer = GetUser();
 
             var bannedUser = GetBannedUser();
 
             //ACT
-            var exception = Record.Exception(() => user.BanUser(bannedUser));
+            var exception = Record.Exception(() => issuer.BanUser(bannedUser));
 
             //ASSERT
             exception.ShouldBeNull();
 
-            user.DomainEvents.Count().ShouldBe(1);
+            issuer.DomainEvents.Count().ShouldBe(1);
 
-            user.BannedUsers.Count().ShouldBe(1);
+            issuer.IssuedUserBans.Count().ShouldBe(1);
 
-            var bannedUserAddedEvent = user.DomainEvents.FirstOrDefault() as BannedUserAdded;
+            var bannedUserAddedEvent = issuer.DomainEvents.FirstOrDefault() as BannedUserAdded;
 
             bannedUserAddedEvent.ShouldNotBeNull();
 
-            bannedUserAddedEvent.User.ShouldBeSameAs(user);
+            bannedUserAddedEvent.User.ShouldBeSameAs(issuer);
 
             bannedUserAddedEvent.BannedUser.ShouldBeSameAs(bannedUser);
         }
