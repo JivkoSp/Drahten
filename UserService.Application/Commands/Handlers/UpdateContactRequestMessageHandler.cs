@@ -23,11 +23,20 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.IssuerUserId);
             }
 
+            var receiver = await _userRepository.GetUserByIdAsync(command.ReceiverUserId);
+
+            if (receiver == null)
+            {
+                throw new UserNotFoundException(command.ReceiverUserId);
+            }
+
             var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId, command.DateTime, command.Message);
                 
             issuer.RemoveIssuedContactRequest(command.ReceiverUserId);
 
             issuer.IssueContactRequest(contactRequest);
+
+            receiver.ReceiveContactRequest(contactRequest);
 
             await _userRepository.UpdateUserAsync(issuer);
         }
