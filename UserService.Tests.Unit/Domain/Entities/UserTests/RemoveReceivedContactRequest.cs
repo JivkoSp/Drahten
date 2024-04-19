@@ -14,7 +14,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         #region GLOBAL ARRANGE
 
         private readonly IUserFactory _userFactory;
-        private readonly IContactRequestFactory _contactRequestFactory;
 
         private User GetUser()
         {
@@ -25,7 +24,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private ContactRequest GetContactRequest()
         {
-            var contactRequest = _contactRequestFactory.Create(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now, null);
+            var contactRequest = new ContactRequest(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now, null);
 
             return contactRequest;
         }
@@ -33,7 +32,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public RemoveContactRequest()
         {
             _userFactory = new UserFactory();
-            _contactRequestFactory = new ContactRequestFactory();
         }
 
         #endregion

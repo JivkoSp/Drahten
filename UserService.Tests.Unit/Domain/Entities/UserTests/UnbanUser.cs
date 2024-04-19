@@ -14,7 +14,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         #region GLOBAL ARRANGE
 
         private readonly IUserFactory _userFactory;
-        private readonly IBannedUserFactory _bannedUserFactory;
 
         private User GetUser()
         {
@@ -25,7 +24,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private BannedUser GetBannedUser()
         {
-            var bannedUser = _bannedUserFactory.Create(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now);
+            var bannedUser = new BannedUser(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now);
 
             return bannedUser;
         }
@@ -33,7 +32,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public UnbanUser()
         {
             _userFactory = new UserFactory();
-            _bannedUserFactory = new BannedUserFactory();
         }
 
         #endregion

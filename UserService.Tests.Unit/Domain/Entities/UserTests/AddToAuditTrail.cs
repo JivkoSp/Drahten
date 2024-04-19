@@ -14,7 +14,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         #region GLOBAL ARRANGE
 
         private readonly IUserFactory _userFactory;
-        private readonly IUserTrackingFactory _userTrackingFactory;
 
         private User GetUser()
         {
@@ -25,7 +24,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private UserTracking GetUserTracking()
         {
-            var userTracking = _userTrackingFactory.Create(Guid.NewGuid(), "LogIn", DateTimeOffset.Now, "some link");
+            var userTracking = new UserTracking(Guid.NewGuid(), "LogIn", DateTimeOffset.Now, "some link");
 
             return userTracking;
         }
@@ -33,7 +32,6 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public AddToAuditTrail()
         {
             _userFactory = new UserFactory();
-            _userTrackingFactory = new UserTrackingFactory();
         }
 
         #endregion
