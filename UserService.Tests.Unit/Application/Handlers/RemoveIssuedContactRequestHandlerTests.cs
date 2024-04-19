@@ -96,10 +96,9 @@ namespace UserService.Tests.Unit.Application.Handlers
             exception.ShouldBeOfType<UserNotFoundException>();
         }
 
-        //Should remove ContactRequest value object that is issued by user that corresponds to the IssuerUserId from the BanUserCommand
-        //if the IssuerUserId and ReceiverUserId from the BanUserCommand are valid Ids for existing User domain entities.
-        //Additionally the the repository must be called to update the user entity that corresponds to the
-        //IssuerUserId from the BanUserCommand.
+        //Should remove ContactRequest value object that is issued by user that corresponds to the IssuerUserId from the command
+        //if the IssuerUserId and ReceiverUserId from the command are valid Ids for existing User domain entities.
+        //Additionally the repository must be called to update the user entity that corresponds to the IssuerUserId from the command.
         [Fact]
         public async Task Given_Valid_IssuerUserId_And_ReceiverUserId_Removes_ContactRequest_Instance_From_User_And_Calls_Repository_On_Success()
         {
