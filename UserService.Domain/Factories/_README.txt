@@ -34,20 +34,3 @@ The UserFactory class is an implementation of the IUserFactory interface. It han
 * Purpose: The UserFactory encapsulates the logic for creating User entities.
 * Constructor: The UserFactory class itself doesn’t have a constructor. Instead, it relies on the Create method.
 * Create Method: The Create method accepts parameters (such as userFullName, userNickName) and returns a fully constructed User entity.
--------------------------
-Similar to IUserFactory the other interfaces are defining the contract for creating instances of other entity types or value objects.
--------------------------
-Why are you using the factory pattern for creating simple value objects?
--------------------------
-The creating of the value object is not complex, but am using the factory pattern for the following reasons:
-* Consistency: Using the factory pattern for creating both entity types and value objects provides consistency for the codebase.
-	Consistency can make the codebase easier to understand for developers who are already familiar with the project's design patterns,
-	conventions and align well with the principles of Clean Architecture, Domain-Driven Design.
-* Separation of Concerns: As mentioned earlier, separating the responsibility of creating objects from the command execution logic 
-	can help maintain a clear separation of concerns in the application. This separation can improve code readability, maintainability, 
-	and scalability.
-* Testing: Using a factory can facilitate easier unit testing by allowing mocking the factory interface in the unit tests. 
-	This isolation can make writing focused and targeted tests simpler, without needing to worry about the details of object creation.
-* Flexibility and Extensibility: Adapting the code to future changes or requirements can be easier by encapsulating the object creation process 
-	within a factory. If the creation process for value objects needs to evolve or become more complex in the future, I can modify the factory 
-	implementation without impacting other parts of the application.
