@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UserService.Application.Commands.Dispatcher;
 using UserService.Application.Commands.Handlers;
 using UserService.Application.Queries.Dispatcher;
@@ -7,6 +8,7 @@ using UserService.Application.Queries.Handlers;
 using UserService.Domain.Factories;
 using UserService.Domain.Factories.Interfaces;
 
+[assembly: InternalsVisibleTo(assemblyName: "UserService.Tests.Unit")]
 namespace UserService.Application.Extensions
 {
     public static class ServiceCollectionExtensions
