@@ -46,10 +46,7 @@ namespace UserService.Application.Extensions
         internal static IServiceCollection AddFactories(this IServiceCollection services)
         {
             services.AddSingleton<IUserFactory, UserFactory>();
-            services.AddSingleton<IBannedUserFactory, BannedUserFactory>();
-            services.AddSingleton<IContactRequestFactory, ContactRequestFactory>();
-            services.AddSingleton<IUserTrackingFactory, UserTrackingFactory>();
-
+           
             return services;
         }
 
