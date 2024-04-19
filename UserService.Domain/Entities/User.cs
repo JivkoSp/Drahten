@@ -81,7 +81,7 @@ namespace UserService.Domain.Entities
             AddEvent(new BannedUserRemoved(this, bannedUser));
         }
 
-        public void AddContactRequest(ContactRequest contactRequest)
+        public void ReceiveContactRequest(ContactRequest contactRequest)
         {
             var alreadyExists = _receivedContactRequests.Any(x => x.IssuerUserId == contactRequest.IssuerUserId);
 
