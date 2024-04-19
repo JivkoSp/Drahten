@@ -27,7 +27,7 @@ namespace UserService.Application.Commands.Handlers
                 
             issuer.RemoveIssuedContactRequest(command.ReceiverUserId);
 
-            issuer.AddContactRequest(contactRequest);
+            issuer.IssueContactRequest(contactRequest);
 
             await _userRepository.UpdateUserAsync(issuer);
         }
