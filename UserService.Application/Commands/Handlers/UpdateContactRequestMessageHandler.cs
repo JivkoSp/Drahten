@@ -1,18 +1,17 @@
 ﻿using UserService.Application.Exceptions;
 using UserService.Domain.Factories.Interfaces;
 using UserService.Domain.Repositories;
+using UserService.Domain.ValueObjects;
 
 namespace UserService.Application.Commands.Handlers
 {
     internal sealed class UpdateContactRequestMessageHandler : ICommandHandler<UpdateContactRequestMessageCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IContactRequestFactory _contactRequestFactory;
 
-        public UpdateContactRequestMessageHandler(IUserRepository userRepository, IContactRequestFactory contactRequestFactory)
+        public UpdateContactRequestMessageHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _contactRequestFactory = contactRequestFactory;
         }
 
         public async Task HandleAsync(UpdateContactRequestMessageCommand command)
@@ -24,9 +23,8 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.IssuerUserId);
             }
 
-            var contactRequest = _contactRequestFactory.Create(command.IssuerUserId,
-                command.ReceiverUserId, command.DateTime, command.Message);
-
+            var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId, command.DateTime, command.Message);
+                
             issuer.RemoveIssuedContactRequest(command.ReceiverUserId);
 
             issuer.AddContactRequest(contactRequest);

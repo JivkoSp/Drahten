@@ -1,7 +1,7 @@
 ﻿using UserService.Application.Exceptions;
 using UserService.Application.Services.ReadServices;
-using UserService.Domain.Factories.Interfaces;
 using UserService.Domain.Repositories;
+using UserService.Domain.ValueObjects;
 
 namespace UserService.Application.Commands.Handlers
 {
@@ -9,13 +9,11 @@ namespace UserService.Application.Commands.Handlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserReadService _userReadService;
-        private readonly IBannedUserFactory _bannedUserFactory;
 
-        public BanUserHandler(IUserRepository userRepository, IUserReadService userReadService, IBannedUserFactory bannedUserFactory)
+        public BanUserHandler(IUserRepository userRepository, IUserReadService userReadService)
         {
             _userRepository = userRepository;
             _userReadService = userReadService;
-            _bannedUserFactory = bannedUserFactory;
         }
 
         public async Task HandleAsync(BanUserCommand command)
@@ -34,7 +32,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ReceiverUserId);
             }
 
-            var banUser = _bannedUserFactory.Create(command.IssuerUserId, command.ReceiverUserId, command.DateTime);
+            var banUser = new BannedUser(command.IssuerUserId, command.ReceiverUserId, command.DateTime);
 
             issuer.BanUser(banUser);
 

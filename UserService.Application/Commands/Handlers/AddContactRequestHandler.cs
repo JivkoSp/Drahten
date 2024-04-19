@@ -2,6 +2,7 @@
 using UserService.Application.Services.ReadServices;
 using UserService.Domain.Factories.Interfaces;
 using UserService.Domain.Repositories;
+using UserService.Domain.ValueObjects;
 
 namespace UserService.Application.Commands.Handlers
 {
@@ -9,14 +10,11 @@ namespace UserService.Application.Commands.Handlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserReadService _userReadService;
-        private readonly IContactRequestFactory _contactRequestFactory;
 
-        public AddContactRequestHandler(IUserRepository userRepository, IUserReadService userReadService, 
-            IContactRequestFactory contactRequestFactory)
+        public AddContactRequestHandler(IUserRepository userRepository, IUserReadService userReadService)
         {
             _userRepository = userRepository;
             _userReadService = userReadService;
-            _contactRequestFactory = contactRequestFactory;
         }
 
         public async Task HandleAsync(AddContactRequestCommand command)
@@ -35,7 +33,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.IssuerUserId);
             }
 
-            var contactRequest = _contactRequestFactory.Create(command.IssuerUserId, command.ReceiverUserId, 
+            var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId,
                 command.DateTime, command.Message);
 
             receiver.AddContactRequest(contactRequest);
