@@ -108,6 +108,7 @@ namespace UserService.Domain.Entities
 
             AddEvent(new ContactRequestAdded(this, contactRequest));
         }
+
         public void RemoveIssuedContactRequest(UserID receiverUserId)
         {
             var contactRequest = _issuedContactRequests.SingleOrDefault(x => x.ReceiverUserId == receiverUserId);
