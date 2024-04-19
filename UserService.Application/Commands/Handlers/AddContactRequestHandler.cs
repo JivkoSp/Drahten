@@ -9,12 +9,10 @@ namespace UserService.Application.Commands.Handlers
     internal sealed class AddContactRequestHandler : ICommandHandler<AddContactRequestCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUserReadService _userReadService;
 
-        public AddContactRequestHandler(IUserRepository userRepository, IUserReadService userReadService)
+        public AddContactRequestHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _userReadService = userReadService;
         }
 
         public async Task HandleAsync(AddContactRequestCommand command)
