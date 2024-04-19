@@ -26,9 +26,9 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ReceiverUserId);
             }
 
-            var issuerExists = await _userReadService.ExistsByIdAsync(command.IssuerUserId);
+            var issuer = await _userRepository.GetUserByIdAsync(command.IssuerUserId);
 
-            if (issuerExists == false)
+            if (issuer == null)
             {
                 throw new UserNotFoundException(command.IssuerUserId);
             }
@@ -36,7 +36,9 @@ namespace UserService.Application.Commands.Handlers
             var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId,
                 command.DateTime, command.Message);
 
-            receiver.AddContactRequest(contactRequest);
+            issuer.IssueContactRequest(contactRequest);
+
+            receiver.ReceiveContactRequest(contactRequest);
 
             await _userRepository.UpdateUserAsync(receiver);
         }
