@@ -9,7 +9,7 @@ using Xunit;
 
 namespace UserService.Tests.Unit.Domain.Entities.UserTests
 {
-    public sealed class AddContactRequest
+    public sealed class ReceiveContactRequest
     {
         #region GLOBAL ARRANGE
 
@@ -29,7 +29,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
             return contactRequest;
         }
 
-        public AddContactRequest()
+        public ReceiveContactRequest()
         {
             _userFactory = new UserFactory();
         }
@@ -42,14 +42,14 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public void Duplicate_ContactRequest_Throws_ContactRequestAlreadyExistsException()
         {
             //ARRANGE
-            var user = GetUser();
+            var receiver = GetUser();
 
             var contactRequest = GetContactRequest();
 
-            user.AddContactRequest(contactRequest);
+            receiver.ReceiveContactRequest(contactRequest);
 
             //ACT
-            var exception = Record.Exception(() => user.AddContactRequest(contactRequest));
+            var exception = Record.Exception(() => receiver.ReceiveContactRequest(contactRequest));
 
             //ASSERT
             exception.ShouldNotBeNull();
@@ -72,7 +72,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
             var contactRequest = GetContactRequest(); //contact request from the issuer (another User).
 
             //ACT
-            var exception = Record.Exception(() => receiver.AddContactRequest(contactRequest));
+            var exception = Record.Exception(() => receiver.ReceiveContactRequest(contactRequest));
 
             //ASSERT
             exception.ShouldBeNull();
