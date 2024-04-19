@@ -25,7 +25,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private BannedUser GetBannedUser()
         {
-            var bannedUser = _bannedUserFactory.Create(Guid.NewGuid());
+            var bannedUser = _bannedUserFactory.Create(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now);
 
             return bannedUser;
         }
@@ -44,12 +44,12 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public void BannedUser_NotFound_Throws_BannedUserNotFoundException()
         {
             //ARRANGE
-            var user = GetUser();
+            var issuer = GetUser();
 
             var bannedUser = GetBannedUser();
 
             //ACT
-            var exception = Record.Exception(() => user.UnbanUser(bannedUser));
+            var exception = Record.Exception(() => issuer.UnbanUser(bannedUser.ReceiverUserId));
 
             //ASSERT
             exception.ShouldNotBeNull();
@@ -66,37 +66,37 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
         public void Removes_BannedUser_And_Produces_BannedUserRemoved_Domain_Event_On_Success()
         {
             //ARRANGE
-            var user = GetUser();
+            var issuer = GetUser();
 
             var bannedUser = GetBannedUser();
 
-            user.BanUser(bannedUser);
+            issuer.BanUser(bannedUser);
 
             //ACT
-            var exception = Record.Exception(() => user.UnbanUser(bannedUser));
+            var exception = Record.Exception(() => issuer.UnbanUser(bannedUser.ReceiverUserId));
 
             //ASSERT
             exception.ShouldBeNull();
 
-            user.DomainEvents.Count().ShouldBe(2);
+            issuer.DomainEvents.Count().ShouldBe(2);
 
-            user.BannedUsers.Count().ShouldBe(0);
+            issuer.IssuedUserBans.Count().ShouldBe(0);
 
-            var bannedUserAddedEvent = user.DomainEvents.FirstOrDefault(x =>
+            var bannedUserAddedEvent = issuer.DomainEvents.FirstOrDefault(x =>
                  x.GetType() == typeof(BannedUserAdded)) as BannedUserAdded;
 
-            var bannedUserRemovedEvent = user.DomainEvents.FirstOrDefault(x =>
+            var bannedUserRemovedEvent = issuer.DomainEvents.FirstOrDefault(x =>
                 x.GetType() == typeof(BannedUserRemoved)) as BannedUserRemoved;
 
             bannedUserAddedEvent.ShouldNotBeNull();
 
-            bannedUserAddedEvent.User.ShouldBeSameAs(user);
+            bannedUserAddedEvent.User.ShouldBeSameAs(issuer);
 
             bannedUserAddedEvent.BannedUser.ShouldBeSameAs(bannedUser);
 
             bannedUserRemovedEvent.ShouldNotBeNull();
 
-            bannedUserRemovedEvent.User.ShouldBeSameAs(user);
+            bannedUserRemovedEvent.User.ShouldBeSameAs(issuer);
 
             bannedUserRemovedEvent.BannedUser.ShouldBeSameAs(bannedUser);
         }
