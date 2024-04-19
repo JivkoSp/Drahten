@@ -25,7 +25,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         private ContactRequest GetContactRequest()
         {
-            var contactRequest = _contactRequestFactory.Create(Guid.NewGuid(), DateTimeOffset.Now);
+            var contactRequest = _contactRequestFactory.Create(Guid.NewGuid(), Guid.NewGuid(), DateTimeOffset.Now, null);
 
             return contactRequest;
         }
@@ -61,32 +61,35 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
         //Should add contact request (ContactRequest value object) to internal collection of ContactRequest value objects
         //and produce ContactRequestAdded domain event.
+        //*** IMPORTANT! *** - The contact request should be added to the RECEIVED contact request collection. 
         //The ContactRequestAdded domain event should contain:
-        //1. The same user entity that the contact request was added to.
+        //1. The same user entity that the contact request was added to (The receiver).
         //2. The same contact request value object that was added to the internal collection of ContactRequest value objects.
         [Fact]
         public void Adds_ContactRequest_And_Produces_ContactRequestAdded_Domain_Event_On_Success()
         {
             //ARRANGE
-            var user = GetUser();
+            var receiver = GetUser();
 
-            var contactRequest = GetContactRequest();
+            var contactRequest = GetContactRequest(); //contact request from the issuer (another User).
 
             //ACT
-            var exception = Record.Exception(() => user.AddContactRequest(contactRequest));
+            var exception = Record.Exception(() => receiver.AddContactRequest(contactRequest));
 
             //ASSERT
             exception.ShouldBeNull();
 
-            user.DomainEvents.Count().ShouldBe(1);
+            receiver.DomainEvents.Count().ShouldBe(1);
 
-            user.ContactRequests.Count().ShouldBe(1);
+            receiver.IssuedContactRequests.Count().ShouldBe(0);
 
-            var contactRequestAddedEvent = user.DomainEvents.FirstOrDefault() as ContactRequestAdded;
+            receiver.ReceivedContactRequests.Count().ShouldBe(1);
+
+            var contactRequestAddedEvent = receiver.DomainEvents.FirstOrDefault() as ContactRequestAdded;
 
             contactRequestAddedEvent.ShouldNotBeNull();
 
-            contactRequestAddedEvent.User.ShouldBeSameAs(user);
+            contactRequestAddedEvent.User.ShouldBeSameAs(receiver);
 
             contactRequestAddedEvent.ContactRequest.ShouldBeSameAs(contactRequest);
         }
