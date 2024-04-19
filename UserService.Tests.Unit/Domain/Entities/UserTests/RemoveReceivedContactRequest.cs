@@ -9,7 +9,7 @@ using Xunit;
 
 namespace UserService.Tests.Unit.Domain.Entities.UserTests
 {
-    public sealed class RemoveContactRequest
+    public sealed class RemoveReceivedContactRequest
     {
         #region GLOBAL ARRANGE
 
@@ -29,7 +29,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
             return contactRequest;
         }
 
-        public RemoveContactRequest()
+        public RemoveReceivedContactRequest()
         {
             _userFactory = new UserFactory();
         }
@@ -68,7 +68,7 @@ namespace UserService.Tests.Unit.Domain.Entities.UserTests
 
             var contactRequest = GetContactRequest();
 
-            receiver.AddContactRequest(contactRequest);
+            receiver.ReceiveContactRequest(contactRequest);
 
             //ACT
             var exception = Record.Exception(() => receiver.RemoveReceivedContactRequest(contactRequest.IssuerUserId));
