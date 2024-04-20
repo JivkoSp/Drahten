@@ -37,8 +37,6 @@ namespace UserService.Application.Commands.Handlers
 
             issuer.IssueContactRequest(contactRequest);
 
-            receiver.ReceiveContactRequest(contactRequest);
-
             await _userRepository.UpdateUserAsync(issuer);
         }
     }
