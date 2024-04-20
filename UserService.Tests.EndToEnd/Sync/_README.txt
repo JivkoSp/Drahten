@@ -23,3 +23,20 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 --------------------------------------------------------
 *** Special features for RegisterBannedUserTests *** 
 --------------------------------------------------------
+
+
+--------------------------------------------------------
+*** Special features for RegisterContactRequestTests *** 
+--------------------------------------------------------
+About the Register_ContactRequest_Endpoint_Should_Add_ContactRequest_With_Given_IssuerUserId_And_ReceiverUserId_To_The_Database_For_Issuer(...) 
+and 
+Register_ContactRequest_Endpoint_Should_Add_ContactRequest_With_Given_IssuerUserId_And_ReceiverUserId_To_The_Database_For_Receiver methods:
+------------
+The time comaprison of the objects addContactRequestCommand and issuedContactRequestByUserDto is NOT done like this: 
+issuedContactRequestByUserDto.DateTime.ShouldBe(addContactRequestCommand.DateTime);
+This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
+The same is also true for the 
+Register_ContactRequest_Endpoint_Should_Add_ContactRequest_With_Given_IssuerUserId_And_ReceiverUserId_To_The_Database_For_Receiver method.
+--------------------------------------------------------
+*** Special features for RegisterContactRequestTests *** 
+--------------------------------------------------------
