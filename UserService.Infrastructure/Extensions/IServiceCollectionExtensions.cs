@@ -11,6 +11,8 @@ using UserService.Infrastructure.EntityFramework.Initialization;
 using UserService.Infrastructure.EntityFramework.Options;
 using UserService.Infrastructure.EntityFramework.Repositories;
 using UserService.Infrastructure.EntityFramework.Services.ReadServices;
+using UserService.Infrastructure.Exceptions;
+using UserService.Infrastructure.Exceptions.Interfaces;
 
 [assembly: InternalsVisibleTo(assemblyName: "UserService.Tests.EndToEnd")]
 namespace UserService.Infrastructure.Extensions
@@ -40,7 +42,7 @@ namespace UserService.Infrastructure.Extensions
                 configAction.AddProfile<ContactRequestProfile>();
             });
 
-            //services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
+            services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
             return services;
         }
