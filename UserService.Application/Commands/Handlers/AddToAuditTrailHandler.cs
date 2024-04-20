@@ -1,4 +1,5 @@
 ﻿using UserService.Application.Exceptions;
+using UserService.Application.Extensions;
 using UserService.Domain.Repositories;
 using UserService.Domain.ValueObjects;
 
@@ -22,7 +23,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var userTracking = new UserTracking(command.UserId, command.Action, command.DateTime, command.Referrer);
+            var userTracking = new UserTracking(command.UserId, command.Action, command.DateTime.ToUtc(), command.Referrer);
                 
             user.AddToAuditTrail(userTracking);
 

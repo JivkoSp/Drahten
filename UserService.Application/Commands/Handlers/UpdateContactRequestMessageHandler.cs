@@ -1,4 +1,5 @@
 ﻿using UserService.Application.Exceptions;
+using UserService.Application.Extensions;
 using UserService.Domain.Factories.Interfaces;
 using UserService.Domain.Repositories;
 using UserService.Domain.ValueObjects;
@@ -30,7 +31,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ReceiverUserId);
             }
 
-            var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId, command.DateTime, command.Message);
+            var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId, command.DateTime.ToUtc(), command.Message);
                 
             issuer.RemoveIssuedContactRequest(command.ReceiverUserId);
 

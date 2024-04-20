@@ -1,6 +1,5 @@
 ﻿using UserService.Application.Exceptions;
-using UserService.Application.Services.ReadServices;
-using UserService.Domain.Factories.Interfaces;
+using UserService.Application.Extensions;
 using UserService.Domain.Repositories;
 using UserService.Domain.ValueObjects;
 
@@ -32,7 +31,7 @@ namespace UserService.Application.Commands.Handlers
             }
 
             var contactRequest = new ContactRequest(command.IssuerUserId, command.ReceiverUserId,
-                command.DateTime, command.Message);
+                command.DateTime.ToUtc(), command.Message);
 
             issuer.IssueContactRequest(contactRequest);
 

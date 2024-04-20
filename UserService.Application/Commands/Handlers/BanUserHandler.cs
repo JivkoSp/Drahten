@@ -1,4 +1,5 @@
 ﻿using UserService.Application.Exceptions;
+using UserService.Application.Extensions;
 using UserService.Application.Services.ReadServices;
 using UserService.Domain.Repositories;
 using UserService.Domain.ValueObjects;
@@ -32,7 +33,7 @@ namespace UserService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ReceiverUserId);
             }
 
-            var banUser = new BannedUser(command.IssuerUserId, command.ReceiverUserId, command.DateTime);
+            var banUser = new BannedUser(command.IssuerUserId, command.ReceiverUserId, command.DateTime.ToUtc());
 
             issuer.BanUser(banUser);
 
