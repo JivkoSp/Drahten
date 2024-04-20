@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 using UserService.Application.Extensions;
 using UserService.Application.Services.ReadServices;
 using UserService.Domain.Repositories;
@@ -11,6 +12,7 @@ using UserService.Infrastructure.EntityFramework.Options;
 using UserService.Infrastructure.EntityFramework.Repositories;
 using UserService.Infrastructure.EntityFramework.Services.ReadServices;
 
+[assembly: InternalsVisibleTo(assemblyName: "UserService.Tests.EndToEnd")]
 namespace UserService.Infrastructure.Extensions
 {
     public static class IServiceCollectionExtensions
