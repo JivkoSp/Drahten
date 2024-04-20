@@ -55,7 +55,7 @@ namespace UserService.Domain.Entities
 
         public void BanUser(BannedUser bannedUser)
         {
-            var alreadyExists = _issuedUserBans.Contains(bannedUser);
+            var alreadyExists = _issuedUserBans.Any(x => x.ReceiverUserId == bannedUser.ReceiverUserId);
 
             if (alreadyExists)
             {
