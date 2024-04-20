@@ -26,6 +26,10 @@ namespace UserService.Tests.EndToEnd.Sync
             where TCommand : ICommand
             => _httpClient.PostAsync(requestUri, GetContent(command));
 
+        protected Task<HttpResponseMessage> Put<TCommand>(TCommand command, string requestUri)
+            where TCommand : ICommand
+             => _httpClient.PutAsync(requestUri, GetContent(command));
+
         protected Task<HttpResponseMessage> Delete(string requestUri)
              => _httpClient.DeleteAsync(requestUri);
     }
