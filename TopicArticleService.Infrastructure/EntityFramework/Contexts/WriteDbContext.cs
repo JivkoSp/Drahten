@@ -17,6 +17,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
         public DbSet<Article> Articles { get; set; }
         public DbSet<ArticleComment> ArticleComments { get; set; }
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +43,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new ArticleCommentLikeConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleCommentDislikeConfiguration());
             modelBuilder.ApplyConfiguration(new TopicConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserTopicConfiguration());
             modelBuilder.ApplyConfiguration(new UserArticleConfiguration());
 
             //Applying configurations for the entity models - END
