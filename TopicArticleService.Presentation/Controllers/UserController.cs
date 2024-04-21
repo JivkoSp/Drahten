@@ -40,6 +40,14 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
+        [HttpPost("{UserId:guid}/topics/")]
+        public async Task<ActionResult> RegisterUserTopic([FromBody] RegisterUserTopicCommand registerUserTopicCommand)
+        {
+            await _commandDispatcher.DispatchAsync(registerUserTopicCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
+
         [HttpPost]
         public async Task<ActionResult> RegisterUser([FromBody] RegisterUserCommand registerUserCommand)
         {
