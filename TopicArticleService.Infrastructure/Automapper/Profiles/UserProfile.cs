@@ -8,7 +8,7 @@ namespace TopicArticleService.Infrastructure.Automapper.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<UserReadModel, UserDto>();
         }
     }
 }
