@@ -14,8 +14,9 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
         public DbSet<ArticleReadModel> Articles { get; set; }
         public DbSet<ArticleCommentReadModel> ArticleComments { get; set; }
         public DbSet<TopicReadModel> Topics { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserReadModel> Users { get; set; }
         public DbSet<UserArticleReadModel> UserArticles { get; set; }
+        public DbSet<UserTopicReadModel> UserTopics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
