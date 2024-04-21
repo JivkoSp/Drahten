@@ -1,4 +1,5 @@
-﻿using TopicArticleService.Domain.Events;
+﻿using System.Collections.ObjectModel;
+using TopicArticleService.Domain.Events;
 using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.ValueObjects;
 
@@ -9,6 +10,11 @@ namespace TopicArticleService.Domain.Entities
         private TopicName _topicName;
         private TopicId _parentTopicId;
         private List<Topic> _topicChildren = new List<Topic>();
+
+        public IReadOnlyCollection<Topic> TopicChildren
+        {
+            get { return new ReadOnlyCollection<Topic>(_topicChildren); }
+        }
 
         private Topic()
         {   
