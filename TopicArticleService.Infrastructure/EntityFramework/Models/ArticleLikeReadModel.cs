@@ -10,6 +10,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
 
         //Relationships
         public virtual ArticleReadModel Article { get; set; }
-        public virtual User User { get; set; }
+        public virtual UserReadModel User { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
         public string ArticleId { get; set; }
         public string UserId { get; set; }
         public virtual ArticleReadModel Article { get; set; }
-        public virtual User User { get; set; }
+        public virtual UserReadModel User { get; set; }
         public virtual HashSet<ArticleCommentLikeReadModel> ArticleCommentLikes { get; set; }
         public virtual HashSet<ArticleCommentDislikeReadModel> ArticleCommentDislikes { get; set; }
     }

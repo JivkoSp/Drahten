@@ -9,7 +9,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
         public DateTimeOffset DateTime { get; set; }
 
         //Relationships
-        public virtual User User { get; set; }
+        public virtual UserReadModel User { get; set; }
         public virtual ArticleCommentReadModel ArticleComment { get; set; }
     }
 }

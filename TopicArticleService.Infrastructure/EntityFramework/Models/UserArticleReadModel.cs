@@ -8,7 +8,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
         public string ArticleId { get; set; }
 
         //Relationships
-        public virtual User User { get; set; }
+        public virtual UserReadModel User { get; set; }
         public virtual ArticleReadModel Article { get; set; }
     }
 }
