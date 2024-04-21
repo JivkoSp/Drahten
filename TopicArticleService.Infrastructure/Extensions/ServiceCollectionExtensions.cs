@@ -36,11 +36,15 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddScoped<ITopicRepository, PostgresTopicRepository>();
 
+            services.AddScoped<IUserRepository, PostgresUserRepository>();
+
             services.AddScoped<IArticleReadService, PostgresArticleReadService>();
 
             services.AddScoped<IUserReadService, PostgresUserReadService>();
 
             services.AddScoped<IUserWriteService, PostgresUserWriteService>();
+
+            services.AddScoped<ITopicReadService, PostgreTopicReadServices>();
 
             services.AddQueriesWithDispatcher();
 
@@ -54,6 +58,7 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentProfile>();
                 configAction.AddProfile<ArticleCommentLikeProfile>();
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
+                configAction.AddProfile<TopicProfile>();
             });
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
