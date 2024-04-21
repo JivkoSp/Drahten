@@ -54,6 +54,7 @@ namespace TopicArticleService.Application.Extensions
             services.AddSingleton<IUserArticleFactory, UserArticleFactory>();
             services.AddSingleton<IArticleCommentLikeFactory, ArticleCommentLikeFactory>();
             services.AddSingleton<IArticleCommentDislikeFactory, ArticleCommentDislikeFactory>();
+            services.AddSingleton<IUserFactory, UserFactory>();
 
             return services;
         }
