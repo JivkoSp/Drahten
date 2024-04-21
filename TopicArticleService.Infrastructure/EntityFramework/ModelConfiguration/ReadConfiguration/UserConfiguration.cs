@@ -4,9 +4,9 @@ using TopicArticleService.Infrastructure.EntityFramework.Models;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration
 {
-    internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
+    internal sealed class UserConfiguration : IEntityTypeConfiguration<UserReadModel>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<UserReadModel> builder)
         {
             //Table name
             builder.ToTable("User");
