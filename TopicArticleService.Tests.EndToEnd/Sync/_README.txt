@@ -17,7 +17,7 @@ Due to this reason, the time comparison is done with a tolerance of 1 millisecon
 --------------------------------------------------------
 About the Register_ArticleComment_Endpoint_Should_Add_ArticleComment_With_Given_ArticleCommentId_To_The_Database(...) method:
 ------------
-The time comaprison of the objects addArticleCommentCommand and articleCommentDto is NOT done like this: 
+The time somparison of the objects addArticleCommentCommand and articleCommentDto is NOT done like this: 
 articleCommentDto.DateTime.ShouldBe(addArticleCommentCommand.DateTime);
 This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
 --------------------------------------------------------
@@ -30,7 +30,7 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 ---------------------------------------------------------------
 About the Register_ArticleCommentLike_Endpoint_Should_Add_ArticleCommentLike_With_Given_ArticleCommentId_And_UserId_To_The_Database(...) method:
 ------------
-The time comaprison of the objects addArticleCommentLikeCommand and articleCommentLike is NOT done like this:
+The time comparison of the objects addArticleCommentLikeCommand and articleCommentLike is NOT done like this:
 articleCommentLike.DateTime.ShouldBe(addArticleCommentLikeCommand.DateTime);
 This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
 ---------------------------------------------------------------
@@ -43,7 +43,7 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 ---------------------------------------------------------------
 About the Register_ArticleCommentDislike_Endpoint_Should_Add_ArticleCommentDislike_With_Given_ArticleCommentId_And_UserId_To_The_Database(...) method:
 ------------
-The time comaprison of the objects addArticleCommentDislikeCommand and articleCommentDislike is NOT done like this:
+The time comparison of the objects addArticleCommentDislikeCommand and articleCommentDislike is NOT done like this:
 articleCommentDislike.DateTime.ShouldBe(addArticleCommentDislikeCommand.DateTime);
 This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
 ---------------------------------------------------------------
@@ -56,7 +56,7 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 --------------------------------------------------------
 About the Register_ArticleLike_Endpoint_Should_Add_ArticleLike_With_Given_ArticleId_And_UserId_To_The_Database(...) method:
 ------------
-The time comaprison of the objects addArticleLikeCommand and articleLike is NOT done like this: 
+The time comparison of the objects addArticleLikeCommand and articleLike is NOT done like this: 
 articleLike.DateTime.ShouldBe(addArticleLikeCommand.DateTime);
 This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
 --------------------------------------------------------
@@ -69,9 +69,22 @@ This is because of the reasons mentioned in the section - **** PostgreSQL **** i
 --------------------------------------------------------
 About the Register_ArticleDislike_Endpoint_Should_Add_ArticleDislike_With_Given_ArticleId_And_UserId_To_The_Database(...) method:
 ------------
-The time comaprison of the objects addArticleDislikeCommand and articleDislike is NOT done like this: 
+The time comparison of the objects addArticleDislikeCommand and articleDislike is NOT done like this: 
 articleDislike.DateTime.ShouldBe(addArticleDislikeCommand.DateTime);
 This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
 --------------------------------------------------------
 *** Special features for RegisterArticleDislikeTests *** 
+--------------------------------------------------------
+
+
+--------------------------------------------------------
+*** Special features for RegisterUserTopicTests *** 
+--------------------------------------------------------
+About the Register_UserTopic_Endpoint_Should_Add_UserTopic_With_Given_UserId_And_TopicId_To_The_Database(...) method:
+------------
+The time comparison of the objects registerUserTopicCommand and userTopicDto is NOT done like this: 
+userTopicDto.SubscriptionTime.ShouldBe(registerUserTopicCommand.DateTime);
+This is because of the reasons mentioned in the section - **** PostgreSQL **** in this document.
+--------------------------------------------------------
+*** Special features for RegisterUserTopicTests *** 
 --------------------------------------------------------
