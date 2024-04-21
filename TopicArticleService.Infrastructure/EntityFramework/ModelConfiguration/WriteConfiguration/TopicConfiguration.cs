@@ -38,7 +38,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Property config - End
 
             //Relationships
-            //builder.HasMany(typeof(Topic), "_topicChildren");
+            builder.HasMany(p => p.TopicChildren);
         }
     }
 }
