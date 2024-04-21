@@ -1,10 +1,11 @@
 ﻿
 namespace TopicArticleService.Infrastructure.EntityFramework.Models
 {
-    internal class User
+    internal class UserReadModel
     {
         //Primary key
         public string UserId { get; set; }
+        public int Version { get; set; }
 
         //Relationships
         public virtual HashSet<UserTopicReadModel> Topics { get; set; }
