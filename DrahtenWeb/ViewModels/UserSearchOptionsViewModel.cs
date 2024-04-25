@@ -1,10 +1,10 @@
-﻿using DrahtenWeb.Dtos;
+﻿using DrahtenWeb.Dtos.TopicArticleService;
 
 namespace DrahtenWeb.ViewModels
 {
     public class UserSearchOptionsViewModel
     {
-        public List<ReadTopicDto> Topics { get; set; } = new List<ReadTopicDto>();
-        public List<ReadUserTopicDto> UserTopics { get; set; } = new List<ReadUserTopicDto>();
+        public List<TopicDto> Topics { get; set; } = new List<TopicDto>();
+        public List<UserTopicDto> UserTopics { get; set; } = new List<UserTopicDto>();
     }
 }
