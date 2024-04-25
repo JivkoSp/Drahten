@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TopicArticleService.Application.Dtos;
+using TopicArticleService.Domain.Entities;
 using TopicArticleService.Infrastructure.EntityFramework.Models;
 
 namespace TopicArticleService.Infrastructure.Automapper.Profiles
@@ -9,6 +10,9 @@ namespace TopicArticleService.Infrastructure.Automapper.Profiles
         public UserProfile()
         {
             CreateMap<UserReadModel, UserDto>();
+
+            CreateMap<UserDto, User>()
+                .ForMember(dest => dest.Id, options => options.MapFrom(source => source.UserId));
         }
     }
 }
