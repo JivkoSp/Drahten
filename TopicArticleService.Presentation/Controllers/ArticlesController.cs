@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Commands.Dispatcher;
-using TopicArticleService.Application.Dtos;
 using TopicArticleService.Application.Queries;
 using TopicArticleService.Application.Queries.Dispatcher;
+using TopicArticleService.Presentation.Dtos;
 
 namespace TopicArticleService.Presentation.Controllers
 {
@@ -13,37 +13,81 @@ namespace TopicArticleService.Presentation.Controllers
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ResponseDto _responseDto;
 
         public ArticlesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
+            _responseDto = new ResponseDto();
         }
 
-        [HttpGet("{ArticleId:guid}")]
-        public async Task<ActionResult<ArticleDto>> GetArticle([FromRoute] GetArticleQuery getArticleQuery)
+        [HttpGet("{ArticleId:guid}", Name = "GetArticle")]
+        public async Task<ActionResult> GetArticle([FromRoute] GetArticleQuery getArticleQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleQuery);
 
-            if(result == null)
+            _responseDto.Result = result;
+
+            if (result == null)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
-        [HttpGet("{ArticleId:guid}/comments/")]
+        [HttpGet("{ArticleId:guid}/likes/")]
+        public async Task<ActionResult> GetArticleLikes([FromRoute] GetArticleLikesQuery getArticleLikesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getArticleLikesQuery);
+
+            _responseDto.Result = result;
+
+            if (result.Count == 0)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
+
+        [HttpGet("{ArticleId:guid}/dislikes/")]
+        public async Task<ActionResult> GetArticleDislikes([FromRoute] GetArticleDislikesQuery getArticleDislikesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getArticleDislikesQuery);
+
+            _responseDto.Result = result;
+
+            if (result.Count == 0)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess= true;
+
+            return Ok(_responseDto);
+        }
+
+        [HttpGet("{ArticleId:guid}/comments/", Name = "GetArticleComments")]
         public async Task<ActionResult> GetArticleComments([FromRoute] GetArticleCommentsQuery getArticleCommentsQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleCommentsQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpPost]
@@ -51,7 +95,7 @@ namespace TopicArticleService.Presentation.Controllers
         {
             await _commandDispatcher.DispatchAsync(createArticleCommand);
 
-            return Created(HttpContext.Request.Path, null);
+            return CreatedAtAction(actionName: nameof(GetArticle), routeValues: new { ArticleId = createArticleCommand .ArticleId}, null);
         }
 
         [HttpPost("{ArticleId:guid}/likes/")]
