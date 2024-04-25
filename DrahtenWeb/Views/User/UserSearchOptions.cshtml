@@ -69,6 +69,8 @@
             //Check if the topic has any children topics.
             if(haveChildren == 0){
 
+                console.log(topicId);
+
                 //The topic does NOT have children topics.
 
                 //Send async POST http request to /User/UserTopicSubscription
@@ -76,7 +78,7 @@
                     type: 'POST',
                     url: '/User/UserTopicSubscription',
                     data: {
-                        'topic_id': topicId
+                        'topicId': topicId
                     },
                     //TODO: Log the messages for success, failure or error to logging service.
                     success: (response) => {
