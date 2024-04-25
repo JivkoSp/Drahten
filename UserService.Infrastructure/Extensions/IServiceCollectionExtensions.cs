@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
+using UserService.Application.AsyncDataServices;
 using UserService.Application.Extensions;
 using UserService.Application.Services.ReadServices;
 using UserService.Domain.Repositories;
+using UserService.Infrastructure.AsyncDataServices;
 using UserService.Infrastructure.Automapper.Profiles;
 using UserService.Infrastructure.EntityFramework.Contexts;
 using UserService.Infrastructure.EntityFramework.Initialization;
@@ -41,6 +43,8 @@ namespace UserService.Infrastructure.Extensions
                 configAction.AddProfile<BannedUserProfile>();
                 configAction.AddProfile<ContactRequestProfile>();
             });
+
+            services.AddSingleton<IMessageBusPublisher, MessageBusPublisher>();
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
