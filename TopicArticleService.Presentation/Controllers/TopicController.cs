@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TopicArticleService.Application.Queries;
 using TopicArticleService.Application.Queries.Dispatcher;
+using TopicArticleService.Presentation.Dtos;
 
 namespace TopicArticleService.Presentation.Controllers
 {
@@ -9,10 +10,12 @@ namespace TopicArticleService.Presentation.Controllers
     public class TopicController : ControllerBase
     {
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ResponseDto _responseDto;
 
         public TopicController(IQueryDispatcher queryDispatcher)
         {
             _queryDispatcher = queryDispatcher;
+            _responseDto = new ResponseDto();
         }
 
         [HttpGet]
@@ -20,12 +23,16 @@ namespace TopicArticleService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getTopicsQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{TopicId:guid}/parent-topic/")]
@@ -33,12 +40,16 @@ namespace TopicArticleService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getParentTopicWithChildrenQuery);
 
+            _responseDto.Result = result;
+
             if(result == null)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{UserId:guid}/user-topics/")]
@@ -46,12 +57,16 @@ namespace TopicArticleService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getTopicsRelatedToUserQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
     }
 }
