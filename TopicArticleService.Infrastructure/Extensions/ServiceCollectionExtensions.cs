@@ -6,12 +6,14 @@ using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Application.Services.WriteServices;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Infrastructure.AsyncDataServices;
 using TopicArticleService.Infrastructure.Automapper.Profiles;
 using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 using TopicArticleService.Infrastructure.EntityFramework.Initialization;
 using TopicArticleService.Infrastructure.EntityFramework.Options;
 using TopicArticleService.Infrastructure.EntityFramework.Repositories;
 using TopicArticleService.Infrastructure.EntityFramework.Services;
+using TopicArticleService.Infrastructure.EventProcessing;
 using TopicArticleService.Infrastructure.Exceptions;
 using TopicArticleService.Infrastructure.Exceptions.Interfaces;
 
@@ -60,6 +62,10 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
                 configAction.AddProfile<TopicProfile>();
             });
+
+            services.AddHostedService<MessageBusSubscriber>();
+
+            services.AddSingleton<IEventProcessor, EventProcessor>();
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
