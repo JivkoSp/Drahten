@@ -3,6 +3,7 @@ using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Commands.Dispatcher;
 using TopicArticleService.Application.Queries;
 using TopicArticleService.Application.Queries.Dispatcher;
+using TopicArticleService.Presentation.Dtos;
 
 namespace TopicArticleService.Presentation.Controllers
 {
@@ -12,24 +13,30 @@ namespace TopicArticleService.Presentation.Controllers
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ResponseDto _responseDto;
 
         public UserController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
+            _responseDto = new ResponseDto();
         }
 
-        [HttpGet("articles/{ArticleId:guid}")]
+        [HttpGet("articles/{ArticleId:guid}", Name = "GetUsersRelatedToArticle")]
         public async Task<ActionResult> GetUsersRelatedToArticle([FromRoute] GetUsersRelatedToArticleQuery getUsersRelatedToArticleQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getUsersRelatedToArticleQuery);
 
+            _responseDto.Result = result;
+
             if(result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpPost("{UserId:guid}/articles/")]
@@ -37,7 +44,8 @@ namespace TopicArticleService.Presentation.Controllers
         {
             await _commandDispatcher.DispatchAsync(registerUserArticleCommand);
 
-            return Created(HttpContext.Request.Path, null);
+            return CreatedAtAction(actionName: nameof(GetUsersRelatedToArticle), 
+                routeValues: new { ArticleId = registerUserArticleCommand.ArticleId }, null);
         }
 
         [HttpPost("{UserId:guid}/topics/")]
