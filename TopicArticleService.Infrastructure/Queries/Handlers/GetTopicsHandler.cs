@@ -20,9 +20,9 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
 
         public async Task<List<TopicDto>> HandleAsync(GetTopicsQuery query)
         {
-            var topicReadModels = await _readDbContext
-                .Topics
+            var topicReadModels = await _readDbContext.Topics
                 .Include(x => x.Children)
+                .ThenInclude(x => x.Children)
                 .AsNoTracking()
                 .ToListAsync();
 
