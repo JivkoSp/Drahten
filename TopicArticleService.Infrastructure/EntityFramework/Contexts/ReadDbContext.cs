@@ -12,6 +12,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
         }
 
         public DbSet<ArticleReadModel> Articles { get; set; }
+        public DbSet<ArticleLikeReadModel> ArticleLikes { get; set; }
+        public DbSet<ArticleDislikeReadModel> ArticleDislikes { get; set; }
         public DbSet<ArticleCommentReadModel> ArticleComments { get; set; }
         public DbSet<TopicReadModel> Topics { get; set; }
         public DbSet<UserReadModel> Users { get; set; }
