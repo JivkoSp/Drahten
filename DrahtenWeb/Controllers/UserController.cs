@@ -1,5 +1,5 @@
 ﻿using DrahtenWeb.Dtos;
-using DrahtenWeb.Services;
+using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -13,11 +13,11 @@ namespace DrahtenWeb.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly ITopicArticleService _topicArticleService;
 
-        public UserController(IUserService userService)
+        public UserController(ITopicArticleService topicArticleService)
         {
-            _userService = userService;
+            _topicArticleService = topicArticleService;
         }
 
         [HttpGet]
@@ -35,22 +35,23 @@ namespace DrahtenWeb.Controllers
 
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _userService.GetTopics<ResponseDto>(accessToken ?? "");
+                var response = await _topicArticleService.GetTopicsAsync<ResponseDto>(accessToken);
 
                 if (response != null && response.IsSuccess)
                 {
-                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<ReadTopicDto>>(Convert.ToString(response.Result));
+                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<TopicDto>>(Convert.ToString(response.Result));
                 }
 
-                response = await _userService.GetUserTopics<ResponseDto>(userId ?? "", accessToken ?? "");
+                response =  await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
                 if (response != null && response.IsSuccess)
                 {
-                    userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
+                    userSearchOptionsViewModel.UserTopics = JsonConvert
+                        .DeserializeObject<List<UserTopicDto>>(Convert.ToString(response.Result));
                 }
 
                 return PartialView(viewName: "_SideSearchOptionsMenu", model: userSearchOptionsViewModel);
@@ -62,26 +63,26 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserTopicSubscription(int topic_id)
+        public async Task<IActionResult> UserTopicSubscription(Guid topicId)
         {
             try
             {
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var userTopicDto = new WriteUserTopicDto
                 {
-                    UserId = userId ?? "",
-                    TopicId = topic_id,
-                    SubscriptionTime = DateTime.Now
+                    UserId = userId,
+                    TopicId = topicId,
+                    DateTime = DateTimeOffset.Now
                 };
 
-                var response = await _userService.RegisterUserTopic<ResponseDto>(userTopicDto, accessToken ?? "");
+                await _topicArticleService.RegisterUserTopicAsync<object>(userTopicDto, accessToken);
 
-                return new JsonResult(new { Message = response.IsSuccess });
+                return new JsonResult(new { });
             }
             catch(Exception ex)
             {
