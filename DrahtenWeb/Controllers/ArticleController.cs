@@ -1,59 +1,85 @@
-﻿using DrahtenWeb.Dtos;
-using DrahtenWeb.Services;
+﻿using AutoMapper;
+using DrahtenWeb.Dtos;
+using DrahtenWeb.Dtos.TopicArticleService;
+using DrahtenWeb.Dtos.UserService;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace DrahtenWeb.Controllers
 {
     [Authorize]
     public class ArticleController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ISearchService _searchService;
+        private readonly ITopicArticleService _topicArticleService;
         private readonly IUserService _userService;
 
-        public ArticleController(ISearchService searchService, IUserService userService)
+        public ArticleController(IMapper mapper, ISearchService searchService, ITopicArticleService topicArticleService, IUserService userService)
         {
+            _mapper = mapper;
             _searchService = searchService;
+            _topicArticleService = topicArticleService;
             _userService = userService;
         }
 
+        //TODO: Make mapper that will take the ResponseDto (the response from the request) and generic type.
+        //The mapper will return the generic type.
+        //This will prevent the dublication of code and make the overall function more clear and understandable.
+        // ---- Maybe do it with extension method?? Like this: response.Map<...>()
+
         [HttpGet]
-        public async Task<IActionResult> ArticleInfo(string articleId)
+        public async Task<IActionResult> ArticleInfo(string articleId) //TODO: Check if changing the string with Guid will be Ok
         {
             try
             {
                 var response = new ResponseDto();
-                var articleLikes = new List<ReadArticleLikeDto>();
                 var articleComments = new List<ReadArticleCommentDto>();
                 var userArticleList = new List<ReadUserArticleDto>();
+                var articleLikes = new List<ArticleLikeDto>();
+                var articleDislikes = new List<ArticleDislikeDto>();
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                response = await _userService.GetArticleComments<ResponseDto>(articleId, accessToken ?? "");
+                response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
+                if (response != null && response.IsSuccess)
+                {
+                    articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
+                }
 
-                response = await _userService.GetUsersRelatedToArticle<ResponseDto>(articleId, accessToken ?? "");
+                response  = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                userArticleList = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(Convert.ToString(response.Result));
+                if (response != null && response.IsSuccess)
+                {
+                    userArticleList = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(Convert.ToString(response.Result));
+                }
 
-                response = await _userService.GetArticleLikes<ResponseDto>(articleId, accessToken ?? "");
+                response =  await _topicArticleService.GetArticleLikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                articleLikes = JsonConvert.DeserializeObject<List<ReadArticleLikeDto>>(Convert.ToString(response.Result));
+                if(response != null && response.IsSuccess)
+                {
+                    articleLikes  = JsonConvert.DeserializeObject<List<ArticleLikeDto>>(Convert.ToString(response.Result));
+                }
+
+                response = await _topicArticleService.GetArticleDislikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
+
+                if (response != null && response.IsSuccess)
+                {
+                    articleDislikes = JsonConvert.DeserializeObject<List<ArticleDislikeDto>>(Convert.ToString(response.Result));
+                }
 
                 var articleInfoViewModel = new ArticleInfoViewModel
                 {
-                    Comments = articleComments?.Count == null ? 0 : articleComments.Count,
-                    Views = userArticleList?.Count == null ? 0 : userArticleList.Count,
-                    Likes = articleLikes?.Count == null ? 0 : articleLikes.Count,
-                    DisLikes = 0
+                    Comments = articleComments,
+                    Views = userArticleList,
+                    Likes = articleLikes,
+                    DisLikes = articleDislikes
                 };
 
                 return new JsonResult(articleInfoViewModel);
@@ -64,122 +90,59 @@ namespace DrahtenWeb.Controllers
             }
         }
 
+
+        //TODO: PrepareArticleViewModel method -> ArticleViewModel.
         [HttpPost]
-        public async Task<IActionResult> ViewArticle(int document_topic_id, string document_id, DocumentDto document)
+        public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleComments, string userArticleList)
         {
-            var response = new ResponseDto();
-            var articleLikes = new List<ReadArticleLikeDto>();
-            var articleComments = new List<ReadArticleCommentDto>();
-            var userArticleList = new List<ReadUserArticleDto>();
-            var readViewArticlesPrivateHist = new List<ReadViewedArticleHistoryDto>();
-
-            //Get the user id.
-            //Here the NameIdentifier claim type represents the user id.
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            //Find article with id: document_id from UserService. 
-            response = await _userService.GetArticle<ResponseDto>(document_id, accessToken ?? "");
-
-            //Check if article with id: document_id exists.
-            if(response != null && response.IsSuccess == false) 
-            {
-                //Article with id: document_id does NOT exist.
-
-                //Create dto for writing article to the UserService database. 
-                var writeArticleDto = new WriteArticleDto
-                {
-                    ArticleId = document_id,
-                    PrevTitle = document.article_prev_title ?? "",
-                    Title = document.article_title ?? "",
-                    Data = document.article_data ?? "",
-                    Date = document.article_published_date ?? "",
-                    Author = document.article_author ?? "",
-                    Link = document.article_link ?? "",
-                    TopicId = document_topic_id
-                };
-
-                //Write the article with id: document_id to the UserService database. 
-                response = await _userService.RegisterArticle<ResponseDto>(writeArticleDto, accessToken ?? "");
-
-                if (response == null || response.IsSuccess == false)
-                {
-                    //TODO:
-                    //throw custom exception
-                }
-            }
-
-            response = await _userService.GetUsersRelatedToArticle<ResponseDto>(document_id, accessToken ?? "");
-
-            userArticleList = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(Convert.ToString(response.Result));
-
-            var userArticle = userArticleList?.FirstOrDefault(x => x.UserDto?.UserId == userId);
-
-            if(userArticle == null)
-            {
-                var writeUserArticleDto = new WriteUserArticleDto
-                {
-                    UserId = userId ?? "",
-                    ArticleId = document_id,
-                };
-
-                response = await _userService.RegisterUserArticle<ResponseDto>(writeUserArticleDto, accessToken ?? "");
-
-                if (response == null || response.IsSuccess == false)
-                {
-                    //TODO:
-                    //throw custom exception
-                }
-            }
-
-            response = await _userService.GetViewedArticlesPrivateHistory<ResponseDto>(userId ?? "", accessToken ?? "");
-
-            readViewArticlesPrivateHist = JsonConvert.DeserializeObject<List<ReadViewedArticleHistoryDto>>(Convert.ToString(response.Result));
-
-            var viewedArticle = readViewArticlesPrivateHist?.FirstOrDefault(x => x.Article?.ArticleId == document_id);
-
-            if(viewedArticle == null)
-            {
-                var writeViewedArticleHistoryDto = new WriteViewedArticleHistoryDto
-                {
-                    ArticleId = document_id,
-                    ViewTime = DateTime.Now,
-                    HistoryId = userId ?? ""
-                };
-
-                await _userService.RegisterViewedArticlePrivateHistory<ResponseDto>(writeViewedArticleHistoryDto, accessToken ?? "");
-            }
-
-            //Get all likes for article with id: document_id.
-            response = await _userService.GetArticleLikes<ResponseDto>(document_id, accessToken ?? "");
-
-            if (response == null || response.IsSuccess == false)
-            {
-                //TODO
-                //throw custom exception
-            }
-
-            articleLikes = JsonConvert.DeserializeObject<List<ReadArticleLikeDto>>(Convert.ToString(response.Result));
-
-            //Get all comments for article with id: document_id.
-            response = await _userService.GetArticleComments<ResponseDto>(document_id, accessToken ?? "");
-
-            if (response == null || response.IsSuccess == false)
-            {
-                //TODO
-                //throw custom exception
-            }
-
-            articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
-
             var articleViewModel = new ArticleViewModel
-            { 
-                DocumentId = document_id,
-                Document = document,
-                ArticleLikes = articleLikes,
-                ArticleComments = articleComments
+            {
+                Article = articleDto,
+                UserArticles = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(userArticleList),
+                ArticleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(articleComments)
             };
+
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                foreach (var articleComment in articleViewModel.ArticleComments)
+                {
+                    var response = await _userService.GetUserByIdAsync<ResponseDto>(Guid.Parse(articleComment.UserId), accessToken);
+
+                    if (response != null && response.IsSuccess)
+                    {
+                        var userDto = JsonConvert.DeserializeObject<Dtos.UserService.UserDto>(Convert.ToString(response.Result));
+
+                        articleViewModel.Users.Add(userDto);
+                    }
+                }
+
+                var writeArticleDto = _mapper.Map<WriteArticleDto>(articleDto);
+
+                await _topicArticleService.RegisterArticleAsync<string>(writeArticleDto, accessToken);
+
+                var userArticle = articleViewModel.UserArticles.FirstOrDefault(x => x.UserDto.UserId == userId);
+
+                if (userArticle == null)
+                {
+                    var writeUserArticleDto = new WriteUserArticleDto
+                    {
+                        UserId = userId,
+                        ArticleId = writeArticleDto.ArticleId,
+                    };
+
+                    await _topicArticleService.RegisterUserArticleAsync<string>(writeUserArticleDto, accessToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return View(articleViewModel);
         }
@@ -193,7 +156,7 @@ namespace DrahtenWeb.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _searchService.GetDocumentSummarizationNewsCybersecurityEurope<ResponseDto>(articleId, accessToken ?? "");
+                var response = await _searchService.GetDocumentSummarizationNewsCybersecurityEurope<ResponseDto>(articleId, accessToken);
 
                 if(response != null && response.IsSuccess)
                 {
@@ -217,7 +180,7 @@ namespace DrahtenWeb.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _searchService.GetDocumentQuestionsNewsCybersecurityEurope<ResponseDto>(articleId, accessToken ?? "");
+                var response = await _searchService.GetDocumentQuestionsNewsCybersecurityEurope<ResponseDto>(articleId, accessToken);
 
                 if (response != null && response.IsSuccess)
                 {
@@ -267,42 +230,20 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var response = new ResponseDto();
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                response = await _userService.GetArticleLikes<ResponseDto>(articleId, accessToken ?? "");
-
-                if(response == null || response.IsSuccess == false)
-                {
-                    //TODO
-                    //throw custom exception
-                }
-
-                var articleLikes = new List<ReadArticleLikeDto>();
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                articleLikes = JsonConvert.DeserializeObject<List<ReadArticleLikeDto>>(Convert.ToString(response.Result));
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var userArticleLike = articleLikes?.Where(x => x.UserId == userId).FirstOrDefault();
-
-                if(userArticleLike == null) 
+                var articleLikeDto = new ArticleLikeDto
                 {
-                    var writeArticleLikeDto = new WriteArticleLikeDto
-                    {
-                        ArticleId = articleId,
-                        UserId = userId ?? ""
-                    };
+                    ArticleId = Guid.Parse(articleId),
+                    DateTime = DateTimeOffset.Now,
+                    UserId = userId
+                };
 
-                    response = await _userService.RegisterArticleLike<ResponseDto>(writeArticleLikeDto, accessToken ?? "");
-
-                    if (response == null || response.IsSuccess == false)
-                    {
-                        //TODO
-                        //throw custom exception
-                    }
-                }
+                await _topicArticleService.RegisterArticleLikeAsync<string>(articleLikeDto, accessToken);
 
                 return new JsonResult(new { });
             }
@@ -317,162 +258,22 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var response = new ResponseDto();
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                response = await _userService.GetArticleComments<ResponseDto>(articleId, accessToken ?? "");
-
-                if (response == null || response.IsSuccess == false)
-                {
-                    //TODO
-                    //throw custom exception
-                }
-
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                var articleComments = new List<ReadArticleCommentDto>();
-
-                articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
-
-                var userArticleComment = articleComments?.Where(x => x.UserDto?.UserId == userId).FirstOrDefault();
-
-                if(userArticleComment == null)
-                {
-                    var writeArticleCommentDto = new WriteArticleCommentDto
-                    {
-                        Comment = comment,
-                        DateTime = DateTime.Now,
-                        ArticleId = articleId,
-                        UserId = userId ?? ""
-                    };
-
-                    response = await _userService.RegisterArticleComment<ResponseDto>(writeArticleCommentDto, accessToken ?? "");
-
-                    if (response == null || response.IsSuccess == false)
-                    {
-                        //TODO
-                        //throw custom exception
-                    }
-                }
-
-                return new JsonResult(new { });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ArticleChildComment(string articleId, int articleCommentId, string comment)
-        {
-            try
-            {
-                var response = new ResponseDto();
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                response = await _userService.GetArticleComments<ResponseDto>(articleId, accessToken ?? "");
-
-                if (response == null || response.IsSuccess == false)
-                {
-                    //TODO
-                    //throw custom exception
-                }
-
-                //Get the user id.
-                //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                var articleComments = new List<ReadArticleCommentDto>();
-
-                articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
-
-                var articleComment = articleComments?
-                    .Where(x => x.ArticleCommentId == articleCommentId).FirstOrDefault();
-
-                var userArticleComment = articleComment?.Children?.Where(x => x.UserDto?.UserId == userId).FirstOrDefault();
-
-                if (articleComment?.UserDto?.UserId != userId && userArticleComment == null)
-                {
-                    var writeArticleCommentDto = new WriteArticleCommentDto
-                    {
-                        Comment = comment,
-                        DateTime = DateTime.Now,
-                        ArticleId = articleId,
-                        UserId = userId ?? "",
-                        ParentArticleCommentId = articleCommentId
-                    };
-
-                    response = await _userService.RegisterArticleComment<ResponseDto>(writeArticleCommentDto, accessToken ?? "");
-
-                    if (response == null || response.IsSuccess == false)
-                    {
-                        //TODO
-                        //throw custom exception
-                    }
-                }
-
-                return new JsonResult(new { });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ArticleCommentThumbsUp(string articleId, int articleCommentId)
-        {
-            try
-            {
-                //Check if the user has entry in table - ArticleCommentThumbsUp
-                //If the user has entry - do nothing
-                //If the user does not has entry check if the user has entry in table - ArticleCommentThumbsDown
-                //If the user has entry in table - ArticleCommentThumbsDown delete this entry 
-                //Insert new entry for the user in table - ArticleCommentThumbsUp
-
-                var response = new ResponseDto();
-                var articleCommentThumbsUpList = new List<ReadArticleCommentThumbsUpDto>();
-                var articleCommentThumbsDownList = new List<ReadArticleCommentThumbsDownDto>();
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                //Get the user id.
-                //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                response = await _userService.GetArticleCommentThumbsUp<ResponseDto>(articleId, articleCommentId, accessToken ?? "");
-
-                articleCommentThumbsUpList = JsonConvert.DeserializeObject<List<ReadArticleCommentThumbsUpDto>>(Convert.ToString(response.Result));
-
-                var userArticleCommentThumbsUp = articleCommentThumbsUpList?.FirstOrDefault(x => x.UserId == userId);
-
-                if(userArticleCommentThumbsUp != null)
+                var writeArticleCommentDto = new WriteArticleCommentDto
                 {
-                    return new JsonResult(new { });
-                }
-
-                response = await _userService.GetArticleCommentThumbsDown<ResponseDto>(articleId, articleCommentId, accessToken ?? "");
-
-                articleCommentThumbsDownList = JsonConvert.DeserializeObject<List<ReadArticleCommentThumbsDownDto>>(Convert.ToString(response.Result));
-
-                var userArticleCommentThumbsDown = articleCommentThumbsDownList?.FirstOrDefault(x => x.UserId == userId);
-
-                if( userArticleCommentThumbsDown != null)
-                {
-                    await _userService.DeleteArticleCommentThumbsDown<ResponseDto>(articleId, articleCommentId, userId ?? "", accessToken ?? "");
-                }
-
-                var writeArticleCommentThumbsUpDto = new WriteArticleCommentThumbsUpDto
-                {
-                    ArticleCommentId = articleCommentId,
-                    UserId = userId ?? "",
-                    ArticleId = articleId
+                    ArticleId = Guid.Parse(articleId),
+                    ArticleCommentId = Guid.NewGuid(),
+                    CommentValue = comment,
+                    DateTime = DateTimeOffset.Now,
+                    UserId = userId
                 };
 
-                await _userService.RegisterArticleCommentThumbsUp<ResponseDto>(writeArticleCommentThumbsUpDto, accessToken ?? "");
+                await _topicArticleService.RegisterArticleCommentAsync<string>(writeArticleCommentDto, accessToken);
 
                 return new JsonResult(new { });
             }
@@ -483,56 +284,83 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ArticleCommentThumbsDown(string articleId, int articleCommentId)
+        public async Task<IActionResult> ArticleChildComment(string articleId, Guid parentArticleCommentId, string comment)
         {
             try
             {
-                //Check if the user has entry in table - ArticleCommentThumbsDown
-                //If the user has entry - do nothing
-                //If the user does not has entry check if the user has entry in table - ArticleCommentThumbsUp
-                //If the user has entry in table - ArticleCommentThumbsUp delete this entry 
-                //Insert new entry for the user in table - ArticleCommentThumbsDown
-
-                var response = new ResponseDto();
-                var articleCommentThumbsUpList = new List<ReadArticleCommentThumbsUpDto>();
-                var articleCommentThumbsDownList = new List<ReadArticleCommentThumbsDownDto>();
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                //Get the user id.
-                //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                response = await _userService.GetArticleCommentThumbsDown<ResponseDto>(articleId, articleCommentId, accessToken ?? "");
-
-                articleCommentThumbsDownList = JsonConvert.DeserializeObject<List<ReadArticleCommentThumbsDownDto>>(Convert.ToString(response.Result));
-
-                var userArticleCommentThumbsDown = articleCommentThumbsDownList?.FirstOrDefault(x => x.UserId == userId);
-
-                if (userArticleCommentThumbsDown != null)
+                var writeArticleCommentDto = new WriteArticleCommentDto
                 {
-                    return new JsonResult(new { });
-                }
-
-                response = await _userService.GetArticleCommentThumbsUp<ResponseDto>(articleId, articleCommentId, accessToken ?? "");
-
-                articleCommentThumbsUpList = JsonConvert.DeserializeObject<List<ReadArticleCommentThumbsUpDto>>(Convert.ToString(response.Result));
-
-                var userArticleCommentThumbsUp = articleCommentThumbsUpList?.FirstOrDefault(x => x.UserId == userId);
-
-                if (userArticleCommentThumbsUp != null)
-                {
-                    await _userService.DeleteArticleCommentThumbsUp<ResponseDto>(articleId, articleCommentId, userId ?? "", accessToken ?? "");
-                }
-
-                var writeArticleCommentThumbsDownDto = new WriteArticleCommentThumbsDownDto
-                {
-                    ArticleCommentId = articleCommentId,
-                    UserId = userId ?? "",
-                    ArticleId = articleId
+                    ArticleId = Guid.Parse(articleId),
+                    ArticleCommentId = Guid.NewGuid(),
+                    CommentValue = comment,
+                    DateTime = DateTimeOffset.Now,
+                    UserId = userId,
+                    ParentArticleCommentId = parentArticleCommentId
                 };
 
-                await _userService.RegisterArticleCommentThumbsDown<ResponseDto>(writeArticleCommentThumbsDownDto, accessToken ?? "");
+                await _topicArticleService.RegisterArticleCommentAsync<string>(writeArticleCommentDto, accessToken);
+
+                return new JsonResult(new { });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ArticleCommentLike(Guid articleCommentId)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var articleCommentLikeDto = new ArticleCommentLikeDto
+                {
+                    ArticleCommentId = articleCommentId,
+                    DateTime = DateTimeOffset.Now,
+                    UserId = userId
+                };
+
+                await _topicArticleService.RegisterArticleCommentLikeAsync<string>(articleCommentLikeDto, accessToken);
+
+                return new JsonResult(new { });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ArticleCommentDislike(Guid articleCommentId)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var articleCommentDislikeDto = new ArticleCommentDislikeDto
+                {
+                    ArticleCommentId = articleCommentId,
+                    DateTime = DateTimeOffset.Now,
+                    UserId = userId
+                };
+
+                await _topicArticleService.RegisterArticleCommentDislikeAsync<string>(articleCommentDislikeDto, accessToken);
 
                 return new JsonResult(new { });
             }
