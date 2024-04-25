@@ -1,4 +1,5 @@
-﻿@model UserSearchOptionsViewModel
+﻿@using DrahtenWeb.Dtos.TopicArticleService
+@model UserSearchOptionsViewModel
 
     <div class="row mx-2 mt-1 gy-2">
         <div class="col-md-12 col-lg-4">
@@ -54,7 +55,7 @@
                         {
                             <input id="subscribedTopicFullName-@userTopic.TopicId" type="hidden" />
                             <div id="subscribedTopicName-@userTopic.TopicId" class="subscribed-topic-card card shadow" 
-                                 onclick="selectTopicSearch(@userTopic.TopicId)">
+                                 onclick="selectTopicSearch('@userTopic.TopicId')">
                                 <i class="fa fa-globe card-icon" aria-hidden="true"></i>
                                 <span class="card-title">@userTopic.TopicName</span>
                             </div>
@@ -83,7 +84,7 @@
                 //This method constructs endpoint name, based on the full name of the user-subscribed topic (All parents names+user-topic-name).
                 //When the endpoint name is contructed the method sends ajax HTTP GET request to '/Search/' + endpoint.
                 //Bootstrap card element is created for each element that is received from the response (from the ajax request). 
-                void GetAllTopicData(ReadTopicDto topicDto, string endpointName)
+                void GetAllTopicData(TopicDto topicDto, string endpointName)
                 {
                     var currentUserTopic = Model.UserTopics.FirstOrDefault(x => x.TopicId == topicDto.TopicId);
 
@@ -96,55 +97,55 @@
 
                     if(topicDto.Children == null && currentUserTopic != null || topicDto.Children?.Count == 0 && currentUserTopic != null)
                     {
-                        <text>
-                            var endpoint = "@endpointName";
+                                        <text>
+                                            var endpoint = "@endpointName";
 
-                            $("#subscribedTopicFullName-@currentUserTopic.TopicId").val(endpoint);
+                                             $("#subscribedTopicFullName-@currentUserTopic.TopicId").val(endpoint);
 
-                            $.ajax({
-                                type: 'GET',
-                                url: '/Search/' + endpoint,
-                                data: {},
-                                success: (response) => {
-
-                                    if (response != null) {
-
-                                        let divElementArticleList = $("#article-list");
-
-                                        response.forEach((element) => {
-
-                                            let articleInfo = null;
-
-                                            //Send ajax HTTP GET request to /Article/ArticleInfo.
                                             $.ajax({
                                                 type: 'GET',
-                                                url: '/Article/ArticleInfo',
-                                                data: {
-                                                    'articleId': element.document_id
-                                                },
+                                                url: `/Search/${endpoint}`,
+                                                data: {},
                                                 success: (response) => {
 
-                                                    CreateDocumentCard(divElementArticleList, @currentUserTopic.TopicId, element, response, endpoint);
+                                                      if (response != null) {
+
+                                                          let divElementArticleList = $("#article-list");
+
+                                                          response.forEach((element) => {
+
+                                                              let articleInfo = null;
+
+                                                              //Send ajax HTTP GET request to /Article/ArticleInfo.
+                                                              $.ajax({
+                                                                  type: 'GET',
+                                                                  url: '/Article/ArticleInfo',
+                                                                  data: {
+                                                                      'articleId': element.document_id
+                                                                  },
+                                                                  success: (response) => {
+
+                                                                      CreateDocumentCard(divElementArticleList, '@currentUserTopic.TopicId', element, response, endpoint);
+                                                                  },
+                                                                  failure: (reponse) => {
+                                                                      console.log("failure", response);
+                                                                  },
+                                                                  error: (response) => {
+                                                                      console.log("error", response);
+                                                                  }
+                                                              });
+                                                          });
+                                                   }
                                                 },
                                                 failure: (reponse) => {
-                                                    console.log("failure", response);
+                                                  console.log("failure", response);
                                                 },
                                                 error: (response) => {
-                                                    console.log("error", response);
+                                                  console.log("error", response);
                                                 }
                                             });
-                                        });
-                                 }
-                              },
-                              failure: (reponse) => {
-                                console.log("failure", response);
-                              },
-                              error: (response) => {
-                                console.log("error", response);
-                              }
-                          });
 
-                        </text>
+                                        </text>
 
                         return;
                     }
@@ -174,16 +175,11 @@
                     const endpointName = $("#home-search-input-endpoint").val();
                     const topicId = $("#home-search-input-topicId").val();
 
-                    console.log(homeSearchInputValue);
-                    console.log(endpointName);
-                    console.log(topicId);
-
                     //Send ajax HTTP GET request to the endpoint specified by <endpointName>Query.
                     $.ajax({
                         type: 'GET',
                         url: '/Search/' + endpointName + 'Query',
                         data: {
-                            'topicId': topicId,
                             'query': homeSearchInputValue
                         },
                         success: (response) => {
@@ -214,7 +210,8 @@
 
                                 response.forEach((element) => {
 
-                                    CreateDocumentCard(divElementArticleList, element, endpointName);
+                                    //TODO: call the /Article/ArticleInfo endpoint to get info about the article and update the parameters for the function.
+                                    //CreateDocumentCard(divElementArticleList, element, endpointName);
                                 });
                             }
                         },
