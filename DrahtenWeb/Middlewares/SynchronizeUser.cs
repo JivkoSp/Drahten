@@ -1,9 +1,8 @@
 ﻿using DrahtenWeb.Dtos;
-using DrahtenWeb.Exceptions;
+using DrahtenWeb.Dtos.UserService;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace DrahtenWeb.Middlewares
@@ -21,76 +20,33 @@ namespace DrahtenWeb.Middlewares
         {
             try
             {
-                var response = new ResponseDto();
-                var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userDto = new UserDto();
+                var userId = Guid.Parse(context.User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var accessToken = await context.GetTokenAsync("access_token");
 
-                if (userId == null)
+                var response = await userService.GetUserByIdAsync<ResponseDto>(userId, accessToken);
+
+                if(response != null && response.IsSuccess)
                 {
-                    throw new ClaimsPrincipalNameIdentifierNotFoundException();
+                    userDto = JsonConvert.DeserializeObject<UserDto>(Convert.ToString(response.Result));
                 }
-
-                if(accessToken == null)
+                else
                 {
-                    throw new HttpContextAccessTokenNotFoundException();
+                    userDto = null;
                 }
-
-                response = await userService.GetUserById<ResponseDto>(userId, accessToken);
-
-                var userDto = JsonConvert.DeserializeObject<ReadUserDto>(Convert.ToString(response.Result));
-
+                
                 if (userDto == null)
                 {
-                    //The user is NOT registered in UserService.
-                    //Register the user (synchronize the user in UserService).
-
-                    var writeUserDto = new WriteUserDto
+                    userDto = new UserDto
                     {
                         UserId = userId,
-                        FullName = context.User.FindFirstValue("name") ?? "",
-                        NickName = context.User.FindFirstValue("preferred_username") ?? "",
-                        EmailAddress = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress") ?? ""
+                        UserFullName = context.User.FindFirstValue("name"),
+                        UserNickName = context.User.FindFirstValue("preferred_username"),
+                        UserEmailAddress = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
                     };
 
-                    await userService.RegisterUser<ResponseDto>(writeUserDto, accessToken);
+                    await userService.RegisterUserAsync<ResponseDto>(userDto, accessToken);
                 }
-
-                response = await userService.GetUserPrivateHistory<ResponseDto>(userId, accessToken);
-
-                var userPrivateHistoryDto = JsonConvert.DeserializeObject<ReadPrivateHistoryDto>(Convert.ToString(response.Result));
-
-                if(userPrivateHistoryDto == null) 
-                {
-                    var writeUserPrivateHistoryDto = new WritePrivateHistoryDto
-                    {
-                        PrivateHistoryId = userId,
-                        HistoryLiveTime = DateTime.Now.AddHours(24),
-                    };
-
-                    await userService.CreateUserPrivateHistory<ResponseDto>(writeUserPrivateHistoryDto, accessToken);
-                }
-
-                response = await userService.GetUserPublicHistory<ResponseDto>(userId, accessToken);
-
-                var userPublicHistoryDto = JsonConvert.DeserializeObject<ReadPublicHistoryDto>(Convert.ToString(response.Result));
-
-                if(userPublicHistoryDto == null)
-                {
-                    var writeUserPublicHistoryDto = new WritePublicHistoryDto
-                    {
-                        PublicHistoryId = userId
-                    };
-
-                    await userService.CreateUserPublicHistory<ResponseDto>(writeUserPublicHistoryDto, accessToken);
-                }
-            }
-            catch(ClaimsPrincipalNameIdentifierNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch(HttpContextAccessTokenNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
