@@ -42,7 +42,9 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
                             .FirstOrDefaultAsync();
 
             //Find all topics and include their children.
-            var alltopics = _readDbContext.Topics.Include(x => x.Children);
+            var alltopics = _readDbContext.Topics
+                .Include(x => x.Children)
+                .ThenInclude(x => x.Children);
 
             //Find the topic, that has id equal to the id of the parent topic (parentTopicReadModel).
             var topicReadModel = await alltopics?.Where(x => x.TopicId == parentTopicReadModel.TopicId).FirstOrDefaultAsync();
