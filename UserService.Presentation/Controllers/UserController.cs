@@ -3,6 +3,7 @@ using UserService.Application.Commands;
 using UserService.Application.Commands.Dispatcher;
 using UserService.Application.Queries;
 using UserService.Application.Queries.Dispatcher;
+using UserService.Presentation.Dtos;
 
 namespace UserService.Presentation.Controllers
 {
@@ -12,11 +13,13 @@ namespace UserService.Presentation.Controllers
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ResponseDto _responseDto;
 
         public UserController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
+            _responseDto = new ResponseDto();
         }
 
         [HttpGet("{UserId:guid}")]
@@ -24,12 +27,16 @@ namespace UserService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getUserQuery);
 
+            _responseDto.Result = result;
+
             if (result == null)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
-            
-            return Ok(result);
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{IssuerUserId:guid}/issued-bans-by-user/")]
@@ -37,12 +44,16 @@ namespace UserService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getBannedUsersQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{ReceiverUserId:guid}/received-bans-by-user/")]
@@ -50,12 +61,16 @@ namespace UserService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getReceivedBansByUserQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{IssuerUserId:guid}/issued-contact-requests-by-user/")]
@@ -64,12 +79,16 @@ namespace UserService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getUserContactRequestsQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpGet("{ReceiverUserId:guid}/received-contact-requests-by-user/")]
@@ -78,12 +97,16 @@ namespace UserService.Presentation.Controllers
         {
             var result = await _queryDispatcher.DispatchAsync(getReceivedContactRequestByUserQuery);
 
+            _responseDto.Result = result;
+
             if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound(_responseDto);
             }
 
-            return Ok(result);
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
 
         [HttpPost]
