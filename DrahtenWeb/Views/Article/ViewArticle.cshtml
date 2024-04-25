@@ -1,14 +1,15 @@
-﻿@model ArticleViewModel
+﻿@using DrahtenWeb.Dtos.TopicArticleService
+@model ArticleViewModel
 
 <div class="container">
     <div class="row mt-1">
         <div class="col-md-8 offset-md-2">
-            <input id="articleId" type="hidden" value="@Model.DocumentId" />
+            <input id="articleId" type="hidden" value="@Model.Article.ArticleId" />
             <!-- Display the article title, author, date, and link -->
             <div class="article-header">
-                <h1 class="display-5">@Model.Document?.article_title</h1>
-                <p class="lead">By @Model.Document?.article_author on @Model.Document?.article_published_date</p>
-                <p><a href="@Model.Document?.article_link" target="_blank">Read more</a></p>
+                <h1 class="display-5">@Model.Article.Title</h1>
+                <p class="lead">By @Model.Article.Author on @Model.Article.PublishingDate</p>
+                <p><a href="@Model.Article.Link" target="_blank">Read more</a></p>
             </div>
             <!-- Display the search bar -->
             <div class="search-bar mb-3">
@@ -18,10 +19,15 @@
                 </div>
             </div>
             <hr>
-            <!-- Display the article data -->
+            <!-- Display the article content -->
             <div id="article-data" class="article-data">
-                @Model.Document?.article_data
+                @Model.Article.Content
             </div>
+            <!-- Display the number of comments and likes for the article -->
+            <p class="mt-4">
+                <span id="comment-count">@Model.ArticleComments.Count</span> comments |
+                <span id="like-count">@Model.Article.ArticleLikeDtos.Count</span> likes
+            </p>
             <hr>
             <!-- Display the article summary -->
             <div class="article-summary">
@@ -37,10 +43,8 @@
                 <div id="article-questions-loader" class="loader"></div>
             </div>
             <hr>
-            <!-- Display the comment and like section -->
+            <!-- Display the comment section -->
             <div class="comment-like">
-                <!-- Display the number of comments and likes -->
-                <p><span id="comment-count">@Model.ArticleComments?.Count</span> comments | <span id="like-count">@Model.ArticleLikes?.Count</span> likes</p>
                 <!-- Display a button to toggle the comment form -->
                 <button id="article-viewcomment-button" class="btn btn-primary">Comment section</button>
                 <!-- Display a button to like the article -->
@@ -53,12 +57,11 @@
                             void DisplayChildArticles(ReadArticleCommentDto articleComment)
                             {
                                     <div class="comment mt-3">
-                                        <h6 class="card-subtitle mb-2 text-muted">@articleComment.UserDto?.NickName</h6>
-                                        <p class="card-text shadow-sm rounded-3">@articleComment.Comment</p>
+                                        <p class="card-text shadow-sm rounded-3">@articleComment.CommentValue</p>
                                         <div id="comment-actions-@articleComment.ArticleCommentId" class="actions">
-                                        <i id="thumbs-up-@articleComment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentThumbsUp(@articleComment.ArticleCommentId)"></i> @articleComment.ArticleCommentThumbsUp?.Count
-                                        <i id="thumbs-down-@articleComment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentThumbsDown(@articleComment.ArticleCommentId)"></i> @articleComment.ArticleCommentThumbsDown?.Count
-                                            <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment(@articleComment.ArticleCommentId)">Reply</button>
+                                        <i id="thumbs-up-@articleComment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentLike('@articleComment.ArticleCommentId')"></i> @articleComment.ArticleCommentLikeDtos.Count
+                                        <i id="thumbs-down-@articleComment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentDislike('@articleComment.ArticleCommentId')"></i> @articleComment.ArticleCommentDislikeDtos.Count
+                                            <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment('@articleComment.ArticleCommentId')">Reply</button>
                                             <span>@articleComment.Children?.Count replies</span>
 
                                             @{
@@ -83,13 +86,13 @@
                                     {
                                             <div class="card shadow rounded-3 mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title">@comment.UserDto?.NickName</h5>
-                                                    <p class="card-text shadow-sm rounded-3">@comment.Comment</p>
+                                                <h5 class="card-title">@Model.Users.FirstOrDefault(x => x.UserId == Guid.Parse(comment.UserId)).UserNickName</h5>
+                                                    <p class="card-text shadow-sm rounded-3">@comment.CommentValue</p>
                                                     <div id="comment-actions-@comment.ArticleCommentId" class="actions">
-                                                    <i id="thumbs-up-@comment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentThumbsUp(@comment.ArticleCommentId)"></i> @comment.ArticleCommentThumbsUp?.Count
-                                                    <i id="thumbs-down-@comment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentThumbsDown(@comment.ArticleCommentId)"></i> @comment.ArticleCommentThumbsDown?.Count
-                                                        <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment(@comment.ArticleCommentId)">Reply</button>
-                                                        <span>@comment.Children?.Count replies</span>
+                                                    <i id="thumbs-up-@comment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentLike('@comment.ArticleCommentId')"></i> @comment.ArticleCommentLikeDtos.Count
+                                                    <i id="thumbs-down-@comment.ArticleCommentId" class="fas fa-thumbs-down" onclick="registerUserCommentDislike('@comment.ArticleCommentId')"></i> @comment.ArticleCommentDislikeDtos.Count
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="registerUserComment('@comment.ArticleCommentId')">Reply</button>
+                                                        <span>@comment.Children.Count replies</span>
 
                                                         @{
                                                         if (comment.Children != null)
@@ -238,7 +241,7 @@
 
             $("#article-like-button").click(() => {
 
-                //Send ajax HTTP GET request to /Article/ArticleLike.
+                //Send ajax HTTP POST request to /Article/ArticleLike.
                 $.ajax({
                     type: 'POST',
                     url: '/Article/ArticleLike',
@@ -264,7 +267,7 @@
 
                 const userComment = $("#user-comment").val();
 
-                //Send ajax HTTP GET request to /Article/ArticleComment.
+                //Send ajax HTTP POST request to /Article/ArticleComment.
                 $.ajax({
                     type: 'POST',
                     url: '/Article/ArticleComment',
@@ -323,7 +326,7 @@
                         url: '/Article/ArticleChildComment',
                         data: {
                             'articleId': articleId,
-                            'articleCommentId': articleCommentId, //this is the id of the parent comment.
+                            'parentArticleCommentId': articleCommentId, //this is the id of the parent comment.
                             'comment': userComment
                         },
                         success: (response) => {
@@ -361,20 +364,17 @@
             }
         }
 
-        function registerUserCommentThumbsUp(articleCommentId) {
+        function registerUserCommentLike(articleCommentId) {
 
             this.event.target.style.color = "green";
 
             $("#thumbs-down-" + articleCommentId).css("color", "black");
 
-            const articleId = $("#articleId").val();
-
-            //Send ajax HTTP GET request to /Article/ArticleCommentThumbsUp.
+            //Send ajax HTTP POST request to /Article/ArticleCommentLike.
             $.ajax({
                 type: 'POST',
-                url: '/Article/ArticleCommentThumbsUp',
+                url: '/Article/ArticleCommentLike',
                 data: {
-                    'articleId': articleId,
                     'articleCommentId': articleCommentId
                 },
                 success: (response) => {
@@ -392,20 +392,17 @@
             });
         }
 
-        function registerUserCommentThumbsDown(articleCommentId) {
+        function registerUserCommentDislike(articleCommentId) {
 
             this.event.target.style.color = "red";
 
             $("#thumbs-up-" + articleCommentId).css("color", "black");
 
-            const articleId = $("#articleId").val();
-
-            //Send ajax HTTP GET request to /Article/ArticleCommentThumbsDown.
+            //Send ajax HTTP POST request to /Article/ArticleCommentDislike.
             $.ajax({
                 type: 'POST',
-                url: '/Article/ArticleCommentThumbsDown',
+                url: '/Article/ArticleCommentDislike',
                 data: {
-                    'articleId': articleId,
                     'articleCommentId': articleCommentId
                 },
                 success: (response) => {
