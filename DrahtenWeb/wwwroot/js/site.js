@@ -40,8 +40,8 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
         class: "text-muted"
     });
 
-    smallElementCardFooterInfo.text(`Comments: ${articleInfo.comments} | Views: ${articleInfo.views} 
-    | Likes: ${articleInfo.likes} | Dislikes: ${articleInfo.disLikes}`);
+    smallElementCardFooterInfo.text(`Comments: ${articleInfo.comments.length} | Views: ${articleInfo.views.length} 
+    | Likes: ${articleInfo.likes.length} | Dislikes: ${articleInfo.disLikes.length}`);
 
     const buttonElementCardFooter = $("<button>", {
         type: "button",
@@ -59,55 +59,78 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
         method: "post"
     });
 
-    const inputElementTopicId = $("<input>", {
-        type: "hidden",
-        name: "document_topic_id",
-        value: document_topic_id
-    });
-
     const inputElementArticleId = $("<input>", {
         type: "hidden",
-        name: "document_id",
+        name: "ArticleId",
         value: element.document_id
     });
 
     const inputElementArticlePrevTitle = $("<input>", {
         type: "hidden",
-        name: "article_prev_title",
+        name: "PrevTitle",
         value: element.document.article_prev_title
     });
 
     const inputElementArticleTitle = $("<input>", {
         type: "hidden",
-        name: "article_title",
+        name: "Title",
         value: element.document.article_title
     });
 
     const inputElementArticleData = $("<input>", {
         type: "hidden",
-        name: "article_data",
+        name: "Content",
         value: element.document.article_data
     });
 
     const inputElementArticlePublishedDate = $("<input>", {
         type: "hidden",
-        name: "article_published_date",
+        name: "PublishingDate",
         value: element.document.article_published_date
     });
 
     const inputElementArticleAuthor = $("<input>", {
         type: "hidden",
-        name: "article_author",
+        name: "Author",
         value: element.document.article_author
     });
 
     const inputElementArticleLink = $("<input>", {
         type: "hidden",
-        name: "article_link",
+        name: "Link",
         value: element.document.article_link
     });
 
-    formElement.append(inputElementTopicId);
+    const inputElementTopicId = $("<input>", {
+        type: "hidden",
+        name: "TopicId",
+        value: document_topic_id
+    });
+
+    const inputElementArticleComments = $("<input>", {
+        type: "hidden",
+        name: "articleComments",
+        value: JSON.stringify(articleInfo.comments)
+    });
+
+    const inputElementUserArticles = $("<input>", {
+        type: "hidden",
+        name: "userArticleList",
+        value: JSON.stringify(articleInfo.views)
+    });
+
+    const inputElementArticleLikes = $("<input>", {
+        type: "hidden",
+        name: "ArticleLikeDtos",
+        value: articleInfo.likes
+    });
+
+    const inputElementArticleDislikes = $("<input>", {
+        type: "hidden",
+        name: "ArticleDislikeDtos",
+        value: articleInfo.disLikes
+    });
+
     formElement.append(inputElementArticleId);
     formElement.append(inputElementArticlePrevTitle);
     formElement.append(inputElementArticleTitle);
@@ -115,6 +138,11 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
     formElement.append(inputElementArticlePublishedDate);
     formElement.append(inputElementArticleAuthor);
     formElement.append(inputElementArticleLink);
+    formElement.append(inputElementTopicId);
+    formElement.append(inputElementArticleComments);
+    formElement.append(inputElementUserArticles);
+    formElement.append(inputElementArticleLikes);
+    formElement.append(inputElementArticleDislikes);
 
     divElementCardFooter.append(smallElementCardFooterInfo);
     divElementCardFooter.append(buttonElementCardFooter);
