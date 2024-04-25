@@ -1,3 +1,4 @@
+using DrahtenWeb.Automapper.Profiles;
 using DrahtenWeb.Middlewares;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
@@ -6,20 +7,28 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient<ITopicArticleService, TopicArticleService>();
+
 builder.Services.AddHttpClient<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ISearchService, SearchService>();
 
+builder.Services.AddScoped<ITopicArticleService, TopicArticleService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<ISearchService, SearchService>();
+
+builder.Services.AddAutoMapper(configAction => {
+
+    configAction.AddProfile<ArticleProfile>();
+});
 
 builder.Services.AddAuthentication(options => {
 
