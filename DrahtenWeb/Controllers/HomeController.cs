@@ -1,6 +1,6 @@
 using DrahtenWeb.Dtos;
+using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Models;
-using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -19,12 +18,12 @@ namespace DrahtenWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IUserService _userService;
+        private readonly ITopicArticleService _topicArticleService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, ITopicArticleService topicArticleService)
         {
             _logger = logger;
-            _userService = userService;
+            _topicArticleService = topicArticleService;
         }
 
         public async Task<IActionResult> Index()
@@ -33,24 +32,26 @@ namespace DrahtenWeb.Controllers
 
             //Get the user id.
             //Here the NameIdentifier claim type represents the user id.
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            var response = await _userService.GetUserTopics<ResponseDto>(userId ?? "", accessToken ?? "");
+            var response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
             if(response != null && response.IsSuccess)
             {
-                userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<ReadUserTopicDto>>(Convert.ToString(response.Result));
+                userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<UserTopicDto>>(Convert.ToString(response.Result));
             }
 
-            foreach(var userTopic in userSearchOptionsViewModel.UserTopics ?? new List<ReadUserTopicDto>())
+            foreach (var userTopic in userSearchOptionsViewModel.UserTopics)
             {
-                response = await _userService.GetRootTopicWithChildren<ResponseDto>(userTopic.TopicId, accessToken ?? "");
+               response = await _topicArticleService.GetParentTopicWithChildrenAsync<ResponseDto>(userTopic.TopicId, accessToken);
 
                 if(response != null && response.IsSuccess)
                 {
-                    userSearchOptionsViewModel.Topics.Add(JsonConvert.DeserializeObject<ReadTopicDto>(Convert.ToString(response.Result)));
+                    var topicDto = JsonConvert.DeserializeObject<TopicDto>(Convert.ToString(response.Result));
+
+                    userSearchOptionsViewModel.Topics.Add(topicDto);
                 }
             }
 
