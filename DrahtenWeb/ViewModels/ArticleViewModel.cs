@@ -1,12 +1,12 @@
-﻿using DrahtenWeb.Dtos;
+﻿using DrahtenWeb.Dtos.TopicArticleService;
 
 namespace DrahtenWeb.ViewModels
 {
     public class ArticleViewModel
     {
-        public string DocumentId { get; set; } = string.Empty;
-        public DocumentDto? Document { get; set; }
-        public List<ReadArticleLikeDto>? ArticleLikes { get; set; }
-        public List<ReadArticleCommentDto>? ArticleComments { get; set; }
+        public ArticleDto Article { get; set; } = new ArticleDto();
+        public List<ReadUserArticleDto> UserArticles { get; set; } = new List<ReadUserArticleDto>();
+        public List<ReadArticleCommentDto> ArticleComments { get; set; } = new List<ReadArticleCommentDto>();
+        public List<Dtos.UserService.UserDto> Users { get; set; } = new List<Dtos.UserService.UserDto>();
     }
 }
