@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.TopicArticleService;
-using DrahtenWeb.Dtos.UserService;
+using DrahtenWeb.Extensions;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -28,51 +28,30 @@ namespace DrahtenWeb.Controllers
             _userService = userService;
         }
 
-        //TODO: Make mapper that will take the ResponseDto (the response from the request) and generic type.
-        //The mapper will return the generic type.
-        //This will prevent the dublication of code and make the overall function more clear and understandable.
-        // ---- Maybe do it with extension method?? Like this: response.Map<...>()
-
         [HttpGet]
         public async Task<IActionResult> ArticleInfo(string articleId) //TODO: Check if changing the string with Guid will be Ok
         {
             try
             {
                 var response = new ResponseDto();
-                var articleComments = new List<ReadArticleCommentDto>();
-                var userArticleList = new List<ReadUserArticleDto>();
-                var articleLikes = new List<ArticleLikeDto>();
-                var articleDislikes = new List<ArticleDislikeDto>();
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    articleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(Convert.ToString(response.Result));
-                }
+                var articleComments = response.Map<List<ReadArticleCommentDto>>();
 
                 response  = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    userArticleList = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(Convert.ToString(response.Result));
-                }
+                var userArticleList = response.Map<List<ReadUserArticleDto>>();
 
                 response =  await _topicArticleService.GetArticleLikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                if(response != null && response.IsSuccess)
-                {
-                    articleLikes  = JsonConvert.DeserializeObject<List<ArticleLikeDto>>(Convert.ToString(response.Result));
-                }
+                var articleLikes = response.Map<List<ArticleLikeDto>>();
 
                 response = await _topicArticleService.GetArticleDislikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    articleDislikes = JsonConvert.DeserializeObject<List<ArticleDislikeDto>>(Convert.ToString(response.Result));
-                }
+                var articleDislikes = response.Map<List<ArticleDislikeDto>>();
 
                 var articleInfoViewModel = new ArticleInfoViewModel
                 {
@@ -90,8 +69,6 @@ namespace DrahtenWeb.Controllers
             }
         }
 
-
-        //TODO: PrepareArticleViewModel method -> ArticleViewModel.
         [HttpPost]
         public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleComments, string userArticleList)
         {
@@ -152,16 +129,11 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var documentSummaryDto = new DocumentSummaryDto();
-
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var response = await _searchService.GetDocumentSummarizationNewsCybersecurityEurope<ResponseDto>(articleId, accessToken);
 
-                if(response != null && response.IsSuccess)
-                {
-                    documentSummaryDto = JsonConvert.DeserializeObject<DocumentSummaryDto>(Convert.ToString(response.Result));
-                }
+                var documentSummaryDto = response.Map<DocumentSummaryDto>();
 
                 return new JsonResult(documentSummaryDto);
             }
@@ -176,16 +148,11 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var documentQuestions = new List<string>();
-
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var response = await _searchService.GetDocumentQuestionsNewsCybersecurityEurope<ResponseDto>(articleId, accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    documentQuestions = JsonConvert.DeserializeObject<List<string>>(Convert.ToString(response.Result));
-                }
+                var documentQuestions = response.Map<List<string>>();
 
                 return new JsonResult(documentQuestions);
             }
@@ -200,8 +167,6 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var answerDto = new NLPQueryAnswerDto();
-
                 var documentQuestionDto = new DocumentQuestionDto
                 { 
                     document_id = articleId,
@@ -210,12 +175,9 @@ namespace DrahtenWeb.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _searchService.SemanticSearchDocumentNewsCybersecurityEurope<ResponseDto>(documentQuestionDto, accessToken ?? "");
+                var response = await _searchService.SemanticSearchDocumentNewsCybersecurityEurope<ResponseDto>(documentQuestionDto, accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    answerDto = JsonConvert.DeserializeObject<NLPQueryAnswerDto>(Convert.ToString(response.Result));
-                }
+                var answerDto = response.Map<NLPQueryAnswerDto>();
 
                 return new JsonResult(answerDto);
             }
