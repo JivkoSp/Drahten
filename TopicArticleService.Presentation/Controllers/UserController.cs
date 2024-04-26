@@ -25,6 +25,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("articles/{ArticleId:guid}", Name = "GetUsersRelatedToArticle")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetUsersRelatedToArticle([FromRoute] GetUsersRelatedToArticleQuery getUsersRelatedToArticleQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getUsersRelatedToArticleQuery);
@@ -42,6 +44,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("{UserId:guid}/articles/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterUserArticle([FromBody] RegisterUserArticleCommand registerUserArticleCommand)
         {
             await _commandDispatcher.DispatchAsync(registerUserArticleCommand);
@@ -51,6 +54,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("{UserId:guid}/topics/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterUserTopic([FromBody] RegisterUserTopicCommand registerUserTopicCommand)
         {
             await _commandDispatcher.DispatchAsync(registerUserTopicCommand);
@@ -59,6 +63,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterUser([FromBody] RegisterUserCommand registerUserCommand)
         {
             await _commandDispatcher.DispatchAsync(registerUserCommand);
