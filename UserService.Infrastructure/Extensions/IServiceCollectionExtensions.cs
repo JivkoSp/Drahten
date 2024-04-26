@@ -15,6 +15,7 @@ using UserService.Infrastructure.EntityFramework.Repositories;
 using UserService.Infrastructure.EntityFramework.Services.ReadServices;
 using UserService.Infrastructure.Exceptions;
 using UserService.Infrastructure.Exceptions.Interfaces;
+using UserService.Infrastructure.UserRegistration;
 
 [assembly: InternalsVisibleTo(assemblyName: "UserService.Tests.EndToEnd")]
 namespace UserService.Infrastructure.Extensions
@@ -43,6 +44,8 @@ namespace UserService.Infrastructure.Extensions
                 configAction.AddProfile<BannedUserProfile>();
                 configAction.AddProfile<ContactRequestProfile>();
             });
+
+            services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
             services.AddSingleton<IMessageBusPublisher, MessageBusPublisher>();
 
