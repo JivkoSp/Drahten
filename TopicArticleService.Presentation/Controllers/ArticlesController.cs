@@ -25,6 +25,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{ArticleId:guid}", Name = "GetArticle")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticle([FromRoute] GetArticleQuery getArticleQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleQuery);
@@ -42,6 +44,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{ArticleId:guid}/likes/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleLikes([FromRoute] GetArticleLikesQuery getArticleLikesQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleLikesQuery);
@@ -59,6 +63,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{ArticleId:guid}/dislikes/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleDislikes([FromRoute] GetArticleDislikesQuery getArticleDislikesQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleDislikesQuery);
@@ -76,6 +82,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{ArticleId:guid}/comments/", Name = "GetArticleComments")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleComments([FromRoute] GetArticleCommentsQuery getArticleCommentsQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleCommentsQuery);
@@ -93,6 +101,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticle([FromBody] CreateArticleCommand createArticleCommand)
         {
             await _commandDispatcher.DispatchAsync(createArticleCommand);
@@ -101,6 +110,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("{ArticleId:guid}/likes/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleLike([FromBody] AddArticleLikeCommand addArticleLikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleLikeCommand);
@@ -109,6 +119,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("{ArticleId:guid}/dislikes/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleDislike([FromBody] AddArticleDislikeCommand addArticleDislikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleDislikeCommand);
@@ -117,6 +128,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("{ArticleId:guid}/comments/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleComment([FromBody] AddArticleCommentCommand addArticleCommentCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentCommand);
@@ -125,6 +137,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("comments/{ArticleCommentId:guid}/likes")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleCommentLike([FromBody] AddArticleCommentLikeCommand addArticleCommentLikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentLikeCommand);
@@ -133,6 +146,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpPost("comments/{ArticleCommentId:guid}/dislikes")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleCommentDislike([FromBody] AddArticleCommentDislikeCommand addArticleCommentDislikeCommand)
         {
             await _commandDispatcher.DispatchAsync(addArticleCommentDislikeCommand);
@@ -141,6 +155,7 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpDelete("{ArticleId:guid}/comments/{ArticleCommentId:guid}")]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveArticleComment([FromRoute] RemoveArticleCommentCommand removeArticleCommentCommand)
         {
             await _commandDispatcher.DispatchAsync(removeArticleCommentCommand);
