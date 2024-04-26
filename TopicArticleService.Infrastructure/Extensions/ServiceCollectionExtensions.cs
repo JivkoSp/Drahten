@@ -16,6 +16,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Services;
 using TopicArticleService.Infrastructure.EventProcessing;
 using TopicArticleService.Infrastructure.Exceptions;
 using TopicArticleService.Infrastructure.Exceptions.Interfaces;
+using TopicArticleService.Infrastructure.UserRegistration;
 
 [assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.EndToEnd")]
 namespace TopicArticleService.Infrastructure.Extensions
@@ -62,6 +63,8 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
                 configAction.AddProfile<TopicProfile>();
             });
+
+            services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
             services.AddHostedService<MessageBusSubscriber>();
 
