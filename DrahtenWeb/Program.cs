@@ -1,5 +1,4 @@
 using DrahtenWeb.Automapper.Profiles;
-using DrahtenWeb.Middlewares;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
@@ -85,7 +84,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<SynchronizeUser>();
 
 app.MapControllerRoute(
     name: "default",
