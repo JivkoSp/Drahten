@@ -25,6 +25,8 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpGet("{UserId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetUser([FromRoute] GetUserQuery getUserQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getUserQuery);
@@ -42,6 +44,8 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpGet("{IssuerUserId:guid}/issued-bans-by-user/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetIssuedBansByUser([FromRoute] GetIssuedBansByUserQuery getBannedUsersQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getBannedUsersQuery);
@@ -59,6 +63,8 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpGet("{ReceiverUserId:guid}/received-bans-by-user/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetReceivedBansByUser([FromRoute] GetReceivedBansByUserQuery getReceivedBansByUserQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getReceivedBansByUserQuery);
@@ -76,6 +82,8 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpGet("{IssuerUserId:guid}/issued-contact-requests-by-user/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetIssuedContactRequestsByUser(
             [FromRoute] GetIssuedContactRequestsByUserQuery getUserContactRequestsQuery)
         {
@@ -94,6 +102,8 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpGet("{ReceiverUserId:guid}/received-contact-requests-by-user/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetReceivedContactRequestsByUser(
             [FromRoute] GetReceivedContactRequestByUserQuery getReceivedContactRequestByUserQuery)
         {
@@ -112,6 +122,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterUser([FromBody] CreateUserCommand createUserCommand)
         {
             await _commandDispatcher.DispatchAsync(createUserCommand);
@@ -120,6 +131,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpPost("{IssuerUserId:guid}/banned-users/{ReceiverUserId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterBannedUser([FromBody] BanUserCommand banUserCommand)
         {
             await _commandDispatcher.DispatchAsync(banUserCommand);
@@ -128,6 +140,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpPost("{IssuerUserId:guid}/contact-requests/{ReceiverUserId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterContactRequest([FromBody] AddContactRequestCommand addContactRequestCommand)
         {
             await _commandDispatcher.DispatchAsync(addContactRequestCommand);
@@ -136,6 +149,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpPost("{UserId:guid}/user-tracking")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterUserActivity([FromBody] AddToAuditTrailCommand addToAuditTrailCommand)
         {
             await _commandDispatcher.DispatchAsync(addToAuditTrailCommand);
@@ -144,6 +158,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpPut("{IssuerUserId:guid}/update-contact-request-message/{ReceiverUserId:guid}")]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> UpdateContactRequestMessage([FromBody] UpdateContactRequestMessageCommand updateContactRequestMessage)
         {
             await _commandDispatcher.DispatchAsync(updateContactRequestMessage);
@@ -152,6 +167,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpDelete("{IssuerUserId:guid}/issued-contact-requests/{ReceiverUserId:guid}")]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveIssuedContactRequest([FromRoute] RemoveIssuedContactRequestCommand removeContactRequestCommand)
         {
             await _commandDispatcher.DispatchAsync(removeContactRequestCommand);
@@ -160,6 +176,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpDelete("{ReceiverUserId:guid}/received-contact-requests/{IssuerUserId:guid}")]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveReceivedContactRequest([FromRoute] RemoveReceivedContactRequestCommand removeReceivedContactRequestCommand)
         {
             await _commandDispatcher.DispatchAsync(removeReceivedContactRequestCommand);
@@ -168,6 +185,7 @@ namespace UserService.Presentation.Controllers
         }
 
         [HttpDelete("{IssuerUserId:guid}/banned-users/{ReceiverUserId:guid}")]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveBannedUser([FromRoute] UnbanUserCommand unbanUserCommand)
         {
             await _commandDispatcher.DispatchAsync(unbanUserCommand);
