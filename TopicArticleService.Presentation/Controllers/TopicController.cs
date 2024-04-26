@@ -21,6 +21,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetTopics([FromRoute] GetTopicsQuery getTopicsQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getTopicsQuery);
@@ -38,6 +40,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{TopicId:guid}/parent-topic/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetRootTopicWithChildren([FromRoute] GetParentTopicWithChildrenQuery getParentTopicWithChildrenQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getParentTopicWithChildrenQuery);
@@ -55,6 +59,8 @@ namespace TopicArticleService.Presentation.Controllers
         }
 
         [HttpGet("{UserId:guid}/user-topics/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetTopicsRelatedToUser([FromRoute] GetTopicsRelatedToUserQuery getTopicsRelatedToUserQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getTopicsRelatedToUserQuery);
