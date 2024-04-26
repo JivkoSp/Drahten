@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TopicArticleService.Application.Queries;
 using TopicArticleService.Application.Queries.Dispatcher;
 using TopicArticleService.Presentation.Dtos;
 
 namespace TopicArticleService.Presentation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("topic-article-service/topics")]
     public class TopicController : ControllerBase
