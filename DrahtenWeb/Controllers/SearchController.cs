@@ -1,10 +1,9 @@
 ﻿using DrahtenWeb.Dtos;
+using DrahtenWeb.Extensions;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Security.Claims;
 
 namespace DrahtenWeb.Controllers
 {
@@ -25,16 +24,11 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var documents = new List<QueryAnswerDto>();
-
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var response = await _searchService.GetAllDocumentsNewsCybersecurityEurope<ResponseDto>(accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    documents = JsonConvert.DeserializeObject<List<QueryAnswerDto>>(Convert.ToString(response.Result));
-                }
+                var documents = response.Map<List<QueryAnswerDto>>();
 
                 return new JsonResult(documents);
             }
@@ -49,22 +43,11 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
-                var response = new ResponseDto();
-                var documents = new List<NLPQueryAnswerDto>();
-                //var searchedTopicsData = new List<ReadSearchedTopicDataHistoryDto>();
-
-                //Get the user id.
-                //Here the NameIdentifier claim type represents the user id.
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                response = await _searchService.GetAllMathingDocumentsNewsCybersecurityEurope<ResponseDto>(query, accessToken);
+                var response = await _searchService.GetAllMathingDocumentsNewsCybersecurityEurope<ResponseDto>(query, accessToken);
 
-                if(response != null && response.IsSuccess)
-                {
-                    documents = JsonConvert.DeserializeObject<List<NLPQueryAnswerDto>>(Convert.ToString(response.Result));
-                }
+                var documents = response.Map<List<NLPQueryAnswerDto>>();
 
                 return new JsonResult(documents);
             }
