@@ -1,11 +1,11 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.TopicArticleService;
+using DrahtenWeb.Extensions;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace DrahtenWeb.Controllers
@@ -41,18 +41,11 @@ namespace DrahtenWeb.Controllers
 
                 var response = await _topicArticleService.GetTopicsAsync<ResponseDto>(accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    userSearchOptionsViewModel.Topics = JsonConvert.DeserializeObject<List<TopicDto>>(Convert.ToString(response.Result));
-                }
+                userSearchOptionsViewModel.Topics = response.Map<List<TopicDto>>();
 
                 response =  await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
-                if (response != null && response.IsSuccess)
-                {
-                    userSearchOptionsViewModel.UserTopics = JsonConvert
-                        .DeserializeObject<List<UserTopicDto>>(Convert.ToString(response.Result));
-                }
+                userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
 
                 return PartialView(viewName: "_SideSearchOptionsMenu", model: userSearchOptionsViewModel);
             }
