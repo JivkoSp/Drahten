@@ -1,5 +1,6 @@
 using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.TopicArticleService;
+using DrahtenWeb.Extensions;
 using DrahtenWeb.Models;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
@@ -38,10 +39,7 @@ namespace DrahtenWeb.Controllers
 
             var response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
-            if(response != null && response.IsSuccess)
-            {
-                userSearchOptionsViewModel.UserTopics = JsonConvert.DeserializeObject<List<UserTopicDto>>(Convert.ToString(response.Result));
-            }
+            userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
 
             foreach (var userTopic in userSearchOptionsViewModel.UserTopics)
             {
