@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Commands;
 using UserService.Application.Commands.Dispatcher;
 using UserService.Application.Queries;
@@ -7,6 +8,7 @@ using UserService.Presentation.Dtos;
 
 namespace UserService.Presentation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("user-service/users")]
     public class UserController : ControllerBase
