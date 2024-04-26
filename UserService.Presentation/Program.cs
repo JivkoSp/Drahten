@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using UserService.Application.Extensions;
 using UserService.Infrastructure.Extensions;
 using UserService.Presentation.Middlewares;
@@ -21,6 +23,42 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
+builder.Services.AddTransient<UserRegistrationMiddleware>();
+
+builder.Services.AddAuthentication(options => {
+
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+
+    options.Authority = "http://127.0.0.1:8080/realms/drahten";
+    // *** IMPORTANT ***
+    //This is for development ONLY. The reason is that the OpenID provider uses http.
+    //In production this should be removed, becouse the OpenID provider must use https.
+    options.RequireHttpsMetadata = false;
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = authFailedContext =>
+        {
+            if (authFailedContext.HttpContext.Request != null)
+            {
+                Console.WriteLine("Jwt token validation failed from UserService.");
+                //TODO: Log information, about this event to logging service.
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // *** IMPORTANT ***
+        //For development ONLY
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
@@ -36,9 +74,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseMiddleware<UserRegistrationMiddleware>();
 
 app.MapControllers();
 
