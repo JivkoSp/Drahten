@@ -5,6 +5,6 @@ namespace TopicArticleService.Domain.Factories
 {
     public interface ITopicFactory
     {
-        Topic Create(TopicId topicId, TopicName topicName, TopicId parentTopicId = null);
+        Topic Create(TopicId topicId, TopicName topicName, TopicFullName topicFullName, TopicId parentTopicId = null);
     }
 }
