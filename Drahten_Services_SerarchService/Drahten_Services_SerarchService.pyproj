@@ -34,11 +34,13 @@
     <Compile Include="app\api\urls.py" />
     <Compile Include="app\api\views.py" />
     <Compile Include="app\forms.py" />
+    <Compile Include="app\management\commands\startgrpcserver.py" />
     <Compile Include="app\models.py" />
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="grpc_server.py" />
     <Compile Include="manage.py" />
     <Compile Include="Drahten_Services_SerarchService\__init__.py" />
     <Compile Include="Drahten_Services_SerarchService\settings.py" />
@@ -47,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\management\commands\" />
     <Folder Include="app\migrations\" />
     <Folder Include="app\api\" />
+    <Folder Include="app\management\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
     <Folder Include="app\static\app\content\" />
@@ -57,11 +61,13 @@
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
     <Folder Include="Drahten_Services_SerarchService\" />
+    <Folder Include="protos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".env" />
     <Content Include="django_restapi.dev.env" />
     <Content Include="Dockerfile" />
+    <Content Include="protos\greeter.proto" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
