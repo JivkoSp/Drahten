@@ -42,17 +42,17 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
             //Applying configurations for the entity models - END
 
             //Preparing seed data.
-            var topic1 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Cybersecurity" };
-            var topic2 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Programming" };
-            var topic3 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "News", ParentTopicId = topic1.TopicId };
-            var topic4 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Projects", ParentTopicId = topic1.TopicId };
-            var topic5 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Laws", ParentTopicId = topic1.TopicId };
-            var topic6 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Law regulations", ParentTopicId = topic1.TopicId };
-            var topic7 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "News", ParentTopicId = topic2.TopicId };
-            var topic8 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Projects", ParentTopicId = topic2.TopicId };
-            var topic9 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "America", ParentTopicId = topic3.TopicId };
-            var topic10 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Asia", ParentTopicId = topic3.TopicId };
-            var topic11 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Europe", ParentTopicId = topic3.TopicId };
+            var topic1 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Cybersecurity", TopicFullName = "cybersecurity" };
+            var topic2 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Programming", TopicFullName = "programming" };
+            var topic3 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "News", TopicFullName = "cybersecurity_news", ParentTopicId = topic1.TopicId };
+            var topic4 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Projects", TopicFullName = "cybersecurity_projects", ParentTopicId = topic1.TopicId };
+            var topic5 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Laws", TopicFullName = "cybersecurity_laws", ParentTopicId = topic1.TopicId };
+            var topic6 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Law regulations", TopicFullName = "cybersecurity_law_regulations", ParentTopicId = topic1.TopicId };
+            var topic7 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "News", TopicFullName = "programming_news", ParentTopicId = topic2.TopicId };
+            var topic8 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Projects", TopicFullName = "programming_projects", ParentTopicId = topic2.TopicId };
+            var topic9 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "America", TopicFullName = "cybersecurity_news_america", ParentTopicId = topic3.TopicId };
+            var topic10 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Asia", TopicFullName = "cybersecurity_news_asia", ParentTopicId = topic3.TopicId };
+            var topic11 = new TopicReadModel { TopicId = Guid.NewGuid(), TopicName = "Europe", TopicFullName = "cybersecurity_news_europe", ParentTopicId = topic3.TopicId };
 
 
             //Seeding information for Topics to the database.
