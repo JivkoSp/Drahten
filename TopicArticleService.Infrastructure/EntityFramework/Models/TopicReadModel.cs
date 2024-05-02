@@ -7,6 +7,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Models
         public Guid TopicId { get; set; }
         public int Version { get; set; }
         public string TopicName { get; set; }
+        public string TopicFullName { get; set; }
         //Relationships
         //Self relationship [one-to-many], represents hierarchy of topics - START
         public Guid? ParentTopicId { get; set; }
