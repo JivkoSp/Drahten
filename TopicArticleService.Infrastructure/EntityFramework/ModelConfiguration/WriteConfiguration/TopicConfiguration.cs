@@ -18,6 +18,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             var nameConverter = new ValueConverter<TopicName, string>(x => x.Value, x => new TopicName(x));
 
+            var fullNameConverter = new ValueConverter<TopicFullName, string>(x => x.Value, x => new TopicFullName(x));
+
             var parentTopicIdConverter = new ValueConverter<TopicId, Guid>(x => x.Value, x => new TopicId(x));
 
             //Property config - Start
@@ -30,6 +32,11 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                 .HasConversion(nameConverter)
                 .HasColumnName("TopicName")
                 .IsRequired();
+
+            builder.Property(typeof(TopicFullName), "_topicFullName")
+               .HasConversion(fullNameConverter)
+               .HasColumnName("TopicFullName")
+               .IsRequired();
 
             builder.Property(typeof(TopicId), "_parentTopicId")
                 .HasConversion(parentTopicIdConverter)
