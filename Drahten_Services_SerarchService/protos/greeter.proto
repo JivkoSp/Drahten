@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package greeter;
+
+service DocumentFinder {
+    rpc FindDoucments(FindDocumentsRequest) returns (stream DocumentResponse);
+}
+
+message FindDocumentsRequest {}
+
+message Document {
+    string articleId = 1;
+    string prevTitle = 2;
+    string title = 3;
+    string content = 4;
+    string publishingDate = 5;
+    string author = 6;
+    string link = 7;
+}
+
+message DocumentResponse {
+    string documentTopic = 1;
+    Document document = 2;
+}
