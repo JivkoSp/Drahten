@@ -18,6 +18,9 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             builder.Property(p => p.TopicName)
                 .IsRequired();
 
+            builder.Property(p => p.TopicFullName)
+                .IsRequired();
+
             //Relationships
             builder.HasOne(p => p.Parent)
                 .WithMany(p => p.Children)
