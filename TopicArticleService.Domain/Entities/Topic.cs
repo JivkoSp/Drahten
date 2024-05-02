@@ -8,6 +8,7 @@ namespace TopicArticleService.Domain.Entities
     public class Topic : AggregateRoot<TopicId>
     {
         private TopicName _topicName;
+        private TopicFullName _topicFullName;
         private TopicId _parentTopicId;
         private List<Topic> _topicChildren = new List<Topic>();
 
@@ -20,10 +21,11 @@ namespace TopicArticleService.Domain.Entities
         {   
         }
 
-        internal Topic(TopicId id, TopicName topicName, TopicId parentTopicId = null)
+        internal Topic(TopicId id, TopicName topicName, TopicFullName topicFullName, TopicId parentTopicId = null)
         {
             Id = id;
             _topicName = topicName;
+            _topicFullName = topicFullName;
             _parentTopicId = parentTopicId;
         }
 
