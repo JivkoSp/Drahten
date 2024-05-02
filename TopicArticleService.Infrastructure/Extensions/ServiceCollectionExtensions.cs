@@ -11,11 +11,13 @@ using TopicArticleService.Infrastructure.Automapper.Profiles;
 using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 using TopicArticleService.Infrastructure.EntityFramework.Initialization;
 using TopicArticleService.Infrastructure.EntityFramework.Options;
+using TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase;
 using TopicArticleService.Infrastructure.EntityFramework.Repositories;
 using TopicArticleService.Infrastructure.EntityFramework.Services;
 using TopicArticleService.Infrastructure.EventProcessing;
 using TopicArticleService.Infrastructure.Exceptions;
 using TopicArticleService.Infrastructure.Exceptions.Interfaces;
+using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 using TopicArticleService.Infrastructure.UserRegistration;
 
 [assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.EndToEnd")]
@@ -31,7 +33,11 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddDbContext<WriteDbContext>(options => options.UseNpgsql(postgresOptions.ConnectionString));
 
+            services.AddScoped<ISearchServiceDataClient, SearchServiceDataClient>();
+
             services.AddHostedService<DbInitializer>();
+
+            services.AddHostedService<DbPrepper>();
 
             services.AddScoped<IArticleRepository, PostgresArticleRepository>();
 
