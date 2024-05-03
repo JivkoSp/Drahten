@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -29,7 +28,8 @@ namespace DrahtenWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userSearchOptionsViewModel = new UserSearchOptionsViewModel();
+            var response = new ResponseDto();
+            var userSearchOptionsViewModel = new UserSearchOptionsViewModel(); //maybe change the name??
 
             //Get the user id.
             //Here the NameIdentifier claim type represents the user id.
@@ -37,20 +37,30 @@ namespace DrahtenWeb.Controllers
             
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            var response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
+            response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
             userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
 
-            foreach (var userTopic in userSearchOptionsViewModel.UserTopics)
+            response = await _topicArticleService.GetUserArticlesAsync<ResponseDto>(userId.ToString(), accessToken);
+
+            userSearchOptionsViewModel.Articles = response.Map<List<ArticleDto>>();
+
+            foreach(var article in userSearchOptionsViewModel.Articles)
             {
-               response = await _topicArticleService.GetParentTopicWithChildrenAsync<ResponseDto>(userTopic.TopicId, accessToken);
-
-                if(response != null && response.IsSuccess)
+                if (userSearchOptionsViewModel.ArticleComments.ContainsKey(article.ArticleId) == false)
                 {
-                    var topicDto = JsonConvert.DeserializeObject<TopicDto>(Convert.ToString(response.Result));
-
-                    userSearchOptionsViewModel.Topics.Add(topicDto);
+                    userSearchOptionsViewModel.ArticleComments.Add(article.ArticleId, new List<ReadArticleCommentDto>());
                 }
+
+                article.TopicFullName = article.TopicFullName.SplitSnakeCase();
+
+                response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(Guid.Parse(article.ArticleId), accessToken);
+
+                userSearchOptionsViewModel.ArticleComments[article.ArticleId] = response.Map<List<ReadArticleCommentDto>>();
+
+                response = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(Guid.Parse(article.ArticleId), accessToken);
+
+                userSearchOptionsViewModel.UsersRelatedToArticle[article.ArticleId] = response.Map<List<ReadUserArticleDto>>();
             }
 
             return View(userSearchOptionsViewModel);
