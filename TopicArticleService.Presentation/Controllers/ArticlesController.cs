@@ -10,7 +10,7 @@ namespace TopicArticleService.Presentation.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("topic-article-service/articles")]
+    [Route("topic-article-service/")]
     public class ArticlesController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -24,7 +24,7 @@ namespace TopicArticleService.Presentation.Controllers
             _responseDto = new ResponseDto();
         }
 
-        [HttpGet("{ArticleId:guid}", Name = "GetArticle")]
+        [HttpGet("articles/{ArticleId:guid}", Name = "GetArticle")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticle([FromRoute] GetArticleQuery getArticleQuery)
@@ -43,7 +43,26 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpGet("{ArticleId:guid}/likes/")]
+        [HttpGet("user-articles/{UserId}", Name = "GetUserArticles")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetUserArticles([FromRoute] GetUserArticlesQuery getUserArticlesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getUserArticlesQuery);
+
+            _responseDto.Result = result;
+
+            if (result.Count == 0)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
+
+        [HttpGet("articles/{ArticleId:guid}/likes/")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleLikes([FromRoute] GetArticleLikesQuery getArticleLikesQuery)
@@ -62,7 +81,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpGet("{ArticleId:guid}/dislikes/")]
+        [HttpGet("articles/{ArticleId:guid}/dislikes/")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleDislikes([FromRoute] GetArticleDislikesQuery getArticleDislikesQuery)
@@ -81,7 +100,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpGet("{ArticleId:guid}/comments/", Name = "GetArticleComments")]
+        [HttpGet("articles/{ArticleId:guid}/comments/", Name = "GetArticleComments")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetArticleComments([FromRoute] GetArticleCommentsQuery getArticleCommentsQuery)
@@ -100,7 +119,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpPost]
+        [HttpPost("articles/")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticle([FromBody] CreateArticleCommand createArticleCommand)
         {
@@ -109,7 +128,7 @@ namespace TopicArticleService.Presentation.Controllers
             return CreatedAtAction(actionName: nameof(GetArticle), routeValues: new { ArticleId = createArticleCommand .ArticleId}, null);
         }
 
-        [HttpPost("{ArticleId:guid}/likes/")]
+        [HttpPost("articles/{ArticleId:guid}/likes/")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleLike([FromBody] AddArticleLikeCommand addArticleLikeCommand)
         {
@@ -118,7 +137,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{ArticleId:guid}/dislikes/")]
+        [HttpPost("articles/{ArticleId:guid}/dislikes/")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleDislike([FromBody] AddArticleDislikeCommand addArticleDislikeCommand)
         {
@@ -127,7 +146,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{ArticleId:guid}/comments/")]
+        [HttpPost("articles/{ArticleId:guid}/comments/")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> RegisterArticleComment([FromBody] AddArticleCommentCommand addArticleCommentCommand)
         {
@@ -154,7 +173,7 @@ namespace TopicArticleService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpDelete("{ArticleId:guid}/comments/{ArticleCommentId:guid}")]
+        [HttpDelete("articles/{ArticleId:guid}/comments/{ArticleCommentId:guid}")]
         [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveArticleComment([FromRoute] RemoveArticleCommentCommand removeArticleCommentCommand)
         {
