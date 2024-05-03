@@ -14,6 +14,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Services
         }
 
         public Task<bool> ExistsByIdAsync(Guid id)
-            => _readDbContext.Articles.AnyAsync(x => x.ArticleId == id.ToString());
+            => _readDbContext.Articles.AnyAsync(x => x.ArticleId == id.ToString("N"));
     }
 }
