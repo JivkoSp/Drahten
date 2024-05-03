@@ -58,6 +58,18 @@ namespace DrahtenWeb.Services
             return response;
         }
 
+        public async Task<TEntity> GetUserArticlesAsync<TEntity>(string userId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/topic-article-service/user-articles/{userId}",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
         public async Task<TEntity> GetArticleLikesAsync<TEntity>(Guid articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
@@ -163,7 +175,7 @@ namespace DrahtenWeb.Services
             var response = await SendAsync<TEntity>(new ApiRequest
             {
                 ApiType = ApiType.POST,
-                Url = $"https://localhost:7076/topic-article-service/articles/comments/{articleCommentLikeDto.ArticleCommentId}/likes/",
+                Url = $"https://localhost:7076/topic-article-service/comments/{articleCommentLikeDto.ArticleCommentId}/likes/",
                 Data = articleCommentLikeDto,
                 AccessToken = accessToken
             });
@@ -176,7 +188,7 @@ namespace DrahtenWeb.Services
             var response = await SendAsync<TEntity>(new ApiRequest
             {
                 ApiType = ApiType.POST,
-                Url = $"https://localhost:7076/topic-article-service/articles/comments/{articleCommentDislikeDto.ArticleCommentId}/dislikes/",
+                Url = $"https://localhost:7076/topic-article-service/comments/{articleCommentDislikeDto.ArticleCommentId}/dislikes/",
                 Data = articleCommentDislikeDto,
                 AccessToken = accessToken
             });
