@@ -11,6 +11,7 @@ namespace TopicArticleService.Application.Dtos
         public string Author { get; set; }
         public string Link { get; set; }
         public Guid TopicId { get; set; }
+        public string TopicFullName { get; set; }
         public  List<ArticleLikeDto> ArticleLikeDtos { get; set; }
         public  List<ArticleDislikeDto> ArticleDislikeDtos { get; set; }
     }
