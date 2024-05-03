@@ -6,10 +6,10 @@
 // - element: document object returned from SearchService.
 // - cardTitle: name of the card element.
 //Returns: void.
-function CreateDocumentCard(divElementArticleList, document_topic_id, element, articleInfo, cardTitle) {
+function CreateDocumentCard(divElementArticleList, article, articleComments, usersRelatedToArticle) {
 
     const divElementCardContainer = $("<div>", {
-        class: "col mt-4"
+        class: "col-4 mt-4"
     });
 
     const divElementCard = $("<div>", {
@@ -19,18 +19,18 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
     const divElementCardBody = $("<div>", {
         class: "card-body"
     });
-
+     
     const hElementCardTitle = $("<h5>", {
-        class: "card-title"
+        class: "card-title text-center"
     });
 
-    hElementCardTitle.text(cardTitle);
+    hElementCardTitle.text(article.TopicFullName);
 
     const pElementCardText = $("<p>", {
         class: "card-text"
     });
 
-    pElementCardText.text(element.document.article_prev_title);
+    pElementCardText.text(article.PrevTitle);
 
     const divElementCardFooter = $("<div>", {
         class: "card-footer d-flex justify-content-between align-items-center"
@@ -40,12 +40,12 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
         class: "text-muted"
     });
 
-    smallElementCardFooterInfo.text(`Comments: ${articleInfo.comments.length} | Views: ${articleInfo.views.length} 
-    | Likes: ${articleInfo.likes.length} | Dislikes: ${articleInfo.disLikes.length}`);
+    smallElementCardFooterInfo.text(`Comments: ${articleComments.length} | Views: ${usersRelatedToArticle.length}
+    | Likes: ${article.ArticleLikeDtos.length} | Dislikes: ${article.ArticleDislikeDtos.length}`);
 
     const buttonElementCardFooter = $("<button>", {
         type: "button",
-        'data-formId': "card-form-" + element.document_id,
+        'data-formId': "card-form-" + article.ArticleId,
         class: "btn btn-primary",
         onclick: "submitCardForm()"
     });
@@ -53,7 +53,7 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
     buttonElementCardFooter.text("Read");
 
     const formElement = $("<form>", {
-        id: "card-form-" + element.document_id,
+        id: "card-form-" + article.ArticleId,
         action: "/Article/ViewArticle",
         class: "shadow rounded",
         method: "post"
@@ -62,73 +62,73 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
     const inputElementArticleId = $("<input>", {
         type: "hidden",
         name: "ArticleId",
-        value: element.document_id
+        value: article.ArticleId
     });
 
     const inputElementArticlePrevTitle = $("<input>", {
         type: "hidden",
         name: "PrevTitle",
-        value: element.document.article_prev_title
+        value: article.PrevTitle
     });
 
     const inputElementArticleTitle = $("<input>", {
         type: "hidden",
         name: "Title",
-        value: element.document.article_title
+        value: article.Title
     });
 
     const inputElementArticleData = $("<input>", {
         type: "hidden",
         name: "Content",
-        value: element.document.article_data
+        value: article.Content
     });
 
     const inputElementArticlePublishedDate = $("<input>", {
         type: "hidden",
         name: "PublishingDate",
-        value: element.document.article_published_date
+        value: article.PublishingDate
     });
 
     const inputElementArticleAuthor = $("<input>", {
         type: "hidden",
         name: "Author",
-        value: element.document.article_author
+        value: article.Author
     });
 
     const inputElementArticleLink = $("<input>", {
         type: "hidden",
         name: "Link",
-        value: element.document.article_link
+        value: article.Link
     });
 
     const inputElementTopicId = $("<input>", {
         type: "hidden",
         name: "TopicId",
-        value: document_topic_id
-    });
-
-    const inputElementArticleComments = $("<input>", {
-        type: "hidden",
-        name: "articleComments",
-        value: JSON.stringify(articleInfo.comments)
-    });
-
-    const inputElementUserArticles = $("<input>", {
-        type: "hidden",
-        name: "userArticleList",
-        value: JSON.stringify(articleInfo.views)
+        value: article.TopicId
     });
 
     const inputElementArticleLikes = $("<input>", {
         type: "hidden",
         name: "ArticleLikeDtos",
-        value: articleInfo.likes
+        value: JSON.stringify(article.ArticleLikeDtos)
     });
 
     const inputElementArticleDislikes = $("<input>", {
         type: "hidden",
         name: "ArticleDislikeDtos",
-        value: articleInfo.disLikes
+        value: JSON.stringify(article.ArticleDislikeDtos)
+    });
+
+    const inputElementArticleComments = $("<input>", {
+        type: "hidden",
+        name: "articleComments",
+        value: JSON.stringify(articleComments)
+    });
+
+    const inputElementUserArticles = $("<input>", {
+        type: "hidden",
+        name: "usersRelatedToArticle",
+        value: JSON.stringify(usersRelatedToArticle)
     });
 
     formElement.append(inputElementArticleId);
@@ -139,10 +139,10 @@ function CreateDocumentCard(divElementArticleList, document_topic_id, element, a
     formElement.append(inputElementArticleAuthor);
     formElement.append(inputElementArticleLink);
     formElement.append(inputElementTopicId);
-    formElement.append(inputElementArticleComments);
-    formElement.append(inputElementUserArticles);
     formElement.append(inputElementArticleLikes);
     formElement.append(inputElementArticleDislikes);
+    formElement.append(inputElementArticleComments);
+    formElement.append(inputElementUserArticles);
 
     divElementCardFooter.append(smallElementCardFooterInfo);
     divElementCardFooter.append(buttonElementCardFooter);
@@ -166,7 +166,7 @@ function highlightMatchingText(textOne, textTwo, textTree = null) {
     ///
     /// [^.!?]* matches any character except ., ?, and ! zero or more times.
     /// [.!?] matches the end of a sentence.
-    /// The gi flags make the regular expression global (find all matches) and case-insensitive.
+    /// The gi flags make the regular expression global and case-insensitive (find all matches).
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     const regex = new RegExp(`[^.!?]*${escapedTextTwo}[^.!?]*[.!?]`, 'gi');
 
