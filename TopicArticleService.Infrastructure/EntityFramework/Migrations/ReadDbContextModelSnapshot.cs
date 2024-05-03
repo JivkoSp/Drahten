@@ -202,86 +202,86 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            TopicId = new Guid("7a954d4e-2483-433a-ac1a-dc1c5108daed"),
+                            TopicId = new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"),
                             TopicFullName = "cybersecurity",
                             TopicName = "Cybersecurity",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("17c50c00-2c7e-44c6-a490-e576eb9da3f6"),
+                            TopicId = new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"),
                             TopicFullName = "programming",
                             TopicName = "Programming",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("f25a86ca-37d9-41c0-b01a-03303dfed27d"),
-                            ParentTopicId = new Guid("7a954d4e-2483-433a-ac1a-dc1c5108daed"),
+                            TopicId = new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"),
+                            ParentTopicId = new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"),
                             TopicFullName = "cybersecurity_news",
                             TopicName = "News",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("2db7c75c-3eea-4c91-ad84-69c5b0fad176"),
-                            ParentTopicId = new Guid("7a954d4e-2483-433a-ac1a-dc1c5108daed"),
+                            TopicId = new Guid("082cf502-ed29-4eff-aa8c-92f2d6d1bfe5"),
+                            ParentTopicId = new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"),
                             TopicFullName = "cybersecurity_projects",
                             TopicName = "Projects",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("708707f4-50b8-4f43-8da5-3f07d6644e59"),
-                            ParentTopicId = new Guid("7a954d4e-2483-433a-ac1a-dc1c5108daed"),
+                            TopicId = new Guid("cebed78c-6a3d-498e-895d-3f50504b78c8"),
+                            ParentTopicId = new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"),
                             TopicFullName = "cybersecurity_laws",
                             TopicName = "Laws",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("8032b797-723d-4019-abc9-b5b8aa7c0cb9"),
-                            ParentTopicId = new Guid("7a954d4e-2483-433a-ac1a-dc1c5108daed"),
+                            TopicId = new Guid("c3908672-b7bd-4939-8518-745ff84e4da9"),
+                            ParentTopicId = new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"),
                             TopicFullName = "cybersecurity_law_regulations",
                             TopicName = "Law regulations",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("9194c4f2-7789-4995-9f92-ca5bb997cf73"),
-                            ParentTopicId = new Guid("17c50c00-2c7e-44c6-a490-e576eb9da3f6"),
+                            TopicId = new Guid("b4f3c668-c2d3-47fe-8d4d-8f6cef0f654e"),
+                            ParentTopicId = new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"),
                             TopicFullName = "programming_news",
                             TopicName = "News",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("e1712972-5d22-4bc5-be12-4bdb9de44386"),
-                            ParentTopicId = new Guid("17c50c00-2c7e-44c6-a490-e576eb9da3f6"),
+                            TopicId = new Guid("861c973c-d9b1-4c17-b293-3015292929d6"),
+                            ParentTopicId = new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"),
                             TopicFullName = "programming_projects",
                             TopicName = "Projects",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("0993403f-51c3-4d05-863c-e745845f8050"),
-                            ParentTopicId = new Guid("f25a86ca-37d9-41c0-b01a-03303dfed27d"),
+                            TopicId = new Guid("96c152bd-5f7d-4d09-b601-603e461ad018"),
+                            ParentTopicId = new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"),
                             TopicFullName = "cybersecurity_news_america",
                             TopicName = "America",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("480fb040-2768-47d2-a065-30a7deaedf6a"),
-                            ParentTopicId = new Guid("f25a86ca-37d9-41c0-b01a-03303dfed27d"),
+                            TopicId = new Guid("0f2d5495-1105-4b09-ba8d-875a73872c49"),
+                            ParentTopicId = new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"),
                             TopicFullName = "cybersecurity_news_asia",
                             TopicName = "Asia",
                             Version = 0
                         },
                         new
                         {
-                            TopicId = new Guid("e983ed0d-20e2-43fb-b5bd-559bc6262906"),
-                            ParentTopicId = new Guid("f25a86ca-37d9-41c0-b01a-03303dfed27d"),
+                            TopicId = new Guid("8aaf44ab-12a9-48b2-a722-6d9f4e9f76c3"),
+                            ParentTopicId = new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"),
                             TopicFullName = "cybersecurity_news_europe",
                             TopicName = "Europe",
                             Version = 0

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialRead : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                     TopicId = table.Column<Guid>(type: "uuid", nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
                     TopicName = table.Column<string>(type: "text", nullable: false),
+                    TopicFullName = table.Column<string>(type: "text", nullable: false),
                     ParentTopicId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -43,7 +44,8 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
                 schema: "topic-article-service",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Version = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -286,20 +288,20 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Migrations
             migrationBuilder.InsertData(
                 schema: "topic-article-service",
                 table: "Topic",
-                columns: new[] { "TopicId", "ParentTopicId", "TopicName", "Version" },
+                columns: new[] { "TopicId", "ParentTopicId", "TopicFullName", "TopicName", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"), null, "Cybersecurity", 0 },
-                    { new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"), null, "Programming", 0 },
-                    { new Guid("2670e81a-8bd7-423a-acd4-5892660934d8"), new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"), "Projects", 0 },
-                    { new Guid("4204c27a-aed5-459e-a245-58978895875f"), new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"), "Law regulations", 0 },
-                    { new Guid("45f672df-8bdb-456c-8ea1-dd5b0b867df7"), new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"), "Laws", 0 },
-                    { new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"), new Guid("44aaeb3f-cae7-4a8c-93a6-2b13deddd3bd"), "News", 0 },
-                    { new Guid("c9523aef-2faa-4e89-8599-43b3089b5960"), new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"), "Projects", 0 },
-                    { new Guid("edd8a756-6238-45cf-9275-4037af21b388"), new Guid("51f85e58-0de3-4b03-9876-d3ce0c3abcf6"), "News", 0 },
-                    { new Guid("76681b14-e42a-47c7-b19f-954cba4c5dd9"), new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"), "America", 0 },
-                    { new Guid("80dfc5a1-7813-456d-a7b2-4b8e93e81f16"), new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"), "Asia", 0 },
-                    { new Guid("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"), new Guid("5ae9a3dc-d76c-4b4d-8a1f-a17fe5c817eb"), "Europe", 0 }
+                    { new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"), null, "programming", "Programming", 0 },
+                    { new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"), null, "cybersecurity", "Cybersecurity", 0 },
+                    { new Guid("082cf502-ed29-4eff-aa8c-92f2d6d1bfe5"), new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"), "cybersecurity_projects", "Projects", 0 },
+                    { new Guid("861c973c-d9b1-4c17-b293-3015292929d6"), new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"), "programming_projects", "Projects", 0 },
+                    { new Guid("b4f3c668-c2d3-47fe-8d4d-8f6cef0f654e"), new Guid("e7e4aa51-d49d-4fdc-a7e6-c59f0841d8c4"), "programming_news", "News", 0 },
+                    { new Guid("c3908672-b7bd-4939-8518-745ff84e4da9"), new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"), "cybersecurity_law_regulations", "Law regulations", 0 },
+                    { new Guid("cebed78c-6a3d-498e-895d-3f50504b78c8"), new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"), "cybersecurity_laws", "Laws", 0 },
+                    { new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"), new Guid("eb2354be-d9d7-4ece-9d22-a0ca95c4280d"), "cybersecurity_news", "News", 0 },
+                    { new Guid("0f2d5495-1105-4b09-ba8d-875a73872c49"), new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"), "cybersecurity_news_asia", "Asia", 0 },
+                    { new Guid("8aaf44ab-12a9-48b2-a722-6d9f4e9f76c3"), new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"), "cybersecurity_news_europe", "Europe", 0 },
+                    { new Guid("96c152bd-5f7d-4d09-b601-603e461ad018"), new Guid("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"), "cybersecurity_news_america", "America", 0 }
                 });
 
             migrationBuilder.CreateIndex(
