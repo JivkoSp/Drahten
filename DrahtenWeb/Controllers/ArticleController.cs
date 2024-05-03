@@ -28,54 +28,13 @@ namespace DrahtenWeb.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ArticleInfo(string articleId) //TODO: Check if changing the string with Guid will be Ok
-        {
-            try
-            {
-                var response = new ResponseDto();
-
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
-
-                var articleComments = response.Map<List<ReadArticleCommentDto>>();
-
-                response  = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
-
-                var userArticleList = response.Map<List<ReadUserArticleDto>>();
-
-                response =  await _topicArticleService.GetArticleLikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
-
-                var articleLikes = response.Map<List<ArticleLikeDto>>();
-
-                response = await _topicArticleService.GetArticleDislikesAsync<ResponseDto>(Guid.Parse(articleId), accessToken);
-
-                var articleDislikes = response.Map<List<ArticleDislikeDto>>();
-
-                var articleInfoViewModel = new ArticleInfoViewModel
-                {
-                    Comments = articleComments,
-                    Views = userArticleList,
-                    Likes = articleLikes,
-                    DisLikes = articleDislikes
-                };
-
-                return new JsonResult(articleInfoViewModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPost]
-        public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleComments, string userArticleList)
+        public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleComments, string usersRelatedToArticle)
         {
             var articleViewModel = new ArticleViewModel
             {
                 Article = articleDto,
-                UserArticles = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(userArticleList),
+                UserArticles = JsonConvert.DeserializeObject<List<ReadUserArticleDto>>(usersRelatedToArticle),
                 ArticleComments = JsonConvert.DeserializeObject<List<ReadArticleCommentDto>>(articleComments)
             };
 
