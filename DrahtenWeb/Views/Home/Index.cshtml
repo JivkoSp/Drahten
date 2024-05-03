@@ -1,4 +1,5 @@
 ﻿@using DrahtenWeb.Dtos.TopicArticleService
+@using System.Text.Json
 @model UserSearchOptionsViewModel
 
     <div class="row mx-2 mt-1 gy-2">
@@ -80,87 +81,21 @@
     <script>
         $("document").ready(() => {
 
-            @{
-                //This method constructs endpoint name, based on the full name of the user-subscribed topic (All parents names+user-topic-name).
-                //When the endpoint name is contructed the method sends ajax HTTP GET request to '/Search/' + endpoint.
-                //Bootstrap card element is created for each element that is received from the response (from the ajax request). 
-                void GetAllTopicData(TopicDto topicDto, string endpointName)
-                {
-                    var currentUserTopic = Model.UserTopics.FirstOrDefault(x => x.TopicId == topicDto.TopicId);
+            let divElementArticleList = $("#article-list");
 
-                    endpointName += topicDto.TopicName;
+        @{
+            foreach(var article in Model.Articles)
+            {
+                var serializedArticle = JsonSerializer.Serialize(article);
+                var serializedArticleComments = JsonSerializer.Serialize(Model.ArticleComments[article.ArticleId]);
+                var serializedUsersRelatedToArticle = JsonSerializer.Serialize(Model.UsersRelatedToArticle[article.ArticleId]);
 
-                    if (topicDto.Children == null && currentUserTopic == null || topicDto.Children?.Count == 0 && currentUserTopic == null)
-                    {
-                        return;
-                    }
-
-                    if(topicDto.Children == null && currentUserTopic != null || topicDto.Children?.Count == 0 && currentUserTopic != null)
-                    {
-                                        <text>
-                                            var endpoint = "@endpointName";
-
-                                             $("#subscribedTopicFullName-@currentUserTopic.TopicId").val(endpoint);
-
-                                            $.ajax({
-                                                type: 'GET',
-                                                url: `/Search/${endpoint}`,
-                                                data: {},
-                                                success: (response) => {
-
-                                                      if (response != null) {
-
-                                                          let divElementArticleList = $("#article-list");
-
-                                                          response.forEach((element) => {
-
-                                                              let articleInfo = null;
-
-                                                              //Send ajax HTTP GET request to /Article/ArticleInfo.
-                                                              $.ajax({
-                                                                  type: 'GET',
-                                                                  url: '/Article/ArticleInfo',
-                                                                  data: {
-                                                                      'articleId': element.document_id
-                                                                  },
-                                                                  success: (response) => {
-
-                                                                      CreateDocumentCard(divElementArticleList, '@currentUserTopic.TopicId', element, response, endpoint);
-                                                                  },
-                                                                  failure: (reponse) => {
-                                                                      console.log("failure", response);
-                                                                  },
-                                                                  error: (response) => {
-                                                                      console.log("error", response);
-                                                                  }
-                                                              });
-                                                          });
-                                                   }
-                                                },
-                                                failure: (reponse) => {
-                                                  console.log("failure", response);
-                                                },
-                                                error: (response) => {
-                                                  console.log("error", response);
-                                                }
-                                            });
-
-                                        </text>
-
-                        return;
-                    }
-
-                    foreach(var topic in topicDto.Children)
-                    {
-                        GetAllTopicData(topic, endpointName);
-                    }
-                }
-
-                foreach(var topic in Model.Topics)
-                {
-                    GetAllTopicData(topicDto:topic, endpointName:"");
-                }
-           }
+                <text>
+                    CreateDocumentCard(divElementArticleList, @Html.Raw(serializedArticle), @Html.Raw(serializedArticleComments), 
+                        @Html.Raw(serializedUsersRelatedToArticle));
+                </text>
+            }
+         }
 
                 $("#home-search-span").click(() => {
 
