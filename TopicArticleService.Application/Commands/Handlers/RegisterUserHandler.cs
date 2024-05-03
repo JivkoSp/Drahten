@@ -1,18 +1,21 @@
 ﻿using TopicArticleService.Application.Exceptions;
 using TopicArticleService.Application.Services.ReadServices;
-using TopicArticleService.Application.Services.WriteServices;
+using TopicArticleService.Domain.Factories;
+using TopicArticleService.Domain.Repositories;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
     internal sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
     {
         private readonly IUserReadService _userReadService;
-        private readonly IUserWriteService _userWriteService;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserFactory _userFactory;
 
-        public RegisterUserHandler(IUserReadService userReadService, IUserWriteService userWriteService)
+        public RegisterUserHandler(IUserReadService userReadService, IUserRepository userRepository, IUserFactory userFactory)
         {
             _userReadService = userReadService;
-            _userWriteService = userWriteService;
+            _userRepository = userRepository;
+            _userFactory = userFactory; 
         }
 
         public async Task HandleAsync(RegisterUserCommand command)
@@ -21,12 +24,12 @@ namespace TopicArticleService.Application.Commands.Handlers
 
             if(alreadyExists)
             {
-                //There is user with command.UserId.
-
                 throw new UserAlreadyExistsException(command.UserId);
             }
 
-            await _userWriteService.AddUserAsync(command.UserId);
+            var user = _userFactory.Create(command.UserId);
+
+            await _userRepository.AddUserAsync(user);
         }
     }
 }
