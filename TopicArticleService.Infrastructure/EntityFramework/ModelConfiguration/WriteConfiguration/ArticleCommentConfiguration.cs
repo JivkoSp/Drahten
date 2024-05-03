@@ -25,13 +25,11 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             var parentCommentIdConverter = new ValueConverter<ArticleCommentID, Guid>(x => x.Value, x => new ArticleCommentID(x));
 
-            var articleIdConverter = new ValueConverter<ArticleID, string>(x => x.Value.ToString(), x => new ArticleID(Guid.Parse(x)));
-
             //Property config - Start
 
             //Shadow property for ArticleId.
             builder.Property<ArticleID>("ArticleId")
-                .HasConversion(articleIdConverter);
+                .HasConversion(id => id.Value.ToString("N"), id => new ArticleID(Guid.ParseExact(id, "N")));
 
             builder.Property(p => p.Id)
                 .HasConversion(id => id.Value, id => new ArticleCommentID(id))
