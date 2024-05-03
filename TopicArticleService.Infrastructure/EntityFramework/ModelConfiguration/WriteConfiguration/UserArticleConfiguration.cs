@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
@@ -15,19 +14,15 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Composite primary key
             builder.HasKey(key => new { key.UserID, key.ArticleId });
 
-            var userIdConverter = new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x)));
-
-            var articleIdConverter = new ValueConverter<ArticleID, string>(x => x.Value.ToString(), x => new ArticleID(Guid.Parse(x)));
-
             //Property config - Start
 
             builder.Property(p => p.UserID)
-                .HasConversion(userIdConverter)
+                .HasConversion(id => id.Value.ToString(), id => new UserID(Guid.Parse(id)))
                 .HasColumnName("UserId")
                 .IsRequired();
 
             builder.Property(p => p.ArticleId)
-                .HasConversion(articleIdConverter)
+                .HasConversion(id => id.Value.ToString("N"), id => new ArticleID(Guid.ParseExact(id, "N")))
                 .HasColumnName("ArticleId")
                 .IsRequired();
 
