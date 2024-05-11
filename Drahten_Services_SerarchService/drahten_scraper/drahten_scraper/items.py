@@ -13,3 +13,4 @@ class DrahtenScraperItem(scrapy.Item):
     article_data = scrapy.Field()
     article_published_date = scrapy.Field()
     article_author = scrapy.Field()
+    spider_name = scrapy.Field()
