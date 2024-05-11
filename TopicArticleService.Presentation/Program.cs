@@ -1,19 +1,25 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Infrastructure.Extensions;
+using TopicArticleService.Infrastructure.Logging.Formatters;
 using TopicArticleService.Presentation.Middlewares;
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console() // Add console (sink).
+    .WriteTo.Http(requestUri: "http://localhost:5000", 
+                  queueLimitBytes: 1000000, 
+                  batchFormatter: new SerilogJsonFormatter())
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Add logging configuration
-builder.Logging.ClearProviders(); // Clear default logging providers
-
-builder.Logging.AddConsole(); // Add Console logger
-
-builder.Logging.SetMinimumLevel(LogLevel.Debug); // Set minimum log level to Debug
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 
