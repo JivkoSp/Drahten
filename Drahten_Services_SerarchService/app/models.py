@@ -4,8 +4,8 @@ Definition of models.
 from django.db import models
 from haystack.document_stores import ElasticsearchDocumentStore
 from haystack import Pipeline
-from haystack.nodes import PreProcessor, BM25Retriever, FARMReader, TransformersSummarizer, QuestionGenerator
-
+from haystack.pipelines import ExtractiveQAPipeline
+from haystack.nodes import PreProcessor, BM25Retriever, EmbeddingRetriever, FARMReader, TransformersSummarizer, QuestionGenerator
 
 class SearchEngine():
     def _DefineQueryPipeline(self):
@@ -46,7 +46,6 @@ class SearchEngine():
                                                          username="elastic",
                                                          password="elastic123!",
                                                          index=index_name)
-        
         self.preprocessor = PreProcessor(
             clean_whitespace=True,
             clean_header_footer=True,
@@ -67,8 +66,6 @@ class SearchEngine():
         self.query_pipeline = self._DefineQueryPipeline()
 
         self.summarizer_pipeline = self._DefineSummarizerPipeline()
-
-        # self.embedding_retrieval_pipeline = self._DefineEmbeddingRetrievalPipeline()
 
         self.question_generator = QuestionGenerator()
 
