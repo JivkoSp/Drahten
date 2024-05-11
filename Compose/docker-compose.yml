@@ -12,6 +12,18 @@ services:
           - ./django_restapi.dev.env
         networks:
           - drahten_network
+
+    django-grpc-server:
+        container_name: "search_service_grpc_server"
+        restart: unless-stopped
+        image: jivkospasov/searchservice:latest
+        command: python manage.py startgrpcserver
+        depends_on:
+          - django-rest-api
+        ports:
+          - "50051:50051"
+        networks:
+          - drahten_network
   
     celery-worker:
         container_name: "celery_worker"
@@ -63,7 +75,6 @@ services:
         networks:
           - drahten_network
 
-
     keycloak_postgres:
         container_name: "keycloak_postgres"
         image: postgres:latest
@@ -94,6 +105,36 @@ services:
         networks:
           - drahten_network
   
+    postgredb_topic_article_service:
+        container_name: topicarticle_service_postgredb
+        image: postgres:14.2
+        volumes:
+          - topicarticle_service_postgredb_vlm:/var/lib/postgresql/data/
+        env_file:
+          - ./database-topic-article-service.dev.env
+        healthcheck:
+          test: "exit 0"
+        ports:
+          - "127.0.0.1:5434:5432"
+          - "127.0.0.1:2224:22"
+        networks:
+          - drahten_network
+
+    postgredb_user_service:
+        container_name: userservice_postgredb
+        image: postgres:14.2
+        volumes:
+          - userservice_postgredb_vlm:/var/lib/postgresql/data/
+        env_file:
+          - ./database-user-service.dev.env
+        healthcheck:
+          test: "exit 0"
+        ports:
+          - "127.0.0.1:5435:5432"
+          - "127.0.0.1:2225:22"
+        networks:
+          - drahten_network
+
     pgadmin:
         container_name: pgadmin
         image: dpage/pgadmin4:latest
@@ -117,6 +158,9 @@ services:
           if [ x${ELASTIC_PASSWORD} == x ]; then
             echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
             exit 1;
+          elif [ x${KIBANA_PASSWORD} == x ]; then
+            echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+            exit 1;
           fi;
           if [ ! -f config/certs/ca.zip ]; then
             echo "Creating CA";
@@ -133,6 +177,12 @@ services:
             "      - localhost\n"\
             "    ip:\n"\
             "      - 127.0.0.1\n"\
+            "  - name: es02\n"\
+            "    dns:\n"\
+            "      - es02\n"\
+            "      - localhost\n"\
+            "    ip:\n"\
+            "      - 127.0.0.1\n"\
             > config/certs/instances.yml;
             bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
             unzip config/certs/certs.zip -d config/certs;
@@ -143,6 +193,9 @@ services:
           find . -type f -exec chmod 640 \{\} \;;
           echo "Waiting for Elasticsearch availability";
           until curl -s --cacert config/certs/ca/ca.crt https://es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+          until curl -s --cacert config/certs/ca/ca.crt https://es02:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+          echo "Setting kibana_system password";
+          until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://es02:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
           echo "All done!";
         '
       healthcheck:
@@ -152,7 +205,8 @@ services:
         retries: 120
       networks:
           - drahten_network
-  
+
+
     es01:
       depends_on:
         setup:
@@ -199,18 +253,130 @@ services:
       networks:
           - drahten_network
 
+
+    es02:
+      depends_on:
+        setup:
+          condition: service_healthy
+      image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+      labels:
+        co.elastic.logs/module: elasticsearch
+      volumes:
+        - certs:/usr/share/elasticsearch/config/certs
+        - esdata02:/usr/share/elasticsearch/data
+      ports:
+        - ${ELASTIC_PORT_2}:9200
+      environment:
+        - node.name=es02
+        - cluster.name=${CLUSTER_NAME}
+        - discovery.type=single-node
+        - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+        - bootstrap.memory_lock=true
+        - xpack.security.enabled=true
+        - xpack.security.http.ssl.enabled=true
+        - xpack.security.http.ssl.key=certs/es02/es02.key
+        - xpack.security.http.ssl.certificate=certs/es02/es02.crt
+        - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+        - xpack.security.transport.ssl.enabled=true
+        - xpack.security.transport.ssl.key=certs/es02/es02.key
+        - xpack.security.transport.ssl.certificate=certs/es02/es02.crt
+        - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+        - xpack.security.transport.ssl.verification_mode=certificate
+        - xpack.license.self_generated.type=${LICENSE}
+      mem_limit: ${MEMORY_LIMIT}
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      healthcheck:
+        test:
+          [
+            "CMD-SHELL",
+            "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+          ]
+        interval: 10s
+        timeout: 10s
+        retries: 120
+      networks:
+          - drahten_network
+
  ### Elasticsearch configuration - END
  ##############################################
 
+    logstash:
+      depends_on:
+        es02:
+          condition: service_healthy
+        kibana:
+          condition: service_healthy
+      image: docker.elastic.co/logstash/logstash:${ELASTIC_VERSION}
+      labels:
+        co.elastic.logs/module: logstash
+      user: root
+      volumes:
+        - certs:/usr/share/logstash/certs
+        - logstashdata:/usr/share/logstash/data
+        - "./logstash_ingest_data/:/usr/share/logstash/ingest_data/"
+        - "./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+      ports:
+        - "5000:5000"
+      environment:
+        - xpack.monitoring.enabled=false
+        - ELASTIC_USER=elastic
+        - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+        - ELASTIC_HOSTS=https://es02:9200
+      networks:
+          - drahten_network
 
+    kibana:
+      depends_on:
+        es02:
+          condition: service_healthy
+      image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+      labels:
+        co.elastic.logs/module: kibana
+      volumes:
+        - certs:/usr/share/kibana/config/certs
+        - kibanadata:/usr/share/kibana/data
+      ports:
+        - ${KIBANA_PORT}:5601
+      environment:
+        - SERVERNAME=kibana
+        - ELASTICSEARCH_HOSTS=https://es02:9200
+        - ELASTICSEARCH_USERNAME=kibana_system
+        - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+        - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+        - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+        - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+        - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      mem_limit: ${KB_MEM_LIMIT}
+      healthcheck:
+        test:
+          [
+            "CMD-SHELL",
+            "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          ]
+        interval: 10s
+        timeout: 10s
+        retries: 120
+      networks:
+          - drahten_network
 
 volumes:
   certs:
     driver: local
   esdata01:
     driver: local
+  esdata02:
+    driver: local
+  logstashdata:
+    driver: local
+  kibanadata:
+    driver: local
   keycloak_postgres_vlm:
   user_service_postgredb_vlm:
+  topicarticle_service_postgredb_vlm:
+  userservice_postgredb_vlm:
 
 networks:
  default:
