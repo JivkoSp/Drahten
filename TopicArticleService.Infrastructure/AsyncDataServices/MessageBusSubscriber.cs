@@ -16,6 +16,13 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
         private IModel _channel;
         private string _queueName;
 
+        public MessageBusSubscriber(IConfiguration configuration, IEventProcessor eventProcessor)
+        {
+            _configuration = configuration;
+            _eventProcessor = eventProcessor;
+            InitializeRabbitMq();
+        }
+
         private void InitializeRabbitMq()
         {
             var factory = new ConnectionFactory()
@@ -28,15 +35,15 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
 
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare(exchange: "user_service", type: ExchangeType.Direct);
+            _channel.ExchangeDeclare(exchange: "search_service", type: ExchangeType.Direct);
 
             _queueName = _channel.QueueDeclare().QueueName;
 
             _channel.QueueBind(queue: _queueName,
-                               exchange: "user_service",
-                               routingKey: "user_service.event");
+                               exchange: "search_service",
+                               routingKey: "search_service.similaritycheck");
 
-            Console.WriteLine("--> TopicArticleService listening on the message bus!");
+            Console.WriteLine("\n--> TopicArticleService listening on the message bus!\n");
 
             _connection.ConnectionShutdown += RabbitMqConnectionShutDown;
         }
@@ -44,13 +51,6 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
         private void RabbitMqConnectionShutDown(object sender, ShutdownEventArgs args)
         {
             Console.WriteLine("--> TopicArticleService connection shutdown!");
-        }
-
-        public MessageBusSubscriber(IConfiguration configuration, IEventProcessor eventProcessor)
-        {
-            _configuration = configuration;
-            _eventProcessor = eventProcessor;
-            InitializeRabbitMq();
         }
 
         //Listening for events from the message bus (RabbitMQ).
