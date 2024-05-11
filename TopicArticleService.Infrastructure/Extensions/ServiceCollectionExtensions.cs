@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
+using TopicArticleService.Application.Commands.Handlers;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Application.Services.WriteServices;
@@ -17,6 +18,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Services;
 using TopicArticleService.Infrastructure.EventProcessing;
 using TopicArticleService.Infrastructure.Exceptions;
 using TopicArticleService.Infrastructure.Exceptions.Interfaces;
+using TopicArticleService.Infrastructure.Logging;
 using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 using TopicArticleService.Infrastructure.UserRegistration;
 
@@ -68,7 +70,10 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentLikeProfile>();
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
                 configAction.AddProfile<TopicProfile>();
+                configAction.AddProfile<DocumentProfile>();
             });
+
+            services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
 
             services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
