@@ -19,6 +19,9 @@ class CybersecurityNewsEuropeSpider(scrapy.Spider):
             news_article_loader.add_value('article_link', f"https://cybersecurity-centre.europa.eu{news_aricle_link}")
             news_article_loader.add_css('article_prev_title', "div p::text")
 
+            # Set the spider_name field
+            news_article_loader.add_value('spider_name', self.name)
+
             yield scrapy.Request(
                 url = f"https://cybersecurity-centre.europa.eu{news_aricle_link}",
                 callback = self.parse_article_data,
