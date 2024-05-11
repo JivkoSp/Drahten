@@ -5,15 +5,13 @@
 
 from scrapy.utils.serialize import ScrapyJSONEncoder
 from haystack.schema import Document as HaystackDocument
-from app import models
-from app.api import serializers
-import pandas
 import json
-import hashlib
+from app.asyncDataServices import messageBusClient
 
 
 class DrahtenScraperPipeline:
     def __init__(self):
+        self.messageBusPublisher = messageBusClient.MessageBusPublisher()
         self.jsonEncoder = ScrapyJSONEncoder()
 
 
@@ -23,36 +21,17 @@ class DrahtenScraperPipeline:
 
     def process_item(self, item, spider):
         try:
+            spider_name = item.get('spider_name')[0]
+
+            print(f"\n\nPROCESSED ITEM FROM SPIDER: {spider_name}\n\n")
+
             #Encode the scrapy object type (item) as JSON string.
             encoded_item = self.jsonEncoder.encode(item)
             
             #Convert the encoded_item from JSON string to JSON object.
             encoded_item = json.loads(encoded_item)
 
-            ###################################################################################
-            #### CHECK IF THE ITEM encoded_item EXISTS IN THE ELASTICSEARCH DATABASE - START
-            ###################################################################################
-
-            #Search for record, that has data like (data that most closely correspondes to) article_data
-            #field of the encoded_item and return ONLY ONE MATCH - top_k=1 (if any).
-            #The query method returns: List<Document> where Document is haystack document type.
-            # query_response = self.search_engine.document_store.query(query=encoded_item['article_data'][0], 
-            #                                                          top_k=1)
-            #Check if the query has returned anything.
-            # if query_response:
-            #     #The query HAS returned data.
-            #     document = query_response[0]
-            #     #Check if the encoded_item has >= 90% match with the document, found from the query.
-            #     if document.score >= 0.90:
-            #         #The encoded_item has >= 90% match with the document, found from the query.
-            #         #No need to write another record, that has >= 90% similarity in elasticsearch.
-            #         return
-
-            ###################################################################################
-            #### CHECK IF THE ITEM encoded_item EXISTS IN THE ELASTICSEARCH DATABASE - END
-            ###################################################################################
-
-            #Create haystack document type from the PANDAS dataframe type.
+            #Create haystack document type.
             #This step is needed, becouse the ElasticsearchDocumentStore stores data as haystack document types.
             #Here the meta is Dict[str, Any] and it's purpose is to hold the data from the document for easy access.
             new_document = HaystackDocument(content=encoded_item['article_data'][0], 
@@ -63,8 +42,8 @@ class DrahtenScraperPipeline:
                                                   "article_author": encoded_item['article_author'][0],
                                                   "article_link": encoded_item['article_link'][0]})
 
-            models.search_engine_cybersecurity_news_europe.WriteDocuments([new_document])
-
+            # Publish the Haystack document (new_document) object to the message bus (RabbitMq).
+            self.messageBusPublisher.PublishDocumentForSimilarityCheck(new_document, spider_name)
         except Exception as ex:
             #TODO: Log the exception to logging service
             print(f"Exception: {ex}")
