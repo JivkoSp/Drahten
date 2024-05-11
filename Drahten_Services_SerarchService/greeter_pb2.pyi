@@ -33,3 +33,9 @@ class DocumentResponse(_message.Message):
     documentTopic: str
     document: Document
     def __init__(self, documentTopic: _Optional[str] = ..., document: _Optional[_Union[Document, _Mapping]] = ...) -> None: ...
+
+class SimilarityScoreResponse(_message.Message):
+    __slots__ = ("similarityScore",)
+    SIMILARITYSCORE_FIELD_NUMBER: _ClassVar[int]
+    similarityScore: float
+    def __init__(self, similarityScore: _Optional[float] = ...) -> None: ...

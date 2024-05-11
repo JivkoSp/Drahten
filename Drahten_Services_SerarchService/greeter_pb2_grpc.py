@@ -64,3 +64,64 @@ class DocumentFinder(object):
             greeter__pb2.DocumentResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class DocumentSimilarityCheckStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.CheckDocumentSimilarity = channel.unary_stream(
+                '/greeter.DocumentSimilarityCheck/CheckDocumentSimilarity',
+                request_serializer=greeter__pb2.Document.SerializeToString,
+                response_deserializer=greeter__pb2.SimilarityScoreResponse.FromString,
+                )
+
+
+class DocumentSimilarityCheckServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def CheckDocumentSimilarity(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_DocumentSimilarityCheckServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'CheckDocumentSimilarity': grpc.unary_stream_rpc_method_handler(
+                    servicer.CheckDocumentSimilarity,
+                    request_deserializer=greeter__pb2.Document.FromString,
+                    response_serializer=greeter__pb2.SimilarityScoreResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'greeter.DocumentSimilarityCheck', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class DocumentSimilarityCheck(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def CheckDocumentSimilarity(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/greeter.DocumentSimilarityCheck/CheckDocumentSimilarity',
+            greeter__pb2.Document.SerializeToString,
+            greeter__pb2.SimilarityScoreResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

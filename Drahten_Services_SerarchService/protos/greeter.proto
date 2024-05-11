@@ -6,6 +6,10 @@ service DocumentFinder {
     rpc FindDoucments(FindDocumentsRequest) returns (stream DocumentResponse);
 }
 
+service DocumentSimilarityCheck {
+    rpc CheckDocumentSimilarity(Document) returns (stream SimilarityScoreResponse);
+}
+
 message FindDocumentsRequest {}
 
 message Document {
@@ -21,4 +25,8 @@ message Document {
 message DocumentResponse {
     string documentTopic = 1;
     Document document = 2;
+}
+
+message SimilarityScoreResponse {
+    double similarityScore = 1;
 }
