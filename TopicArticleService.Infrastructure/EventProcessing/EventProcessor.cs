@@ -1,18 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
-using TopicArticleService.Application.Dtos;
+using TopicArticleService.Application.Dtos.SearchService;
 using TopicArticleService.Application.Services.ReadServices;
-using TopicArticleService.Domain.Entities;
+using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.ValueObjects;
 using TopicArticleService.Infrastructure.Dtos;
-using TopicArticleService.Infrastructure.EntityFramework.Models;
+using TopicArticleService.Infrastructure.Extensions;
+using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 
 namespace TopicArticleService.Infrastructure.EventProcessing
 {
     internal enum EventType
     {
-        User_Published,
+        DocumentSimilarityCheck,
         Undetermined
     }
 
@@ -20,6 +22,12 @@ namespace TopicArticleService.Infrastructure.EventProcessing
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMapper _mapper;
+
+        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper)
+        {
+            _serviceScopeFactory = serviceScopeFactory;
+            _mapper = mapper;
+        }
 
         private EventType DetermineEvent(string notificationMessage)
         {
@@ -29,39 +37,54 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 
             switch (eventType.Event)
             {
-                case "User_Published":
-                    Console.WriteLine("--> UserService event detected!");
-                    return EventType.User_Published;
+                case "DocumentSimilarityCheck":
+                    Console.WriteLine("--> SearchService event detected!");
+                    return EventType.DocumentSimilarityCheck;
                 default:
                     Console.WriteLine("--> Could NOT determine the event type!");
                     return EventType.Undetermined;
             }
         }
-        
-        private async Task AddUserAsync(string userPublishedMessage)
+
+        private async Task SeedDocument(IAsyncEnumerable<double> similarityScoreResponse, DocumentDto documentDto, 
+            IArticleFactory articleFactory, IArticleRepository articleRepository, ITopicReadService topicReadService)
         {
-            using var score = _serviceScopeFactory.CreateScope();
+            Console.WriteLine($"\n\n--> Seeding NEW document from SearchService.\n\n");
 
-            var userReadService = score.ServiceProvider.GetRequiredService<IUserReadService>();
-
-            var userRepository = score.ServiceProvider.GetRequiredService<IUserRepository>();
-
-            var userDto = JsonSerializer.Deserialize<UserDto>(userPublishedMessage);
-
-            var user = _mapper.Map<User>(userDto);
-
-            if (await userReadService.ExistsByIdAsync(user.Id) == false)
+            await foreach (var similarityScore in similarityScoreResponse)
             {
-                await userRepository.AddUserAsync(user);
+                //Check if the document has less than 90% similarity with existing documents in SearchService.
+                if(similarityScore < 0.9)
+                {
+                    Console.WriteLine($"\n\n--> Writing a NEW document to the TopicArticleService database.\n\n");
 
-                Console.WriteLine($"--> UserService NEW USER: {user.Id} added!");
+                    var topic = await topicReadService.GetTopicByNameAsync(documentDto.TopicName.ToSnakeCase());
+
+                    var article = articleFactory.Create(Guid.Parse(documentDto.DocumentId), documentDto.PrevTitle, documentDto.Title, 
+                        documentDto.Content, documentDto.PublishingDate, documentDto.Author, documentDto.Link, topic.TopicId);
+
+                    await articleRepository.AddArticleAsync(article);
+                }
             }
         }
 
-        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper)
+        private async Task CheckDocumentSimilarityAsync(string checkDocumentSimilarityMessage)
         {
-            _serviceScopeFactory = serviceScopeFactory;
-            _mapper = mapper;
+            using var scope = _serviceScopeFactory.CreateScope();
+
+            var searchServiceDataClient = scope.ServiceProvider.GetRequiredService<ISearchServiceDataClient>();
+
+            var articleFactory = scope.ServiceProvider.GetRequiredService<IArticleFactory>();
+
+            var articleRepository = scope.ServiceProvider.GetRequiredService<IArticleRepository>();
+
+            var topicReadService = scope.ServiceProvider.GetRequiredService<ITopicReadService>();
+
+            var documentDto = JsonSerializer.Deserialize<DocumentDto>(checkDocumentSimilarityMessage);
+
+            var similarityScoreResponse = searchServiceDataClient.DocumentSimilarityCheckAsync(documentDto);
+
+            await SeedDocument(similarityScoreResponse, documentDto, articleFactory, articleRepository, topicReadService);
         }
 
         public async Task ProcessEventAsync(string message)
@@ -70,8 +93,8 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 
             switch (eventType)
             {
-                case EventType.User_Published:
-                    await AddUserAsync(message);
+                case EventType.DocumentSimilarityCheck:
+                    await CheckDocumentSimilarityAsync(message);
                     break;
             }
         }
