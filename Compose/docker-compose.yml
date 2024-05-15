@@ -25,6 +25,16 @@ services:
         networks:
           - drahten_network
   
+    django-rabbitmq-consumer-server:
+        container_name: "search_service_rabbitmq_consumer_server"
+        restart: unless-stopped
+        image: jivkospasov/searchservice:latest
+        command: python manage.py start_rabbitmq_consumer
+        depends_on:
+          - django-rest-api
+        networks:
+          - drahten_network
+
     celery-worker:
         container_name: "celery_worker"
         restart: unless-stopped
