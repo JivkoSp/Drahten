@@ -25,7 +25,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase
 
             await foreach (var (topicName, document) in documentTopic)
             {
-                var alreadyExists = await articleReadService.ExistsByIdAsync(Guid.Parse(document.ArticleId));
+                var alreadyExists = await articleReadService.ExistsByIdAsync(document.ArticleId);
 
                 if (alreadyExists == false)
                 {
