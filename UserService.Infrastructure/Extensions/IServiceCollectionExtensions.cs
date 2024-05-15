@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 using UserService.Application.AsyncDataServices;
+using UserService.Application.Commands.Handlers;
 using UserService.Application.Extensions;
 using UserService.Application.Services.ReadServices;
 using UserService.Domain.Repositories;
@@ -15,6 +16,7 @@ using UserService.Infrastructure.EntityFramework.Repositories;
 using UserService.Infrastructure.EntityFramework.Services.ReadServices;
 using UserService.Infrastructure.Exceptions;
 using UserService.Infrastructure.Exceptions.Interfaces;
+using UserService.Infrastructure.Logging;
 using UserService.Infrastructure.UserRegistration;
 
 [assembly: InternalsVisibleTo(assemblyName: "UserService.Tests.EndToEnd")]
@@ -44,6 +46,8 @@ namespace UserService.Infrastructure.Extensions
                 configAction.AddProfile<BannedUserProfile>();
                 configAction.AddProfile<ContactRequestProfile>();
             });
+
+            services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
 
             services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
