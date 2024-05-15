@@ -4,8 +4,8 @@ Definition of models.
 from django.db import models
 from haystack.document_stores import ElasticsearchDocumentStore
 from haystack import Pipeline
-from haystack.pipelines import ExtractiveQAPipeline
-from haystack.nodes import PreProcessor, BM25Retriever, EmbeddingRetriever, FARMReader, TransformersSummarizer, QuestionGenerator
+from haystack.nodes import PreProcessor, BM25Retriever, FARMReader, TransformersSummarizer, QuestionGenerator
+
 
 class SearchEngine():
     def _DefineQueryPipeline(self):
