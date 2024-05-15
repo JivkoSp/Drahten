@@ -73,6 +73,8 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<DocumentProfile>();
             });
 
+            services.AddSingleton<IMessageBusPublisher, MessageBusPublisher>();
+
             services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
 
             services.AddScoped<IUserSynchronizer, UserSynchronizer>();
