@@ -6,6 +6,7 @@
 from scrapy.utils.serialize import ScrapyJSONEncoder
 from haystack.schema import Document as HaystackDocument
 import json
+import uuid
 from app.asyncDataServices import messageBusClient
 
 
@@ -23,18 +24,23 @@ class DrahtenScraperPipeline:
         try:
             spider_name = item.get('spider_name')[0]
 
-            print(f"\n\nPROCESSED ITEM FROM SPIDER: {spider_name}\n\n")
-
             #Encode the scrapy object type (item) as JSON string.
             encoded_item = self.jsonEncoder.encode(item)
             
             #Convert the encoded_item from JSON string to JSON object.
             encoded_item = json.loads(encoded_item)
 
+            # Generate a UUID
+            generated_uuid = uuid.uuid4()
+
+            # Convert UUID to string without dashes
+            uuid_string = str(generated_uuid).replace('-', '')
+
             #Create haystack document type.
             #This step is needed, becouse the ElasticsearchDocumentStore stores data as haystack document types.
             #Here the meta is Dict[str, Any] and it's purpose is to hold the data from the document for easy access.
-            new_document = HaystackDocument(content=encoded_item['article_data'][0], 
+            new_document = HaystackDocument(id=uuid_string,
+                                            content=encoded_item['article_data'][0], 
                                             meta={"article_prev_title": encoded_item['article_prev_title'][0],
                                                   "article_title": encoded_item['article_title'][0],
                                                   "article_data": encoded_item['article_data'][0],
