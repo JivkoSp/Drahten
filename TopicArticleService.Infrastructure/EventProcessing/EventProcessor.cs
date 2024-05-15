@@ -73,23 +73,9 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 
         private void CheckDocumentSimilarity(string checkDocumentSimilarityMessage)
         {
-            //using var scope = _serviceScopeFactory.CreateScope();
-
-            //var searchServiceDataClient = scope.ServiceProvider.GetRequiredService<ISearchServiceDataClient>();
-
-            //var articleFactory = scope.ServiceProvider.GetRequiredService<IArticleFactory>();
-
-            //var articleRepository = scope.ServiceProvider.GetRequiredService<IArticleRepository>();
-
-            //var topicReadService = scope.ServiceProvider.GetRequiredService<ITopicReadService>();
-
             var documentDto = JsonSerializer.Deserialize<DocumentDto>(checkDocumentSimilarityMessage);
 
             _messageBusPublisher.PublishNewDocument(documentDto);
-
-            //var similarityScoreResponse = searchServiceDataClient.DocumentSimilarityCheckAsync(documentDto);
-
-            //await SeedDocument(similarityScoreResponse, documentDto, articleFactory, articleRepository, topicReadService);
         }
 
         private async Task WriteDocument(string document)
