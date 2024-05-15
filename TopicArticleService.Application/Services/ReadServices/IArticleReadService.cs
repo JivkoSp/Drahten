@@ -4,6 +4,6 @@ namespace TopicArticleService.Application.Services.ReadServices
 {
     public interface IArticleReadService
     {
-        Task<bool> ExistsByIdAsync(Guid id);
+        Task<bool> ExistsByIdAsync(string id);
     }
 }
