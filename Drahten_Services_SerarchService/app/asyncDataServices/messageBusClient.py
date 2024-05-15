@@ -4,12 +4,15 @@ from app import models
 from haystack.schema import Document as HaystackDocument
 from sentence_transformers import SentenceTransformer
 import numpy as np
+from loguru import logger
+from app.logging import handler
+
 
 class MessageClient:
     def __init__(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq_servicebus'))
         print(f"\n\n*** SearchService INITIALIZED THE MESSAGE CLIENT ***\n\n")
-
+        logger.info("*** SearchService INITIALIZED THE MESSAGE CLIENT ***")
     def GetConnection(self):
         return self.connection
 
@@ -22,6 +25,7 @@ class MessageBusPublisher:
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='search_service', exchange_type='direct')
         print("\n\n*** SearchService INITIALIZED THE MESSAGE PUBLISHER ***\n\n")
+        logger.info("*** SearchService INITIALIZED THE MESSAGE PUBLISHER ***")
 
     def PublishNewDocument(self, document, topicName):
         document = document.to_dict()
@@ -79,6 +83,7 @@ class MessageBusSubscriber:
         self.model = SentenceTransformer("sentence-transformers/multi-qa-mpnet-base-dot-v1")
         self.messageBusPublisher = MessageBusPublisher()
         print("\n\n*** SearchService INITIALIZED THE MESSAGE SUBSCRIBER ***\n\n")
+        logger.info("*** SearchService INITIALIZED THE MESSAGE SUBSCRIBER ***")
 
     # TODO: Remove this to appropriate class (This should NOT be a part of the message subscriber).
     def _checkSimilarity(self, document_content, threshold=0.9):
