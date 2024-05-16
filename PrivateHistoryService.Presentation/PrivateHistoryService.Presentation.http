@@ -1,0 +1,6 @@
+@PrivateHistoryService.Presentation_HostAddress = http://localhost:5067
+
+GET {{PrivateHistoryService.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
