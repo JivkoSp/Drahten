@@ -1,4 +1,5 @@
-﻿using PrivateHistoryService.Domain.Exceptions;
+﻿using PrivateHistoryService.Domain.Events;
+using PrivateHistoryService.Domain.Exceptions;
 using PrivateHistoryService.Domain.ValueObjects;
 using System.Collections.ObjectModel;
 
@@ -6,7 +7,7 @@ namespace PrivateHistoryService.Domain.Entities
 {
     public class User : AggregateRoot<UserID>
     {
-        private List<ViewedArticle> _viewedArticles;
+        private HashSet<ViewedArticle> _viewedArticles;
         private List<SubscribedTopic> _subscribedTopics;
         private List<SearchedArticleData> _searchedArticleInformation;
         private List<SearchedTopicData> _searchedTopicInformation;
@@ -19,7 +20,7 @@ namespace PrivateHistoryService.Domain.Entities
 
         public IReadOnlyCollection<ViewedArticle> ViewedArticles
         {
-            get { return new ReadOnlyCollection<ViewedArticle>(_viewedArticles); }
+            get { return new ReadOnlyCollection<ViewedArticle>(_viewedArticles.ToList()); }
         }
 
         public IReadOnlyCollection<SubscribedTopic> SubscribedTopics
@@ -77,7 +78,7 @@ namespace PrivateHistoryService.Domain.Entities
 
             Id = userId;
 
-            _viewedArticles = new List<ViewedArticle>();
+            _viewedArticles = new HashSet<ViewedArticle>();
             _subscribedTopics = new List<SubscribedTopic>();
             _searchedArticleInformation = new List<SearchedArticleData>();
             _searchedTopicInformation = new List<SearchedTopicData>();
@@ -87,6 +88,20 @@ namespace PrivateHistoryService.Domain.Entities
             _likedArticleComments = new List<LikedArticleComment>();
             _dislikedArticleComments = new List<DislikedArticleComment>();
             _viewedUsers = new List<ViewedUser>();
+        }
+
+        public void AddViewedArticle(ViewedArticle viewedArticle)
+        {
+            var alreadyExists = _viewedArticles.Contains(viewedArticle);
+
+            if (alreadyExists)
+            {
+                throw new ViewedArticleAlreadyExistsException(viewedArticle.ArticleID, viewedArticle.UserID, viewedArticle.DateTime);
+            }
+
+            _viewedArticles.Add(viewedArticle);
+
+            AddEvent(new ViewedArticleAdded(this, viewedArticle));
         }
     }
 }
