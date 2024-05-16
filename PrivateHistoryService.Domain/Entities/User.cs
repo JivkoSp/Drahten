@@ -103,5 +103,19 @@ namespace PrivateHistoryService.Domain.Entities
 
             AddEvent(new ViewedArticleAdded(this, viewedArticle));
         }
+
+        public void AddSubscribtionToTopic(SubscribedTopic subscribedTopic)
+        {
+            var alreadyExists = _subscribedTopics.Any(x => x.TopicID == subscribedTopic.TopicID && x.UserID == subscribedTopic.UserID);
+
+            if (alreadyExists)
+            {
+                throw new SubscribedTopicAlreadyExistsException(subscribedTopic.TopicID, subscribedTopic.UserID);
+            }
+
+            _subscribedTopics.Add(subscribedTopic);
+
+            AddEvent(new TopicSubscriptionAdded(this, subscribedTopic));
+        }
     }
 }
