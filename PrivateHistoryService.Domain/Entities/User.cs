@@ -8,7 +8,7 @@ namespace PrivateHistoryService.Domain.Entities
     public class User : AggregateRoot<UserID>
     {
         private HashSet<ViewedArticle> _viewedArticles;
-        private List<SubscribedTopic> _subscribedTopics;
+        private List<TopicSubscription> _subscribedTopics;
         private List<SearchedArticleData> _searchedArticleInformation;
         private List<SearchedTopicData> _searchedTopicInformation;
         private List<CommentedArticle> _commentedArticles;
@@ -23,9 +23,9 @@ namespace PrivateHistoryService.Domain.Entities
             get { return new ReadOnlyCollection<ViewedArticle>(_viewedArticles.ToList()); }
         }
 
-        public IReadOnlyCollection<SubscribedTopic> SubscribedTopics
+        public IReadOnlyCollection<TopicSubscription> SubscribedTopics
         {
-            get { return new ReadOnlyCollection<SubscribedTopic>(_subscribedTopics); }
+            get { return new ReadOnlyCollection<TopicSubscription>(_subscribedTopics); }
         }
 
         public IReadOnlyCollection<SearchedArticleData> SearchedArticleInformation
@@ -79,7 +79,7 @@ namespace PrivateHistoryService.Domain.Entities
             Id = userId;
 
             _viewedArticles = new HashSet<ViewedArticle>();
-            _subscribedTopics = new List<SubscribedTopic>();
+            _subscribedTopics = new List<TopicSubscription>();
             _searchedArticleInformation = new List<SearchedArticleData>();
             _searchedTopicInformation = new List<SearchedTopicData>();
             _commentedArticles = new List<CommentedArticle>();
@@ -104,18 +104,18 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new ViewedArticleAdded(this, viewedArticle));
         }
 
-        public void AddSubscribtionToTopic(SubscribedTopic subscribedTopic)
+        public void AddSubscribtionToTopic(TopicSubscription topicSubscription)
         {
-            var alreadyExists = _subscribedTopics.Any(x => x.TopicID == subscribedTopic.TopicID && x.UserID == subscribedTopic.UserID);
+            var alreadyExists = _subscribedTopics.Any(x => x.TopicID == topicSubscription.TopicID && x.UserID == topicSubscription.UserID);
 
             if (alreadyExists)
             {
-                throw new SubscribedTopicAlreadyExistsException(subscribedTopic.TopicID, subscribedTopic.UserID);
+                throw new SubscribedTopicAlreadyExistsException(topicSubscription.TopicID, topicSubscription.UserID);
             }
 
-            _subscribedTopics.Add(subscribedTopic);
+            _subscribedTopics.Add(topicSubscription);
 
-            AddEvent(new TopicSubscriptionAdded(this, subscribedTopic));
+            AddEvent(new TopicSubscriptionAdded(this, topicSubscription));
         }
     }
 }
