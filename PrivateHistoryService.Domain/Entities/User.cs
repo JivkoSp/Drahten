@@ -11,7 +11,7 @@ namespace PrivateHistoryService.Domain.Entities
         private List<TopicSubscription> _subscribedTopics;
         private HashSet<SearchedArticleData> _searchedArticleInformation;
         private HashSet<SearchedTopicData> _searchedTopicInformation;
-        private List<CommentedArticle> _commentedArticles;
+        private HashSet<CommentedArticle> _commentedArticles;
         private List<LikedArticle> _likedArticles;
         private List<DislikedArticle> _dislikedArticles;
         private List<LikedArticleComment> _likedArticleComments;
@@ -40,7 +40,7 @@ namespace PrivateHistoryService.Domain.Entities
 
         public IReadOnlyCollection<CommentedArticle> CommentedArticles
         {
-            get { return new ReadOnlyCollection<CommentedArticle>(_commentedArticles); }
+            get { return new ReadOnlyCollection<CommentedArticle>(_commentedArticles.ToList()); }
         }
 
         public IReadOnlyCollection<LikedArticle> LikedArticles
@@ -82,7 +82,7 @@ namespace PrivateHistoryService.Domain.Entities
             _subscribedTopics = new List<TopicSubscription>();
             _searchedArticleInformation = new HashSet<SearchedArticleData>();
             _searchedTopicInformation = new HashSet<SearchedTopicData>();
-            _commentedArticles = new List<CommentedArticle>();
+            _commentedArticles = new HashSet<CommentedArticle>();
             _likedArticles = new List<LikedArticle>();  
             _dislikedArticles = new List<DislikedArticle>();
             _likedArticleComments = new List<LikedArticleComment>();
@@ -144,6 +144,20 @@ namespace PrivateHistoryService.Domain.Entities
             _searchedTopicInformation.Add(searchedTopicData);
 
             AddEvent(new SearchedTopicDataAdded(this, searchedTopicData));
+        }
+
+        public void AddCommentedArticle(CommentedArticle commentedArticle)
+        {
+            var alreadyExists = _commentedArticles.Contains(commentedArticle);
+
+            if (alreadyExists)
+            {
+                throw new CommentedArticleAlreadyExistsException(commentedArticle.UserID, commentedArticle.DateTime);
+            }
+
+            _commentedArticles.Add(commentedArticle);
+
+            AddEvent(new CommentedArticleAdded(this, commentedArticle));
         }
     }
 }
