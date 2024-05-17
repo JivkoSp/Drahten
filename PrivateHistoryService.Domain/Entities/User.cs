@@ -9,8 +9,8 @@ namespace PrivateHistoryService.Domain.Entities
     {
         private HashSet<ViewedArticle> _viewedArticles;
         private List<TopicSubscription> _subscribedTopics;
-        private List<SearchedArticleData> _searchedArticleInformation;
-        private List<SearchedTopicData> _searchedTopicInformation;
+        private HashSet<SearchedArticleData> _searchedArticleInformation;
+        private HashSet<SearchedTopicData> _searchedTopicInformation;
         private List<CommentedArticle> _commentedArticles;
         private List<LikedArticle> _likedArticles;
         private List<DislikedArticle> _dislikedArticles;
@@ -30,12 +30,12 @@ namespace PrivateHistoryService.Domain.Entities
 
         public IReadOnlyCollection<SearchedArticleData> SearchedArticleInformation
         {
-            get { return new ReadOnlyCollection<SearchedArticleData>(_searchedArticleInformation); }
+            get { return new ReadOnlyCollection<SearchedArticleData>(_searchedArticleInformation.ToList()); }
         }
 
         public IReadOnlyCollection<SearchedTopicData> SearchedTopicInformation
         {
-            get { return new ReadOnlyCollection<SearchedTopicData>(_searchedTopicInformation); }
+            get { return new ReadOnlyCollection<SearchedTopicData>(_searchedTopicInformation.ToList()); }
         }
 
         public IReadOnlyCollection<CommentedArticle> CommentedArticles
@@ -80,8 +80,8 @@ namespace PrivateHistoryService.Domain.Entities
 
             _viewedArticles = new HashSet<ViewedArticle>();
             _subscribedTopics = new List<TopicSubscription>();
-            _searchedArticleInformation = new List<SearchedArticleData>();
-            _searchedTopicInformation = new List<SearchedTopicData>();
+            _searchedArticleInformation = new HashSet<SearchedArticleData>();
+            _searchedTopicInformation = new HashSet<SearchedTopicData>();
             _commentedArticles = new List<CommentedArticle>();
             _likedArticles = new List<LikedArticle>();  
             _dislikedArticles = new List<DislikedArticle>();
@@ -116,6 +116,34 @@ namespace PrivateHistoryService.Domain.Entities
             _subscribedTopics.Add(topicSubscription);
 
             AddEvent(new TopicSubscriptionAdded(this, topicSubscription));
+        }
+
+        public void AddSearchedArticleData(SearchedArticleData searchedArticleData)
+        {
+            var alreadyExists = _searchedArticleInformation.Contains(searchedArticleData);
+
+            if (alreadyExists) 
+            {
+                throw new SearchedArticleDataAlreadyExistsException(searchedArticleData.UserID, searchedArticleData.DateTime);
+            }
+
+            _searchedArticleInformation.Add(searchedArticleData);
+
+            AddEvent(new SearchedArticleDataAdded(this, searchedArticleData));
+        }
+
+        public void AddSearchedTopicData(SearchedTopicData searchedTopicData)
+        {
+            var alreadyExists = _searchedTopicInformation.Contains(searchedTopicData);
+
+            if (alreadyExists)
+            {
+                throw new SearchedTopicDataAlreadyExistsException(searchedTopicData.UserID, searchedTopicData.DateTime);
+            }
+
+            _searchedTopicInformation.Add(searchedTopicData);
+
+            AddEvent(new SearchedTopicDataAdded(this, searchedTopicData));
         }
     }
 }
