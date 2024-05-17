@@ -160,6 +160,20 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new SearchedArticleDataAdded(this, searchedArticleData));
         }
 
+        public void RemovedSearchedArticleData(SearchedArticleData searchedArticleData)
+        {
+            var alreadyExists = _searchedArticleInformation.Contains(searchedArticleData);
+
+            if (alreadyExists == false)
+            {
+                throw new SearchedArticleDataNotFoundException(searchedArticleData.ArticleID, searchedArticleData.UserID, searchedArticleData.DateTime);
+            }
+
+            _searchedArticleInformation.Remove(searchedArticleData);
+
+            AddEvent(new SearchedArticleDataRemoved(this, searchedArticleData));
+        }
+
         public void AddSearchedTopicData(SearchedTopicData searchedTopicData)
         {
             var alreadyExists = _searchedTopicInformation.Contains(searchedTopicData);
