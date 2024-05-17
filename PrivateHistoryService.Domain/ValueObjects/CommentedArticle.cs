@@ -1,6 +1,5 @@
 ﻿
 using PrivateHistoryService.Domain.Exceptions;
-using System;
 
 namespace PrivateHistoryService.Domain.ValueObjects
 {
