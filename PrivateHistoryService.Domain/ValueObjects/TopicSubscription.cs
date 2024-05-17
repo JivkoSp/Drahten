@@ -2,13 +2,13 @@
 
 namespace PrivateHistoryService.Domain.ValueObjects
 {
-    public record SubscribedTopic
+    public record TopicSubscription
     {
         public TopicID TopicID { get; }
         public UserID UserID { get; }
         internal DateTimeOffset DateTime { get; }
 
-        public SubscribedTopic(TopicID topicId, UserID userId, DateTimeOffset dateTime)
+        public TopicSubscription(TopicID topicId, UserID userId, DateTimeOffset dateTime)
         {
             if (topicId == null)
             {
