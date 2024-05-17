@@ -188,6 +188,20 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new SearchedTopicDataAdded(this, searchedTopicData));
         }
 
+        public void RemoveSearchedTopicData(SearchedTopicData searchedTopicData)
+        {
+            var alreadyExists = _searchedTopicInformation.Contains(searchedTopicData);
+
+            if (alreadyExists == false)
+            {
+                throw new SearchedTopicDataNotFoundException(searchedTopicData.TopicID, searchedTopicData.UserID, searchedTopicData.DateTime);
+            }
+
+            _searchedTopicInformation.Remove(searchedTopicData);
+
+            AddEvent(new SearchedTopicDataRemoved(this, searchedTopicData));
+        }
+
         public void AddCommentedArticle(CommentedArticle commentedArticle)
         {
             var alreadyExists = _commentedArticles.Contains(commentedArticle);
