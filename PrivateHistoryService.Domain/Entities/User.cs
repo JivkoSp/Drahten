@@ -132,6 +132,20 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new TopicSubscriptionAdded(this, topicSubscription));
         }
 
+        public void RemoveTopicSubscription(TopicID topicId, UserID userId)
+        {
+            var topicSubscription = _subscribedTopics.SingleOrDefault(x => x.TopicID == topicId && x.UserID == userId);
+
+            if (topicSubscription == null)
+            {
+                throw new TopicSubscriptionNotFoundException(topicId, userId);
+            }
+
+            _subscribedTopics.Remove(topicSubscription);
+
+            AddEvent(new TopicSubscriptionRemoved(this, topicSubscription));
+        }
+
         public void AddSearchedArticleData(SearchedArticleData searchedArticleData)
         {
             var alreadyExists = _searchedArticleInformation.Contains(searchedArticleData);
