@@ -202,5 +202,20 @@ namespace PrivateHistoryService.Domain.Entities
 
             AddEvent(new LikedArticleCommentAdded(this, likedArticleComment));
         }
+
+        public void AddDislikedArticleComment(DislikedArticleComment dislikedArticleComment)
+        {
+            var alreadyExists = _dislikedArticleComments.Any(x => x.ArticleID == dislikedArticleComment.ArticleID
+            && x.UserID == dislikedArticleComment.UserID && x.ArticleCommentID == dislikedArticleComment.ArticleCommentID);
+
+            if (alreadyExists)
+            {
+                throw new DislikedArticleCommentAlreadyExistsException(dislikedArticleComment.ArticleCommentID, dislikedArticleComment.UserID);
+            }
+
+            _dislikedArticleComments.Add(dislikedArticleComment);
+
+            AddEvent(new DislikedArticleCommentAdded(this, dislikedArticleComment));
+        }
     }
 }
