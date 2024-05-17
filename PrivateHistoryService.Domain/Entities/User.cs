@@ -159,5 +159,19 @@ namespace PrivateHistoryService.Domain.Entities
 
             AddEvent(new CommentedArticleAdded(this, commentedArticle));
         }
+
+        public void AddLikedArticle(LikedArticle likedArticle)
+        {
+            var alreadyExists = _likedArticles.Any(x => x.ArticleID == likedArticle.ArticleID && x.UserID == likedArticle.UserID);
+
+            if (alreadyExists)
+            {
+                throw new LikedArticleAlreadyExistsException(likedArticle.ArticleID, likedArticle.UserID);
+            }
+
+            _likedArticles.Add(likedArticle);
+
+            AddEvent(new LikedArticleAdded(this, likedArticle));
+        }
     }
 }
