@@ -216,6 +216,21 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new CommentedArticleAdded(this, commentedArticle));
         }
 
+        public void RemoveCommentedArticle(CommentedArticle commentedArticle)
+        {
+            var alreadyExists = _commentedArticles.Contains(commentedArticle);
+
+            if (alreadyExists == false)
+            {
+                throw new CommentedArticleNotFoundException(commentedArticle.ArticleID, commentedArticle.UserID, 
+                    commentedArticle.ArticleComment, commentedArticle.DateTime);
+            }
+
+            _commentedArticles.Remove(commentedArticle);
+
+            AddEvent(new CommentedArticleRemoved(this, commentedArticle));
+        }
+
         public void AddLikedArticle(LikedArticle likedArticle)
         {
             var alreadyExists = _likedArticles.Any(x => x.ArticleID == likedArticle.ArticleID && x.UserID == likedArticle.UserID);
@@ -286,6 +301,20 @@ namespace PrivateHistoryService.Domain.Entities
             _viewedUsers.Add(viewedUser);
 
             AddEvent(new ViewedUserAdded(this, viewedUser));
+        }
+
+        public void RemoveViewedUser(ViewedUser viewedUser)
+        {
+            var alreadyExists = _viewedUsers.Contains(viewedUser);
+
+            if (alreadyExists == false)
+            {
+                throw new ViewedUserNotFoundException(viewedUser.ViewedUserID, viewedUser.ViewerUserID, viewedUser.DateTime);
+            }
+
+            _viewedUsers.Remove(viewedUser);
+
+            AddEvent(new ViewedUserRemoved(this, viewedUser));
         }
     }
 }
