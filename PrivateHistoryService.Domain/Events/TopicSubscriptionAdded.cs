@@ -3,5 +3,5 @@ using PrivateHistoryService.Domain.ValueObjects;
 
 namespace PrivateHistoryService.Domain.Events
 {
-    public record TopicSubscriptionAdded(User User, SubscribedTopic SubscribedTopic) : IDomainEvent;
+    public record TopicSubscriptionAdded(User User, TopicSubscription TopicSubscription) : IDomainEvent;
 }
