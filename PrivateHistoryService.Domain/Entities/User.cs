@@ -87,7 +87,7 @@ namespace PrivateHistoryService.Domain.Entities
             _dislikedArticles = new List<DislikedArticle>();
             _likedArticleComments = new List<LikedArticleComment>();
             _dislikedArticleComments = new List<DislikedArticleComment>();
-            _viewedUsers = new List<ViewedUser>();
+            _viewedUsers = new HashSet<ViewedUser>();
         }
 
         public void AddViewedArticle(ViewedArticle viewedArticle)
