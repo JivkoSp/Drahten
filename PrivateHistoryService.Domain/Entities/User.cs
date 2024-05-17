@@ -104,7 +104,7 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new ViewedArticleAdded(this, viewedArticle));
         }
 
-        public void AddSubscribtionToTopic(TopicSubscription topicSubscription)
+        public void AddTopicSubscription(TopicSubscription topicSubscription)
         {
             var alreadyExists = _subscribedTopics.Any(x => x.TopicID == topicSubscription.TopicID && x.UserID == topicSubscription.UserID);
 
