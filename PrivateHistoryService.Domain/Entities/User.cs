@@ -104,6 +104,20 @@ namespace PrivateHistoryService.Domain.Entities
             AddEvent(new ViewedArticleAdded(this, viewedArticle));
         }
 
+        public void RemoveViewedArticle(ViewedArticle viewedArticle)
+        {
+            var alreadyExists = _viewedArticles.Contains(viewedArticle);
+
+            if (alreadyExists == false)
+            {
+                throw new ViewedArticleNotFoundException(viewedArticle.ArticleID, viewedArticle.UserID, viewedArticle.DateTime);
+            }
+
+            _viewedArticles.Remove(viewedArticle);
+
+            AddEvent(new ViewedArticleRemoved(this, viewedArticle));
+        }
+
         public void AddTopicSubscription(TopicSubscription topicSubscription)
         {
             var alreadyExists = _subscribedTopics.Any(x => x.TopicID == topicSubscription.TopicID && x.UserID == topicSubscription.UserID);
