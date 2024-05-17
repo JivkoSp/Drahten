@@ -16,7 +16,7 @@ namespace PrivateHistoryService.Domain.Entities
         private List<DislikedArticle> _dislikedArticles;
         private List<LikedArticleComment> _likedArticleComments;
         private List<DislikedArticleComment> _dislikedArticleComments;
-        private List<ViewedUser> _viewedUsers;
+        private HashSet<ViewedUser> _viewedUsers;
 
         public IReadOnlyCollection<ViewedArticle> ViewedArticles
         {
@@ -65,7 +65,7 @@ namespace PrivateHistoryService.Domain.Entities
 
         public IReadOnlyCollection<ViewedUser> ViewedUsers
         {
-            get { return new ReadOnlyCollection<ViewedUser>(_viewedUsers); }
+            get { return new ReadOnlyCollection<ViewedUser>(_viewedUsers.ToList()); }
         }
 
         private User()
@@ -216,6 +216,20 @@ namespace PrivateHistoryService.Domain.Entities
             _dislikedArticleComments.Add(dislikedArticleComment);
 
             AddEvent(new DislikedArticleCommentAdded(this, dislikedArticleComment));
+        }
+
+        public void AddViewedUser(ViewedUser viewedUser)
+        {
+            var alreadyExists = _viewedUsers.Contains(viewedUser);
+
+            if (alreadyExists)
+            {
+                throw new ViewedUserAlreadyExistsException(viewedUser.ViewedUserID, viewedUser.ViewerUserID);
+            }
+
+            _viewedUsers.Add(viewedUser);
+
+            AddEvent(new ViewedUserAdded(this, viewedUser));
         }
     }
 }
