@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PrivateHistoryService.Application\PrivateHistoryService.Application.csproj" />
     <ProjectReference Include="..\PrivateHistoryService.Domain\PrivateHistoryService.Domain.csproj" />
   </ItemGroup>
 
