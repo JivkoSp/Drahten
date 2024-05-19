@@ -4,16 +4,16 @@ using PrivateHistoryService.Domain.ValueObjects;
 
 namespace PrivateHistoryService.Application.Commands.Handlers
 {
-    internal sealed class RemovedSearchedArticleDataHandler : ICommandHandler<RemovedSearchedArticleDataCommand>
+    internal sealed class RemoveSearchedArticleDataHandler : ICommandHandler<RemoveSearchedArticleDataCommand>
     {
         private readonly IUserRepository _userRepository;
 
-        public RemovedSearchedArticleDataHandler(IUserRepository userRepository)
+        public RemoveSearchedArticleDataHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task HandleAsync(RemovedSearchedArticleDataCommand command)
+        public async Task HandleAsync(RemoveSearchedArticleDataCommand command)
         {
             var user = await _userRepository.GetUserByIdAsync(command.UserId);
 
@@ -24,7 +24,7 @@ namespace PrivateHistoryService.Application.Commands.Handlers
 
             var searchedArticleData = new SearchedArticleData(command.ArticleId, command.UserId, command.SearchedData, command.DateTime);
 
-            user.RemovedSearchedArticleData(searchedArticleData);
+            user.RemoveSearchedArticleData(searchedArticleData);
 
             await _userRepository.UpdateUserAsync(user);
         }
