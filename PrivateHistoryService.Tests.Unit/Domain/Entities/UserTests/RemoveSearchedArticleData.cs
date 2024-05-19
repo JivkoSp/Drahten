@@ -50,7 +50,7 @@ namespace PrivateHistoryService.Tests.Unit.Domain.Entities.UserTests
             var searchedArticleData = GetSearchedArticleData();
 
             //ACT
-            var exception = Record.Exception(() => user.RemovedSearchedArticleData(searchedArticleData));
+            var exception = Record.Exception(() => user.RemoveSearchedArticleData(searchedArticleData));
 
             //ASSERT
             exception.ShouldNotBeNull();
@@ -74,7 +74,7 @@ namespace PrivateHistoryService.Tests.Unit.Domain.Entities.UserTests
             user.AddSearchedArticleData(searchedArticleData);
 
             //ACT
-            var exception = Record.Exception(() => user.RemovedSearchedArticleData(searchedArticleData));
+            var exception = Record.Exception(() => user.RemoveSearchedArticleData(searchedArticleData));
 
             //ASSERT
             exception.ShouldBeNull();
