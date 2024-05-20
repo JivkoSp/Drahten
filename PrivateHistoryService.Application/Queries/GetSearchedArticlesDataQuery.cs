@@ -2,5 +2,5 @@
 
 namespace PrivateHistoryService.Application.Queries
 {
-    public record GetSearchedArticlesDataQuery : IQuery<List<SearchedArticleDataDto>>;
+    public record GetSearchedArticlesDataQuery(Guid UserId) : IQuery<List<SearchedArticleDataDto>>;
 }
