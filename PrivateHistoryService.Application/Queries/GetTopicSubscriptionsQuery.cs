@@ -2,5 +2,5 @@
 
 namespace PrivateHistoryService.Application.Queries
 {
-    public record GetTopicSubscriptionsQuery : IQuery<List<TopicSubscriptionDto>>;
+    public record GetTopicSubscriptionsQuery(Guid UserId) : IQuery<List<TopicSubscriptionDto>>;
 }
