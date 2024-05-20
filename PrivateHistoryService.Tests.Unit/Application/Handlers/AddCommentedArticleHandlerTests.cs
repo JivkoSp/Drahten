@@ -60,7 +60,7 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
             exception.ShouldBeOfType<UserNotFoundException>();
         }
 
-        //Should create CommentedArticle value object if the UserId from the AddContactRequestCommand is valid Id for existing User.
+        //Should create CommentedArticle value object if the UserId from the AddCommentedArticleCommand is valid Id for existing User.
         //Additionally the created CommentedArticle value object must be added to the User and the repository must be called to update the User.
         [Fact]
         public async Task Given_Valid_UserId_Creates_And_Adds_CommentedArticle_Instance_To_User_And_Calls_Repository_On_Success()
