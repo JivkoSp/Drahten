@@ -16,6 +16,12 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
 
             //Property config - Start
 
+            builder.Property(p => p.ArticleId)
+                .IsRequired();
+
+            builder.Property(p => p.UserId)
+                .IsRequired();
+
             builder.Property(p => p.ArticleComment)
                 .IsRequired();
 
