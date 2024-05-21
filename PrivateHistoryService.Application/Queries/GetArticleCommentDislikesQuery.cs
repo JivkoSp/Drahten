@@ -2,5 +2,5 @@
 
 namespace PrivateHistoryService.Application.Queries
 {
-    public record GetArticleCommentDislikesQuery : IQuery<List<DislikedArticleCommentDto>>;
+    public record GetArticleCommentDislikesQuery(Guid UserId) : IQuery<List<DislikedArticleCommentDto>>;
 }
