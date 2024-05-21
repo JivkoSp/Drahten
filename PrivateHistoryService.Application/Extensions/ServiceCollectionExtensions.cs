@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PrivateHistoryService.Application.Commands.Dispatcher;
 using PrivateHistoryService.Application.Commands.Handlers;
+using PrivateHistoryService.Application.Queries.Dispatcher;
+using PrivateHistoryService.Application.Queries.Handlers;
 using PrivateHistoryService.Domain.Factories;
 using PrivateHistoryService.Domain.Factories.Interfaces;
 using System.Reflection;
@@ -23,6 +25,22 @@ namespace PrivateHistoryService.Application.Extensions
             //        so in addition this eliminates duplicate work.
             services.Scan(x => x.FromAssemblies(assembly).AddClasses(x =>
                 x.AssignableTo(typeof(ICommandHandler<>))).AsImplementedInterfaces().WithScopedLifetime());
+
+            return services;
+        }
+
+        public static IServiceCollection AddQueriesWithDispatcher(this IServiceCollection services)
+        {
+            var assembly = Assembly.GetCallingAssembly();
+
+            services.AddSingleton<IQueryDispatcher, InMemoryQueryDispatcher>();
+
+            //Adding automatic registration for all query handlers.
+            //Reason: There is possibility to forget to register query handler in the DI container.
+            //        Every time that new query handler is created it has to be registered in the DI container,
+            //        so in addition this eliminates duplicate work.
+            services.Scan(x => x.FromAssemblies(assembly).AddClasses(x =>
+                x.AssignableTo(typeof(IQueryHandler<,>))).AsImplementedInterfaces().WithScopedLifetime());
 
             return services;
         }
