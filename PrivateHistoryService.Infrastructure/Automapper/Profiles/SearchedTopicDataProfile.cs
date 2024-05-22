@@ -6,7 +6,7 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
 {
     internal sealed class SearchedTopicDataProfile : Profile
     {
-        internal SearchedTopicDataProfile()
+        public SearchedTopicDataProfile()
         {
             CreateMap<SearchedTopicDataReadModel, SearchedTopicDataDto>();
         }

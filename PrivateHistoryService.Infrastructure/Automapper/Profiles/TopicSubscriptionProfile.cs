@@ -6,7 +6,7 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
 {
     internal sealed class TopicSubscriptionProfile : Profile
     {
-        internal TopicSubscriptionProfile()
+        public TopicSubscriptionProfile()
         {
             CreateMap<TopicSubscriptionReadModel, TopicSubscriptionDto>();
         }

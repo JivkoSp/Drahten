@@ -6,7 +6,7 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
 {
     internal sealed class ViewedUserProfile : Profile
     {
-        internal ViewedUserProfile()
+        public ViewedUserProfile()
         {
             CreateMap<ViewedUserReadModel, ViewedUserDto>();
         }

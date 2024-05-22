@@ -6,7 +6,7 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
 {
     internal sealed class DislikedArticleCommentProfile : Profile
     {
-        internal DislikedArticleCommentProfile()
+        public DislikedArticleCommentProfile()
         {
             CreateMap<DislikedArticleCommentReadModel, DislikedArticleCommentDto>();
         }
