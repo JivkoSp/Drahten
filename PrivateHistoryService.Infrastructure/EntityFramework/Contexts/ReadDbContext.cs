@@ -18,6 +18,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         public DbSet<SearchedArticleDataReadModel> SearchedArticles { get; set; }
         public DbSet<SearchedTopicDataReadModel> SearchedTopics { get; set; }
         public DbSet<TopicSubscriptionReadModel> TopicSubscriptions { get; set; }
+        public DbSet<ViewedArticleReadModel> ViewedArticles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
