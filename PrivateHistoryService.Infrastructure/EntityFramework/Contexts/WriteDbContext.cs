@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
@@ -12,6 +13,8 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         {
             _loggerFactory = loggerFactory;
         }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
