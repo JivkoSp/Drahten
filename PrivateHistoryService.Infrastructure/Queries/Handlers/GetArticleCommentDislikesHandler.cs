@@ -22,7 +22,6 @@ namespace PrivateHistoryService.Infrastructure.Queries.Handlers
         {
             var dislikedArticleCommentReadModels = await _readDbContext.DislikedArticleComments
                .Where(x => x.UserId == query.UserId.ToString())
-               .Include(x => x.User)
                .AsNoTracking()
                .ToListAsync();
 
