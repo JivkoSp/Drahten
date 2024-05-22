@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration;
+using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 {
@@ -8,6 +9,8 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
         {
         }
+
+        public DbSet<DislikedArticleCommentReadModel> DislikedArticleComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
