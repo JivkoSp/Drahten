@@ -13,6 +13,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         public DbSet<DislikedArticleCommentReadModel> DislikedArticleComments { get; set; }
         public DbSet<LikedArticleCommentReadModel> LikedArticleComments { get; set; }
         public DbSet<DislikedArticleReadModel> DislikedArticles { get; set; }
+        public DbSet<LikedArticleReadModel> LikedArticles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
