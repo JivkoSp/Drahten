@@ -248,5 +248,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpPost("{UserId:guid}/liked-article-comments/{ArticleCommentId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddLikedArticleComment([FromBody] AddLikedArticleCommentCommand addLikedArticleCommentCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addLikedArticleCommentCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
