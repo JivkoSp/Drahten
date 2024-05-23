@@ -356,5 +356,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{ViewerUserId:guid}/viewed-users/{ViewedUserId:guid}")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult> RemoveViewedUser([FromRoute] RemoveViewedUserCommand removeViewedUserCommand)
+        {
+            await _commandDispatcher.DispatchAsync(removeViewedUserCommand);
+
+            return NoContent();
+        }
     }
 }
