@@ -293,5 +293,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpPost("{UserId:guid}/viewed-articles/{ArticleId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddViewedArticle([FromBody] AddViewedArticleCommand addViewedArticleCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addViewedArticleCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
