@@ -266,5 +266,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpPost("{UserId:guid}/searched-articles/{ArticleId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddSearchedArticleData([FromBody] AddSearchedArticleDataCommand addSearchedArticleDataCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addSearchedArticleDataCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
