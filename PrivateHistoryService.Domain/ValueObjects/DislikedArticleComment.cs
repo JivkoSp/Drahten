@@ -9,6 +9,8 @@ namespace PrivateHistoryService.Domain.ValueObjects
         public ArticleCommentID ArticleCommentID { get; }
         internal DateTimeOffset DateTime { get; }
 
+        private DislikedArticleComment() {}
+
         public DislikedArticleComment(ArticleID articleId, UserID userId, ArticleCommentID articleCommentId, DateTimeOffset dateTime)
         {
             if (articleId == null)
