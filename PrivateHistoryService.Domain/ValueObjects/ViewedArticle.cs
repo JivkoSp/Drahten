@@ -8,6 +8,8 @@ namespace PrivateHistoryService.Domain.ValueObjects
         public UserID UserID { get; }
         internal DateTimeOffset DateTime { get; }
 
+        private ViewedArticle() {}
+
         public ViewedArticle(ArticleID articleId, UserID userId, DateTimeOffset dateTime)
         {
             if (articleId == null)
