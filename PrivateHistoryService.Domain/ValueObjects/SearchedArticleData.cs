@@ -9,6 +9,8 @@ namespace PrivateHistoryService.Domain.ValueObjects
         internal SearchedData SearchedData { get; }
         internal DateTimeOffset DateTime { get; }
 
+        private SearchedArticleData() {}
+
         public SearchedArticleData(ArticleID articleId, UserID userId, SearchedData searchedData, DateTimeOffset dateTime)
         {
             if (articleId == null)
