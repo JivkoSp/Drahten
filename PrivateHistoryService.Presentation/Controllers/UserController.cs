@@ -302,5 +302,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpPost("{ViewerUserId:guid}/viewed-users/{ViewedUserId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddViewedUser([FromBody] AddViewedUserCommand addViewedUserCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addViewedUserCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
