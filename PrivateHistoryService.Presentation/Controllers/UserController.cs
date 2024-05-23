@@ -338,5 +338,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{UserId:guid}/topic-subscriptions/{TopicId:guid}")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult> RemoveTopicSubscription([FromRoute] RemoveTopicSubscriptionCommand removeTopicSubscriptionCommand)
+        {
+            await _commandDispatcher.DispatchAsync(removeTopicSubscriptionCommand);
+
+            return NoContent();
+        }
     }
 }
