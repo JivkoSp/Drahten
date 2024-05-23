@@ -240,7 +240,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{UserId:guid}/disliked-article/{ArticleId:guid}")]
+        [HttpPost("{UserId:guid}/disliked-articles/{ArticleId:guid}")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> AddDislikedArticle([FromBody] AddDislikedArticleCommand addDislikedArticleCommand)
         {
