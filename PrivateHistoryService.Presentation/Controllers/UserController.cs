@@ -83,7 +83,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        //TODO: Change the name of the query. The query name should be GetLikedArticleComments, instead of GetArticleCommentLikesQuery.
+        //TODO: Change the name of the query. The query name should be GetLikedArticleCommentsQuery, instead of GetArticleCommentLikesQuery.
         //Reason: For similar reasons as the GetArticleLikesQuery from the action method GetLikedArticles.
         [HttpGet("{UserId:guid}/liked-article-comments/")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
@@ -91,6 +91,27 @@ namespace PrivateHistoryService.Presentation.Controllers
         public async Task<ActionResult> GetLikedArticleComments([FromRoute] GetArticleCommentLikesQuery getArticleCommentLikesQuery)
         {
             var result = await _queryDispatcher.DispatchAsync(getArticleCommentLikesQuery);
+
+            _responseDto.Result = result;
+
+            if (result == null)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
+
+        //TODO: Change the name of the query. The query name should be GetDislikedArticleCommentsQuery, instead of GetArticleCommentDislikesQuery.
+        //Reason: For similar reasons as the GetArticleLikesQuery from the action method GetLikedArticles.
+        [HttpGet("{UserId:guid}/disliked-article-comments/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetDislikedArticleComments([FromRoute] GetArticleCommentDislikesQuery getArticleCommentDislikesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getArticleCommentDislikesQuery);
 
             _responseDto.Result = result;
 
