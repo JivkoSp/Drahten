@@ -231,7 +231,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpPost("{UserId:guid}/liked-article/{ArticleId:guid}")]
+        [HttpPost("{UserId:guid}/liked-articles/{ArticleId:guid}")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> AddLikedArticle([FromBody] AddLikedArticleCommand addLikedArticleCommand)
         {
