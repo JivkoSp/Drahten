@@ -201,5 +201,24 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Ok(_responseDto);
         }
+
+        [HttpGet("{UserId:guid}/viewed-users/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetViewedUsers([FromRoute] GeViewedUsersQuery geViewedUsersQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(geViewedUsersQuery);
+
+            _responseDto.Result = result;
+
+            if (result == null)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
     }
 }
