@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PrivateHistoryService.Application.Commands.Dispatcher;
+using PrivateHistoryService.Application.Queries;
 using PrivateHistoryService.Application.Queries.Dispatcher;
 using PrivateHistoryService.Presentation.Dtos;
 
@@ -18,6 +19,25 @@ namespace PrivateHistoryService.Presentation.Controllers
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
             _responseDto = new ResponseDto();
+        }
+
+        [HttpGet("{UserId:guid}/commented-articles/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetCommentedArticles([FromRoute] GetCommentedArticlesQuery getCommentedArticlesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getCommentedArticlesQuery);
+
+            _responseDto.Result = result;
+
+            if (result == null)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
         }
     }
 }
