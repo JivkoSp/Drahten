@@ -320,5 +320,14 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{UserId:guid}/searched-articles/{ArticleId:guid}")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult> RemoveSearchedArticleData([FromRoute] RemoveSearchedArticleDataCommand removeSearchedArticleDataCommand)
+        {
+            await _commandDispatcher.DispatchAsync(removeSearchedArticleDataCommand);
+
+            return NoContent();
+        }
     }
 }
