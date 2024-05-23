@@ -124,5 +124,25 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Ok(_responseDto);
         }
+
+        //TODO: Change the name of the query. The query name should be GetSearchedArticlesQuery, instead of GetSearchedArticlesDataQuery.
+        [HttpGet("{UserId:guid}/searched-articles/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetSearchedArticles([FromRoute] GetSearchedArticlesDataQuery getSearchedArticlesDataQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getSearchedArticlesDataQuery);
+
+            _responseDto.Result = result;
+
+            if (result == null)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
     }
 }
