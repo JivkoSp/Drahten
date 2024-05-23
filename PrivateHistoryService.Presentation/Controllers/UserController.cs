@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PrivateHistoryService.Application.Commands;
 using PrivateHistoryService.Application.Commands.Dispatcher;
 using PrivateHistoryService.Application.Queries;
 using PrivateHistoryService.Application.Queries.Dispatcher;
@@ -219,6 +220,15 @@ namespace PrivateHistoryService.Presentation.Controllers
             _responseDto.IsSuccess = true;
 
             return Ok(_responseDto);
+        }
+
+        [HttpPost("{UserId:guid}/commented-article/{ArticleId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddCommentedArticle([FromBody] AddCommentedArticleCommand addCommentedArticleCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addCommentedArticleCommand);
+
+            return Created(HttpContext.Request.Path, null);
         }
     }
 }
