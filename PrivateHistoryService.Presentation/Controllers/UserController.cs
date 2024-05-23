@@ -284,5 +284,14 @@ namespace PrivateHistoryService.Presentation.Controllers
             
             return Created(HttpContext.Request.Path, null);
         }
+
+        [HttpPost("{UserId:guid}/topic-subscriptions/{TopicId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> AddTopicSubscription([FromBody] AddTopicSubscriptionCommand addTopicSubscriptionCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addTopicSubscriptionCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
     }
 }
