@@ -182,5 +182,24 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             return Ok(_responseDto);
         }
+
+        [HttpGet("{UserId:guid}/viewed-articles/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetViewedArticles([FromRoute] GetViewedArticlesQuery getViewedArticlesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getViewedArticlesQuery);
+
+            _responseDto.Result = result;
+
+            if (result == null)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
     }
 }
