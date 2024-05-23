@@ -222,7 +222,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpPost("{UserId:guid}/commented-article/{ArticleId:guid}")]
+        [HttpPost("{UserId:guid}/commented-articles/{ArticleId:guid}")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> AddCommentedArticle([FromBody] AddCommentedArticleCommand addCommentedArticleCommand)
         {
