@@ -8,6 +8,10 @@ using PrivateHistoryService.Infrastructure.EntityFramework.Initialization;
 using PrivateHistoryService.Infrastructure.EntityFramework.Options;
 using PrivateHistoryService.Infrastructure.EntityFramework.Repositories;
 using PrivateHistoryService.Infrastructure.Automapper.Profiles;
+using PrivateHistoryService.Application.Services.ReadServices;
+using PrivateHistoryService.Infrastructure.EntityFramework.Services.ReadServices;
+using PrivateHistoryService.Infrastructure.Exceptions.Interfaces;
+using PrivateHistoryService.Infrastructure.Exceptions;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -25,6 +29,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<IUserRepository, PostgresUserRepository>();
 
+            services.AddScoped<IUserReadService, PostgresUserReadService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
@@ -40,6 +46,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
                 configAction.AddProfile<ViewedArticleProfile>();
                 configAction.AddProfile<ViewedUserProfile>();
             });
+
+            services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
             return services;
         }
