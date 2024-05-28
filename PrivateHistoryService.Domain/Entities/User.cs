@@ -295,7 +295,7 @@ namespace PrivateHistoryService.Domain.Entities
 
             if (alreadyExists)
             {
-                throw new ViewedUserAlreadyExistsException(viewedUser.ViewedUserID, viewedUser.ViewerUserID);
+                throw new ViewedUserAlreadyExistsException(viewedUser.ViewedUserId, viewedUser.ViewerUserId);
             }
 
             _viewedUsers.Add(viewedUser);
@@ -309,7 +309,7 @@ namespace PrivateHistoryService.Domain.Entities
 
             if (alreadyExists == false)
             {
-                throw new ViewedUserNotFoundException(viewedUser.ViewedUserID, viewedUser.ViewerUserID, viewedUser.DateTime);
+                throw new ViewedUserNotFoundException(viewedUser.ViewedUserId, viewedUser.ViewerUserId, viewedUser.DateTime);
             }
 
             _viewedUsers.Remove(viewedUser);
