@@ -19,14 +19,12 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
 
             //Property config - Start
 
-            builder.Property(p => p.ViewerUserID)
+            builder.Property(p => p.ViewerUserId)
                 .HasConversion(id => id.Value.ToString(), id => new UserID(Guid.Parse(id)))
-                .HasColumnName("ViewerUserId")
                 .IsRequired();
 
-            builder.Property(p => p.ViewedUserID)
+            builder.Property(p => p.ViewedUserId)
                 .HasConversion(id => id.Value.ToString(), id => new UserID(Guid.Parse(id)))
-                .HasColumnName("ViewedUserId")
                 .IsRequired();
 
             builder.Property(typeof(DateTimeOffset), "DateTime")
