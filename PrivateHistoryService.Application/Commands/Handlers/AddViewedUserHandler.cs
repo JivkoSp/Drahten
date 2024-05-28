@@ -1,4 +1,5 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -29,7 +30,7 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.ViewedUserId);
             }
 
-            var viewedUserValueObject = new ViewedUser(command.ViewerUserId, command.ViewedUserId, command.DateTime);
+            var viewedUserValueObject = new ViewedUser(command.ViewerUserId, command.ViewedUserId, command.DateTime.ToUtc());
 
             viewer.AddViewedUser(viewedUserValueObject);
 
