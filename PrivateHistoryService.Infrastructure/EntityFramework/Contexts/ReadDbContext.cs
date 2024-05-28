@@ -10,6 +10,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         {
         }
 
+        public DbSet<UserReadModel> Users { get; set; }
         public DbSet<DislikedArticleCommentReadModel> DislikedArticleComments { get; set; }
         public DbSet<LikedArticleCommentReadModel> LikedArticleComments { get; set; }
         public DbSet<DislikedArticleReadModel> DislikedArticles { get; set; }
