@@ -21,6 +21,29 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                .HasColumnName("UserId")
                .ValueGeneratedNever()
                .IsRequired();
+
+            //Relationships
+            builder.HasMany(p => p.ViewedArticles);
+
+            builder.HasMany(p => p.SubscribedTopics);
+
+            builder.HasMany(p => p.SearchedArticleInformation);
+
+            builder.HasMany(p => p.SearchedTopicInformation);
+
+            builder.HasMany(p => p.CommentedArticles);
+
+            builder.HasMany(p => p.LikedArticles);
+
+            builder.HasMany(p => p.DislikedArticles);
+
+            builder.HasMany(p => p.LikedArticleComments);
+
+            builder.HasMany(p => p.DislikedArticleComments);
+
+            builder.HasMany(p => p.ViewedUsers)
+                .WithOne()
+                .HasForeignKey("ViewedUserId");
         }
     }
 }
