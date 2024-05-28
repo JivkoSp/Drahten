@@ -222,6 +222,15 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
+        [HttpPost("{UserId:guid}")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> RegisterUser([FromBody] AddUserCommand addUserCommand)
+        {
+            await _commandDispatcher.DispatchAsync(addUserCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
+
         [HttpPost("{UserId:guid}/commented-articles/{ArticleId:guid}")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> AddCommentedArticle([FromBody] AddCommentedArticleCommand addCommentedArticleCommand)
