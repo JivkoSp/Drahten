@@ -1,4 +1,5 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -22,7 +23,8 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var dislikedArticleComment = new DislikedArticleComment(command.ArticleId, command.UserId, command.ArticleCommentId, command.DateTime);
+            var dislikedArticleComment = new DislikedArticleComment(command.ArticleId, command.UserId, 
+                command.ArticleCommentId, command.DateTime.ToUtc());
 
             user.AddDislikedArticleComment(dislikedArticleComment);
 
