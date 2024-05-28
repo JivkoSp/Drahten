@@ -1,5 +1,6 @@
 using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Infrastructure.Extensions;
+using PrivateHistoryService.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddApplication();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -27,6 +30,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 
