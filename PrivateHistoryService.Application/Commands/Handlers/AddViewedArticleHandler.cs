@@ -1,4 +1,5 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -22,7 +23,7 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var viewedArticle = new ViewedArticle(command.ArticleId, command.UserId, command.DateTime);
+            var viewedArticle = new ViewedArticle(command.ArticleId, command.UserId, command.DateTime.ToUtc());
 
             user.AddViewedArticle(viewedArticle);
 
