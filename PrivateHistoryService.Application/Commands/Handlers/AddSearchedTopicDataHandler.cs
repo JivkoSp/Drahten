@@ -1,4 +1,5 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -22,7 +23,7 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var searchedTopicData = new SearchedTopicData(command.TopicId, command.UserId, command.SearchedData, command.DateTime);
+            var searchedTopicData = new SearchedTopicData(command.TopicId, command.UserId, command.SearchedData, command.DateTime.ToUtc());
 
             user.AddSearchedTopicData(searchedTopicData);
 
