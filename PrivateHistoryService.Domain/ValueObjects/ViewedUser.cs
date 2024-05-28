@@ -4,8 +4,8 @@ namespace PrivateHistoryService.Domain.ValueObjects
 {
     public record ViewedUser
     {
-        public UserID ViewerUserID { get; }
-        public UserID ViewedUserID { get; }
+        public UserID ViewerUserId { get; }
+        public UserID ViewedUserId { get; }
         internal DateTimeOffset DateTime { get; }
 
         private ViewedUser() {}
@@ -27,8 +27,8 @@ namespace PrivateHistoryService.Domain.ValueObjects
                 throw new InvalidViewedUserDateTimeException();
             }
 
-            ViewerUserID = viewerUserID;
-            ViewedUserID = viewedUserID;
+            ViewerUserId = viewerUserID;
+            ViewedUserId = viewedUserID;
             DateTime = dateTime;
         }
     }
