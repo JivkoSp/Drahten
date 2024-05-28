@@ -20,7 +20,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
 
             //Property config - Start
 
-            var commentConverter = new ValueConverter<ArticleComment, string>(x=> "Value", x => new ArticleComment(x));
+            var commentConverter = new ValueConverter<ArticleComment, string>(x=> x, x => new ArticleComment(x));
 
             #region ConversionToUUID
             // *** IMPORTANT! ***
