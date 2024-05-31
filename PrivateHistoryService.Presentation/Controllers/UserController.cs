@@ -203,7 +203,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
-        [HttpGet("{UserId:guid}/viewed-users/")]
+        [HttpGet("{ViewerUserId:guid}/viewed-users/")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetViewedUsers([FromRoute] GeViewedUsersQuery geViewedUsersQuery)
