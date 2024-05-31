@@ -30,7 +30,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
             //Relationships
             builder.HasOne(p => p.ViewedUser)
                 .WithMany(p => p.ViewedUsers)
-                .HasForeignKey(p => p.ViewedUserId)
+                .HasForeignKey(p => p.ViewerUserId)
                 .HasConstraintName("FK_User_ViewedUsers")
                 .OnDelete(DeleteBehavior.Cascade);
         }
