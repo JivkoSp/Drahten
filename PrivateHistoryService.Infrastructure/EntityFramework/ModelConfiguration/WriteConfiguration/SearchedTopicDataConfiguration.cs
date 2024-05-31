@@ -20,7 +20,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
 
             //Property config - Start
 
-            var searchedDataConverter = new ValueConverter<SearchedData, string>(x => "Value", x => new SearchedData(x));
+            var searchedDataConverter = new ValueConverter<SearchedData, string>(x => x, x => new SearchedData(x));
 
             builder.Property(p => p.TopicID)
                 .HasConversion(id => id.Value, id => new TopicID(id))
