@@ -43,7 +43,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
 
             builder.HasMany(p => p.ViewedUsers)
                 .WithOne()
-                .HasForeignKey("ViewedUserId");
+                .HasForeignKey("ViewerUserId");
         }
     }
 }
