@@ -9,7 +9,7 @@ using Xunit;
 
 namespace PrivateHistoryService.Tests.EndToEnd.Sync
 {
-    public class AddSearchedArticleData : BaseSyncIntegrationTest
+    public class AddSearchedArticleDataTests : BaseSyncIntegrationTest
     {
         #region GLOBAL ARRANGE
 
@@ -27,7 +27,7 @@ namespace PrivateHistoryService.Tests.EndToEnd.Sync
             return addSearchedArticleDataCommand;
         }
 
-        public AddSearchedArticleData(PrivateHistoryServiceApplicationFactory factory) : base(factory)
+        public AddSearchedArticleDataTests(PrivateHistoryServiceApplicationFactory factory) : base(factory)
         {
         }
 
