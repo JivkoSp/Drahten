@@ -31,6 +31,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<IUserReadService, PostgresUserReadService>();
 
+            services.AddScoped<ICommentedArticleReadService, PostgresCommentedArticleReadService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
