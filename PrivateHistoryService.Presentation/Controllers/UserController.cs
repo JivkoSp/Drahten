@@ -321,7 +321,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
-        [HttpDelete("{UserId:guid}/commented-articles/{ArticleId:guid}")]
+        [HttpDelete("{UserId:guid}/commented-articles/{CommentedArticleId:guid}")]
         [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveCommentedArticle([FromRoute] RemoveCommentedArticleCommand removeCommentedArticleCommand)
         {
