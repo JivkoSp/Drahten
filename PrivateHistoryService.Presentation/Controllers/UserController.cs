@@ -31,7 +31,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -53,7 +53,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -74,7 +74,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -95,7 +95,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -116,7 +116,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -136,7 +136,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -155,7 +155,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -174,7 +174,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -193,7 +193,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -212,7 +212,7 @@ namespace PrivateHistoryService.Presentation.Controllers
 
             _responseDto.Result = result;
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 return NotFound(_responseDto);
             }
@@ -330,7 +330,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{UserId:guid}/searched-articles/{ArticleId:guid}")]
+        [HttpDelete("{UserId:guid}/searched-articles/{SearchedArticleDataId:guid}")]
         [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveSearchedArticleData([FromRoute] RemoveSearchedArticleDataCommand removeSearchedArticleDataCommand)
         {
@@ -357,7 +357,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{UserId:guid}/viewed-articles/{ArticleId:guid}")]
+        [HttpDelete("{UserId:guid}/viewed-articles/{ViewedArticleId:guid}")]
         [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveViewedArticle([FromRoute] RemoveViewedArticleCommand removeViewedArticleCommand)
         {
