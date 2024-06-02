@@ -1,7 +1,9 @@
 ﻿using NSubstitute;
 using PrivateHistoryService.Application.Commands;
 using PrivateHistoryService.Application.Commands.Handlers;
+using PrivateHistoryService.Application.Dtos;
 using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.Factories;
 using PrivateHistoryService.Domain.Factories.Interfaces;
@@ -18,18 +20,12 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
 
         private readonly IUserFactory _userConcreteFactory;
         private readonly IUserRepository _userRepository;
+        private readonly ISearchedArticleDataReadService _searchedArticleDataReadService;
         private readonly ICommandHandler<RemoveSearchedArticleDataCommand> _handler;
 
-        private RemoveSearchedArticleDataCommand GetRemoveSearchedArticleDataCommand(Guid? articleId = null, Guid? userId = null,
-            string searchedData = null, DateTimeOffset? dateTime = null)
+        private RemoveSearchedArticleDataCommand GetRemoveSearchedArticleDataCommand()
         {
-            var ArticleId = articleId ?? Guid.NewGuid();
-            var UserId = userId ?? Guid.NewGuid();
-            var SearchedData = searchedData ?? "...";
-            var DateTime = dateTime ?? DateTimeOffset.Now;
-
-            var command = new RemoveSearchedArticleDataCommand(ArticleId: ArticleId, UserId: UserId,
-                SearchedData: SearchedData, DateTime: DateTime);
+            var command = new RemoveSearchedArticleDataCommand(UserId: Guid.NewGuid(), SearchedArticleDataId: Guid.NewGuid());
 
             return command;
         }
@@ -42,11 +38,26 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
             return searchedArticleData;
         }
 
+        private SearchedArticleDataDto GetSearchedArticleDataDto(SearchedArticleData searchedArticleData)
+        {
+            var searchedArticleDataDto = new SearchedArticleDataDto
+            {
+                SearchedArticleDataId = Guid.NewGuid(),
+                ArticleId = searchedArticleData.ArticleID.Value.ToString(),
+                UserId = searchedArticleData.UserID.Value.ToString(),
+                SearchedData = searchedArticleData.SearchedData,
+                DateTime = searchedArticleData.DateTime
+            };
+
+            return searchedArticleDataDto;
+        }
+
         public RemoveSearchedArticleDataHandlerTests()
         {
             _userConcreteFactory = new UserFactory();
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new RemoveSearchedArticleDataHandler(_userRepository);
+            _searchedArticleDataReadService = Substitute.For<ISearchedArticleDataReadService>();
+            _handler = new RemoveSearchedArticleDataHandler(_userRepository, _searchedArticleDataReadService);
         }
 
         #endregion
@@ -73,23 +84,51 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
             exception.ShouldBeOfType<UserNotFoundException>();
         }
 
-        //Should remove SearchedArticleData value object if the UserId from the RemoveSearchedArticleDataCommand is valid Id for an existing User.
-        //The SearchedArticleData value object to be removed must have the same values as those in the RemoveSearchedArticleDataCommand.
-        //Ensure the repository is called to update the User.
+        //Should throw SearchedArticleNotFoundException when the following condition is met:
+        //There is no SearchedArticleData returned from the repository that corresponds to the SearchedArticleDataId from the RemoveSearchedArticleDataCommand.
         [Fact]
-        public async Task Given_Valid_UserId_Removes_SearchedArticleData_Instance_From_User_And_Calls_Repository_On_Success()
+        public async Task Throws_SearchedArticleNotFoundException_When_SearchedArticleData_With_Given_SearchedArticleDataId_Is_Not_Returned_From_Repository()
+        {
+            //ARRANGE
+            var user = _userConcreteFactory.Create(Guid.NewGuid());
+
+            var removeSearchedArticleDataCommand = GetRemoveSearchedArticleDataCommand();
+
+            _userRepository.GetUserByIdAsync(removeSearchedArticleDataCommand.UserId).Returns(user);
+
+            _searchedArticleDataReadService.GetSearchedArticleDataByIdAsync(removeSearchedArticleDataCommand.SearchedArticleDataId)
+               .Returns(default(SearchedArticleDataDto));
+
+            //ACT
+            var exception = await Record.ExceptionAsync(async () => await Act(removeSearchedArticleDataCommand));
+
+            //ASSERT
+            exception.ShouldNotBeNull();
+
+            exception.ShouldBeOfType<SearchedArticleNotFoundException>();
+        }
+
+        //Should remove SearchedArticleData value object if the UserId and SearchedArticleDataId from the RemoveSearchedArticleDataCommand
+        //are valid Id's for an existing User domain entity and SearchedArticleData value object.
+        //The repository must be called to update the User.
+        [Fact]
+        public async Task Given_Valid_UserId_And_SearchedArticleDataId_Removes_SearchedArticleData_Instance_From_User_And_Calls_Repository_On_Success()
         {
             //ARRANGE
             var user = _userConcreteFactory.Create(Guid.NewGuid());
 
             var searchedArticleData = GetSearchedArticleData();
 
-            var removeSearchedArticleDataCommand = GetRemoveSearchedArticleDataCommand(
-                searchedArticleData.ArticleID, searchedArticleData.UserID, searchedArticleData.SearchedData, searchedArticleData.DateTime);
+            var searchedArticleDataDto = GetSearchedArticleDataDto(searchedArticleData);
+
+            var removeSearchedArticleDataCommand = GetRemoveSearchedArticleDataCommand();
 
             user.AddSearchedArticleData(searchedArticleData);
 
             _userRepository.GetUserByIdAsync(removeSearchedArticleDataCommand.UserId).Returns(user);
+
+            _searchedArticleDataReadService.GetSearchedArticleDataByIdAsync(removeSearchedArticleDataCommand.SearchedArticleDataId)
+                .Returns(searchedArticleDataDto);
 
             //ACT
             var exception = await Record.ExceptionAsync(async () => await Act(removeSearchedArticleDataCommand));
