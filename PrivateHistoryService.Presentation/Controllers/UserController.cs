@@ -339,7 +339,7 @@ namespace PrivateHistoryService.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{UserId:guid}/searched-topics/{TopicId:guid}")]
+        [HttpDelete("{UserId:guid}/searched-topics/{SearchedTopicDataId:guid}")]
         [ProducesResponseType(204)]
         public async Task<ActionResult> RemoveSearchedTopicData([FromRoute] RemoveSearchedTopicDataCommand removeSearchedTopicDataCommand)
         {
