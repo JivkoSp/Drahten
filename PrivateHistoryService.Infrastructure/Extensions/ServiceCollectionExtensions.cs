@@ -39,6 +39,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<ISearchedTopicDataReadService, PostgresSearchedTopicDataReadService>();
 
+            services.AddScoped<IViewedUserReadService, PostgresViewedUserReadService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
