@@ -1,7 +1,10 @@
 ﻿using NSubstitute;
 using PrivateHistoryService.Application.Commands;
 using PrivateHistoryService.Application.Commands.Handlers;
+using PrivateHistoryService.Application.Dtos;
 using PrivateHistoryService.Application.Exceptions;
+using PrivateHistoryService.Application.Extensions;
+using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.Factories;
 using PrivateHistoryService.Domain.Factories.Interfaces;
@@ -18,31 +21,42 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
 
         private readonly IUserFactory _userConcreteFactory;
         private readonly IUserRepository _userRepository;
+        private readonly IViewedArticleReadService _viewedArticleReadService;
         private readonly ICommandHandler<RemoveViewedArticleCommand> _handler;
 
-        private RemoveViewedArticleCommand GetRemoveViewedArticleCommand(Guid? articleId = null, Guid? userId = null, DateTimeOffset? dateTime = null)
+        private RemoveViewedArticleCommand GetRemoveViewedArticleCommand()
         {
-            var ArticleId = articleId ?? Guid.NewGuid();
-            var UserId = userId ?? Guid.NewGuid();
-            var DateTime = dateTime ?? DateTimeOffset.Now;
-
-            var command = new RemoveViewedArticleCommand(ArticleId: ArticleId, UserId: UserId, DateTime: DateTime);
+            var command = new RemoveViewedArticleCommand(UserId: Guid.NewGuid(), ViewedArticleId: Guid.NewGuid());
 
             return command;
         }
 
         private ViewedArticle GetViewedArticle()
         {
-            var viewedArticle = new ViewedArticle(articleId: Guid.NewGuid(), userId: Guid.NewGuid(), dateTime: DateTimeOffset.Now);
+            var viewedArticle = new ViewedArticle(articleId: Guid.NewGuid(), userId: Guid.NewGuid(), dateTime: DateTimeOffset.Now.ToUtc());
 
             return viewedArticle;
+        }
+
+        private ViewedArticleDto GetViewedArticleDto(ViewedArticle viewedArticle)
+        {
+            var viewedArticleDto = new ViewedArticleDto
+            {
+                ViewedArticleId = Guid.NewGuid(),
+                ArticleId = viewedArticle.ArticleID.Value.ToString(),
+                UserId = viewedArticle.UserID.Value.ToString(),
+                DateTime = viewedArticle.DateTime
+            };
+
+            return viewedArticleDto;
         }
 
         public RemoveViewedArticleHandlerTests()
         {
             _userConcreteFactory = new UserFactory();
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new RemoveViewedArticleHandler(_userRepository);
+            _viewedArticleReadService = Substitute.For<IViewedArticleReadService>();
+            _handler = new RemoveViewedArticleHandler(_userRepository, _viewedArticleReadService);
         }
 
         #endregion
@@ -69,22 +83,51 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
             exception.ShouldBeOfType<UserNotFoundException>();
         }
 
-        //Should remove ViewedArticle value object if the UserId from the RemoveViewedArticleCommand is valid Id for an existing User.
-        //The ViewedArticle value object to be removed must have the same values as those in the RemoveViewedArticleCommand.
-        //Ensure the repository is called to update the User.
+        //Should throw ViewedArticleNotFoundException when the following condition is met:
+        //There is no ViewedArticle returned from the repository that corresponds to the ViewedArticleId from the RemoveViewedArticleCommand.
         [Fact]
-        public async Task Given_Valid_UserId_Removes_ViewedArticle_Instance_From_User_And_Calls_Repository_On_Success()
+        public async Task Throws_ViewedArticleNotFoundException_When_ViewedArticle_With_Given_ViewedArticleId_Is_Not_Returned_From_Repository()
+        {
+            //ARRANGE
+            var user = _userConcreteFactory.Create(Guid.NewGuid());
+
+            var removeViewedArticleCommand = GetRemoveViewedArticleCommand();
+
+            _userRepository.GetUserByIdAsync(removeViewedArticleCommand.UserId).Returns(user);
+
+            _viewedArticleReadService.GetViewedArticleByIdAsync(removeViewedArticleCommand.ViewedArticleId)
+               .Returns(default(ViewedArticleDto));
+
+            //ACT
+            var exception = await Record.ExceptionAsync(async () => await Act(removeViewedArticleCommand));
+
+            //ASSERT
+            exception.ShouldNotBeNull();
+
+            exception.ShouldBeOfType<ViewedArticleNotFoundException>();
+        }
+
+        //Should remove ViewedArticle value object if the UserId and ViewedArticleId from the RemoveViewedArticleCommand
+        //are valid Id's for an existing User domain entity and ViewedArticle value object.
+        //The repository must be called to update the User.
+        [Fact]
+        public async Task Given_Valid_UserId_And_ViewedArticleId_Removes_ViewedArticle_Instance_From_User_And_Calls_Repository_On_Success()
         {
             //ARRANGE
             var user = _userConcreteFactory.Create(Guid.NewGuid());
 
             var viewedArticle = GetViewedArticle();
 
-            var removeViewedArticleCommand = GetRemoveViewedArticleCommand(viewedArticle.ArticleID, viewedArticle.UserID, viewedArticle.DateTime);
+            var viewedArticleDto = GetViewedArticleDto(viewedArticle);
+
+            var removeViewedArticleCommand = GetRemoveViewedArticleCommand();
 
             user.AddViewedArticle(viewedArticle);
 
             _userRepository.GetUserByIdAsync(removeViewedArticleCommand.UserId).Returns(user);
+
+            _viewedArticleReadService.GetViewedArticleByIdAsync(removeViewedArticleCommand.ViewedArticleId)
+                .Returns(viewedArticleDto);
 
             //ACT
             var exception = await Record.ExceptionAsync(async () => await Act(removeViewedArticleCommand));
