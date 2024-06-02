@@ -1,5 +1,6 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
 using PrivateHistoryService.Application.Extensions;
+using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -8,10 +9,12 @@ namespace PrivateHistoryService.Application.Commands.Handlers
     internal sealed class RemoveViewedArticleHandler : ICommandHandler<RemoveViewedArticleCommand>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IViewedArticleReadService _viewedArticleReadService;
 
-        public RemoveViewedArticleHandler(IUserRepository userRepository)
+        public RemoveViewedArticleHandler(IUserRepository userRepository, IViewedArticleReadService viewedArticleReadService)
         {
             _userRepository = userRepository;
+            _viewedArticleReadService = viewedArticleReadService;
         }
 
         public async Task HandleAsync(RemoveViewedArticleCommand command)
@@ -23,7 +26,15 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var viewedArticle = new ViewedArticle(command.ArticleId, command.UserId, command.DateTime.ToUtc());
+            var viewedArticleDto = await _viewedArticleReadService.GetViewedArticleByIdAsync(command.ViewedArticleId);
+
+            if (viewedArticleDto == null)
+            {
+                throw new ViewedArticleNotFoundException(command.ViewedArticleId);
+            }
+
+            var viewedArticle = new ViewedArticle(Guid.Parse(viewedArticleDto.ArticleId),
+                Guid.Parse(viewedArticleDto.UserId), viewedArticleDto.DateTime);
 
             user.RemoveViewedArticle(viewedArticle);
 
