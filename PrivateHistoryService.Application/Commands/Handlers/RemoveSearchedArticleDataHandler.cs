@@ -1,5 +1,6 @@
 ﻿using PrivateHistoryService.Application.Exceptions;
 using PrivateHistoryService.Application.Extensions;
+using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 
@@ -8,10 +9,12 @@ namespace PrivateHistoryService.Application.Commands.Handlers
     internal sealed class RemoveSearchedArticleDataHandler : ICommandHandler<RemoveSearchedArticleDataCommand>
     {
         private readonly IUserRepository _userRepository;
+        private readonly ISearchedArticleDataReadService _searchedArticleDataReadService;
 
-        public RemoveSearchedArticleDataHandler(IUserRepository userRepository)
+        public RemoveSearchedArticleDataHandler(IUserRepository userRepository, ISearchedArticleDataReadService searchedArticleDataReadService)
         {
             _userRepository = userRepository;
+            _searchedArticleDataReadService = searchedArticleDataReadService;
         }
 
         public async Task HandleAsync(RemoveSearchedArticleDataCommand command)
@@ -23,7 +26,15 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var searchedArticleData = new SearchedArticleData(command.ArticleId, command.UserId, command.SearchedData, command.DateTime.ToUtc());
+            var searchedArticleDataDto = await _searchedArticleDataReadService.GetSearchedArticleDataByIdAsync(command.SearchedArticleDataId);
+
+            if (searchedArticleDataDto == null)
+            {
+                throw new SearchedArticleNotFoundException(command.SearchedArticleDataId);
+            }
+
+            var searchedArticleData = new SearchedArticleData(Guid.Parse(searchedArticleDataDto.ArticleId),
+                Guid.Parse(searchedArticleDataDto.UserId), searchedArticleDataDto.SearchedData, searchedArticleDataDto.DateTime.ToUtc());
 
             user.RemoveSearchedArticleData(searchedArticleData);
 
