@@ -1,5 +1,5 @@
 ﻿
 namespace PrivateHistoryService.Application.Commands
 {
-    public record RemoveViewedArticleCommand(Guid ArticleId, Guid UserId, DateTimeOffset DateTime) : ICommand;
+    public record RemoveViewedArticleCommand(Guid UserId, Guid ViewedArticleId) : ICommand;
 }
