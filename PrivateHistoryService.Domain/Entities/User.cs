@@ -7,16 +7,16 @@ namespace PrivateHistoryService.Domain.Entities
 {
     public class User : AggregateRoot<UserID>
     {
-        private HashSet<ViewedArticle> _viewedArticles;
-        private List<TopicSubscription> _subscribedTopics;
-        private HashSet<SearchedArticleData> _searchedArticleInformation;
-        private HashSet<SearchedTopicData> _searchedTopicInformation;
-        private HashSet<CommentedArticle> _commentedArticles;
-        private List<LikedArticle> _likedArticles;
-        private List<DislikedArticle> _dislikedArticles;
-        private List<LikedArticleComment> _likedArticleComments;
-        private List<DislikedArticleComment> _dislikedArticleComments;
-        private HashSet<ViewedUser> _viewedUsers;
+        private HashSet<ViewedArticle> _viewedArticles = new HashSet<ViewedArticle>();
+        private List<TopicSubscription> _subscribedTopics = new List<TopicSubscription>();
+        private HashSet<SearchedArticleData> _searchedArticleInformation = new HashSet<SearchedArticleData>();
+        private HashSet<SearchedTopicData> _searchedTopicInformation = new HashSet<SearchedTopicData>();
+        private HashSet<CommentedArticle> _commentedArticles = new HashSet<CommentedArticle>();
+        private List<LikedArticle> _likedArticles = new List<LikedArticle>();
+        private List<DislikedArticle> _dislikedArticles = new List<DislikedArticle>();
+        private List<LikedArticleComment> _likedArticleComments = new List<LikedArticleComment>();
+        private List<DislikedArticleComment> _dislikedArticleComments = new List<DislikedArticleComment>();
+        private HashSet<ViewedUser> _viewedUsers = new HashSet<ViewedUser>();
 
         public IReadOnlyCollection<ViewedArticle> ViewedArticles
         {
@@ -77,17 +77,6 @@ namespace PrivateHistoryService.Domain.Entities
             ValidateConstructorParameters<NullUserParametersException>([userId]);
 
             Id = userId;
-
-            _viewedArticles = new HashSet<ViewedArticle>();
-            _subscribedTopics = new List<TopicSubscription>();
-            _searchedArticleInformation = new HashSet<SearchedArticleData>();
-            _searchedTopicInformation = new HashSet<SearchedTopicData>();
-            _commentedArticles = new HashSet<CommentedArticle>();
-            _likedArticles = new List<LikedArticle>();  
-            _dislikedArticles = new List<DislikedArticle>();
-            _likedArticleComments = new List<LikedArticleComment>();
-            _dislikedArticleComments = new List<DislikedArticleComment>();
-            _viewedUsers = new HashSet<ViewedUser>();
         }
 
         public void AddViewedArticle(ViewedArticle viewedArticle)
