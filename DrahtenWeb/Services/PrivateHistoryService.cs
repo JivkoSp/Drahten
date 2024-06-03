@@ -21,9 +21,16 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public Task<TEntity> GetLikedArticlesAsync<TEntity>(Guid userId, string accessToken)
+        public async Task<TEntity> GetLikedArticlesAsync<TEntity>(Guid userId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/liked-articles/",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
 
         public Task<TEntity> GetDislikedArticlesAsync<TEntity>(Guid userId, string accessToken)
