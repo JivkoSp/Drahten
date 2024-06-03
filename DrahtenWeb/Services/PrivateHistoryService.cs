@@ -189,9 +189,16 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public Task<TEntity> RemoveViewedUserAsync<TEntity>(Guid userId, Guid viewedUserId, string accessToken)
+        public async Task<TEntity> RemoveViewedUserAsync<TEntity>(Guid userId, Guid viewedUserId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.DELETE,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/viewed-users/{viewedUserId}",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
     }
 }
