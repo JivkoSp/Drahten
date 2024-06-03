@@ -45,9 +45,16 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public Task<TEntity> GetLikedArticleCommentsAsync<TEntity>(Guid userId, string accessToken)
+        public async Task<TEntity> GetLikedArticleCommentsAsync<TEntity>(Guid userId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/liked-article-comments/",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
 
         public Task<TEntity> GetDislikedArticleCommentsAsync<TEntity>(Guid userId, string accessToken)
