@@ -1,0 +1,261 @@
+﻿<div class="container mt-5">
+    <div class="row">
+        <h2 class="text-center mb-2">Your actions</h2>
+
+        <hr />
+
+        <div class="col-md-12 col-lg-8 mt-5">
+
+            <div class="input-group input-group-md">
+                <span class="input-group-text rounded-start-5">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+                <input type="text" class="form-control rounded-end-5 shadow-sm" placeholder="Search by keyword..." />
+            </div>
+
+            <div class="card-body">
+                <div id="viewedArticlesTableContainer" class="table-responsive">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 ps-4 pt-3 mt-5">
+
+            <div class="ps-3 text-success" style="font-size:2em;">
+                Private history
+            </div>
+
+            <ul class="home-menu nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start">
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-home pe-1"></i>Viewed articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-hashtag pe-1"></i>Viewed users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched articles data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked article comments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topics data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
+                </li>
+            </ul>
+            <hr />
+            <button class="btn btn-info">Private</button>
+            <button class="btn btn-info">Public</button>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("document").ready(() => {
+
+            DisplayViewedArticles();
+
+            $('#viewedArticlesTableContainer').on('click', '[id^="viewedDocumentsTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayViewedArticles(pageNumber);
+            });
+
+        });
+
+
+        function DisplayViewedArticles(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/ViewedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/ViewedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#viewedArticlesTableContainer").empty();
+
+                        const tableElement = $("<table>", {
+                            class: "table mb-0"
+                        });
+
+                        const theadElement = $("<thead>", {
+
+                        });
+
+                        const trElementTableHead = $("<tr>", {
+
+                        });
+
+                        const thElementTableHeadDocumentTitle = $("<th>", {
+                            scope: "col",
+                            text: "Article Title"
+                        });
+
+                        const thElementTableHeadViewTime = $("<th>", {
+                            scope: "col",
+                            text: "View Time"
+                        });
+
+                        const thElementTableHeadOpen = $("<th>", {
+                            scope: "col",
+                            text: "Article"
+                        });
+
+                        const thElementTableHeadClose = $("<th>", {
+                            scope: "col",
+                            text: "Remove Article"
+                        });
+
+                        trElementTableHead.append(thElementTableHeadDocumentTitle);
+                        trElementTableHead.append(thElementTableHeadViewTime);
+                        trElementTableHead.append(thElementTableHeadOpen);
+                        trElementTableHead.append(thElementTableHeadClose);
+
+                        theadElement.append(trElementTableHead);
+                        tableElement.append(theadElement);
+
+                        const tbodyElementTableBody = $("<tbody>", {
+
+                        });
+
+                        response.articles.forEach((element) => {
+
+                            const trElementTableBody = $("<tr>", {
+
+                            });
+
+                            const tdElementTableBodyName = $("<td>", {
+                                text: element.name
+                            });
+
+                            const tdElementTableBodyTime = $("<td>", {
+                                text: element.time
+                            });
+
+                            const tdElementTableBodyButtonOpenContainer = $("<td>", {
+
+                            });
+
+                            const buttonElementTableBodyButtonOpen = $("<button>", {
+                                class: "btn",
+                                text: "View"
+                            });
+
+                            tdElementTableBodyButtonOpenContainer.append(buttonElementTableBodyButtonOpen);
+
+                            const tdElementTableBodyButtonCloseContainer = $("<td>", {
+
+                            });
+
+                            const buttonElementTableBodyButtonClose = $("<button>", {
+                                class: "btn",
+                                text: "Remove"
+                            });
+
+                            tdElementTableBodyButtonCloseContainer.append(buttonElementTableBodyButtonClose);
+
+                            trElementTableBody.append(tdElementTableBodyName);
+                            trElementTableBody.append(tdElementTableBodyTime);
+                            trElementTableBody.append(tdElementTableBodyButtonOpenContainer);
+                            trElementTableBody.append(tdElementTableBodyButtonCloseContainer);
+                            tbodyElementTableBody.append(trElementTableBody);
+                        });
+
+                        tableElement.append(tbodyElementTableBody);
+
+                        $("#viewedDocumentsTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = $("<div>", {
+                                class: "container mt-1"
+                            });
+
+                            const ulElementPagination = $("<ul>", {
+                                class: "pagination justify-content-end"
+                            });
+
+                            for (var page = response.pagination.startPage; page <= response.pagination.endPage; page++) {
+
+                                const liElementPageItem = $("<li>", {
+                                    class: `page-item ${page === response.pagination.currentPage ? "active" : ""}`
+                                });
+
+                                const buttonElementPageItemLink = $("<button>", {
+                                    id: `viewedDocumentsTablePage-${page}`,
+                                    class: "page-link",
+                                    text: page
+                                });
+
+                                liElementPageItem.append(buttonElementPageItemLink);
+                                ulElementPagination.append(liElementPageItem);
+                            }
+
+                            if (response.pagination.currentPage > 1) {
+
+                                const liElementPageItemFirst = $("<li>", {
+                                    class: `page-item`
+                                });
+
+                                const buttonElementPageItemLinkFirst = $("<button>", {
+                                    id: "viewedDocumentsTablePage-1",
+                                    class: "page-link",
+                                    text: "First"
+                                });
+
+                                liElementPageItemFirst.append(buttonElementPageItemLinkFirst);
+                                ulElementPagination.prepend(liElementPageItemFirst);
+                            }
+
+                            if (response.pagination.currentPage < response.pagination.totalPages) {
+
+                                const liElementPageItemLast = $("<li>", {
+                                    class: `page-item`
+                                });
+
+                                const buttonElementPageItemLinkLast = $("<button>", {
+                                    id: `viewedDocumentsTablePage-${response.pagination.totalPages}`,
+                                    class: "page-link",
+                                    text: "Last"
+                                });
+
+                                liElementPageItemLast.append(buttonElementPageItemLinkLast);
+                                ulElementPagination.append(liElementPageItemLast);
+                            }
+
+                            divElementPaginationContainer.append(ulElementPagination);
+
+                            $("#viewedDocumentsTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+    </script>
+}
