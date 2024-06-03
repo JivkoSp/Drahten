@@ -12,11 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient<IPrivateHistoryService, PrivateHistoryService>();
+
 builder.Services.AddHttpClient<ITopicArticleService, TopicArticleService>();
 
 builder.Services.AddHttpClient<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ISearchService, SearchService>();
+
+builder.Services.AddScoped<IPrivateHistoryService, PrivateHistoryService>();
 
 builder.Services.AddScoped<ITopicArticleService, TopicArticleService>();
 
@@ -47,7 +51,7 @@ builder.Services.AddAuthentication(options => {
 
     options.ClientId = "drahten-client";
     options.Authority = "http://127.0.0.1:8080/realms/drahten";
-    options.ClientSecret = "8L2FkUCnCgc5940DarL4CrApmQXv4jCc";
+    options.ClientSecret = "AD8iuDSIhjSA2d3TU94T5Imt6WWFMz7c";
     options.ResponseType = OpenIdConnectResponseType.Code;
     options.SaveTokens = true;
     options.Scope.Add("openid");
