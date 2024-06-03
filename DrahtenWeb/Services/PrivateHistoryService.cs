@@ -105,9 +105,16 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public Task<TEntity> GetViewedArticlesAsync<TEntity>(Guid userId, string accessToken)
+        public async Task<TEntity> GetViewedArticlesAsync<TEntity>(Guid userId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/viewed-articles/",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
 
         public Task<TEntity> GetViewedUsersAsync<TEntity>(Guid userId, string accessToken)
