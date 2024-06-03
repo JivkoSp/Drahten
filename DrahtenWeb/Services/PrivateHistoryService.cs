@@ -129,9 +129,16 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public Task<TEntity> RemoveCommentedArticleAsync<TEntity>(Guid userId, Guid commentedArticleId, string accessToken)
+        public async Task<TEntity> RemoveCommentedArticleAsync<TEntity>(Guid userId, Guid commentedArticleId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.DELETE,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/commented-articles/{commentedArticleId}",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
 
         public Task<TEntity> RemoveSearchedArticleDataAsync<TEntity>(Guid userId, Guid searchedArticleDataId, string accessToken)
