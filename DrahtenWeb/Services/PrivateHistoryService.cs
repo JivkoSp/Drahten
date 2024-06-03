@@ -1,4 +1,5 @@
-﻿using DrahtenWeb.Services.IServices;
+﻿using DrahtenWeb.Models;
+using DrahtenWeb.Services.IServices;
 
 namespace DrahtenWeb.Services
 {
@@ -8,9 +9,16 @@ namespace DrahtenWeb.Services
         { 
         }
 
-        public Task<TEntity> GetCommentedArticlesAsync<TEntity>(Guid userId, string accessToken)
+        public async Task<TEntity> GetCommentedArticlesAsync<TEntity>(Guid userId, string accessToken)
         {
-            throw new NotImplementedException();
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userId}/commented-articles/",
+                AccessToken = accessToken
+            });
+
+            return response;
         }
 
         public Task<TEntity> GetLikedArticlesAsync<TEntity>(Guid userId, string accessToken)
