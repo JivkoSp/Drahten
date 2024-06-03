@@ -145,6 +145,21 @@ services:
         networks:
           - drahten_network
 
+    postgredb_privatehistory_service:
+        container_name: privatehistory_service_postgredb
+        image: postgres:14.2
+        volumes:
+          - privatehistory_service_postgredb_vlm:/var/lib/postgresql/data/
+        env_file:
+          - ./database-privatehistory-service.dev.env
+        healthcheck:
+          test: "exit 0"
+        ports:
+          - "127.0.0.1:5436:5432"
+          - "127.0.0.1:2226:22"
+        networks:
+          - drahten_network
+
     pgadmin:
         container_name: pgadmin
         image: dpage/pgadmin4:latest
@@ -387,6 +402,7 @@ volumes:
   user_service_postgredb_vlm:
   topicarticle_service_postgredb_vlm:
   userservice_postgredb_vlm:
+  privatehistory_service_postgredb_vlm:
 
 networks:
  default:
