@@ -184,3 +184,142 @@ function highlightMatchingText(textOne, textTwo, textTree = null) {
 
     return highlightedText;
 }
+
+
+// This function creates table element.
+// Arguments: tableData - This is object that represents the structure and the data of the table by key-value pairs.
+// The key represents column name, the value represents array with value for each column.
+// Returns: table element.
+function CreateHistoryTable(tableData) {
+
+    if (tableData == null) {
+        return null;
+    }
+
+    const tableElement = $("<table>", {
+        class: "table mb-0"
+    });
+
+    const theadElement = $("<thead>", {
+
+    });
+
+    const tbodyElementTableBody = $("<tbody>", {
+
+    });
+
+    const trElementTableHead = $("<tr>", {
+
+    });
+
+    let tableRows = 0;
+
+    for (const key in tableData) {
+        if (tableData.hasOwnProperty(key)) {
+            console.log(`Key: ${key}, Value: ${tableData[key]}`);
+
+            const thElement = $("<th>", {
+                 scope: "col",
+                 text: key
+            });
+
+            trElementTableHead.append(thElement);
+
+            // Calculating the number of rows for the table.
+            tableRows = tableData[key].length;
+        }
+    }
+
+    for (let i = 0; i < tableRows; i++) {
+
+        const trElementTableRow = $("<tr>");
+
+        for (const key in tableData) {
+
+            if (tableData.hasOwnProperty(key)) {
+
+                const tdElement = $("<td>", {
+                    text: tableData[key][i]
+                });
+
+                trElementTableRow.append(tdElement);
+            }
+        }
+
+        tbodyElementTableBody.append(trElementTableRow);
+    }
+
+    theadElement.append(trElementTableHead);
+    tableElement.append(theadElement);
+    tableElement.append(tbodyElementTableBody);
+
+    return tableElement;
+}
+
+
+// This function creates pagination for the history table.
+// Arguments: pagination - This is object that contains information for the totalPages, currentPage, startPage and endPage of the table.
+//            pageButtonId - This preffix for the ID of each button for the pagination. 
+// Returns: <div></div> element that will contain the pagination for the table.
+function CreateHistoryTablePagination(pagination, pageButtonIdPreffix) {
+
+    const divElementPaginationContainer = $("<div>", {
+        class: "container mt-1"
+    });
+
+    const ulElementPagination = $("<ul>", {
+        class: "pagination justify-content-end"
+    });
+
+    for (var page = pagination.startPage; page <= pagination.endPage; page++) {
+
+        const liElementPageItem = $("<li>", {
+            class: `page-item ${page === pagination.currentPage ? "active" : ""}`
+        });
+
+        const buttonElementPageItemLink = $("<button>", {
+            id: `${pageButtonIdPreffix}-${page}`,
+            class: "page-link",
+            text: page
+        });
+
+        liElementPageItem.append(buttonElementPageItemLink);
+        ulElementPagination.append(liElementPageItem);
+    }
+
+    if (pagination.currentPage > 1) {
+
+        const liElementPageItemFirst = $("<li>", {
+            class: `page-item`
+        });
+
+        const buttonElementPageItemLinkFirst = $("<button>", {
+            id: `${pageButtonIdPreffix}-1`,
+            class: "page-link",
+            text: "First"
+        });
+
+        liElementPageItemFirst.append(buttonElementPageItemLinkFirst);
+        ulElementPagination.prepend(liElementPageItemFirst);
+    }
+
+    if (pagination.currentPage < pagination.totalPages) {
+
+        const liElementPageItemLast = $("<li>", {
+            class: `page-item`
+        });
+
+        const buttonElementPageItemLinkLast = $("<button>", {
+            id: `${pageButtonIdPreffix}-${pagination.totalPages}`,
+            class: "page-link",
+            text: "Last"
+        });
+
+        liElementPageItemLast.append(buttonElementPageItemLinkLast);
+        ulElementPagination.append(liElementPageItemLast);
+    }
+
+    divElementPaginationContainer.append(ulElementPagination);
+
+    return divElementPaginationContainer;
+}
