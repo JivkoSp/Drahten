@@ -322,5 +322,65 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> LikedArticles(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetLikedArticlesAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+                
+                var allLikedArticles = response.Map<List<LikedArticleDto>>();
+
+                var tempList = new List<LikedArticleDto>
+                {
+                    new LikedArticleDto
+                    {
+                        ArticleId = "123",
+                        UserId = "121",
+                        DateTime = DateTimeOffset.Now
+                    },
+                    new LikedArticleDto
+                    {
+                        ArticleId = "123",
+                        UserId = "121",
+                        DateTime = DateTimeOffset.Now
+                    }
+                };
+
+                int likedArticlesCount = tempList.Count;
+
+                var pagination = new Pagination(likedArticlesCount, pageNumber, pageSize);
+
+                int skipLikedArticles = (pageNumber - 1) * pageSize;
+
+                var likedArticles = tempList.Skip(skipLikedArticles).Take(pagination.PageSize).ToList();
+
+                var historyLikedArticleViewModel = new HistoryLikedArticleViewModel
+                {
+                    LikedArticles = likedArticles,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historyLikedArticleViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
