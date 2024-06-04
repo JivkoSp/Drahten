@@ -188,5 +188,67 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewedUsers(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetViewedUsersAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allViewedUsers = response.Map<List<ViewedUserDto>>();
+
+                var tempList = new List<ViewedUserDto>
+                {
+                   new ViewedUserDto
+                   {
+                       ViewedUserReadModelId = Guid.NewGuid(),
+                       ViewerUserId = "111",
+                       ViewedUserId = "122",
+                       DateTime = DateTimeOffset.Now
+                   },
+                   new ViewedUserDto
+                   {
+                       ViewedUserReadModelId = Guid.NewGuid(),
+                       ViewerUserId = "121",
+                       ViewedUserId = "123",
+                       DateTime = DateTimeOffset.Now
+                   }
+                };
+
+                int viewedUsersCount = tempList.Count;
+
+                var pagination = new Pagination(viewedUsersCount, pageNumber, pageSize);
+
+                int skipUsers = (pageNumber - 1) * pageSize;
+
+                var viewedUsers = tempList.Skip(skipUsers).Take(pagination.PageSize).ToList();
+
+                var historyUserViewModel = new HistoryUserViewModel
+                {
+                    ViewedUsers = viewedUsers,
+                    Pagination = pagination,
+                };
+
+                return new JsonResult(historyUserViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
