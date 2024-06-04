@@ -32,8 +32,8 @@
                 <li id="viewedUsers" class="nav-item">
                     <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-hashtag pe-1"></i> Viewed users</a>
                 </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched articles data</a>
+                <li id="searchedArticleData" class="nav-item">
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched article data</a>
                 </li>
                 <li class="nav-item">
                     <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked articles</a>
@@ -45,7 +45,7 @@
                     <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked article comments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topics data</a>
+                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
                 </li>
                 <li class="nav-item">
                     <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
@@ -75,6 +75,10 @@
                 DisplayViewedUsers();
             });
 
+            $(document).on('click', '#searchedArticleData', function () {
+                DisplaySearchedArticleData();
+            });
+
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
                 
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
@@ -87,6 +91,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplayViewedUsers(pageNumber);
+            });
+
+            $(document).on('click', '[id^="searchedArticleDataTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplaySearchedArticleData(pageNumber);
             });
 
         });
@@ -118,8 +129,8 @@
                             'Article Title': [],
                             'Article': [],
                             'View Time': [],
-                            'Remove from history': [],
-                            'Move to public' : []
+                            'Remove': [],
+                            'Move To Public' : []
                         };
 
                         response.articles.forEach((element) => {
@@ -127,8 +138,8 @@
                             tableData['Article Title'].push(element.articleId);
                             tableData['Article'].push(element.articleId);
                             tableData['View Time'].push(element.dateTime);
-                            tableData['Remove from history'].push('Remove');
-                            tableData['Move to public'].push('Move');
+                            tableData['Remove'].push('Remove');
+                            tableData['Move To Public'].push('Move');
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
@@ -178,16 +189,16 @@
                         const tableData = {
                             'User': [],
                             'View Time': [],
-                            'Remove from history': [],
-                            'Move to public': []
+                            'Remove': [],
+                            'Move To Public': []
                         };
 
                         response.viewedUsers.forEach((element) => {
 
                             tableData['User'].push(element.viewedUserId);
                             tableData['View Time'].push(element.dateTime);
-                            tableData['Remove from history'].push('Remove');
-                            tableData['Move to public'].push('Move');
+                            tableData['Remove'].push('Remove');
+                            tableData['Move To Public'].push('Move');
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
@@ -199,6 +210,67 @@
                             const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "viewedUsersTablePage");
 
                             $("#viewedUsersTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+        function DisplaySearchedArticleData(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/SearchedArticleData.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/SearchedArticleData',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementSearchedArticleDataTableContainer = $("<div>", {
+                            id: "searchedArticleDataTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementSearchedArticleDataTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Searched Data': [],
+                            'Search Time': [],
+                            'Remove': [],
+                            'Move To Public': []
+                        };
+
+                        response.searchedArticles.forEach((element) => {
+
+                            tableData['Article'].push(element.articleId);
+                            tableData['Searched Data'].push(element.searchedData);
+                            tableData['Search Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                            tableData['Move To Public'].push('Move');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#searchedArticleDataTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "searchedArticleDataTablePage");
+
+                            $("#searchedArticleDataTableContainer").append(divElementPaginationContainer);
                         }
                     }
                 },
