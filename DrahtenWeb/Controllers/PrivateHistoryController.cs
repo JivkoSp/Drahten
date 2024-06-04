@@ -250,5 +250,77 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchedArticleData(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetSearchedArticlesAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allSearchedArticles = response.Map<List<SearchedArticleDataDto>>();
+
+                var tempList = new List<SearchedArticleDataDto>
+                {
+                   new SearchedArticleDataDto
+                   {
+                       SearchedArticleDataId = Guid.NewGuid(),
+                       ArticleId = "122",
+                       UserId = "111",
+                       SearchedData = "...",
+                       DateTime = DateTimeOffset.Now
+                   },
+                   new SearchedArticleDataDto
+                   {
+                       SearchedArticleDataId = Guid.NewGuid(),
+                       ArticleId = "122",
+                       UserId = "111",
+                       SearchedData = "...",
+                       DateTime = DateTimeOffset.Now
+                   },
+                   new SearchedArticleDataDto
+                   {
+                       SearchedArticleDataId = Guid.NewGuid(),
+                       ArticleId = "122",
+                       UserId = "111",
+                       SearchedData = "...",
+                       DateTime = DateTimeOffset.Now
+                   }
+                };
+
+                int searchedArticlesCount = tempList.Count;
+
+                var pagination = new Pagination(searchedArticlesCount, pageNumber, pageSize);
+
+                int skipSearchedArticles = (pageNumber - 1) * pageSize;
+
+                var searchedArticles = tempList.Skip(skipSearchedArticles).Take(pagination.PageSize).ToList();
+
+                var historySeachedArticleDataViewModel = new HistorySeachedArticleDataViewModel
+                {
+                    SearchedArticles = searchedArticles,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historySeachedArticleDataViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
