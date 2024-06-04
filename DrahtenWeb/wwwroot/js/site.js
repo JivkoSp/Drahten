@@ -216,8 +216,7 @@ function CreateHistoryTable(tableData) {
 
     for (const key in tableData) {
         if (tableData.hasOwnProperty(key)) {
-            console.log(`Key: ${key}, Value: ${tableData[key]}`);
-
+           
             const thElement = $("<th>", {
                  scope: "col",
                  text: key
