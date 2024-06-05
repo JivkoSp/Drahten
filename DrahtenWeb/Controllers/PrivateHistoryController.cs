@@ -664,5 +664,59 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TopicSubscriptions(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetTopicSubscriptionsAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allTopicSubscriptions = response.Map<List<TopicSubscriptionDto>>();
+
+                var tempList = new List<TopicSubscriptionDto>
+                {
+                    new TopicSubscriptionDto
+                    {
+                        TopicId = Guid.NewGuid(),
+                        UserId = "111",
+                        DateTime = DateTimeOffset.Now
+                    }
+                };
+
+                int topicSubscriptionsCount = tempList.Count;
+
+                var pagination = new Pagination(topicSubscriptionsCount, pageNumber, pageSize);
+
+                int skipTopicSubscriptions = (pageNumber - 1) * pageSize;
+
+                var topicSubscriptions = tempList.Skip(skipTopicSubscriptions).Take(pagination.PageSize).ToList();
+
+                var historyTopicSubscriptionsViewModel = new HistoryTopicSubscriptionsViewModel
+                {
+                    TopicSubscriptions = topicSubscriptions,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historyTopicSubscriptionsViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
