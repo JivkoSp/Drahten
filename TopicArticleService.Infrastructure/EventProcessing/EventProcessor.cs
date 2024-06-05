@@ -15,7 +15,6 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 {
     internal enum EventType
     {
-        DocumentSimilarityCheck,
         NewDocument,
         Undetermined
     }
@@ -44,9 +43,6 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 
             switch (eventType.Event)
             {
-                case "DocumentSimilarityCheck":
-                    _logger.LogInformation("--> SearchService event detected!");
-                    return EventType.DocumentSimilarityCheck;
                 case "NewDocument":
                     _logger.LogInformation("--> SearchService event detected!");
                     return EventType.NewDocument;
@@ -71,13 +67,6 @@ namespace TopicArticleService.Infrastructure.EventProcessing
             await articleRepository.AddArticleAsync(article);
         }
 
-        private void CheckDocumentSimilarity(string checkDocumentSimilarityMessage)
-        {
-            var documentDto = JsonSerializer.Deserialize<DocumentDto>(checkDocumentSimilarityMessage);
-
-            _messageBusPublisher.PublishNewDocument(documentDto);
-        }
-
         private async Task WriteDocument(string document)
         {
             using var scope = _serviceScopeFactory.CreateScope();
@@ -99,9 +88,6 @@ namespace TopicArticleService.Infrastructure.EventProcessing
 
             switch (eventType)
             {
-                case EventType.DocumentSimilarityCheck:
-                    CheckDocumentSimilarity(message);
-                    break;
                 case EventType.NewDocument:
                     await WriteDocument(message);
                     break;
