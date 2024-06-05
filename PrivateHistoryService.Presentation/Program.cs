@@ -16,6 +16,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
+builder.Services.AddTransient<UserRegistrationMiddleware>();
+
 builder.Services.AddAuthentication(options => {
 
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,6 +72,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseMiddleware<UserRegistrationMiddleware>();
 
 app.MapControllers();
 
