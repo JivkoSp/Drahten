@@ -12,6 +12,7 @@ using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Infrastructure.EntityFramework.Services.ReadServices;
 using PrivateHistoryService.Infrastructure.Exceptions.Interfaces;
 using PrivateHistoryService.Infrastructure.Exceptions;
+using PrivateHistoryService.Infrastructure.UserRegistration;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -56,6 +57,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
                 configAction.AddProfile<ViewedArticleProfile>();
                 configAction.AddProfile<ViewedUserProfile>();
             });
+
+            services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
