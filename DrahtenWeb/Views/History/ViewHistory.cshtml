@@ -25,32 +25,35 @@
                 Private history
             </div>
 
-            <ul class="home-menu nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start">
-                <li id="viewedArticles" class="nav-item">
-                    <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-home pe-1"></i>Viewed articles</a>
-                </li>
-                <li id="viewedUsers" class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-hashtag pe-1"></i> Viewed users</a>
-                </li>
-                <li id="searchedArticleData" class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched article data</a>
-                </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked articles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked article comments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
-                </li>
-                <li class="nav-item">
-                    <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
-                </li>
-            </ul>
+            <div class="h-75 overflow-auto">
+                <ul class="home-menu nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start">
+                    <li id="viewedArticles" class="nav-item">
+                        <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-home pe-1"></i>Viewed articles</a>
+                    </li>
+                    <li id="viewedUsers" class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-hashtag pe-1"></i> Viewed users</a>
+                    </li>
+                    <li id="searchedArticleData" class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched article data</a>
+                    </li>
+                    <li id="likedArticles" class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked article comments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
+                    </li>
+                </ul>
+            </div>
+
             <hr />
             <button class="btn btn-info">Private</button>
             <button class="btn btn-info">Public</button>
@@ -79,6 +82,10 @@
                 DisplaySearchedArticleData();
             });
 
+            $(document).on('click', '#likedArticles', function () {
+                DisplayLikedArticles();
+            });
+
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
                 
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
@@ -98,6 +105,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplaySearchedArticleData(pageNumber);
+            });
+
+            $(document).on('click', '[id^="likedArticlesTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayLikedArticles(pageNumber);
             });
 
         });
@@ -271,6 +285,63 @@
                             const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "searchedArticleDataTablePage");
 
                             $("#searchedArticleDataTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+        function DisplayLikedArticles(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/LikedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/LikedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementLikedArticlesTableContainer = $("<div>", {
+                            id: "likedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementLikedArticlesTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Time': [],
+                            'Remove': []
+                        };
+
+                        response.likedArticles.forEach((element) => {
+
+                            tableData['Article'].push(element.articleId);
+                            tableData['Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#likedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "likedArticlesTablePage");
+
+                            $("#likedArticlesTableContainer").append(divElementPaginationContainer);
                         }
                     }
                 },
