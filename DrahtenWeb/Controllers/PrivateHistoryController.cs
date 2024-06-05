@@ -553,5 +553,60 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DislikedArticleComments(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetDislikedArticleCommentsAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allDislikedArticleComments = response.Map<List<DislikedArticleCommentDto>>();
+
+                var tempList = new List<DislikedArticleCommentDto>
+                {
+                    new DislikedArticleCommentDto
+                    {
+                        ArticleCommentId = Guid.NewGuid(),
+                        ArticleId = "112",
+                        UserId = "111",
+                        DateTime = DateTimeOffset.Now
+                    }
+                };
+
+                int dislikedArticleCommentsCount = tempList.Count;
+
+                var pagination = new Pagination(dislikedArticleCommentsCount, pageNumber, pageSize);
+
+                int skipDislikedArticleComments = (pageNumber - 1) * pageSize;
+
+                var dislikedArticleComments = tempList.Skip(skipDislikedArticleComments).Take(pagination.PageSize).ToList();
+
+                var historyDislikedArticleCommentViewModel = new HistoryDislikedArticleCommentViewModel
+                {
+                    DislikedArticleComments = dislikedArticleComments,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historyDislikedArticleCommentViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
