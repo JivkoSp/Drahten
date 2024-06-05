@@ -39,6 +39,9 @@
                     <li id="likedArticles" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked articles</a>
                     </li>
+                    <li id="dislikedArticles" class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked articles</a>
+                    </li>
                     <li class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
                     </li>
@@ -86,6 +89,10 @@
                 DisplayLikedArticles();
             });
 
+            $(document).on('click', '#dislikedArticles', function () {
+                DisplayDislikedArticles();
+            });
+
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
                 
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
@@ -114,6 +121,12 @@
                 DisplayLikedArticles(pageNumber);
             });
 
+            $(document).on('click', '[id^="dislikedArticlesTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayDislikedArticles(pageNumber);
+            });
         });
 
 
@@ -342,6 +355,63 @@
                             const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "likedArticlesTablePage");
 
                             $("#likedArticlesTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+        function DisplayDislikedArticles(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/DislikedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/DislikedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementDislikedArticlesTableContainer = $("<div>", {
+                            id: "dislikedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementDislikedArticlesTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Time': [],
+                            'Remove': []
+                        };
+
+                        response.dislikedArticles.forEach((element) => {
+
+                            tableData['Article'].push(element.articleId);
+                            tableData['Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#dislikedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "dislikedArticlesTablePage");
+
+                            $("#dislikedArticlesTableContainer").append(divElementPaginationContainer);
                         }
                     }
                 },
