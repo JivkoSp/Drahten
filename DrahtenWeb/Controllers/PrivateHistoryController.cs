@@ -608,5 +608,61 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchedTopicData(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetSearchedTopicsAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allSearchedTopics = response.Map<List<SearchedTopicDataDto>>();
+
+                var tempList = new List<SearchedTopicDataDto>
+                {
+                    new SearchedTopicDataDto
+                    {
+                        SearchedTopicDataId = Guid.NewGuid(),
+                        TopicId = Guid.NewGuid(),
+                        UserId = "111",
+                        SearchedData = "...",
+                        DateTime = DateTimeOffset.Now
+                    }
+                };
+
+                int searchedTopicsCount = tempList.Count;
+
+                var pagination = new Pagination(searchedTopicsCount, pageNumber, pageSize);
+
+                int skipSearchedTopics = (pageNumber - 1) * pageSize;
+
+                var searchedTopics = tempList.Skip(skipSearchedTopics).Take(pagination.PageSize).ToList();
+
+                var historySearchedTopicDataViewModel = new HistorySearchedTopicDataViewModel
+                {
+                    SearchedTopics = searchedTopics,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historySearchedTopicDataViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
