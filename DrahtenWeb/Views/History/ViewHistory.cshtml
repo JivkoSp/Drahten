@@ -8,7 +8,7 @@
 
             <div class="input-group input-group-md">
                 <span class="input-group-text rounded-start-5">
-                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <i class="fa fa-search text-primary" aria-hidden="true"></i>
                 </span>
                 <input type="text" class="form-control rounded-end-5 shadow-sm" placeholder="Search by keyword..." />
             </div>
@@ -42,7 +42,7 @@
                     <li id="dislikedArticles" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked articles</a>
                     </li>
-                    <li class="nav-item">
+                    <li id="commentedArticles" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
                     </li>
                     <li class="nav-item">
@@ -58,8 +58,8 @@
             </div>
 
             <hr />
-            <button class="btn btn-info">Private</button>
-            <button class="btn btn-info">Public</button>
+            <button class="btn btn-primary text-white">Private</button>
+            <button class="btn btn-primary text-white">Public</button>
         </div>
 
     </div>
@@ -91,6 +91,10 @@
 
             $(document).on('click', '#dislikedArticles', function () {
                 DisplayDislikedArticles();
+            });
+
+            $(document).on('click', '#commentedArticles', function () {
+                DisplayCommentedArticles();
             });
 
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
@@ -126,6 +130,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplayDislikedArticles(pageNumber);
+            });
+
+            $(document).on('click', '[id^="commentedArticlesTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayCommentedArticles(pageNumber);
             });
         });
 
@@ -423,6 +434,67 @@
                 }
             });
         }
+
+        function DisplayCommentedArticles(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/CommentedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/CommentedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementCommentedArticlesTableContainer = $("<div>", {
+                            id: "commentedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementCommentedArticlesTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Article Comment': [],
+                            'Time': [],
+                            'Remove': [],
+                            'Move To Public': []
+                        };
+
+                        response.commentedArticles.forEach((element) => {
+
+                            tableData['Article'].push(element.articleId);
+                            tableData['Article Comment'].push(element.articleComment);
+                            tableData['Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                            tableData['Move To Public'].push('Move');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#commentedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "commentedArticlesTablePage");
+
+                            $("#commentedArticlesTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
 
     </script>
 }
