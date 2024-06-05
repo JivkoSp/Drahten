@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Dtos.SearchService;
 
 namespace TopicArticleService.Infrastructure.AsyncDataServices
@@ -31,7 +32,7 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
 
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare(exchange: "search_service", type: ExchangeType.Direct);
+            _channel.ExchangeDeclare(exchange: "topic_article_service", type: ExchangeType.Direct);
 
             _connection.ConnectionShutdown += RabbitMqConnectionShutDown;
         }
@@ -48,22 +49,21 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
         {
             var messageBody = Encoding.UTF8.GetBytes(message);
 
-            _channel.BasicPublish(exchange: "search_service",
-                                  routingKey: "search_service.smc",
+            _channel.BasicPublish(exchange: "topic_article_service",
+                                  routingKey: "topic_article_service.viewed-article",
                                   body: messageBody);
 
             Console.WriteLine($"--> TopicArticleService have sent a message: {message}!");
 
             //TODO: Log the message.
         }
-
-        public void PublishNewDocument(DocumentDto documentDto)
+        public void PublishViewedArticle(ViewedArticleDto viewedArticleDto)
         {
-            var message = JsonSerializer.Serialize(documentDto);
+            var message = JsonSerializer.Serialize(viewedArticleDto);
 
             if (_connection.IsOpen)
             {
-               //TODO: Log the message.
+                //TODO: Log the message.
 
                 SendMessage(message);
             }
@@ -76,7 +76,6 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
                 Console.WriteLine("--> UserService RabbitMQ connection is CLOSED!");
             }
         }
-
 
         public void Dispose()
         {
