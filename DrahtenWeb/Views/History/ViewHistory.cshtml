@@ -51,7 +51,7 @@
                     <li id="dislikedArticleComments" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked article comments</a>
                     </li>
-                    <li class="nav-item">
+                    <li id="searchedTopicData" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
                     </li>
                     <li class="nav-item">
@@ -108,6 +108,10 @@
                 DisplayDislikedArticleComments();
             });
 
+            $(document).on('click', '#searchedTopicData', function () {
+                DisplaySearchedTopicData();
+            });
+
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
                 
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
@@ -162,6 +166,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplayDislikedArticleComments(pageNumber);
+            });
+
+            $(document).on('click', '[id^="searchedTopicDataTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplaySearchedTopicData(pageNumber);
             });
         });
 
@@ -626,6 +637,67 @@
                             const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "dislikedArticleCommentsTablePage");
 
                             $("#dislikedArticleCommentsTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+        function DisplaySearchedTopicData(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/SearchedTopicData.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/SearchedTopicData',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementSearchedTopicDataTableContainer = $("<div>", {
+                            id: "searchedTopicDataTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementSearchedTopicDataTableContainer);
+
+                        const tableData = {
+                            'Topic': [],
+                            'Searched Data': [],
+                            'Search Time': [],
+                            'Remove': [],
+                            'Move To Public': []
+                        };
+
+                        response.searchedTopics.forEach((element) => {
+
+                            tableData['Topic'].push(element.topicId);
+                            tableData['Searched Data'].push(element.searchedData);
+                            tableData['Search Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                            tableData['Move To Public'].push('Remove');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#searchedTopicDataTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "searchedTopicDataTablePage");
+
+                            $("#searchedTopicDataTableContainer").append(divElementPaginationContainer);
                         }
                     }
                 },
