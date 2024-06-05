@@ -1,9 +1,9 @@
-﻿using TopicArticleService.Application.Dtos.SearchService;
+﻿using TopicArticleService.Application.Dtos.PrivateHistoryService;
 
 namespace TopicArticleService.Infrastructure.AsyncDataServices
 {
     public interface IMessageBusPublisher
     {
-        void PublishNewDocument(DocumentDto documentDto);
+        void PublishViewedArticle(ViewedArticleDto viewedArticleDto);
     }
 }
