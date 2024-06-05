@@ -43,10 +43,6 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
             _queueName = _channel.QueueDeclare().QueueName;
 
             _channel.QueueBind(queue: _queueName,
-                               exchange: "search_service",
-                               routingKey: "search_service.similaritycheck");
-
-            _channel.QueueBind(queue: _queueName,
                        exchange: "search_service",
                        routingKey: "search_service.newdocument");
 
