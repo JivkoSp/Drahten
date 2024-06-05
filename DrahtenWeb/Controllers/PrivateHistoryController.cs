@@ -442,5 +442,61 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CommentedArticles(int pageNumber = 1)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _privateHistoryService.GetCommentedArticlesAsync<ResponseDto>(userId, accessToken);
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                var allCommentedArticles = response.Map<List<CommentedArticleDto>>();
+
+                var tempList = new List<CommentedArticleDto>
+                {
+                    new CommentedArticleDto
+                    {
+                        CommentedArticleId = Guid.NewGuid(),
+                        ArticleId = "123",
+                        UserId = "111",
+                        ArticleComment = "...",
+                        DateTime = DateTimeOffset.Now
+                    }
+                };
+
+                int commentedArticlesCount = tempList.Count;
+
+                var pagination = new Pagination(commentedArticlesCount, pageNumber, pageSize);
+
+                int skipCommentedArticles = (pageNumber - 1) * pageSize;
+
+                var commentedArticles = tempList.Skip(skipCommentedArticles).Take(pagination.PageSize).ToList();
+
+                var historyCommentedArticleViewModel = new HistoryCommentedArticleViewModel
+                {
+                    CommentedArticles = commentedArticles,
+                    Pagination = pagination
+                };
+
+                return new JsonResult(historyCommentedArticleViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
