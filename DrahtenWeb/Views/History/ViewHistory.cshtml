@@ -54,7 +54,7 @@
                     <li id="searchedTopicData" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
                     </li>
-                    <li class="nav-item">
+                    <li id="topicSubscriptions" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
                     </li>
                 </ul>
@@ -110,6 +110,10 @@
 
             $(document).on('click', '#searchedTopicData', function () {
                 DisplaySearchedTopicData();
+            });
+
+            $(document).on('click', '#topicSubscriptions', function () {
+                DisplayTopicSubscriptions();
             });
 
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
@@ -173,6 +177,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplaySearchedTopicData(pageNumber);
+            });
+
+            $(document).on('click', '[id^="topicSubscriptionsTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayTopicSubscriptions(pageNumber);
             });
         });
 
@@ -698,6 +709,63 @@
                             const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "searchedTopicDataTablePage");
 
                             $("#searchedTopicDataTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+
+        function DisplayTopicSubscriptions(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/TopicSubscriptions.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/TopicSubscriptions',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementTopicSubscriptionsTableContainer = $("<div>", {
+                            id: "topicSubscriptionsTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementTopicSubscriptionsTableContainer);
+
+                        const tableData = {
+                            'Topic': [],
+                            'Time': [],
+                            'Remove': []
+                        };
+
+                        response.topicSubscriptions.forEach((element) => {
+
+                            tableData['Topic'].push(element.topicId);
+                            tableData['Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#topicSubscriptionsTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "topicSubscriptionsTablePage");
+
+                            $("#topicSubscriptionsTableContainer").append(divElementPaginationContainer);
                         }
                     }
                 },
