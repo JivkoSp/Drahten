@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrivateHistoryService.Application.Commands;
 using PrivateHistoryService.Application.Commands.Dispatcher;
 using PrivateHistoryService.Application.Queries;
@@ -7,6 +8,7 @@ using PrivateHistoryService.Presentation.Dtos;
 
 namespace PrivateHistoryService.Presentation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("privatehistory-service/users")]
     public class UserController : ControllerBase
