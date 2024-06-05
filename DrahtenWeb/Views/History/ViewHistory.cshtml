@@ -45,8 +45,11 @@
                     <li id="commentedArticles" class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
                     </li>
+                    <li id="likedArticleComments" class="nav-item">
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked article comments</a>
+                    </li>
                     <li class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked/Disliked article comments</a>
+                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked article comments</a>
                     </li>
                     <li class="nav-item">
                         <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
@@ -97,6 +100,10 @@
                 DisplayCommentedArticles();
             });
 
+            $(document).on('click', '#likedArticleComments', function () {
+                DisplayLikedArticleComments();
+            });
+
             $(document).on('click', '[id^="viewedArticlesTablePage-"]', function () {
                 
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
@@ -137,6 +144,13 @@
                 const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
 
                 DisplayCommentedArticles(pageNumber);
+            });
+
+            $(document).on('click', '[id^="likedArticleCommentsTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                DisplayLikedArticleComments(pageNumber);
             });
         });
 
@@ -495,6 +509,64 @@
             });
         }
 
+
+        function DisplayLikedArticleComments(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PrivateHistory/LikedArticleComments.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistory/LikedArticleComments',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementLikedArticleCommentsTableContainer = $("<div>", {
+                            id: "likedArticleCommentsTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementLikedArticleCommentsTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Article Comment': [],
+                            'Time': [],
+                            'Remove': []
+                        };
+
+                        response.likedArticleComments.forEach((element) => {
+
+                            tableData['Article'].push(element.articleId);
+                            tableData['Article Comment'].push(element.articleCommentId);
+                            tableData['Time'].push(element.dateTime);
+                            tableData['Remove'].push('Remove');
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#likedArticleCommentsTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "likedArticleCommentsTablePage");
+
+                            $("#likedArticleCommentsTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
 
     </script>
 }
