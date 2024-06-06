@@ -42,9 +42,6 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
             Console.WriteLine("--> Connection shutdown.");
         }
 
-
-        //TODO:
-        //Maybe some class that will encapsulate this data (the message, exchange etc.). This way the method will be generic.
         private void SendMessage(MessageDescriptor messageDescriptor)
         {
             var messageBody = Encoding.UTF8.GetBytes(messageDescriptor.Message);
