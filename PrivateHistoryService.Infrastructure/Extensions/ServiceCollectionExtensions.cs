@@ -15,6 +15,8 @@ using PrivateHistoryService.Infrastructure.Exceptions;
 using PrivateHistoryService.Infrastructure.UserRegistration;
 using PrivateHistoryService.Infrastructure.AsyncDataServices;
 using PrivateHistoryService.Infrastructure.EventProcessing;
+using PrivateHistoryService.Application.Services.WriteServices;
+using PrivateHistoryService.Infrastructure.EntityFramework.Services.WriteServices;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -43,6 +45,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
             services.AddScoped<ISearchedTopicDataReadService, PostgresSearchedTopicDataReadService>();
 
             services.AddScoped<IViewedUserReadService, PostgresViewedUserReadService>();
+
+            services.AddScoped<IViewedArticleWriteService, PostgresViewedArticleWriteService>();
 
             services.AddQueriesWithDispatcher();
 
