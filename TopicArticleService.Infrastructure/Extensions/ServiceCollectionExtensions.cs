@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
+using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Commands.Handlers;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
