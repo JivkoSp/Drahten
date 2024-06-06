@@ -58,7 +58,7 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
 
             if (_connection.IsOpen)
             {
-                //TODO: Log the message.
+                //TODO: Log a message.
 
                 var messageDescriptor = new MessageDescriptor(message, 
                     exchange: "topic_article_service", routingKey: "topic_article_service.viewed-article");
@@ -71,7 +71,145 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
 
                 //TODO: Log the message.
 
-                Console.WriteLine("--> UserService RabbitMQ connection is CLOSED!");
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishLikedArticle(LikedArticleDto likedArticleDto)
+        {
+            var message = JsonSerializer.Serialize(likedArticleDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishDislikedArticle(DislikedArticleDto dislikedArticleDto)
+        {
+            var message = JsonSerializer.Serialize(dislikedArticleDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishCommentedArticle(CommentedArticleDto commentedArticleDto)
+        {
+            var message = JsonSerializer.Serialize(commentedArticleDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.commented-article");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishLikedArticleComment(LikedArticleCommentDto likedArticleCommentDto)
+        {
+            var message = JsonSerializer.Serialize(likedArticleCommentDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article-comment");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishDislikedArticleComment(DislikedArticleCommentDto dislikedArticleCommentDto)
+        {
+            var message = JsonSerializer.Serialize(dislikedArticleCommentDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article-comment");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
+            }
+        }
+
+        public void PublishTopicSubscription(TopicSubscriptionDto topicSubscriptionDto)
+        {
+            var message = JsonSerializer.Serialize(topicSubscriptionDto);
+
+            if (_connection.IsOpen)
+            {
+                //TODO: Log a message.
+
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.topic-subscription");
+
+                SendMessage(messageDescriptor);
+            }
+            else
+            {
+                //TODO: Retrying if the connection is not available.
+
+                //TODO: Log the message.
+
+                Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
             }
         }
 
