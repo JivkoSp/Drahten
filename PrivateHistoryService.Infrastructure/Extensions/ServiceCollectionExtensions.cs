@@ -13,6 +13,8 @@ using PrivateHistoryService.Infrastructure.EntityFramework.Services.ReadServices
 using PrivateHistoryService.Infrastructure.Exceptions.Interfaces;
 using PrivateHistoryService.Infrastructure.Exceptions;
 using PrivateHistoryService.Infrastructure.UserRegistration;
+using PrivateHistoryService.Infrastructure.AsyncDataServices;
+using PrivateHistoryService.Infrastructure.EventProcessing;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -59,6 +61,10 @@ namespace PrivateHistoryService.Infrastructure.Extensions
             });
 
             services.AddScoped<IUserSynchronizer, UserSynchronizer>();
+
+            services.AddSingleton<IEventProcessor, EventProcessor>();
+
+            services.AddHostedService<MessageBusSubscriber>();
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
