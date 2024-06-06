@@ -45,15 +45,13 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
 
         //TODO:
         //Maybe some class that will encapsulate this data (the message, exchange etc.). This way the method will be generic.
-        private void SendMessage(string message)
+        private void SendMessage(MessageDescriptor messageDescriptor)
         {
-            var messageBody = Encoding.UTF8.GetBytes(message);
+            var messageBody = Encoding.UTF8.GetBytes(messageDescriptor.Message);
 
-            _channel.BasicPublish(exchange: "topic_article_service",
-                                  routingKey: "topic_article_service.viewed-article",
+            _channel.BasicPublish(exchange: messageDescriptor.Exchange,
+                                  routingKey: messageDescriptor.RoutingKey,
                                   body: messageBody);
-
-            Console.WriteLine($"--> TopicArticleService have sent a message: {message}!");
 
             //TODO: Log the message.
         }
@@ -65,7 +63,10 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
             {
                 //TODO: Log the message.
 
-                SendMessage(message);
+                var messageDescriptor = new MessageDescriptor(message, 
+                    exchange: "topic_article_service", routingKey: "topic_article_service.viewed-article");
+
+                SendMessage(messageDescriptor);
             }
             else
             {
