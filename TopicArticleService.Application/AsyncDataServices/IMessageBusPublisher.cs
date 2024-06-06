@@ -6,5 +6,6 @@ namespace TopicArticleService.Application.AsyncDataServices
     {
         void PublishViewedArticle(ViewedArticleDto viewedArticleDto);
         void PublishLikedArticle(LikedArticleDto likedArticleDto);
+        void PublishDislikedArticle(DislikedArticleDto dislikedArticleDto);
     }
 }
