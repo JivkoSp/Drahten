@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using PrivateHistoryService.Application.Dtos;
+using PrivateHistoryService.Application.Services.WriteServices;
+using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.Dtos;
 using System.Text.Json;
 
@@ -43,7 +46,13 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
+            var viewedArticleWriteService = scope.ServiceProvider.GetRequiredService<IViewedArticleWriteService>();
             
+            var viewedArticleDto = JsonSerializer.Deserialize<ViewedArticleDto>(article);
+
+            var viewedArticle = _mapper.Map<ViewedArticle>(viewedArticleDto);
+
+            await viewedArticleWriteService.AddViewedArticleAsync(viewedArticle);
         }
 
         public async Task ProcessEventAsync(string message)
