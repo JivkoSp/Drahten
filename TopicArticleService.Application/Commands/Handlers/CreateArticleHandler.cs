@@ -20,14 +20,10 @@ namespace TopicArticleService.Application.Commands.Handlers
 
         public async Task HandleAsync(CreateArticleCommand command)
         {
-            //Check if article with command.ArticleId already exists.
-
-            var alreadyExists = await _articleService.ExistsByIdAsync(command.ArticleId);
+            var alreadyExists = await _articleService.ExistsByIdAsync(command.ArticleId.ToString("N"));
 
             if(alreadyExists)
             {
-                //There is article with command.ArticleId.
-
                 throw new ArticleAlreadyExistsException(command.ArticleId);
             }
 
