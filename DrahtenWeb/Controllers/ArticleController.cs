@@ -58,22 +58,13 @@ namespace DrahtenWeb.Controllers
                     }
                 }
 
-                var writeArticleDto = _mapper.Map<WriteArticleDto>(articleDto);
-
-                await _topicArticleService.RegisterArticleAsync<string>(writeArticleDto, accessToken);
-
-                var userArticle = articleViewModel.UserArticles.FirstOrDefault(x => x.UserDto.UserId == userId);
-
-                if (userArticle == null)
+                var writeUserArticleDto = new WriteUserArticleDto
                 {
-                    var writeUserArticleDto = new WriteUserArticleDto
-                    {
-                        UserId = userId,
-                        ArticleId = writeArticleDto.ArticleId,
-                    };
+                    UserId = userId,
+                    ArticleId = Guid.Parse(articleDto.ArticleId),
+                };
 
-                    await _topicArticleService.RegisterUserArticleAsync<string>(writeUserArticleDto, accessToken);
-                }
+                await _topicArticleService.RegisterUserArticleAsync<string>(writeUserArticleDto, accessToken);
             }
             catch (Exception ex)
             {
