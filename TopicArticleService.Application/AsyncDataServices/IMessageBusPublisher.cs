@@ -5,5 +5,6 @@ namespace TopicArticleService.Application.AsyncDataServices
     public interface IMessageBusPublisher
     {
         void PublishViewedArticle(ViewedArticleDto viewedArticleDto);
+        void PublishLikedArticle(LikedArticleDto likedArticleDto);
     }
 }
