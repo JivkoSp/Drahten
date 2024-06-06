@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PrivateHistoryService.Domain.Entities;
+using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
@@ -15,6 +16,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<ViewedArticle> ViewedArticles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
