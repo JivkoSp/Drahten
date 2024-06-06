@@ -6,10 +6,8 @@ using TopicArticleService.Application.Dtos.SearchService;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
-using TopicArticleService.Infrastructure.AsyncDataServices;
 using TopicArticleService.Infrastructure.Dtos;
 using TopicArticleService.Infrastructure.Extensions;
-using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 
 namespace TopicArticleService.Infrastructure.EventProcessing
 {
@@ -22,15 +20,12 @@ namespace TopicArticleService.Infrastructure.EventProcessing
     public sealed class EventProcessor : IEventProcessor
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly IMapper _mapper;
         private readonly ILogger<EventProcessor> _logger;
 
-        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMessageBusPublisher messageBusPublisher,
-            IMapper mapper, ILogger<EventProcessor> logger)
+        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, ILogger<EventProcessor> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
-            _messageBusPublisher = messageBusPublisher;
             _mapper = mapper;
             _logger = logger;
         }
