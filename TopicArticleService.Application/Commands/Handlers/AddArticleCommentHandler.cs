@@ -1,4 +1,6 @@
-﻿using TopicArticleService.Application.Exceptions;
+﻿using TopicArticleService.Application.AsyncDataServices;
+using TopicArticleService.Application.Dtos.PrivateHistoryService;
+using TopicArticleService.Application.Exceptions;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
@@ -9,11 +11,14 @@ namespace TopicArticleService.Application.Commands.Handlers
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleCommentFactory _articleCommentFactory;
+        private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public AddArticleCommentHandler(IArticleRepository articleRepository, IArticleCommentFactory articleCommentFactory)
+        public AddArticleCommentHandler(IArticleRepository articleRepository, IArticleCommentFactory articleCommentFactory,
+            IMessageBusPublisher messageBusPublisher)
         {
             _articleRepository = articleRepository;
             _articleCommentFactory = articleCommentFactory;
+            _messageBusPublisher = messageBusPublisher;
         }
 
         public async Task HandleAsync(AddArticleCommentCommand command)
@@ -24,6 +29,18 @@ namespace TopicArticleService.Application.Commands.Handlers
             {
                 throw new ArticleNotFoundException(command.ArticleId);
             }
+
+            var commentedArticleDto = new CommentedArticleDto
+            {
+                ArticleId = command.ArticleId.ToString(),
+                UserId = command.UserId.ToString(),
+                ArticleComment = command.CommentValue,
+                DateTime = command.DateTime,
+                Event = "CommentedArticle"
+            };
+
+            //Post message to the message broker about adding comment for article with ID: ArticleId by user with ID: UserId.
+            _messageBusPublisher.PublishCommentedArticle(commentedArticleDto);
 
             var articleComment = _articleCommentFactory.Create(command.ArticleCommentId, command.CommentValue, 
                 command.DateTime.ToUtc(), command.UserId, command.ParentArticleCommentId);
