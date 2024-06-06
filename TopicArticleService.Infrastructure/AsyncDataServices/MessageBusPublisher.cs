@@ -2,8 +2,8 @@
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
-using TopicArticleService.Application.Dtos.SearchService;
 
 namespace TopicArticleService.Infrastructure.AsyncDataServices
 {
