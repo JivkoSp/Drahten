@@ -1,4 +1,6 @@
-﻿using TopicArticleService.Application.Exceptions;
+﻿using TopicArticleService.Application.AsyncDataServices;
+using TopicArticleService.Application.Dtos.PrivateHistoryService;
+using TopicArticleService.Application.Exceptions;
 using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Domain.Repositories;
@@ -10,11 +12,13 @@ namespace TopicArticleService.Application.Commands.Handlers
     {
         private readonly ITopicReadService _topicReadService;
         private readonly IUserRepository _userRepository;
+        private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public RegisterUserTopicHandler(ITopicReadService topicReadService, IUserRepository userRepository)
+        public RegisterUserTopicHandler(ITopicReadService topicReadService, IUserRepository userRepository, IMessageBusPublisher messageBusPublisher)
         {
             _topicReadService = topicReadService;
             _userRepository = userRepository;
+            _messageBusPublisher = messageBusPublisher;
         }
 
         public async Task HandleAsync(RegisterUserTopicCommand command)
@@ -32,6 +36,17 @@ namespace TopicArticleService.Application.Commands.Handlers
             {
                 throw new UserNotFoundException(command.UserId);
             }
+
+            var topicSubscriptionDto = new TopicSubscriptionDto
+            {
+                TopicId = command.TopicId,
+                UserId = command.UserId.ToString(),
+                DateTime = command.DateTime,
+                Event = "TopicSubscription"
+            };
+
+            //Post message to the message broker about adding topic subscription for topic with ID: TopicId by user with ID: UserId.
+            _messageBusPublisher.PublishTopicSubscription(topicSubscriptionDto);
 
             var userTopic = new UserTopic(command.UserId, command.TopicId, command.DateTime.ToUtc());
 
