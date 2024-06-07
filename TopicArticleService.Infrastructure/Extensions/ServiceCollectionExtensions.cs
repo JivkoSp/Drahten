@@ -58,6 +58,8 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddScoped<ITopicReadService, PostgreTopicReadServices>();
 
+            services.AddScoped<IArticleCommentReadService, PostgresArticleCommentReadService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction => {
