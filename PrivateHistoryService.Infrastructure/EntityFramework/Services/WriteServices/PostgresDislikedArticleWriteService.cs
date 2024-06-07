@@ -13,7 +13,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Services.WriteSer
             _writeDbContext = writeDbContext;
         }
 
-        public async Task AddLikedArticleAsync(DislikedArticle dislikedArticle)
+        public async Task AddDislikedArticleAsync(DislikedArticle dislikedArticle)
         {
             await _writeDbContext.DislikedArticles.AddAsync(dislikedArticle);
 
