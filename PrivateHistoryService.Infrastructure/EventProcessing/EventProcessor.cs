@@ -131,6 +131,19 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await dislikedArticleCommentWriteService.AddDislikedArticleCommentAsync(dislikedArticleCommentValueObject);
         }
 
+        private async Task WriteTopicSubscription(string topicSubscription)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+
+            var topicSubscriptionWriteService = scope.ServiceProvider.GetRequiredService<ITopicSubscriptionWriteService>();
+
+            var topicSubscriptionDto = JsonSerializer.Deserialize<TopicSubscriptionDto>(topicSubscription);
+
+            var topicSubscriptionValueObject = _mapper.Map<TopicSubscription>(topicSubscriptionDto);
+
+            await topicSubscriptionWriteService.AddTopicSubscriptionAsync(topicSubscriptionValueObject);
+        }
+
         public async Task ProcessEventAsync(string message)
         {
             var eventType = DetermineEvent(message);
@@ -151,6 +164,9 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
                     break;
                 case EventType.DislikedArticleComment:
                     await WriteDislikedArticleComment(message);
+                    break;
+                case EventType.TopicSubscription:
+                    await WriteTopicSubscription(message);
                     break;
             }
         }
