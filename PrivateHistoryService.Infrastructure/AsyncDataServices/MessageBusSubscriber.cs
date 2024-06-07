@@ -43,6 +43,30 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
                        exchange: "topic_article_service",
                        routingKey: "topic_article_service.viewed-article");
 
+            _channel.QueueBind(queue: _queueName,
+                       exchange: "topic_article_service",
+                       routingKey: "topic_article_service.liked-article");
+
+            _channel.QueueBind(queue: _queueName,
+                       exchange: "topic_article_service",
+                       routingKey: "topic_article_service.disliked-article");
+
+            _channel.QueueBind(queue: _queueName,
+                      exchange: "topic_article_service",
+                      routingKey: "topic_article_service.commented-article");
+
+            _channel.QueueBind(queue: _queueName,
+                     exchange: "topic_article_service",
+                     routingKey: "topic_article_service.liked-article-comment");
+
+            _channel.QueueBind(queue: _queueName,
+                     exchange: "topic_article_service",
+                     routingKey: "topic_article_service.disliked-article-comment");
+
+            _channel.QueueBind(queue: _queueName,
+                     exchange: "topic_article_service",
+                     routingKey: "topic_article_service.topic-subscription");
+
             Console.WriteLine("\n--> PrivateHistoryService listening on the message bus!\n");
 
             _connection.ConnectionShutdown += RabbitMqConnectionShutDown;
