@@ -17,6 +17,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 
         public DbSet<User> Users { get; set; }
         public DbSet<LikedArticle> LikedArticles { get; set; }
+        public DbSet<DislikedArticle> DislikedArticles { get; set; }
         public DbSet<ViewedArticle> ViewedArticles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
