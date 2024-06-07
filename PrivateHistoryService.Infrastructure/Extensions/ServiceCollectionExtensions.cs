@@ -58,6 +58,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<IDislikedArticleCommentWriteService, PostgresDislikedArticleCommentWriteService>();
 
+            services.AddScoped<ITopicSubscriptionWriteService, PostgresTopicSubscriptionWriteService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
