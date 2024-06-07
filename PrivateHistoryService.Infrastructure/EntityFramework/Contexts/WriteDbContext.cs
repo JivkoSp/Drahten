@@ -21,6 +21,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         public DbSet<CommentedArticle> CommentedArticles { get; set; }
         public DbSet<LikedArticleComment> LikedArticleComments { get; set; }
         public DbSet<DislikedArticleComment> DislikedArticleComments { get; set; }
+        public DbSet<TopicSubscription> TopicSubscriptions { get; set; }
         public DbSet<ViewedArticle> ViewedArticles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
