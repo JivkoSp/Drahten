@@ -50,6 +50,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<ILikedArticleWriteService, PostgresLikedArticleWriteService>();
 
+            services.AddScoped<IDislikedArticleWriteService, PostgresDislikedArticleWriteService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
