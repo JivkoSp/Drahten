@@ -4,6 +4,6 @@ namespace PrivateHistoryService.Application.Services.WriteServices
 {
     public interface IDislikedArticleWriteService
     {
-        Task AddLikedArticleAsync(DislikedArticle dislikedArticle);
+        Task AddDislikedArticleAsync(DislikedArticle dislikedArticle);
     }
 }
