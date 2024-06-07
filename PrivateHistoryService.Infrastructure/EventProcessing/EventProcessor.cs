@@ -92,6 +92,19 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await likedArticleWriteService.AddLikedArticleAsync(likedArticleValueObject);
         }
 
+        private async Task WriteDislikedArticle(string dislikedArticle)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+
+            var dislikedArticleWriteService = scope.ServiceProvider.GetRequiredService<IDislikedArticleWriteService>();
+
+            var dislikedArticleDto = JsonSerializer.Deserialize<DislikedArticleDto>(dislikedArticle);
+
+            var dislikedArticleValueObject = _mapper.Map<DislikedArticle>(dislikedArticleDto);
+
+            await dislikedArticleWriteService.AddDislikedArticleAsync(dislikedArticleValueObject);
+        }
+
         public async Task ProcessEventAsync(string message)
         {
             var eventType = DetermineEvent(message);
@@ -103,6 +116,9 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
                     break;
                 case EventType.LikedArticle:
                     await WriteLikedArticle(message);
+                    break;
+                case EventType.DislikedArticle:
+                    await WriteDislikedArticle(message);
                     break;
             }
         }
