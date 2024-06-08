@@ -5,7 +5,7 @@ namespace DrahtenWeb.ViewModels
 {
     public class HistoryUserViewModel
     {
-        public List<ViewedUserDto> ViewedUsers { get; set; }
+        public List<ViewedUserViewModel> ViewedUsers { get; set; } = new List<ViewedUserViewModel>();
         public Pagination Pagination { get; set; }
     }
 }
