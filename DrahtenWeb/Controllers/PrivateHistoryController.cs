@@ -1,9 +1,9 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.PrivateHistoryService;
 using DrahtenWeb.Dtos.TopicArticleService;
+using DrahtenWeb.Dtos.UserService;
 using DrahtenWeb.Extensions;
 using DrahtenWeb.Models;
-using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -18,11 +18,14 @@ namespace DrahtenWeb.Controllers
     {
         private readonly IPrivateHistoryService _privateHistoryService;
         private readonly ITopicArticleService _topicArticleService;
+        private readonly IUserService _userService;
 
-        public PrivateHistoryController(IPrivateHistoryService privateHistoryService, ITopicArticleService topicArticleService)
+        public PrivateHistoryController(IPrivateHistoryService privateHistoryService, ITopicArticleService topicArticleService,
+            IUserService userService)
         {
             _privateHistoryService = privateHistoryService;
             _topicArticleService = topicArticleService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -90,13 +93,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyUserViewModel = new HistoryUserViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetViewedUsersAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetViewedUsersAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -107,37 +115,29 @@ namespace DrahtenWeb.Controllers
 
                 var allViewedUsers = response.Map<List<ViewedUserDto>>();
 
-                var tempList = new List<ViewedUserDto>
-                {
-                   new ViewedUserDto
-                   {
-                       ViewedUserReadModelId = Guid.NewGuid(),
-                       ViewerUserId = "111",
-                       ViewedUserId = "122",
-                       DateTime = DateTimeOffset.Now
-                   },
-                   new ViewedUserDto
-                   {
-                       ViewedUserReadModelId = Guid.NewGuid(),
-                       ViewerUserId = "121",
-                       ViewedUserId = "123",
-                       DateTime = DateTimeOffset.Now
-                   }
-                };
-
-                int viewedUsersCount = tempList.Count;
+                int viewedUsersCount = allViewedUsers.Count;
 
                 var pagination = new Pagination(viewedUsersCount, pageNumber, pageSize);
 
                 int skipUsers = (pageNumber - 1) * pageSize;
 
-                var viewedUsers = tempList.Skip(skipUsers).Take(pagination.PageSize).ToList();
+                var viewedUsers = allViewedUsers.Skip(skipUsers).Take(pagination.PageSize).ToList();
 
-                var historyUserViewModel = new HistoryUserViewModel
+                foreach (var viewedUser in viewedUsers)
                 {
-                    ViewedUsers = viewedUsers,
-                    Pagination = pagination,
-                };
+                    response = await _userService.GetUserByIdAsync<ResponseDto>(Guid.Parse(viewedUser.ViewedUserId), accessToken);
+
+                    var viewedUserViewModel = new ViewedUserViewModel
+                    {
+                        ViewedUserReadModelId = viewedUser.ViewedUserReadModelId,
+                        ViewedUser = response.Map<DrahtenWeb.Dtos.UserService.UserDto>(),
+                        DateTime = viewedUser.DateTime
+                    };
+
+                    historyUserViewModel.ViewedUsers.Add(viewedUserViewModel);
+                }
+
+                historyUserViewModel.Pagination = pagination;
 
                 return new JsonResult(historyUserViewModel);
             }
