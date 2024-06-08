@@ -304,17 +304,51 @@
 
                         const tableData = {
                             'User': [],
-                            'View Time': [],
+                            'Watched': [],
+                            'View': [],
                             'Remove': [],
-                            'Move To Public': []
+                            'Move': []
                         };
 
                         response.viewedUsers.forEach((element) => {
 
-                            tableData['User'].push(element.viewedUserId);
-                            tableData['View Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
-                            tableData['Move To Public'].push('Move');
+                            const buttonElementViewUser = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-primary btn-sm",
+                                html: '<i class="fas fa-eye"></i>'
+                            });
+
+                            buttonElementViewUser.on("click", () => {
+
+                                console.log("View article");
+                            });
+
+                            const buttonElementRemoveUser = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveUser.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            const buttonElementMove = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-success btn-sm",
+                                html: '<i class="fas fa-share"></i>'
+                            });
+
+                            buttonElementMove.on("click", () => {
+                                console.log("Move to public");
+                            });
+
+
+                            tableData['User'].push(element.viewedUser.userNickName);
+                            tableData['Watched'].push(element.dateTime);
+                            tableData['View'].push(buttonElementViewUser);
+                            tableData['Remove'].push(buttonElementRemoveUser);
+                            tableData['Move'].push(buttonElementMove);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
