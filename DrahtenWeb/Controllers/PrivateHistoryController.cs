@@ -1,7 +1,9 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.PrivateHistoryService;
+using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Extensions;
 using DrahtenWeb.Models;
+using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -15,10 +17,12 @@ namespace DrahtenWeb.Controllers
     public class PrivateHistoryController : Controller
     {
         private readonly IPrivateHistoryService _privateHistoryService;
+        private readonly ITopicArticleService _topicArticleService;
 
-        public PrivateHistoryController(IPrivateHistoryService privateHistoryService)
+        public PrivateHistoryController(IPrivateHistoryService privateHistoryService, ITopicArticleService topicArticleService)
         {
             _privateHistoryService = privateHistoryService;
+            _topicArticleService = topicArticleService;
         }
 
         [HttpGet]
@@ -26,13 +30,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyArticleViewModel = new HistoryArticleViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetViewedArticlesAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetViewedArticlesAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -43,143 +52,30 @@ namespace DrahtenWeb.Controllers
 
                 var allArticles = response.Map<List<ViewedArticleDto>>();
 
-                var tempList = new List<ViewedArticleDto>
-                {
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new ViewedArticleDto
-                    {
-                        ViewedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "1",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int articlesCount = tempList.Count;
+                int articlesCount = allArticles.Count;
 
                 var pagination = new Pagination(articlesCount, pageNumber, pageSize);
 
                 int skipArticles = (pageNumber - 1) * pageSize;
 
-                var articles = tempList.Skip(skipArticles).Take(pagination.PageSize).ToList();
+                var articles = allArticles.Skip(skipArticles).Take(pagination.PageSize).ToList();
 
-                var historyArticleViewModel = new HistoryArticleViewModel
+                foreach (var article in articles)
                 {
-                    Articles = articles,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(article.ArticleId, accessToken);
 
+                    var viewedArticleViewModel = new ViewedArticleViewModel
+                    {
+                        ViewedArticleId = article.ViewedArticleId,
+                        Article = response.Map<ArticleDto>(),
+                        UserId = article.UserId,
+                        DateTime = article.DateTime
+                    };
 
-                //int articlesCount = allArticles.Count;
+                    historyArticleViewModel.Articles.Add(viewedArticleViewModel);
+                }
 
-                //var pagination = new Pagination(articlesCount, pageNumber, pageSize);
-
-                //int skipArticles = (pageNumber - 1) * pageSize;
-
-                //var articles = allArticles.Skip(skipArticles).Take(pagination.PageSize).ToList();
-
-                //var historyArticleViewModel = new HistoryArticleViewModel
-                //{
-                //    Articles = articles,
-                //    Pagination = pagination
-                //};
+                historyArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyArticleViewModel);
             }
