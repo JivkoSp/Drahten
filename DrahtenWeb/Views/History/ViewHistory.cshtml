@@ -565,9 +565,19 @@
 
                         response.dislikedArticles.forEach((element) => {
 
-                            tableData['Article'].push(element.articleId);
-                            tableData['Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
+                            const buttonElementRemoveDislikedArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveDislikedArticle.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Time'].push(formatDateTime(element.dateTime));
+                            tableData['Remove'].push(buttonElementRemoveDislikedArticle);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
