@@ -209,7 +209,7 @@ function CreateHistoryTable(tableData) {
     });
 
     const trElementTableHead = $("<tr>", {
-
+        style: "text-align: center;"
     });
 
     let tableRows = 0;
@@ -219,6 +219,7 @@ function CreateHistoryTable(tableData) {
            
             const thElement = $("<th>", {
                  scope: "col",
+                 style: "text-align: center;",
                  text: key
             });
 
@@ -238,8 +239,16 @@ function CreateHistoryTable(tableData) {
             if (tableData.hasOwnProperty(key)) {
 
                 const tdElement = $("<td>", {
-                    text: tableData[key][i]
+                    style: "text-align: center;" 
                 });
+
+                if (tableData[key][i] instanceof jQuery) {
+                    // Append the jQuery element (button) to the td.
+                    tdElement.append(tableData[key][i]);
+                } else {
+                    // Set the text if it's not a jQuery element.
+                    tdElement.text(tableData[key][i]);
+                }
 
                 trElementTableRow.append(tdElement);
             }
@@ -321,4 +330,17 @@ function CreateHistoryTablePagination(pagination, pageButtonIdPreffix) {
     divElementPaginationContainer.append(ulElementPagination);
 
     return divElementPaginationContainer;
+}
+
+
+function formatDateTime(dateTime) {
+
+    const date = new Date(dateTime);
+
+    const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+    };
+
+    return date.toLocaleString('en-US', options);
 }
