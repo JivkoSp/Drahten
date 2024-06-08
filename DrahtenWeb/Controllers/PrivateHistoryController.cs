@@ -451,13 +451,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyDislikedArticleCommentViewModel = new HistoryDislikedArticleCommentViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetDislikedArticleCommentsAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetDislikedArticleCommentsAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -468,30 +473,30 @@ namespace DrahtenWeb.Controllers
 
                 var allDislikedArticleComments = response.Map<List<DislikedArticleCommentDto>>();
 
-                var tempList = new List<DislikedArticleCommentDto>
-                {
-                    new DislikedArticleCommentDto
-                    {
-                        ArticleCommentId = Guid.NewGuid(),
-                        ArticleId = "112",
-                        UserId = "111",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int dislikedArticleCommentsCount = tempList.Count;
+                int dislikedArticleCommentsCount = allDislikedArticleComments.Count;
 
                 var pagination = new Pagination(dislikedArticleCommentsCount, pageNumber, pageSize);
 
                 int skipDislikedArticleComments = (pageNumber - 1) * pageSize;
 
-                var dislikedArticleComments = tempList.Skip(skipDislikedArticleComments).Take(pagination.PageSize).ToList();
+                var dislikedArticleComments = allDislikedArticleComments.Skip(skipDislikedArticleComments).Take(pagination.PageSize).ToList();
 
-                var historyDislikedArticleCommentViewModel = new HistoryDislikedArticleCommentViewModel
+                foreach (var dislikedArticleComment in dislikedArticleComments)
                 {
-                    DislikedArticleComments = dislikedArticleComments,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(dislikedArticleComment.ArticleId, accessToken);
+
+                    var dislikedArticleCommentViewModel = new DislikedArticleCommentViewModel
+                    {
+                        ArticleCommentId = dislikedArticleComment.ArticleCommentId,
+                        Article = response.Map<ArticleDto>(),
+                        UserId = dislikedArticleComment.UserId,
+                        DateTime = dislikedArticleComment.DateTime
+                    };
+
+                    historyDislikedArticleCommentViewModel.DislikedArticleComments.Add(dislikedArticleCommentViewModel);
+                }
+
+                historyDislikedArticleCommentViewModel.Pagination = pagination;
 
                 return new JsonResult(historyDislikedArticleCommentViewModel);
             }
