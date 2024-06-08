@@ -1,11 +1,10 @@
-﻿using DrahtenWeb.Dtos.PrivateHistoryService;
-using DrahtenWeb.Models;
+﻿using DrahtenWeb.Models;
 
 namespace DrahtenWeb.ViewModels
 {
     public class HistoryDislikedArticleCommentViewModel
     {
-        public List<DislikedArticleCommentDto> DislikedArticleComments { get; set; }
+        public List<DislikedArticleCommentViewModel> DislikedArticleComments { get; set; } = new List<DislikedArticleCommentViewModel>();
         public Pagination Pagination { get; set; }
     }
 }
