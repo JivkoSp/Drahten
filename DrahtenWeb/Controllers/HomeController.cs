@@ -54,11 +54,11 @@ namespace DrahtenWeb.Controllers
 
                 article.TopicFullName = article.TopicFullName.SplitSnakeCase();
 
-                response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(Guid.Parse(article.ArticleId), accessToken);
+                response = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(article.ArticleId, accessToken);
 
                 userSearchOptionsViewModel.ArticleComments[article.ArticleId] = response.Map<List<ReadArticleCommentDto>>();
 
-                response = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(Guid.Parse(article.ArticleId), accessToken);
+                response = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(article.ArticleId, accessToken);
 
                 userSearchOptionsViewModel.UsersRelatedToArticle[article.ArticleId] = response.Map<List<ReadUserArticleDto>>();
             }
