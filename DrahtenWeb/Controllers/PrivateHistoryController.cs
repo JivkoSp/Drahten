@@ -1,7 +1,6 @@
 ﻿using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.PrivateHistoryService;
 using DrahtenWeb.Dtos.TopicArticleService;
-using DrahtenWeb.Dtos.UserService;
 using DrahtenWeb.Extensions;
 using DrahtenWeb.Models;
 using DrahtenWeb.Services.IServices;
@@ -331,13 +330,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyCommentedArticleViewModel = new HistoryCommentedArticleViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetCommentedArticlesAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetCommentedArticlesAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -348,31 +352,31 @@ namespace DrahtenWeb.Controllers
 
                 var allCommentedArticles = response.Map<List<CommentedArticleDto>>();
 
-                var tempList = new List<CommentedArticleDto>
-                {
-                    new CommentedArticleDto
-                    {
-                        CommentedArticleId = Guid.NewGuid(),
-                        ArticleId = "123",
-                        UserId = "111",
-                        ArticleComment = "...",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int commentedArticlesCount = tempList.Count;
+                int commentedArticlesCount = allCommentedArticles.Count;
 
                 var pagination = new Pagination(commentedArticlesCount, pageNumber, pageSize);
 
                 int skipCommentedArticles = (pageNumber - 1) * pageSize;
 
-                var commentedArticles = tempList.Skip(skipCommentedArticles).Take(pagination.PageSize).ToList();
+                var commentedArticles = allCommentedArticles.Skip(skipCommentedArticles).Take(pagination.PageSize).ToList();
 
-                var historyCommentedArticleViewModel = new HistoryCommentedArticleViewModel
+                foreach(var commentedArticle in commentedArticles)
                 {
-                    CommentedArticles = commentedArticles,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(commentedArticle.ArticleId, accessToken);
+
+                    var commentedArticleViewModel = new CommentedArticleViewModel
+                    {
+                        CommentedArticleId = commentedArticle.CommentedArticleId,
+                        Article = response.Map<ArticleDto>(),
+                        UserId = commentedArticle.UserId,
+                        ArticleComment = commentedArticle.ArticleComment,
+                        DateTime = commentedArticle.DateTime
+                    };
+
+                    historyCommentedArticleViewModel.CommentedArticles.Add(commentedArticleViewModel);
+                }
+
+                historyCommentedArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyCommentedArticleViewModel);
             }
