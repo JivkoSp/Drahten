@@ -70,7 +70,7 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public async Task<TEntity> GetArticleLikesAsync<TEntity>(Guid articleId, string accessToken)
+        public async Task<TEntity> GetArticleLikesAsync<TEntity>(string articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
@@ -82,7 +82,7 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public async Task<TEntity> GetArticleDislikesAsync<TEntity>(Guid articleId, string accessToken)
+        public async Task<TEntity> GetArticleDislikesAsync<TEntity>(string articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
@@ -94,7 +94,7 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public async Task<TEntity> GetUsersRelatedToArticleAsync<TEntity>(Guid articleId, string accessToken)
+        public async Task<TEntity> GetUsersRelatedToArticleAsync<TEntity>(string articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
@@ -106,7 +106,7 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public async Task<TEntity> GetArticleCommentsAsync<TEntity>(Guid articleId, string accessToken)
+        public async Task<TEntity> GetArticleCommentsAsync<TEntity>(string articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
