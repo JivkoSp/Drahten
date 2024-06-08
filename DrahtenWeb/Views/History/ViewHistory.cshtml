@@ -399,17 +399,51 @@
                             'Article': [],
                             'Searched Data': [],
                             'Search Time': [],
+                            'View': [],
                             'Remove': [],
-                            'Move To Public': []
+                            'Move': []
                         };
 
                         response.searchedArticles.forEach((element) => {
 
-                            tableData['Article'].push(element.articleId);
+                            const buttonElementViewArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-primary btn-sm",
+                                html: '<i class="fas fa-eye"></i>'
+                            });
+
+                            buttonElementViewArticle.on("click", () => {
+
+                                console.log("View article");
+                            });
+
+                            const buttonElementRemoveSearchedArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveSearchedArticle.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            const buttonElementMove = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-success btn-sm",
+                                html: '<i class="fas fa-share"></i>'
+                            });
+
+                            buttonElementMove.on("click", () => {
+                                console.log("Move to public");
+                            });
+
+
+                            tableData['Article'].push(element.article.title);
                             tableData['Searched Data'].push(element.searchedData);
                             tableData['Search Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
-                            tableData['Move To Public'].push('Move');
+                            tableData['View'].push(buttonElementViewArticle);
+                            tableData['Remove'].push(buttonElementRemoveSearchedArticle);
+                            tableData['Move'].push(buttonElementMove);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
