@@ -272,13 +272,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyDislikedArticleViewModel = new HistoryDislikedArticleViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetDislikedArticlesAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetDislikedArticlesAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -289,35 +294,29 @@ namespace DrahtenWeb.Controllers
 
                 var allDislikedArticles = response.Map<List<DislikedArticleDto>>();
 
-                var tempList = new List<DislikedArticleDto>
-                {
-                    new DislikedArticleDto
-                    {
-                        ArticleId = "123",
-                        UserId = "121",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new DislikedArticleDto
-                    {
-                        ArticleId = "123",
-                        UserId = "121",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int dislikedArticlesCount = tempList.Count;
+                int dislikedArticlesCount = allDislikedArticles.Count;
 
                 var pagination = new Pagination(dislikedArticlesCount, pageNumber, pageSize);
 
                 int skipDislikedArticles = (pageNumber - 1) * pageSize;
 
-                var dislikedArticles = tempList.Skip(skipDislikedArticles).Take(pagination.PageSize).ToList();
+                var dislikedArticles = allDislikedArticles.Skip(skipDislikedArticles).Take(pagination.PageSize).ToList();
 
-                var historyDislikedArticleViewModel = new HistoryDislikedArticleViewModel
+                foreach (var dislikedArticle in dislikedArticles)
                 {
-                    DislikedArticles = dislikedArticles,
-                    Pagination = pagination,
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(dislikedArticle.ArticleId, accessToken);
+
+                    var dislikedArticleViewModel = new DislikedArticleViewModel
+                    {
+                        Article = response.Map<ArticleDto>(),
+                        UserId = dislikedArticle.UserId,
+                        DateTime = dislikedArticle.DateTime
+                    };
+
+                    historyDislikedArticleViewModel.DislikedArticles.Add(dislikedArticleViewModel);
+                }
+
+                historyDislikedArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyDislikedArticleViewModel);
             }
