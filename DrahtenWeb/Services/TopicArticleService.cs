@@ -46,7 +46,7 @@ namespace DrahtenWeb.Services
             return response;
         }
 
-        public async Task<TEntity> GetArticleByIdAsync<TEntity>(Guid articleId, string accessToken)
+        public async Task<TEntity> GetArticleByIdAsync<TEntity>(string articleId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
             {
