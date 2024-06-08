@@ -213,13 +213,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyLikedArticleViewModel = new HistoryLikedArticleViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetLikedArticlesAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetLikedArticlesAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -230,35 +235,29 @@ namespace DrahtenWeb.Controllers
                 
                 var allLikedArticles = response.Map<List<LikedArticleDto>>();
 
-                var tempList = new List<LikedArticleDto>
-                {
-                    new LikedArticleDto
-                    {
-                        ArticleId = "123",
-                        UserId = "121",
-                        DateTime = DateTimeOffset.Now
-                    },
-                    new LikedArticleDto
-                    {
-                        ArticleId = "123",
-                        UserId = "121",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int likedArticlesCount = tempList.Count;
+                int likedArticlesCount = allLikedArticles.Count;
 
                 var pagination = new Pagination(likedArticlesCount, pageNumber, pageSize);
 
                 int skipLikedArticles = (pageNumber - 1) * pageSize;
 
-                var likedArticles = tempList.Skip(skipLikedArticles).Take(pagination.PageSize).ToList();
+                var likedArticles = allLikedArticles.Skip(skipLikedArticles).Take(pagination.PageSize).ToList();
 
-                var historyLikedArticleViewModel = new HistoryLikedArticleViewModel
+                foreach (var likedArticle in likedArticles)
                 {
-                    LikedArticles = likedArticles,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(likedArticle.ArticleId, accessToken);
+
+                    var likedArticleViewModel = new LikedArticleViewModel
+                    {
+                        Article = response.Map<ArticleDto>(),
+                        UserId = likedArticle.UserId,
+                        DateTime = likedArticle.DateTime
+                    };
+
+                    historyLikedArticleViewModel.LikedArticles.Add(likedArticleViewModel);
+                }
+
+                historyLikedArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyLikedArticleViewModel);
             }
