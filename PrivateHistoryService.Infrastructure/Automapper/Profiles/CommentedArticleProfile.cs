@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using PrivateHistoryService.Application.Dtos;
+using PrivateHistoryService.Application.Extensions;
+using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
@@ -9,6 +11,10 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
         public CommentedArticleProfile()
         {
             CreateMap<CommentedArticleReadModel, CommentedArticleDto>();
+
+            CreateMap<CommentedArticleDto, CommentedArticle>()
+             .ConstructUsing(source =>
+                 new CommentedArticle(Guid.Parse(source.ArticleId), Guid.Parse(source.UserId), source.ArticleComment, source.DateTime.ToUtc()));
         }
     }
 }
