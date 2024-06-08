@@ -625,19 +625,39 @@
 
                         const tableData = {
                             'Article': [],
-                            'Article Comment': [],
+                            'Comment': [],
                             'Time': [],
                             'Remove': [],
-                            'Move To Public': []
+                            'Move': []
                         };
 
                         response.commentedArticles.forEach((element) => {
 
-                            tableData['Article'].push(element.articleId);
-                            tableData['Article Comment'].push(element.articleComment);
-                            tableData['Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
-                            tableData['Move To Public'].push('Move');
+                            const buttonElementRemoveCommentedArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveCommentedArticle.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            const buttonElementMove = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-success btn-sm",
+                                html: '<i class="fas fa-share"></i>'
+                            });
+
+                            buttonElementMove.on("click", () => {
+                                console.log("Move to public");
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Comment'].push(element.articleComment);
+                            tableData['Time'].push(formatDateTime(element.dateTime));
+                            tableData['Remove'].push(buttonElementRemoveCommentedArticle);
+                            tableData['Move'].push(buttonElementMove);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
