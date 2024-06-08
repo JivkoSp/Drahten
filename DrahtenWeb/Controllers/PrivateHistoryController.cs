@@ -391,13 +391,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyLikedArticleCommentViewModel = new HistoryLikedArticleCommentViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetLikedArticleCommentsAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetLikedArticleCommentsAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -408,30 +413,30 @@ namespace DrahtenWeb.Controllers
 
                 var allLikedArticleComments = response.Map<List<LikedArticleCommentDto>>();
 
-                var tempList = new List<LikedArticleCommentDto>
-                {
-                    new LikedArticleCommentDto
-                    {
-                        ArticleCommentId = Guid.NewGuid(),
-                        ArticleId = "121",
-                        UserId = "111",
-                        DateTime = DateTimeOffset.Now
-                    }
-                };
-
-                int likedArticleCommentsCount = tempList.Count;
+                int likedArticleCommentsCount = allLikedArticleComments.Count;
 
                 var pagination = new Pagination(likedArticleCommentsCount, pageNumber, pageSize);
 
                 int skipLikedArticleComments = (pageNumber - 1) * pageSize;
 
-                var likedArticleComments = tempList.Skip(skipLikedArticleComments).Take(pagination.PageSize).ToList();
+                var likedArticleComments = allLikedArticleComments.Skip(skipLikedArticleComments).Take(pagination.PageSize).ToList();
 
-                var historyLikedArticleCommentViewModel = new HistoryLikedArticleCommentViewModel
+                foreach (var likedArticleComment in likedArticleComments)
                 {
-                    LikedArticleComments = likedArticleComments,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(likedArticleComment.ArticleId, accessToken);
+
+                    var likedArticleCommentViewModel = new LikedArticleCommentViewModel
+                    {
+                        ArticleCommentId = likedArticleComment.ArticleCommentId,
+                        Article = response.Map<ArticleDto>(),
+                        UserId = likedArticleComment.UserId,
+                        DateTime = likedArticleComment.DateTime
+                    };
+
+                    historyLikedArticleCommentViewModel.LikedArticleComments.Add(likedArticleCommentViewModel);
+                }
+
+                historyLikedArticleCommentViewModel.Pagination = pagination;
 
                 return new JsonResult(historyLikedArticleCommentViewModel);
             }
