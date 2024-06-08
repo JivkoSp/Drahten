@@ -1,11 +1,10 @@
-﻿using DrahtenWeb.Dtos.PrivateHistoryService;
-using DrahtenWeb.Models;
+﻿using DrahtenWeb.Models;
 
 namespace DrahtenWeb.ViewModels
 {
     public class HistoryArticleViewModel
     {
-        public List<ViewedArticleDto> Articles { get; set; }
+        public List<ViewedArticleViewModel> Articles { get; set; } = new List<ViewedArticleViewModel>();
         public Pagination Pagination { get; set; }
     }
 }
