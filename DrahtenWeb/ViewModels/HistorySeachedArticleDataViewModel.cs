@@ -5,7 +5,7 @@ namespace DrahtenWeb.ViewModels
 {
     public class HistorySeachedArticleDataViewModel
     {
-        public List<SearchedArticleDataDto> SearchedArticles { get; set; }
+        public List<SearchedArticleDataViewModel> SearchedArticles { get; set; } = new List<SearchedArticleDataViewModel>();
         public Pagination Pagination { get; set; }
     }
 }
