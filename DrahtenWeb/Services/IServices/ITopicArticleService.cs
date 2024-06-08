@@ -7,7 +7,7 @@ namespace DrahtenWeb.Services.IServices
         Task<TEntity> GetTopicsAsync<TEntity>(string accessToken);
         Task<TEntity> GetParentTopicWithChildrenAsync<TEntity>(Guid topicId, string accessToken);
         Task<TEntity> GetTopicsRelatedToUserAsync<TEntity>(Guid userId, string accessToken);
-        Task<TEntity> GetArticleByIdAsync<TEntity>(Guid articleId, string accessToken);
+        Task<TEntity> GetArticleByIdAsync<TEntity>(string articleId, string accessToken);
         Task<TEntity> GetUserArticlesAsync<TEntity>(string userId, string accessToken);
         Task<TEntity> GetArticleLikesAsync<TEntity>(Guid articleId, string accessToken);
         Task<TEntity> GetArticleDislikesAsync<TEntity>(Guid articleId, string accessToken);
