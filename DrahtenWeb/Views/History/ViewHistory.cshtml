@@ -211,20 +211,51 @@
                         $("#historyTableContainer").append(divElementViewedArticlesTableContainer);
 
                         const tableData = {
-                            'Article Title': [],
                             'Article': [],
-                            'View Time': [],
+                            'Watched': [],
+                            'View': [],
                             'Remove': [],
-                            'Move To Public' : []
+                            'Move' : []
                         };
 
                         response.articles.forEach((element) => {
 
-                            tableData['Article Title'].push(element.articleId);
-                            tableData['Article'].push(element.articleId);
-                            tableData['View Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
-                            tableData['Move To Public'].push('Move');
+                            const buttonElementViewArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-primary btn-sm",
+                                html: '<i class="fas fa-eye"></i>'
+                            });
+
+                            buttonElementViewArticle.on("click", () => {
+
+                                console.log("View article");
+                            });
+
+                            const buttonElementRemoveArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>' 
+                            });
+
+                            buttonElementRemoveArticle.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            const buttonElementMove = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-success btn-sm",
+                                html: '<i class="fas fa-share"></i>' 
+                            });
+
+                            buttonElementMove.on("click", () => {
+                                console.log("Move to public");
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Watched'].push(formatDateTime(element.dateTime));
+                            tableData['View'].push(buttonElementViewArticle);
+                            tableData['Remove'].push(buttonElementRemoveArticle);
+                            tableData['Move'].push(buttonElementMove);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
