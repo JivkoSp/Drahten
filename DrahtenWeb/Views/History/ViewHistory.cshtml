@@ -713,10 +713,20 @@
 
                         response.likedArticleComments.forEach((element) => {
 
-                            tableData['Article'].push(element.articleId);
+                            const buttonElementRemoveLikedArticleComment = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveLikedArticleComment.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            tableData['Article'].push(element.article.title);
                             tableData['Article Comment'].push(element.articleCommentId);
-                            tableData['Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
+                            tableData['Time'].push(formatDateTime(element.dateTime));
+                            tableData['Remove'].push(buttonElementRemoveLikedArticleComment);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
