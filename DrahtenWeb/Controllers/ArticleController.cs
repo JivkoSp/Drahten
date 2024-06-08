@@ -29,8 +29,12 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleComments, string usersRelatedToArticle)
+        public async Task<IActionResult> ViewArticle(ArticleDto articleDto, string articleLikeDtos, string articleDislikeDtos, 
+            string articleComments, string usersRelatedToArticle)
         {
+            articleDto.ArticleLikeDtos = JsonConvert.DeserializeObject<List<ArticleLikeDto>>(articleLikeDtos);
+            articleDto.ArticleDislikeDtos = JsonConvert.DeserializeObject<List<ArticleDislikeDto>>(articleDislikeDtos);
+
             var articleViewModel = new ArticleViewModel
             {
                 Article = articleDto,
