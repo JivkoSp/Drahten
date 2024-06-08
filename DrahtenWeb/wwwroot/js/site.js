@@ -109,13 +109,13 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
 
     const inputElementArticleLikes = $("<input>", {
         type: "hidden",
-        name: "ArticleLikeDtos",
+        name: "articleLikeDtos",
         value: JSON.stringify(article.ArticleLikeDtos)
     });
 
     const inputElementArticleDislikes = $("<input>", {
         type: "hidden",
-        name: "ArticleDislikeDtos",
+        name: "articleDislikeDtos",
         value: JSON.stringify(article.ArticleDislikeDtos)
     });
 
