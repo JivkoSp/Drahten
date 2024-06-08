@@ -152,13 +152,18 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historySeachedArticleDataViewModel = new HistorySeachedArticleDataViewModel();
+
                 //Get the user id.
                 //Here the NameIdentifier claim type represents the user id.
                 var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var response = await _privateHistoryService.GetSearchedArticlesAsync<ResponseDto>(userId, accessToken);
+                response = await _privateHistoryService.GetSearchedArticlesAsync<ResponseDto>(userId, accessToken);
 
                 if (pageNumber < 1)
                 {
@@ -169,47 +174,31 @@ namespace DrahtenWeb.Controllers
 
                 var allSearchedArticles = response.Map<List<SearchedArticleDataDto>>();
 
-                var tempList = new List<SearchedArticleDataDto>
-                {
-                   new SearchedArticleDataDto
-                   {
-                       SearchedArticleDataId = Guid.NewGuid(),
-                       ArticleId = "122",
-                       UserId = "111",
-                       SearchedData = "...",
-                       DateTime = DateTimeOffset.Now
-                   },
-                   new SearchedArticleDataDto
-                   {
-                       SearchedArticleDataId = Guid.NewGuid(),
-                       ArticleId = "122",
-                       UserId = "111",
-                       SearchedData = "...",
-                       DateTime = DateTimeOffset.Now
-                   },
-                   new SearchedArticleDataDto
-                   {
-                       SearchedArticleDataId = Guid.NewGuid(),
-                       ArticleId = "122",
-                       UserId = "111",
-                       SearchedData = "...",
-                       DateTime = DateTimeOffset.Now
-                   }
-                };
-
-                int searchedArticlesCount = tempList.Count;
+                int searchedArticlesCount = allSearchedArticles.Count;
 
                 var pagination = new Pagination(searchedArticlesCount, pageNumber, pageSize);
 
                 int skipSearchedArticles = (pageNumber - 1) * pageSize;
 
-                var searchedArticles = tempList.Skip(skipSearchedArticles).Take(pagination.PageSize).ToList();
+                var searchedArticles = allSearchedArticles.Skip(skipSearchedArticles).Take(pagination.PageSize).ToList();
 
-                var historySeachedArticleDataViewModel = new HistorySeachedArticleDataViewModel
+                foreach(var searchedArticle in searchedArticles)
                 {
-                    SearchedArticles = searchedArticles,
-                    Pagination = pagination
-                };
+                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(searchedArticle.ArticleId, accessToken);
+
+                    var searchedArticleDataViewModel = new SearchedArticleDataViewModel
+                    {
+                        SearchedArticleDataId = searchedArticle.SearchedArticleDataId,
+                        Article = response.Map<ArticleDto>(),
+                        UserId = searchedArticle.UserId,
+                        SearchedData = searchedArticle.SearchedData,
+                        DateTime = searchedArticle.DateTime
+                    };
+
+                    historySeachedArticleDataViewModel.SearchedArticles.Add(searchedArticleDataViewModel);
+                }
+
+                historySeachedArticleDataViewModel.Pagination = pagination;
 
                 return new JsonResult(historySeachedArticleDataViewModel);
             }
