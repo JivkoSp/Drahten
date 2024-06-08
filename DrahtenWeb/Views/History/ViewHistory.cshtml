@@ -345,7 +345,7 @@
 
 
                             tableData['User'].push(element.viewedUser.userNickName);
-                            tableData['Watched'].push(element.dateTime);
+                            tableData['Watched'].push(formatDateTime(element.dateTime));
                             tableData['View'].push(buttonElementViewUser);
                             tableData['Remove'].push(buttonElementRemoveUser);
                             tableData['Move'].push(buttonElementMove);
@@ -440,7 +440,7 @@
 
                             tableData['Article'].push(element.article.title);
                             tableData['Searched Data'].push(element.searchedData);
-                            tableData['Search Time'].push(element.dateTime);
+                            tableData['Search Time'].push(formatDateTime(element.dateTime));
                             tableData['View'].push(buttonElementViewArticle);
                             tableData['Remove'].push(buttonElementRemoveSearchedArticle);
                             tableData['Move'].push(buttonElementMove);
@@ -498,9 +498,19 @@
 
                         response.likedArticles.forEach((element) => {
 
-                            tableData['Article'].push(element.articleId);
-                            tableData['Time'].push(element.dateTime);
-                            tableData['Remove'].push('Remove');
+                            const buttonElementRemoveLikedArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveLikedArticle.on("click", () => {
+                                console.log("Remove article");
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Time'].push(formatDateTime(element.dateTime));
+                            tableData['Remove'].push(buttonElementRemoveLikedArticle);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
