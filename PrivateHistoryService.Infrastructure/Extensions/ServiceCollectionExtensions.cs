@@ -17,6 +17,7 @@ using PrivateHistoryService.Infrastructure.AsyncDataServices;
 using PrivateHistoryService.Infrastructure.EventProcessing;
 using PrivateHistoryService.Application.Services.WriteServices;
 using PrivateHistoryService.Infrastructure.EntityFramework.Services.WriteServices;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -25,6 +26,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var postgresOptions = configuration.GetOptions<PostgresOptions>("Postgres");
+
+            services.AddSingleton<IEncryptionProvider>(new EncryptionProvider("A1B2C3D4E5F60789"));
 
             services.AddDbContext<ReadDbContext>(options => options.UseNpgsql(postgresOptions.ConnectionString));
 
