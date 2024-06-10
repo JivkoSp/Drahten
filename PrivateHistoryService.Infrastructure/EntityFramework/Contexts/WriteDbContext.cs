@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
@@ -9,10 +10,13 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
     internal sealed class WriteDbContext : DbContext
     {
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IEncryptionProvider _encryptionProvider;
 
-        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory) : base(options)
+        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory, 
+            IEncryptionProvider encryptionProvider) : base(options)
         {
             _loggerFactory = loggerFactory;
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<User> Users { get; set; }
@@ -40,7 +44,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
             base.OnModelCreating(modelBuilder);
 
             //Applying configurations for the domain entities and value objects
-            modelBuilder.ApplyConfiguration(new CommentedArticleConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentedArticleConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new DislikedArticleCommentConfiguration());
             modelBuilder.ApplyConfiguration(new DislikedArticleConfiguration());
             modelBuilder.ApplyConfiguration(new LikedArticleCommentConfiguration());
