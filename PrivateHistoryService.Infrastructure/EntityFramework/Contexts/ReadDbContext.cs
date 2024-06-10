@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration;
 using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
@@ -6,8 +7,11 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 {
     internal sealed class ReadDbContext : DbContext
     {
-        public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ReadDbContext(DbContextOptions<ReadDbContext> options, IEncryptionProvider encryptionProvider) : base(options)
         {
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<UserReadModel> Users { get; set; }
@@ -29,7 +33,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
             base.OnModelCreating(modelBuilder);
 
             //Applying configurations for the entity models
-            modelBuilder.ApplyConfiguration(new CommentedArticleConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentedArticleConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new DislikedArticleCommentConfiguration());
             modelBuilder.ApplyConfiguration(new DislikedArticleConfiguration());
             modelBuilder.ApplyConfiguration(new LikedArticleCommentConfiguration());
