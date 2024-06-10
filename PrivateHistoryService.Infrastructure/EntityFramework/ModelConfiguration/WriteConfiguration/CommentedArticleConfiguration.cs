@@ -2,11 +2,20 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class CommentedArticleConfiguration : IEntityTypeConfiguration<CommentedArticle>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public CommentedArticleConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<CommentedArticle> builder)
         {
             //Table name
@@ -19,8 +28,6 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
             builder.HasKey("CommentedArticleId");
 
             //Property config - Start
-
-            var commentConverter = new ValueConverter<ArticleComment, string>(x=> x, x => new ArticleComment(x));
 
             #region ConversionToUUID
             // *** IMPORTANT! ***
@@ -45,10 +52,12 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(typeof(ArticleComment), "ArticleComment")
-                .HasConversion(commentConverter)
+                .HasConversion(new EncryptedArticleCommentConverter(_encryptionProvider))
+                .HasColumnName("ArticleComment")
                 .IsRequired();
 
             builder.Property(typeof(DateTimeOffset), "DateTime")
+               .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
                .IsRequired();
 
             //Property config - End
