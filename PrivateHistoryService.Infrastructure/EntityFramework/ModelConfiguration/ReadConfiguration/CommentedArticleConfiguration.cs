@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration
 {
     internal sealed class CommentedArticleConfiguration : IEntityTypeConfiguration<CommentedArticleReadModel>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public CommentedArticleConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<CommentedArticleReadModel> builder)
         {
             //Table name
@@ -23,9 +32,11 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(p => p.ArticleComment)
+                .HasConversion(new EncryptedStringConverter<string>(_encryptionProvider))
                 .IsRequired();
 
             builder.Property(p => p.DateTime)
+                .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
                 .IsRequired();
 
             //Property config - End
