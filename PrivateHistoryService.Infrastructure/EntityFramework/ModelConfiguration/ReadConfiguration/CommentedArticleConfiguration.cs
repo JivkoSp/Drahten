@@ -32,7 +32,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(p => p.ArticleComment)
-                .HasConversion(new EncryptedStringConverter<string>(_encryptionProvider))
+                .HasConversion(new EncryptedStringConverter(_encryptionProvider))
                 .IsRequired();
 
             builder.Property(p => p.DateTime)
