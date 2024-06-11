@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class DislikedArticleCommentConfiguration : IEntityTypeConfiguration<DislikedArticleComment>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public DislikedArticleCommentConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<DislikedArticleComment> builder)
         {
             //Table name
@@ -44,6 +53,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(typeof(DateTimeOffset), "DateTime")
+              .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
               .IsRequired();
 
             //Property config - End
