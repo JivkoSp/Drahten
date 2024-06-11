@@ -1,0 +1,37 @@
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
+
+namespace PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters
+{
+    internal sealed class EncryptedSearchedDataConverter : ValueConverter<SearchedData, string>
+    {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public EncryptedSearchedDataConverter(IEncryptionProvider encryptionProvider, ConverterMappingHints mappingHints = null)
+            : base(
+                  v => ConvertToString(v, encryptionProvider),
+                  v => ConvertToArticleComment(v, encryptionProvider),
+                  mappingHints)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
+        private static string ConvertToString(string searchedData, IEncryptionProvider encryptionProvider)
+        {
+            // Encrypt the string
+            string encryptedValue = encryptionProvider.Encrypt(searchedData);
+
+            return encryptedValue;
+        }
+
+        private static SearchedData ConvertToArticleComment(string value, IEncryptionProvider encryptionProvider)
+        {
+            // Decrypt the string
+            string decryptedValue = encryptionProvider.Decrypt(value);
+
+            // Convert string to SearchedData
+            return new SearchedData(decryptedValue);
+        }
+    }
+}
