@@ -45,16 +45,16 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 
             //Applying configurations for the domain entities and value objects
             modelBuilder.ApplyConfiguration(new CommentedArticleConfiguration(_encryptionProvider));
-            modelBuilder.ApplyConfiguration(new DislikedArticleCommentConfiguration());
-            modelBuilder.ApplyConfiguration(new DislikedArticleConfiguration());
-            modelBuilder.ApplyConfiguration(new LikedArticleCommentConfiguration());
-            modelBuilder.ApplyConfiguration(new LikedArticleConfiguration());
-            modelBuilder.ApplyConfiguration(new SearchedArticleDataConfiguration());
-            modelBuilder.ApplyConfiguration(new SearchedTopicDataConfiguration());
-            modelBuilder.ApplyConfiguration(new TopicSubscriptionConfiguration());
+            modelBuilder.ApplyConfiguration(new DislikedArticleCommentConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new DislikedArticleConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new LikedArticleCommentConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new LikedArticleConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new SearchedArticleDataConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new SearchedTopicDataConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new TopicSubscriptionConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new ViewedArticleConfiguration());
-            modelBuilder.ApplyConfiguration(new ViewedUserConfiguration());
+            modelBuilder.ApplyConfiguration(new ViewedArticleConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ViewedUserConfiguration(_encryptionProvider));
         }
     }
 }
