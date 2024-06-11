@@ -9,12 +9,11 @@ using Serilog;
 // Add Serilog configuration
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
-    .WriteTo.Console() // Add console (sink).
+    .WriteTo.Console() // Add console sink.
     .WriteTo.Http(requestUri: "http://localhost:5000",
                   queueLimitBytes: 1000000,
-                  batchFormatter: new SerilogJsonFormatter())
+                  batchFormatter: new SerilogJsonFormatter()) //Add http sink.
     .CreateLogger();
-
 
 var builder = WebApplication.CreateBuilder(args);
 
