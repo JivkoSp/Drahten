@@ -18,6 +18,8 @@ using PrivateHistoryService.Infrastructure.EventProcessing;
 using PrivateHistoryService.Application.Services.WriteServices;
 using PrivateHistoryService.Infrastructure.EntityFramework.Services.WriteServices;
 using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
+using PrivateHistoryService.Application.Commands.Handlers;
+using PrivateHistoryService.Infrastructure.Logging;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -84,6 +86,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
             services.AddSingleton<IEventProcessor, EventProcessor>();
 
             services.AddHostedService<MessageBusSubscriber>();
+
+            services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
