@@ -148,8 +148,15 @@ services:
     postgredb_privatehistory_service:
         container_name: privatehistory_service_postgredb
         image: postgres:14.2
+        command: [
+          "postgres",
+          "-c", "ssl=on",
+          "-c", "ssl_cert_file=/var/lib/postgresql/certs/server.crt",
+          "-c", "ssl_key_file=/var/lib/postgresql/certs/server.key"
+        ]
         volumes:
           - privatehistory_service_postgredb_vlm:/var/lib/postgresql/data/
+          - ./database-certs:/var/lib/postgresql/certs
         env_file:
           - ./database-privatehistory-service.dev.env
         healthcheck:
