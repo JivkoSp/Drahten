@@ -1,12 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class SearchedArticleDataConfiguration : IEntityTypeConfiguration<SearchedArticleData>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public SearchedArticleDataConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<SearchedArticleData> builder)
         {
             //Table name
@@ -19,8 +27,6 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
             builder.HasKey("SearchedArticleDataId");
 
             //Property config - Start
-
-            var searchedDataConverter = new ValueConverter<SearchedData, string>(x => x, x => new SearchedData(x));
 
             #region ConversionToUUID
             // *** IMPORTANT! ***
@@ -45,10 +51,11 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(typeof(SearchedData), "SearchedData")
-                .HasConversion(searchedDataConverter)
+                .HasConversion(new EncryptedSearchedDataConverter(_encryptionProvider))
                 .IsRequired();
 
             builder.Property(typeof(DateTimeOffset), "DateTime")
+              .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
               .IsRequired();
 
             //Property config - End
