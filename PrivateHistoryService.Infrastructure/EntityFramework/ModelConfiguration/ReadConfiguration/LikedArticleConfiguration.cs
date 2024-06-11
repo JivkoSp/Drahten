@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration
 {
     internal sealed class LikedArticleConfiguration : IEntityTypeConfiguration<LikedArticleReadModel>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public LikedArticleConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<LikedArticleReadModel> builder)
         {
             //Table name
@@ -23,6 +32,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(p => p.DateTime)
+                .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
                 .IsRequired();
 
             //Property config - End
