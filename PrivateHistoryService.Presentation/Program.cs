@@ -2,7 +2,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Infrastructure.Extensions;
+using PrivateHistoryService.Infrastructure.Logging.Formatters;
 using PrivateHistoryService.Presentation.Middlewares;
+using Serilog;
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console() // Add console (sink).
+    .WriteTo.Http(requestUri: "http://localhost:5000",
+                  queueLimitBytes: 1000000,
+                  batchFormatter: new SerilogJsonFormatter())
+    .CreateLogger();
+
 
 var builder = WebApplication.CreateBuilder(args);
 
