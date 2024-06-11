@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class ViewedArticleConfiguration : IEntityTypeConfiguration<ViewedArticle>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ViewedArticleConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<ViewedArticle> builder)
         {
             //Table name
@@ -42,7 +51,8 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .IsRequired();
 
             builder.Property(typeof(DateTimeOffset), "DateTime")
-              .IsRequired();
+                .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
+                .IsRequired();
 
             //Property config - End
         }
