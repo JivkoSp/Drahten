@@ -1,19 +1,41 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using System.Threading.RateLimiting;
 using UserService.Application.Extensions;
 using UserService.Infrastructure.Extensions;
+using UserService.Infrastructure.Logging.Formatters;
 using UserService.Presentation.Middlewares;
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.Http(requestUri: "http://localhost:5000",
+                  queueLimitBytes: 1000000,
+                  batchFormatter: new SerilogJsonFormatter()) 
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Add logging configuration
-builder.Logging.ClearProviders(); // Clear default logging providers
+builder.Host.UseSerilog();
 
-builder.Logging.AddConsole(); // Add Console logger
+builder.Services.AddSingleton(serviceProvider =>
+{
+    var options = new TokenBucketRateLimiterOptions
+    {
+        TokenLimit = 100, // Max number of tokens in the bucket
+        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+        QueueLimit = 10, // Allows for brief traffic bursts
+        ReplenishmentPeriod = TimeSpan.FromSeconds(1),
+        TokensPerPeriod = 10, // Tokens added per replenishment period
+        AutoReplenishment = true
+    };
 
-builder.Logging.SetMinimumLevel(LogLevel.Debug); // Set minimum log level to Debug
+    return new TokenBucketRateLimiter(options);
+});
 
 builder.Services.AddControllers();
 
