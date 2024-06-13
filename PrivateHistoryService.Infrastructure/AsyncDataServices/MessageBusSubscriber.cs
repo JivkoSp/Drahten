@@ -37,6 +37,8 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
 
             _channel.ExchangeDeclare(exchange: "topic_article_service", type: ExchangeType.Direct);
 
+            _channel.ExchangeDeclare(exchange: "search_service", type: ExchangeType.Direct);
+
             _queueName = _channel.QueueDeclare().QueueName;
 
             _channel.QueueBind(queue: _queueName,
@@ -66,6 +68,10 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
             _channel.QueueBind(queue: _queueName,
                      exchange: "topic_article_service",
                      routingKey: "topic_article_service.topic-subscription");
+
+            _channel.QueueBind(queue: _queueName,
+                     exchange: "search_service",
+                     routingKey: "search_service.searched-article-data");
 
             Console.WriteLine("\n--> PrivateHistoryService listening on the message bus!\n");
 
