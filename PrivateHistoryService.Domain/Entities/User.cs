@@ -7,6 +7,7 @@ namespace PrivateHistoryService.Domain.Entities
 {
     public class User : AggregateRoot<UserID>
     {
+        private UserRetentionUntil _userRetention;
         private HashSet<ViewedArticle> _viewedArticles = new HashSet<ViewedArticle>();
         private List<TopicSubscription> _subscribedTopics = new List<TopicSubscription>();
         private HashSet<SearchedArticleData> _searchedArticleInformation = new HashSet<SearchedArticleData>();
@@ -77,6 +78,18 @@ namespace PrivateHistoryService.Domain.Entities
             ValidateConstructorParameters<NullUserParametersException>([userId]);
 
             Id = userId;
+        }
+
+        public void SetUserRetentionDateTime(UserRetentionUntil userRetentionUntil)
+        {
+            if(userRetentionUntil == null)
+            {
+                throw new NullUserRetentionUntilException(Id);
+            }
+
+            _userRetention = userRetentionUntil;
+
+            AddEvent(new UserRetentionUntilAdded(this, userRetentionUntil));
         }
 
         public void AddViewedArticle(ViewedArticle viewedArticle)
