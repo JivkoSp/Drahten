@@ -1,38 +1,38 @@
-﻿<div id="home-menu-container" class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-        <a href="#" class="nav-link" style="font-size:30px;">
+﻿<div id="home-menu-container" class="col-auto bg-dark">
+    <div class="d-flex flex-column align-items-sm-start pt-2 text-white min-vh-100 pe-5">
+        <a href="#" class="nav-link ps-1 home-menu-logo" style="font-size:1.5rem;">
             Drahten <i class="fa fa-cubes" aria-hidden="true"></i>
         </a>
 
-        <div id="searchoptions-menu-container" class="mt-4">
-        </div>
+        <div id="searchoptions-menu-container" class="mt-4"></div>
 
-        <ul class="home-menu nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
+        <ul class="home-menu nav nav-pills flex-column mb-sm-auto mb-0 gap-1">
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-home pe-1"></i> Home</a>
             </li>
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-hashtag"></i> Explore</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-hashtag pe-1"></i> Explore</a>
             </li>
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-bell"></i> Notifications</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-bell pe-1"></i> Notifications</a>
             </li>
             <li class="nav-item">
-                <a asp-controller="History" asp-action="ViewHistory" class="home-menu-content nav-link">
-                    <i class="fa fa-book" aria-hidden="true"></i> History
+                <a asp-controller="History" asp-action="ViewHistory" class="home-menu-content nav-link ps-2">
+                    <i class="fa fa-book pe-1" aria-hidden="true"></i> History
                 </a>
             </li>
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-envelope"></i> Messages</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-envelope pe-1"></i> Messages</a>
             </li>
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-user pe-1"></i> Profile</a>
             </li>
             <li class="nav-item">
-                <a class="home-menu-content nav-link" href="#"><i class="fas fa-ellipsis-h"></i> More</a>
+                <a class="home-menu-content nav-link ps-2" href="#"><i class="fas fa-ellipsis-h pe-1"></i> More</a>
             </li>
             <li class="nav-item">
-                <a asp-controller="Home" asp-action="Logout" class="home-menu-content nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <hr />
+                <a asp-controller="Home" asp-action="Logout" class="home-menu-content nav-link ps-2"><i class="fas fa-sign-out-alt pe-1"></i> Logout</a>
             </li>
         </ul>
     </div>
