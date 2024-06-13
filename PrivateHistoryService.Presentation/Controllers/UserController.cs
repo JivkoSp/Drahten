@@ -233,6 +233,15 @@ namespace PrivateHistoryService.Presentation.Controllers
             return Created(HttpContext.Request.Path, null);
         }
 
+        [HttpPost("{UserId:guid}/retention-datetime/")]
+        [ProducesResponseType(typeof(ResponseDto), 201)]
+        public async Task<ActionResult> SetUserRetentionDateTime([FromBody] SetUserRetentionDateTimeCommand setUserRetentionDateTimeCommand)
+        {
+            await _commandDispatcher.DispatchAsync(setUserRetentionDateTimeCommand);
+
+            return Created(HttpContext.Request.Path, null);
+        }
+
         [HttpPost("{UserId:guid}/commented-articles/{ArticleId:guid}")]
         [ProducesResponseType(typeof(ResponseDto), 201)]
         public async Task<ActionResult> AddCommentedArticle([FromBody] AddCommentedArticleCommand addCommentedArticleCommand)
