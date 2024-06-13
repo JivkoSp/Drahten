@@ -80,6 +80,12 @@ namespace PrivateHistoryService.Domain.Entities
             Id = userId;
         }
 
+        public bool HasUserRetentionDateTime()
+            => _userRetention != null;
+
+        public bool IsUserRetentionDateTimeExpired(DateTimeOffset dateTime)
+            => _userRetention.RetentionUntil < dateTime;
+
         public void SetUserRetentionDateTime(UserRetentionUntil userRetentionUntil)
         {
             if(userRetentionUntil == null)
