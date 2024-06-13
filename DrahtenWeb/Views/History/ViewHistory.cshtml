@@ -1,73 +1,118 @@
 ﻿<div class="container mt-5">
     <div class="row">
-        <h2 class="text-center mb-2">Your actions</h2>
+        <div class="col-12 text-center">
+            <h2>Your Actions</h2>
+            <hr />
+        </div>
+    </div>
 
-        <hr />
-
-        <div class="col-md-12 col-lg-8 mt-5">
-
-            <div class="input-group input-group-md">
-                <span class="input-group-text rounded-start-5">
-                    <i class="fa fa-search text-primary" aria-hidden="true"></i>
-                </span>
-                <input type="text" class="form-control rounded-end-5 shadow-sm" placeholder="Search by keyword..." />
-            </div>
-
-            <div id="historyTableContainer" class="card-body">
-                <div id="viewedArticlesTableContainer" class="table-responsive">
+    <div class="row">
+        <div class="col-lg-8 mt-3">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-text">
+                            <i class="fa fa-search text-primary"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Search by keyword..." />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="historyTableContainer">
+                        <div id="viewedArticlesTableContainer" class="table-responsive">
+                            <!-- Table content goes here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 ps-4 pt-3 mt-5">
+        <div class="col-lg-4 mt-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    
+                    <h5 class="card-title text-success">Private History</h5>
 
-            <div class="ps-3 text-success" style="font-size:2em;">
-                Private history
+                    <ul class="nav nav-pills flex-column">
+                        <li id="viewedArticles" class="nav-item">
+                            <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-file-alt pe-1"></i> Viewed articles</a>
+                        </li>
+                        <li id="viewedUsers" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i> Viewed users</a>
+                        </li>
+                        <li id="searchedArticleData" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-search pe-1"></i> Searched article data</a>
+                        </li>
+                        <li id="likedArticles" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-thumbs-up pe-1"></i> Liked articles</a>
+                        </li>
+                        <li id="dislikedArticles" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-thumbs-down pe-1"></i> Disliked articles</a>
+                        </li>
+                        <li id="commentedArticles" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-comment pe-1"></i> Commented articles</a>
+                        </li>
+                        <li id="likedArticleComments" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-heart pe-1"></i> Liked article comments</a>
+                        </li>
+                        <li id="dislikedArticleComments" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-heart-broken pe-1"></i> Disliked article comments</a>
+                        </li>
+                        <li id="searchedTopicData" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-tags pe-1"></i> Searched topic data</a>
+                        </li>
+                        <li id="topicSubscriptions" class="nav-item">
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-rss pe-1"></i> Topic subscriptions</a>
+                        </li>
+                    </ul>
+
+                    <hr />
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-primary btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#retentionModal">
+                            <i class="fas fa-clock pe-1"></i> Set Retention Period
+                        </button>
+                        <button class="btn btn-primary btn-sm btn-custom">
+                            <i class="fas fa-lock pe-1"></i> Private
+                        </button>
+                        <button class="btn btn-primary btn-sm btn-custom">
+                            <i class="fas fa-lock-open pe-1"></i> Public
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <div class="h-75 overflow-auto">
-                <ul class="home-menu nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start">
-                    <li id="viewedArticles" class="nav-item">
-                        <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-home pe-1"></i>Viewed articles</a>
-                    </li>
-                    <li id="viewedUsers" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-hashtag pe-1"></i> Viewed users</a>
-                    </li>
-                    <li id="searchedArticleData" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Searched article data</a>
-                    </li>
-                    <li id="likedArticles" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked articles</a>
-                    </li>
-                    <li id="dislikedArticles" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked articles</a>
-                    </li>
-                    <li id="commentedArticles" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Commented articles</a>
-                    </li>
-                    <li id="likedArticleComments" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Liked article comments</a>
-                    </li>
-                    <li id="dislikedArticleComments" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-bell pe-1"></i>Disliked article comments</a>
-                    </li>
-                    <li id="searchedTopicData" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-envelope pe-1"></i>Searched topic data</a>
-                    </li>
-                    <li id="topicSubscriptions" class="nav-item">
-                        <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i>Topic subscriptions</a>
-                    </li>
-                </ul>
-            </div>
-
-            <hr />
-            <button class="btn btn-primary text-white">Private</button>
-            <button class="btn btn-primary text-white">Public</button>
         </div>
-
     </div>
 </div>
 
+<!-- Retention Modal -->
+<div class="modal fade" id="retentionModal" tabindex="-1" aria-labelledby="retentionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title" id="retentionModalLabel">Set History Retention Period <i class="fas fa-clock ps-2"></i></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="retentionForm">
+                    <div class="form-group">
+                        <label for="historyRetention">Keep history for:</label>
+                        <select id="historyRetention" class="form-control">
+                            <option value="7">1 week</option>
+                            <option value="14">2 weeks</option>
+                            <option value="30">1 month</option>
+                        </select>
+                    </div>
+                </form>
+                <small class="form-text text-muted">Your private history will be deleted after the selected period.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="setHistoryRetention()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -187,6 +232,12 @@
             });
         });
 
+        function setHistoryRetention() {
+            
+            const retentionPeriod = document.getElementById('historyRetention').value;
+
+
+        }
 
         function DisplayViewedArticles(pageNumber = 1) {
 
