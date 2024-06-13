@@ -67,6 +67,8 @@ namespace PrivateHistoryService.Infrastructure.Extensions
 
             services.AddScoped<ISearchedArticleDataWriteService, PostgresSearchedArticleDataWriteService>();
 
+            services.AddScoped<IUserWriteService, PostgresUserWriteService>();
+
             services.AddQueriesWithDispatcher();
 
             services.AddAutoMapper(configAction =>
