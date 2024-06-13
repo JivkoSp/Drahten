@@ -6,6 +6,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Models
         //Primary key
         public string UserId { get; set; }
         public int Version { get; set; }
+        public DateTimeOffset? RetentionUntil { get; set; } // Date until which data should be retained
 
         //Relationships
         public virtual ICollection<ViewedArticleReadModel> ViewedArticles { get; set; }
