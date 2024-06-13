@@ -12,6 +12,9 @@ import requests
 from ratelimit import RateLimitException
 import json
 import re
+from datetime import datetime
+import pytz
+
 
 class CybersecurityNewsEuropeSummarizationViewSet(viewsets.ViewSet):
     
@@ -115,7 +118,11 @@ class CybersecurityNewsEuropeQuestionViewSet(viewsets.ViewSet):
 
 
 class CybersecurityNewsEuropeSemanticSearchDataViewSet(viewsets.ViewSet):
-     
+    
+     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.messageBusPublisher = messageBusClient.MessageBusPublisher()
+      
     #Retrieves information with SEMANTIC query from document stored in cybersecurity_news_europe index.
     #Input: The request body must have json with the following format: {"document_id": "", "query": ""} where document_id is 
     #       valid id of document stored in cybersecurity_news_europe index.
@@ -125,35 +132,65 @@ class CybersecurityNewsEuropeSemanticSearchDataViewSet(viewsets.ViewSet):
     #ProducesResponseType(HTTP_400_BAD_REQUEST, ResponseDto)
      def create(self, request):
         try:
-            questionDto = request.data
+            # Apply request rate limiting.
+            ratelimiting.rate_limiter()
 
-            query_response = models.search_engine_cybersecurity_news_europe.document_store.get_document_by_id(id=questionDto['document_id'])
+            # Get the access token from the request headers
+            authorization_header = request.headers.get("Authorization")
 
-            if not query_response:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            if authorization_header:
+                # Extract the token part from the Authorization header.
+                token = authorization_header.split(" ")[1]  
+                
+                # Call the authorize function and initialize the variable decoded_token
+                # with the result. The decoded_token will contain the decoded information from token if the token is valid.
+                # Possible values for decoded_token: None, dict[str, str].
+                decoded_token = authorization.authorize(token)
 
-            query_response = models.search_engine_cybersecurity_news_europe.query_pipeline.run(
-                query = questionDto['query'],
-                documents=[query_response]
-            )
+                if decoded_token is None:
+                     #### TODO
+                     #### Throw custom exception.
+                    pass
 
-            document = None
+                questionDto = request.data
 
-            for answer in query_response['answers']:
-                answer = answer.to_dict()
-                if(answer['document_ids'][0] == questionDto['document_id']):
-                    document = answer
-                    break
-            
-            query_answer = models.NLPQueryAnswer(document)
+                query_response = models.search_engine_cybersecurity_news_europe.document_store.get_document_by_id(id=questionDto['document_id'])
 
-            serialized_query_answer = serializers.NLPQueryAnswerSerializer(query_answer)
+                if not query_response:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
 
-            responseDto = dtos.ResponseDto(IsSuccess=True, Result=serialized_query_answer.data)
+                searchedArticleDataDto = dtos.SearchedArticleDataDto(articleId=questionDto['document_id'], 
+                                                                     userId=decoded_token['sub'], 
+                                                                     searchedData=questionDto['query'],
+                                                                     dateTime=datetime.now(pytz.utc))
 
-            serialized_responseDto = serializers.ResponseDtoSerializer(responseDto)
+                # Post message to the message broker about searching information about document with ID: document_id by user with ID: userId.
+                self.messageBusPublisher.PublishSearchedDocumentData(searchedArticleDataDto)
 
-            return Response(status=status.HTTP_200_OK, data=serialized_responseDto.data)
+                query_response = models.search_engine_cybersecurity_news_europe.query_pipeline.run(
+                    query = questionDto['query'],
+                    documents=[query_response]
+                )
+
+                document = None
+
+                for answer in query_response['answers']:
+                    answer = answer.to_dict()
+                    if(answer['document_ids'][0] == questionDto['document_id']):
+                        document = answer
+                        break
+                
+                query_answer = models.NLPQueryAnswer(document)
+
+                serialized_query_answer = serializers.NLPQueryAnswerSerializer(query_answer)
+
+                responseDto = dtos.ResponseDto(IsSuccess=True, Result=serialized_query_answer.data)
+
+                serialized_responseDto = serializers.ResponseDtoSerializer(responseDto)
+
+                return Response(status=status.HTTP_200_OK, data=serialized_responseDto.data)
+            else:
+                return Response("Unauthorized", status=status.HTTP_401_UNAUTHORIZED)
         
         except Exception as ex:
             print(f"Exception {ex}")
@@ -184,12 +221,8 @@ class CybersecurityNewsEuropeViewSet(viewsets.ViewSet):
             # Apply request rate limiting.
             ratelimiting.rate_limiter()
 
-            print(f"Request headers: {request.headers}\n\n")
-
             # Get the access token from the request headers
             authorization_header = request.headers.get("Authorization")
-
-            print(f"Authorization header: {authorization_header}")
 
             if authorization_header:
                 # Extract the token part from the Authorization header.
@@ -209,9 +242,7 @@ class CybersecurityNewsEuropeViewSet(viewsets.ViewSet):
 
                 if not query_response:
                     return Response(status=status.HTTP_404_NOT_FOUND)
-    
-                messageBusClient.publishSearchEvent()
-
+                
                 answers = []
 
                 for answer in query_response:
@@ -221,11 +252,10 @@ class CybersecurityNewsEuropeViewSet(viewsets.ViewSet):
                 serialized_query_answer = serializers.QueryAnswerSerializer(answers, many=True)
 
                 responseDto = dtos.ResponseDto(IsSuccess=True, Result=serialized_query_answer.data)
-
+            
                 serialized_responseDto = serializers.ResponseDtoSerializer(responseDto)
 
                 return Response(status=status.HTTP_200_OK, data=serialized_responseDto.data)
-
             else:
                 return Response("Unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
