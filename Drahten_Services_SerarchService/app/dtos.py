@@ -11,6 +11,15 @@ class ResponseDto(models.Model):
     ErrorMessages = []
 
 
+class SearchedArticleDataDto:
+    def __init__(self, articleId, userId, searchedData, dateTime):
+        self.ArticleId = articleId
+        self.UserId = userId
+        self.SearchedData = searchedData
+        self.DateTime = dateTime
+        self.Event = "SearchedArticleData"
+
+
 class SummarizedDocumentDto(models.Model):
     def __init__(self, DocumentId, DocumentSummary):
         self.DocumentId = DocumentId
