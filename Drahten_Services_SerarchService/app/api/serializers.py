@@ -22,6 +22,12 @@ class QueryAnswerSerializer(serializers.ModelSerializer):
                   'document']
         
 
+class SummarizedDocumentDtoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = dtos.SummarizedDocumentDto
+        fields = ['DocumentId',
+                  'DocumentSummary']
+
 
 class ResponseDtoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,8 +37,21 @@ class ResponseDtoSerializer(serializers.ModelSerializer):
                   'ErrorMessages']
         
 
-class SummarizedDocumentDtoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = dtos.SummarizedDocumentDto
-        fields = ['DocumentId',
-                  'DocumentSummary']
+
+class SearchedArticleDataDtoSerializer(serializers.Serializer):
+    ArticleId = serializers.CharField(max_length=1000)
+    UserId = serializers.CharField(max_length=1000)
+    SearchedData = serializers.CharField(max_length=10000)
+    DateTime = serializers.DateTimeField()
+    Event = serializers.CharField(max_length=100)
+
+    def create(self, validated_data):
+        return dtos.SearchedArticleDataDto(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.ArticleId = validated_data.get('ArticleId', instance.ArticleId)
+        instance.UserId = validated_data.get('UserId', instance.UserId)
+        instance.SearchedData = validated_data.get('SearchedData', instance.SearchedData)
+        instance.DateTime = validated_data.get('DateTime', instance.DateTime)
+        instance.Event = validated_data.get('Event', instance.Event)
+        return instance
