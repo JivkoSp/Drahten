@@ -4,7 +4,6 @@ using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
-using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 {
