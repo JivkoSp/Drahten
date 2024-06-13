@@ -18,6 +18,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
         LikedArticleComment,
         DislikedArticleComment,
         TopicSubscription,
+        SearchedArticleData,
         Undetermined
     }
 
@@ -41,26 +42,29 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             switch (eventType.Event)
             {
                 case "ViewedArticle":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: ViewedArticle event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: ViewedArticle event detected!");
                     return EventType.ViewedArticle;
                 case "LikedArticle":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: LikedArticle event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: LikedArticle event detected!");
                     return EventType.LikedArticle;
                 case "DislikedArticle":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: DislikedArticle event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: DislikedArticle event detected!");
                     return EventType.DislikedArticle;
                 case "CommentedArticle":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: CommentedArticle event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: CommentedArticle event detected!");
                     return EventType.CommentedArticle;
                 case "LikedArticleComment":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: LikedArticleComment event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: LikedArticleComment event detected!");
                     return EventType.LikedArticleComment;
                 case "DislikedArticleComment":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: DislikedArticleComment event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: DislikedArticleComment event detected!");
                     return EventType.DislikedArticleComment;
                 case "TopicSubscription":
-                    Console.WriteLine("--> PrivateHistoryService EventProcessor: TopicSubscription event detected!");
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: TopicSubscription event detected!");
                     return EventType.TopicSubscription;
+                case "SearchedArticleData":
+                    Console.WriteLine("PrivateHistoryService --> EventProcessor: SearchedArticleData event detected!");
+                    return EventType.SearchedArticleData;
                 default:
                     return EventType.Undetermined;
             }
@@ -157,6 +161,19 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await topicSubscriptionWriteService.AddTopicSubscriptionAsync(topicSubscriptionValueObject);
         }
 
+        private async Task WriteSearchedArticleData(string searchedArticleData)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+
+            var searchedArticleDataWriteService = scope.ServiceProvider.GetRequiredService<ISearchedArticleDataWriteService>();
+
+            var searchedArticleDataDto = JsonSerializer.Deserialize<SearchedArticleDataDto>(searchedArticleData);
+
+            var searchedArticleDataValueObject = _mapper.Map<SearchedArticleData>(searchedArticleDataDto);
+
+            await searchedArticleDataWriteService.AddSearchedArticleDataAsync(searchedArticleDataValueObject);
+        }
+
         public async Task ProcessEventAsync(string message)
         {
             var eventType = DetermineEvent(message);
@@ -183,6 +200,9 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
                     break;
                 case EventType.TopicSubscription:
                     await WriteTopicSubscription(message);
+                    break;
+                case EventType.SearchedArticleData:
+                    await WriteSearchedArticleData(message);
                     break;
             }
         }
