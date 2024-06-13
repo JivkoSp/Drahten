@@ -6,8 +6,8 @@ from haystack.document_stores import ElasticsearchDocumentStore
 from haystack import Pipeline
 from haystack.nodes import PreProcessor, BM25Retriever, FARMReader, TransformersSummarizer, QuestionGenerator
 
-
 class SearchEngine():
+
     def _DefineQueryPipeline(self):
         query_pipeline = Pipeline()
         query_pipeline.add_node(component=self.tf_idf_retriever, name="retriever", inputs=["Query"])
@@ -55,7 +55,7 @@ class SearchEngine():
             split_length=100000,
             split_overlap=200,
             split_respect_sentence_boundary=True)
-        
+
         #BM25 is a variant of TF-IDF.
         self.tf_idf_retriever = BM25Retriever(document_store=self.document_store)
 
@@ -79,6 +79,12 @@ class SearchEngine():
         }
         try:
             preprocessed_documents = self.preprocessor.process(documents=documents)
+            
+            # Reset document IDs of preprocessed documents to original IDs
+            # This is needed because the processing step can auther the document IDs.
+            for original_doc, preprocessed_doc in zip(documents, preprocessed_documents):
+                preprocessed_doc.id = original_doc.id
+
             self.document_store.write_documents(documents=preprocessed_documents, duplicate_documents="skip")
             execution_result['value'] = True
         except Exception as ex:
