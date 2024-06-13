@@ -4,6 +4,7 @@ using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
+using PrivateHistoryService.Infrastructure.EntityFramework.Models;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
 {
@@ -25,6 +26,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
         public DbSet<CommentedArticle> CommentedArticles { get; set; }
         public DbSet<LikedArticleComment> LikedArticleComments { get; set; }
         public DbSet<DislikedArticleComment> DislikedArticleComments { get; set; }
+        public DbSet<SearchedArticleData> SearchedArticles { get; set; }
         public DbSet<TopicSubscription> TopicSubscriptions { get; set; }
         public DbSet<ViewedArticle> ViewedArticles { get; set; }
 
