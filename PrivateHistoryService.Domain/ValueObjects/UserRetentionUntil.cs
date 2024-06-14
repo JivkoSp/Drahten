@@ -1,5 +1,4 @@
-﻿
-using PrivateHistoryService.Domain.Exceptions;
+﻿using PrivateHistoryService.Domain.Exceptions;
 
 namespace PrivateHistoryService.Domain.ValueObjects
 {
@@ -9,12 +8,20 @@ namespace PrivateHistoryService.Domain.ValueObjects
 
         public UserRetentionUntil(DateTimeOffset dateTime)
         {
-            if (dateTime == default || dateTime > DateTimeOffset.Now)
+            if (dateTime == default || dateTime < DateTimeOffset.Now)
             {
                 throw new InvalidUserRetentionUntilDateTimeException();
             }
 
             RetentionUntil = dateTime;
         }
+
+        //Conversion from ValueObject to DateTimeOffset.
+        public static implicit operator DateTimeOffset(UserRetentionUntil userRetentionUntil)
+            => userRetentionUntil.RetentionUntil;
+
+        //Conversion from DateTimeOffset to ValueObject.
+        public static implicit operator UserRetentionUntil(DateTimeOffset dateTime)
+            => new UserRetentionUntil(dateTime);
     }
 }
