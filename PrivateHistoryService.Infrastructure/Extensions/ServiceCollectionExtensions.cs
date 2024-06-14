@@ -12,7 +12,6 @@ using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Infrastructure.EntityFramework.Services.ReadServices;
 using PrivateHistoryService.Infrastructure.Exceptions.Interfaces;
 using PrivateHistoryService.Infrastructure.Exceptions;
-using PrivateHistoryService.Infrastructure.UserRegistration;
 using PrivateHistoryService.Infrastructure.AsyncDataServices;
 using PrivateHistoryService.Infrastructure.EventProcessing;
 using PrivateHistoryService.Application.Services.WriteServices;
@@ -107,8 +106,6 @@ namespace PrivateHistoryService.Infrastructure.Extensions
             });
 
             services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
-
-            services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
             services.AddSingleton<IEventProcessor, EventProcessor>();
 
