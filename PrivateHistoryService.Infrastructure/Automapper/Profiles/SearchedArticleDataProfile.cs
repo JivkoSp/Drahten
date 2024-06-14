@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public SearchedArticleDataProfile()
         {
-            CreateMap<SearchedArticleDataReadModel, SearchedArticleDataDto>();
+            CreateMap<SearchedArticleDataReadModel, SearchedArticleDataDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<SearchedArticleDataDto, SearchedArticleData>()
                .ConstructUsing(source =>
