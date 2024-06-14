@@ -615,5 +615,32 @@ namespace DrahtenWeb.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        public async Task SetRetentionPeriod(int retentionDays)
+        {
+            try
+            {
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var userRetentionUntilDto = new UserRetentionUntilDto
+                {
+                    UserId = userId,
+                    DateTime = DateTime.Now.AddDays(retentionDays)
+                };
+
+                await _privateHistoryService.SetUserRetentionDateTimeAsync<string>(userRetentionUntilDto, accessToken);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Log the exception.
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
