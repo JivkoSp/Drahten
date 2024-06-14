@@ -74,7 +74,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             }
         }
 
-        private async Task WriteUserAsync(Guid userId)
+        private async Task TryToWriteUserAsync(Guid userId)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -104,7 +104,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
 
             var viewedArticle = _mapper.Map<ViewedArticle>(viewedArticleDto);
 
-            await WriteUserAsync(viewedArticle.UserID);
+            await TryToWriteUserAsync(viewedArticle.UserID);
 
             await viewedArticleWriteService.AddViewedArticleAsync(viewedArticle);
         }
