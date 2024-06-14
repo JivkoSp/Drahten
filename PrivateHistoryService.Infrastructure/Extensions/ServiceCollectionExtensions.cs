@@ -20,6 +20,9 @@ using PrivateHistoryService.Infrastructure.EntityFramework.Services.WriteService
 using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using PrivateHistoryService.Application.Commands.Handlers;
 using PrivateHistoryService.Infrastructure.Logging;
+using Quartz;
+using PrivateHistoryService.Infrastructure.Schedulers;
+using Quartz.Simpl;
 
 namespace PrivateHistoryService.Infrastructure.Extensions
 {
@@ -84,6 +87,26 @@ namespace PrivateHistoryService.Infrastructure.Extensions
                 configAction.AddProfile<ViewedArticleProfile>();
                 configAction.AddProfile<ViewedUserProfile>();
             });
+
+            services.AddQuartz(configurator =>
+            {
+                configurator.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
+
+                var jobKey = new JobKey("RetentionJob");
+
+                configurator.AddJob<RetentionJob>(opts => opts.WithIdentity(jobKey));
+
+                configurator.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity("RetentionJob-trigger")
+                    .StartNow()
+                    .WithSimpleSchedule(x => x
+                    //.WithIntervalInMinutes(1)    
+                    .WithIntervalInHours(24) // Set the interval to 24 hours.
+                    .RepeatForever()));
+            });
+
+            services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
             services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
