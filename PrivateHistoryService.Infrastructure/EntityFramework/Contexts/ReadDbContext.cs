@@ -41,7 +41,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new SearchedArticleDataConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new SearchedTopicDataConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new TopicSubscriptionConfiguration(_encryptionProvider));
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new ViewedArticleConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new ViewedUserConfiguration(_encryptionProvider));
         }
