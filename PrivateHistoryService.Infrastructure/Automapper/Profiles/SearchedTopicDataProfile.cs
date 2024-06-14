@@ -8,7 +8,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public SearchedTopicDataProfile()
         {
-            CreateMap<SearchedTopicDataReadModel, SearchedTopicDataDto>();
+            CreateMap<SearchedTopicDataReadModel, SearchedTopicDataDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
         }
     }
 }
