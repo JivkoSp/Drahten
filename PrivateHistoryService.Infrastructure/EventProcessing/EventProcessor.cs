@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using PrivateHistoryService.Application.Dtos;
+using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Application.Services.WriteServices;
+using PrivateHistoryService.Domain.Factories.Interfaces;
+using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.Dtos;
 using System.Text.Json;
@@ -75,10 +78,25 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             using var scope = _serviceScopeFactory.CreateScope();
 
             var viewedArticleWriteService = scope.ServiceProvider.GetRequiredService<IViewedArticleWriteService>();
-            
+
+            var userReadService = scope.ServiceProvider.GetRequiredService<IUserReadService>();
+
+            var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+
+            var userFactory = scope.ServiceProvider.GetRequiredService<IUserFactory>();
+
             var viewedArticleDto = JsonSerializer.Deserialize<ViewedArticleDto>(article);
 
             var viewedArticle = _mapper.Map<ViewedArticle>(viewedArticleDto);
+
+            var alreadyExists = await userReadService.ExistsByIdAsync(viewedArticle.UserID);
+
+            if (alreadyExists is false)
+            {
+                var user = userFactory.Create(viewedArticle.UserID);
+
+                await userRepository.AddUserAsync(user);
+            }
 
             await viewedArticleWriteService.AddViewedArticleAsync(viewedArticle);
         }
