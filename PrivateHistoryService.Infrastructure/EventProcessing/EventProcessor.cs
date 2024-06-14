@@ -8,6 +8,7 @@ using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.Dtos;
 using System.Text.Json;
+using static System.Formats.Asn1.AsnWriter;
 
 
 namespace PrivateHistoryService.Infrastructure.EventProcessing
@@ -73,11 +74,9 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             }
         }
 
-        private async Task WriteViewedArticle(string article)
+        private async Task WriteUserAsync(Guid userId)
         {
             using var scope = _serviceScopeFactory.CreateScope();
-
-            var viewedArticleWriteService = scope.ServiceProvider.GetRequiredService<IViewedArticleWriteService>();
 
             var userReadService = scope.ServiceProvider.GetRequiredService<IUserReadService>();
 
@@ -85,18 +84,27 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
 
             var userFactory = scope.ServiceProvider.GetRequiredService<IUserFactory>();
 
+            var alreadyExists = await userReadService.ExistsByIdAsync(userId);
+
+            if (alreadyExists is false)
+            {
+                var user = userFactory.Create(userId);
+
+                await userRepository.AddUserAsync(user);
+            }
+        }
+
+        private async Task WriteViewedArticle(string article)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+
+            var viewedArticleWriteService = scope.ServiceProvider.GetRequiredService<IViewedArticleWriteService>();
+
             var viewedArticleDto = JsonSerializer.Deserialize<ViewedArticleDto>(article);
 
             var viewedArticle = _mapper.Map<ViewedArticle>(viewedArticleDto);
 
-            var alreadyExists = await userReadService.ExistsByIdAsync(viewedArticle.UserID);
-
-            if (alreadyExists is false)
-            {
-                var user = userFactory.Create(viewedArticle.UserID);
-
-                await userRepository.AddUserAsync(user);
-            }
+            await WriteUserAsync(viewedArticle.UserID);
 
             await viewedArticleWriteService.AddViewedArticleAsync(viewedArticle);
         }
