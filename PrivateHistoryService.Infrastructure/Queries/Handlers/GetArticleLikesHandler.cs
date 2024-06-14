@@ -22,6 +22,7 @@ namespace PrivateHistoryService.Infrastructure.Queries.Handlers
         {
             var likedArticleReadModels = await _readDbContext.LikedArticles
               .Where(x => x.UserId == query.UserId.ToString())
+              .Include(x => x.User)
               .AsNoTracking()
               .ToListAsync();
 

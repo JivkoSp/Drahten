@@ -22,6 +22,7 @@ namespace PrivateHistoryService.Infrastructure.Queries.Handlers
         {
             var topicSubscriptionReadModels = await _readDbContext.TopicSubscriptions
               .Where(x => x.UserId == query.UserId.ToString())
+              .Include(x => x.User)
               .AsNoTracking()
               .ToListAsync();
 

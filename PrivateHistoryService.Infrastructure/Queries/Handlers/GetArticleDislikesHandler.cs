@@ -22,6 +22,7 @@ namespace PrivateHistoryService.Infrastructure.Queries.Handlers
         {
             var dislikedArticleReadModels = await _readDbContext.DislikedArticles
                .Where(x => x.UserId == query.UserId.ToString())
+               .Include(x => x.User)
                .AsNoTracking()
                .ToListAsync();
 
