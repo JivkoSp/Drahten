@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public TopicSubscriptionProfile()
         {
-            CreateMap<TopicSubscriptionReadModel, TopicSubscriptionDto>();
+            CreateMap<TopicSubscriptionReadModel, TopicSubscriptionDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<TopicSubscriptionDto, TopicSubscription>()
                 .ConstructUsing(source =>
