@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public ViewedArticleProfile()
         {
-            CreateMap<ViewedArticleReadModel, ViewedArticleDto>();
+            CreateMap<ViewedArticleReadModel, ViewedArticleDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<ViewedArticleDto, ViewedArticle>()
                 .ConstructUsing(source => 
