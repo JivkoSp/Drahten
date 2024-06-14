@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public LikedArticleProfile()
         {
-            CreateMap<LikedArticleReadModel, LikedArticleDto>();
+            CreateMap<LikedArticleReadModel, LikedArticleDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<LikedArticleDto, LikedArticle>()
                 .ConstructUsing(source =>
