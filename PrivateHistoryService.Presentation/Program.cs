@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Infrastructure.Extensions;
@@ -38,7 +37,6 @@ builder.Services.AddSingleton(serviceProvider =>
     return new TokenBucketRateLimiter(options);
 });
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddApplication();
@@ -48,8 +46,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
 builder.Services.AddTransient<RateLimitingMiddleware>();
-
-builder.Services.AddTransient<UserRegistrationMiddleware>();
 
 builder.Services.AddAuthentication(options => {
 
@@ -107,8 +103,6 @@ app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseMiddleware<RateLimitingMiddleware>();
-
-app.UseMiddleware<UserRegistrationMiddleware>();
 
 app.MapControllers();
 
