@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public CommentedArticleProfile()
         {
-            CreateMap<CommentedArticleReadModel, CommentedArticleDto>();
+            CreateMap<CommentedArticleReadModel, CommentedArticleDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<CommentedArticleDto, CommentedArticle>()
              .ConstructUsing(source =>
