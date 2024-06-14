@@ -119,8 +119,6 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
 
             var likedArticleValueObject = _mapper.Map<LikedArticle>(likedArticleDto);
 
-            await TryToWriteUserAsync(likedArticleValueObject.UserID);
-
             await likedArticleWriteService.AddLikedArticleAsync(likedArticleValueObject);
         }
 
