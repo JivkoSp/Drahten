@@ -1,4 +1,6 @@
-﻿namespace DrahtenWeb.Services.IServices
+﻿using DrahtenWeb.Dtos.PrivateHistoryService;
+
+namespace DrahtenWeb.Services.IServices
 {
     public interface IPrivateHistoryService : IBaseService
     {
@@ -12,6 +14,7 @@
         Task<TEntity> GetTopicSubscriptionsAsync<TEntity>(Guid userId, string accessToken);
         Task<TEntity> GetViewedArticlesAsync<TEntity>(Guid userId, string accessToken);
         Task<TEntity> GetViewedUsersAsync<TEntity>(Guid userId, string accessToken);
+        Task<TEntity> SetUserRetentionDateTimeAsync<TEntity>(UserRetentionUntilDto userRetentionUntilDto, string accessToken);
         Task<TEntity> RemoveCommentedArticleAsync<TEntity>(Guid userId, Guid commentedArticleId, string accessToken);
         Task<TEntity> RemoveSearchedArticleDataAsync<TEntity>(Guid userId, Guid searchedArticleDataId, string accessToken);
         Task<TEntity> RemoveSearchedTopicDataAsync<TEntity>(Guid userId, Guid searchedTopicDataId, string accessToken);
