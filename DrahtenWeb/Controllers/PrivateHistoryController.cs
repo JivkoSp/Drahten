@@ -71,7 +71,8 @@ namespace DrahtenWeb.Controllers
                         ViewedArticleId = article.ViewedArticleId,
                         Article = response.Map<ArticleDto>(),
                         UserId = article.UserId,
-                        DateTime = article.DateTime
+                        DateTime = article.DateTime,
+                        RetentionUntil = article.RetentionUntil
                     };
 
                     historyArticleViewModel.Articles.Add(viewedArticleViewModel);
