@@ -10,7 +10,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public DislikedArticleProfile()
         {
-            CreateMap<DislikedArticleReadModel, DislikedArticleDto>();
+            CreateMap<DislikedArticleReadModel, DislikedArticleDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.User.RetentionUntil));
 
             CreateMap<DislikedArticleDto, DislikedArticle>()
                 .ConstructUsing(source =>
