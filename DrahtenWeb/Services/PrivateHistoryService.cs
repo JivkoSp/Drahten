@@ -1,4 +1,5 @@
-﻿using DrahtenWeb.Models;
+﻿using DrahtenWeb.Dtos.PrivateHistoryService;
+using DrahtenWeb.Models;
 using DrahtenWeb.Services.IServices;
 
 namespace DrahtenWeb.Services
@@ -123,6 +124,19 @@ namespace DrahtenWeb.Services
             {
                 ApiType = ApiType.GET,
                 Url = $"https://localhost:7076/privatehistory-service/users/{userId}/viewed-users/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> SetUserRetentionDateTimeAsync<TEntity>(UserRetentionUntilDto userRetentionUntilDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/privatehistory-service/users/{userRetentionUntilDto.UserId}/retention-datetime/",
+                Data = userRetentionUntilDto,
                 AccessToken = accessToken
             });
 
