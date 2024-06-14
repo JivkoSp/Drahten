@@ -46,7 +46,7 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
     const buttonElementCardFooter = $("<button>", {
         type: "button",
         'data-formId': "card-form-" + article.ArticleId,
-        class: "btn btn-primary",
+        class: "btn button-color font-monospace",
         onclick: "submitCardForm()"
     });
 
