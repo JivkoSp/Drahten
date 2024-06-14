@@ -6,5 +6,6 @@ namespace PrivateHistoryService.Application.Dtos
         public Guid TopicId { get; set; }
         public string UserId { get; set; }
         public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset? RetentionUntil { get; set; }
     }
 }

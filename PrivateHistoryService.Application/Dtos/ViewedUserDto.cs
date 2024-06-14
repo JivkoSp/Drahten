@@ -7,5 +7,6 @@ namespace PrivateHistoryService.Application.Dtos
         public string ViewerUserId { get; set; }
         public string ViewedUserId { get; set; }
         public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset? RetentionUntil { get; set; }
     }
 }
