@@ -2,11 +2,20 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PrivateHistoryService.Domain.Entities;
 using PrivateHistoryService.Domain.ValueObjects;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using PrivateHistoryService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public UserConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<User> builder)
         {
             //Table name
@@ -15,12 +24,19 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
             //Primary key
             builder.HasKey(key => key.Id);
 
-            //Property config
+            //Property config - Start
+
             builder.Property(p => p.Id)
                .HasConversion(id => id.Value.ToString(), id => new UserID(Guid.Parse(id)))
                .HasColumnName("UserId")
                .ValueGeneratedNever()
                .IsRequired();
+
+            builder.Property(typeof(UserRetentionUntil), "_userRetention")
+                .HasConversion(new EncryptedUserRetentionUntilConverter(_encryptionProvider))
+                .HasColumnName("RetentionUntil");
+
+            //Property config - End
 
             //Relationships
             builder.HasMany(p => p.ViewedArticles);
