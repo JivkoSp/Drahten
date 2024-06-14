@@ -8,7 +8,8 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
     {
         public ViewedUserProfile()
         {
-            CreateMap<ViewedUserReadModel, ViewedUserDto>();
+            CreateMap<ViewedUserReadModel, ViewedUserDto>()
+                .ForMember(dest => dest.RetentionUntil, options => options.MapFrom(source => source.ViewedUser.RetentionUntil));
         }
     }
 }
