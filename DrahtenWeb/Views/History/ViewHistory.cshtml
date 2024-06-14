@@ -236,7 +236,23 @@
             
             const retentionPeriod = document.getElementById('historyRetention').value;
 
-
+            //Send ajax HTTP POST request to /PrivateHistory/SetRetentionPeriod.
+            $.ajax({
+                type: 'POST',
+                url: '/PrivateHistory/SetRetentionPeriod',
+                data: {
+                    'retentionDays': retentionPeriod
+                },
+                success: (response) => {
+                    console.log("success", response);
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
         }
 
         function DisplayViewedArticles(pageNumber = 1) {
