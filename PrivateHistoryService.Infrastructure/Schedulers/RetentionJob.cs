@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PrivateHistoryService.Application.Extensions;
 using PrivateHistoryService.Application.Services.WriteServices;
 using PrivateHistoryService.Domain.ValueObjects;
 using Quartz;
@@ -19,7 +20,7 @@ namespace PrivateHistoryService.Infrastructure.Schedulers
 
         public async Task Execute(IJobExecutionContext context)
         {
-            _logger.LogInformation("Retention job started.");
+            _logger.LogInformation("PrivateHistoryService --> Retention job started.");
 
             using (var scope = _serviceScopeFactory.CreateScope())
             {
@@ -34,7 +35,9 @@ namespace PrivateHistoryService.Infrastructure.Schedulers
                 {
                     foreach (var user in usersToUpdate)
                     {
-                        user.SetUserRetentionDateTime(new UserRetentionUntil(DateTimeOffset.Now.AddHours(24)));
+                        var dateTime = DateTimeOffset.Now.AddHours(24);
+
+                        user.SetUserRetentionDateTime(new UserRetentionUntil(dateTime.ToUtc()));
                     }
 
                     await userWriteService.UpdateUsersAsync(usersToUpdate);
@@ -47,7 +50,7 @@ namespace PrivateHistoryService.Infrastructure.Schedulers
                 await userWriteService.DeleteUsersAsync(usersToDelete);
             }
 
-            _logger.LogInformation("Retention job completed.");
+            _logger.LogInformation("PrivateHistoryService --> Retention job completed.");
         }
     }
 }
