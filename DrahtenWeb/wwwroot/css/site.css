@@ -47,8 +47,8 @@ body {
     color: #0d95ef;
 }
 
-.home-menu-content:hover{
-    color:#3c9c10;
+.home-menu-content:hover {
+    color: #0d95ef;
 }
 
 .search_options_dashboard{
@@ -310,11 +310,27 @@ body {
     font-size: 1rem; 
 }
 
+.modal-header-color {
+    background-color: #e4eaea;
+}
+
 .modal-title {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+}
+
+.icon-calendar {
+    color: #007bff;
+}
+
+.icon-hourglass {
+    color: #007bff;
+}
+
+.button-color {
+    background-color: #d6e9e4;
 }
 
 @keyframes spin {
