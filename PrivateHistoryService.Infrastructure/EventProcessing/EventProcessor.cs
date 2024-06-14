@@ -184,6 +184,8 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
 
             var topicSubscriptionValueObject = _mapper.Map<TopicSubscription>(topicSubscriptionDto);
 
+            await TryToWriteUserAsync(topicSubscriptionValueObject.UserID);
+
             await topicSubscriptionWriteService.AddTopicSubscriptionAsync(topicSubscriptionValueObject);
         }
 
