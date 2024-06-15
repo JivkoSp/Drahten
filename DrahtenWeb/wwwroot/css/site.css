@@ -333,6 +333,21 @@ body {
     background-color: #d6e9e4;
 }
 
+.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
