@@ -9,5 +9,6 @@ namespace DrahtenWeb.ViewModels
         public string UserId { get; set; }
         public string SearchedData { get; set; }
         public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset? RetentionUntil { get; set; }
     }
 }

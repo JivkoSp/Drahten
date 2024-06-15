@@ -8,5 +8,6 @@ namespace DrahtenWeb.ViewModels
         public ArticleDto Article { get; set; }
         public string UserId { get; set; }
         public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset? RetentionUntil { get; set; }
     }
 }
