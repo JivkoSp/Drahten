@@ -650,5 +650,17 @@ namespace DrahtenWeb.Controllers
                 Console.WriteLine(ex.Message);
             }
         }
+
+        [HttpDelete]
+        public async Task RemoveViewedArticle(Guid viewedArticleId)
+        {
+            //Get the user id.
+            //Here the NameIdentifier claim type represents the user id.
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _privateHistoryService.RemoveViewedArticleAsync<string>(userId, viewedArticleId, accessToken);
+        }
     }
 }
