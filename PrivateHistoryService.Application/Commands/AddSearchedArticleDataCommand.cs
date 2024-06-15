@@ -1,5 +1,6 @@
 ﻿
 namespace PrivateHistoryService.Application.Commands
 {
-    public record AddSearchedArticleDataCommand(Guid ArticleId, Guid UserId, string SearchedData, DateTimeOffset DateTime) : ICommand;
+    public record AddSearchedArticleDataCommand(Guid ArticleId, Guid UserId, string SearchedData, 
+        string SearchedDataAnswer, DateTimeOffset DateTime) : ICommand;
 }
