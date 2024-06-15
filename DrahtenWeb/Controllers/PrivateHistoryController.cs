@@ -674,5 +674,17 @@ namespace DrahtenWeb.Controllers
 
             await _privateHistoryService.RemoveSearchedArticleDataAsync<string>(userId, searchedArticleDataId, accessToken);
         }
+
+        [HttpDelete]
+        public async Task RemoveCommentedArticle(Guid commentedArticleId)
+        {
+            //Get the user id.
+            //Here the NameIdentifier claim type represents the user id.
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _privateHistoryService.RemoveCommentedArticleAsync<string>(userId, commentedArticleId, accessToken);
+        }
     }
 }
