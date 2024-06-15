@@ -7,11 +7,13 @@ namespace PrivateHistoryService.Domain.ValueObjects
         public ArticleID ArticleID { get; }
         public UserID UserID { get; }
         internal SearchedData SearchedData { get; }
+        internal SearchedDataAnswer SearchedDataAnswer { get; }
         internal DateTimeOffset DateTime { get; }
 
         private SearchedArticleData() {}
 
-        public SearchedArticleData(ArticleID articleId, UserID userId, SearchedData searchedData, DateTimeOffset dateTime)
+        public SearchedArticleData(ArticleID articleId, UserID userId, SearchedData searchedData, 
+            SearchedDataAnswer searchedDataAnswer, DateTimeOffset dateTime)
         {
             if (articleId == null)
             {
@@ -26,6 +28,11 @@ namespace PrivateHistoryService.Domain.ValueObjects
             if(searchedData == null)
             {
                 throw new NullSearchedDataException();
+            }
+
+            if(searchedDataAnswer == null)
+            {
+                throw new NullSearchedDataAnswerException();
             }
 
             if (dateTime == default || dateTime > DateTimeOffset.Now)
