@@ -54,6 +54,10 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.ModelConfiguratio
                 .HasConversion(new EncryptedSearchedDataConverter(_encryptionProvider))
                 .IsRequired();
 
+            builder.Property(typeof(SearchedDataAnswer), "SearchedDataAnswer")
+                .HasConversion(new EncryptedSearchedDataAnswerConverter(_encryptionProvider))
+                .IsRequired();
+
             builder.Property(typeof(DateTimeOffset), "DateTime")
               .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
               .IsRequired();
