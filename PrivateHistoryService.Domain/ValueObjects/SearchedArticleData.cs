@@ -43,6 +43,7 @@ namespace PrivateHistoryService.Domain.ValueObjects
             ArticleID = articleId;
             UserID = userId;
             SearchedData = searchedData;
+            SearchedDataAnswer = searchedDataAnswer;
             DateTime = dateTime;
         }
     }
