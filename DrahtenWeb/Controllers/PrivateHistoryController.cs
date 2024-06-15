@@ -131,7 +131,8 @@ namespace DrahtenWeb.Controllers
                     {
                         ViewedUserReadModelId = viewedUser.ViewedUserReadModelId,
                         ViewedUser = response.Map<DrahtenWeb.Dtos.UserService.UserDto>(),
-                        DateTime = viewedUser.DateTime
+                        DateTime = viewedUser.DateTime,
+                        RetentionUntil = viewedUser.RetentionUntil
                     };
 
                     historyUserViewModel.ViewedUsers.Add(viewedUserViewModel);
@@ -192,7 +193,8 @@ namespace DrahtenWeb.Controllers
                         Article = response.Map<ArticleDto>(),
                         UserId = searchedArticle.UserId,
                         SearchedData = searchedArticle.SearchedData,
-                        DateTime = searchedArticle.DateTime
+                        DateTime = searchedArticle.DateTime,
+                        RetentionUntil = searchedArticle.RetentionUntil
                     };
 
                     historySeachedArticleDataViewModel.SearchedArticles.Add(searchedArticleDataViewModel);
@@ -251,7 +253,8 @@ namespace DrahtenWeb.Controllers
                     {
                         Article = response.Map<ArticleDto>(),
                         UserId = likedArticle.UserId,
-                        DateTime = likedArticle.DateTime
+                        DateTime = likedArticle.DateTime,
+                        RetentionUntil = likedArticle.RetentionUntil
                     };
 
                     historyLikedArticleViewModel.LikedArticles.Add(likedArticleViewModel);
@@ -310,7 +313,8 @@ namespace DrahtenWeb.Controllers
                     {
                         Article = response.Map<ArticleDto>(),
                         UserId = dislikedArticle.UserId,
-                        DateTime = dislikedArticle.DateTime
+                        DateTime = dislikedArticle.DateTime,
+                        RetentionUntil = dislikedArticle.RetentionUntil
                     };
 
                     historyDislikedArticleViewModel.DislikedArticles.Add(dislikedArticleViewModel);
@@ -371,7 +375,8 @@ namespace DrahtenWeb.Controllers
                         Article = response.Map<ArticleDto>(),
                         UserId = commentedArticle.UserId,
                         ArticleComment = commentedArticle.ArticleComment,
-                        DateTime = commentedArticle.DateTime
+                        DateTime = commentedArticle.DateTime,
+                        RetentionUntil = commentedArticle.RetentionUntil
                     };
 
                     historyCommentedArticleViewModel.CommentedArticles.Add(commentedArticleViewModel);
@@ -431,7 +436,8 @@ namespace DrahtenWeb.Controllers
                         ArticleCommentId = likedArticleComment.ArticleCommentId,
                         Article = response.Map<ArticleDto>(),
                         UserId = likedArticleComment.UserId,
-                        DateTime = likedArticleComment.DateTime
+                        DateTime = likedArticleComment.DateTime,
+                        RetentionUntil = likedArticleComment.RetentionUntil
                     };
 
                     historyLikedArticleCommentViewModel.LikedArticleComments.Add(likedArticleCommentViewModel);
@@ -491,7 +497,8 @@ namespace DrahtenWeb.Controllers
                         ArticleCommentId = dislikedArticleComment.ArticleCommentId,
                         Article = response.Map<ArticleDto>(),
                         UserId = dislikedArticleComment.UserId,
-                        DateTime = dislikedArticleComment.DateTime
+                        DateTime = dislikedArticleComment.DateTime,
+                        RetentionUntil = dislikedArticleComment.RetentionUntil
                     };
 
                     historyDislikedArticleCommentViewModel.DislikedArticleComments.Add(dislikedArticleCommentViewModel);
