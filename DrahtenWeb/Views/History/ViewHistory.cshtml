@@ -544,8 +544,35 @@
                                 html: '<i class="fas fa-trash"></i>'
                             });
 
-                            buttonElementRemoveSearchedArticle.on("click", () => {
-                                console.log("Remove article");
+                            buttonElementRemoveSearchedArticle.on("click", (event) => {
+
+                                // The table row containing the clicked button
+                                const row = $(event.currentTarget).closest("tr");
+
+                                // Visual indicator that the row is deleting.
+                                row.addClass("fade-out");
+
+                                //Send ajax HTTP DELETE request to /PrivateHistory/RemoveSearchedArticleData.
+                                $.ajax({
+                                    type: 'DELETE',
+                                    url: '/PrivateHistory/RemoveSearchedArticleData',
+                                    data: {
+                                        'searchedArticleDataId': element.searchedArticleDataId
+                                    },
+                                    success: (response) => {
+
+                                        // Remove the table row containing the clicked button
+                                        row.remove();
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        row.removeClass("fade-out");
+                                    }
+                                });
                             });
 
                             const buttonElementMove = $("<button>", {
