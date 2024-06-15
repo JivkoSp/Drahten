@@ -35,13 +35,10 @@
 
                     <ul class="nav nav-pills flex-column">
                         <li id="viewedArticles" class="nav-item">
-                            <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-file-alt pe-1"></i> Viewed articles</a>
+                            <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-file-alt pe-1"></i> Articles</a>
                         </li>
                         <li id="viewedUsers" class="nav-item">
-                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i> Viewed users</a>
-                        </li>
-                        <li id="searchedArticleData" class="nav-item">
-                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-search pe-1"></i> Searched article data</a>
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-user pe-1"></i> Users</a>
                         </li>
                         <li id="likedArticles" class="nav-item">
                             <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-thumbs-up pe-1"></i> Liked articles</a>
@@ -53,10 +50,10 @@
                             <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-comment pe-1"></i> Commented articles</a>
                         </li>
                         <li id="likedArticleComments" class="nav-item">
-                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-heart pe-1"></i> Liked article comments</a>
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-thumbs-up pe-1"></i> Liked article comments</a>
                         </li>
                         <li id="dislikedArticleComments" class="nav-item">
-                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-heart-broken pe-1"></i> Disliked article comments</a>
+                            <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-thumbs-down pe-1"></i> Disliked article comments</a>
                         </li>
                         <li id="searchedTopicData" class="nav-item">
                             <a class="home-menu-content nav-link text-secondary" href="#"><i class="fas fa-tags pe-1"></i> Searched topic data</a>
@@ -318,8 +315,28 @@
 
                             buttonElementViewArticle.on("click", () => {
 
-                                console.log("View article");
+                                // Serialize the article object to JSON
+                                const articleJson = JSON.stringify(element.article);
+
+                                const form = $('<form>', {
+                                    method: 'POST',
+                                    action: '/PrivateHistoryArticle/ViewArticle'
+                                });
+
+                                const input = $('<input>', {
+                                    type: 'hidden',
+                                    name: 'articleJson',
+                                    value: articleJson
+                                });
+
+                                form.append(input);
+
+                                $('body').append(form);
+
+                                // Submit the form
+                                form.submit();
                             });
+
 
                             const buttonElementRemoveArticle = $("<button>", {
                                 type: "button",
