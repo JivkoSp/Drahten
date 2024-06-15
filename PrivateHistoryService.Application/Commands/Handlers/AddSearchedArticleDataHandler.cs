@@ -23,7 +23,8 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var searchedArticleData = new SearchedArticleData(command.ArticleId, command.UserId, command.SearchedData, command.DateTime.ToUtc());
+            var searchedArticleData = new SearchedArticleData(command.ArticleId, command.UserId, command.SearchedData, 
+                command.SearchedDataAnswer, command.DateTime.ToUtc());
 
             user.AddSearchedArticleData(searchedArticleData);
 
