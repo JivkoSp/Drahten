@@ -327,8 +327,35 @@
                                 html: '<i class="fas fa-trash"></i>' 
                             });
 
-                            buttonElementRemoveArticle.on("click", () => {
-                                console.log("Remove article");
+                            buttonElementRemoveArticle.on("click", (event) => {
+
+                                // The table row containing the clicked button
+                                const row = $(event.currentTarget).closest("tr");
+
+                                // Visual indicator that the row is deleting.
+                                row.addClass("fade-out");
+
+                                //Send ajax HTTP DELETE request to /PrivateHistory/RemoveViewedArticle.
+                                $.ajax({
+                                    type: 'DELETE',
+                                    url: '/PrivateHistory/RemoveViewedArticle',
+                                    data: {
+                                        'viewedArticleId': element.viewedArticleId
+                                    },
+                                    success: (response) => {
+
+                                        // Remove the table row containing the clicked button
+                                        row.remove();
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        row.removeClass("fade-out");
+                                    }
+                                });
                             });
 
                             const buttonElementMove = $("<button>", {
