@@ -34,7 +34,8 @@ namespace PrivateHistoryService.Application.Commands.Handlers
             }
 
             var searchedArticleData = new SearchedArticleData(Guid.Parse(searchedArticleDataDto.ArticleId), Guid.Parse(searchedArticleDataDto.UserId),
-                 searchedArticleDataDto.SearchedData, searchedArticleDataDto.SearchedDataAnswer, searchedArticleDataDto.DateTime.ToUtc());
+                 searchedArticleDataDto.SearchedData, searchedArticleDataDto.SearchedDataAnswer, 
+                 searchedArticleDataDto.SearchedDataAnswerContext, searchedArticleDataDto.DateTime.ToUtc());
 
             user.RemoveSearchedArticleData(searchedArticleData);
 
