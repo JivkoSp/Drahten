@@ -9,7 +9,7 @@
             <div class="article-header mb-4">
                 <h1 class="display-5">@Model.Title</h1>
                 <p class="lead">By @Model.Author on @Model.PublishingDate</p>
-                <p><a href="@Model.Link" target="_blank" class="btn btn-primary">Read more</a></p>
+                <p><a href="@Model.Link" target="_blank">Read more</a></p>
             </div>
             <!-- Search Bar -->
             <div class="search-bar mb-3">
@@ -35,24 +35,76 @@
             </div>
         </div>
         <!-- Question Content -->
-        <div class="col-md-5">
-            <div class="card question-card ms-5">
-                <div class="card-header">
-                    Searched Data
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Question</h5>
-                    <p class="card-text" id="searched-data">data....</p>
-                    <h5 class="card-title">Response</h5>
-                    <p class="card-text" id="response-data">data...</p>
-                    <p class="text-muted">Asked on </p>
-                    <!-- User's Like/Dislike Status -->
-                    <div class="mt-3">
-                        <i id="like-btn-card" class="fas fa-thumbs-up like-dislike-btn me-2" title="Like" data-liked="@false"></i>
-                        <i id="dislike-btn-card" class="fas fa-thumbs-down like-dislike-btn" title="Dislike" data-disliked="@false"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="questionsAndAnswers" class="col-md-5"></div>
     </div>
 </div>
+
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("document").ready(() => {
+
+            DisplaySearchedArticleData();
+        });
+
+        function CreateCardForQuestionsAndAnswers(data) {
+            const card = `
+                    <div class="card question-card ms-5 mb-3">
+                        <div class="card-header">
+                            <i class="fas fa-info-circle"></i> Search Query Details
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-question"></i> Question</h5>
+                            <p class="card-text" id="searched-data">${data.searchedData}</p>
+                            <h5 class="card-title"><i class="fas fa-reply"></i> Response</h5>
+                            <p class="card-text" id="response-data">${data.searchedDataAnswerContext}</p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="text-muted"><i class="fas fa-calendar-alt"></i> Asked on ${new Date(data.dateTime).toLocaleString()}</p>
+                        </div>
+                    </div>`;
+
+            return card;
+        }
+
+        function DisplaySearchedArticleData() {
+
+            const articleId = $("#articleId").val();
+
+            //Send ajax HTTP GET request to /PrivateHistoryArticle/SearchedArticleData.
+            $.ajax({
+                type: 'GET',
+                url: '/PrivateHistoryArticle/SearchedArticleData',
+                data: {
+                    'articleId': articleId
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        const articleData = $("#article-data").text();
+
+                        response.forEach((element) => {
+
+                            element.searchedDataAnswerContext = ExtractAndHighlightText(articleData, 
+                                element.searchedDataAnswerContext, element.searchedDataAnswer);
+
+                            const card = CreateCardForQuestionsAndAnswers(element);
+
+                            $('#questionsAndAnswers').append(card);
+                        });
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+    </script>
+}
