@@ -33,8 +33,8 @@ namespace PrivateHistoryService.Application.Commands.Handlers
                 throw new SearchedArticleNotFoundException(command.SearchedArticleDataId);
             }
 
-            var searchedArticleData = new SearchedArticleData(Guid.Parse(searchedArticleDataDto.ArticleId),
-                Guid.Parse(searchedArticleDataDto.UserId), searchedArticleDataDto.SearchedData, searchedArticleDataDto.DateTime.ToUtc());
+            var searchedArticleData = new SearchedArticleData(Guid.Parse(searchedArticleDataDto.ArticleId), Guid.Parse(searchedArticleDataDto.UserId),
+                 searchedArticleDataDto.SearchedData, searchedArticleDataDto.SearchedDataAnswer, searchedArticleDataDto.DateTime.ToUtc());
 
             user.RemoveSearchedArticleData(searchedArticleData);
 
