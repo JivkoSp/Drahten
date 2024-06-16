@@ -9,6 +9,7 @@ namespace PrivateHistoryService.Infrastructure.EntityFramework.Models
         public string UserId { get; set; }
         public string SearchedData { get; set; }
         public string SearchedDataAnswer { get; set; }
+        public string SearchedDataAnswerContext { get; set; }
         public DateTimeOffset DateTime { get; set; }
 
         //Relationships
