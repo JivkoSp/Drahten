@@ -16,7 +16,7 @@ namespace PrivateHistoryService.Infrastructure.Automapper.Profiles
             CreateMap<SearchedArticleDataDto, SearchedArticleData>()
                .ConstructUsing(source =>
                    new SearchedArticleData(Guid.Parse(source.ArticleId), Guid.Parse(source.UserId), source.SearchedData, 
-                   source.SearchedDataAnswer, source.DateTime.ToUtc()));
+                   source.SearchedDataAnswer, source.SearchedDataAnswerContext, source.DateTime.ToUtc()));
         }
     }
 }
