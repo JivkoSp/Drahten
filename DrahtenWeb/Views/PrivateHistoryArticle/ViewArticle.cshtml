@@ -25,13 +25,9 @@
             <!-- Comments and Likes -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <p class="mb-0">
-                    <span id="comment-count">483</span> comments |
-                    <span id="like-count">241</span> likes
+                    <span id="comment-count">0</span> comments |
+                    <span id="like-count">@Model.ArticleLikeDtos.Count</span> likes
                 </p>
-                <div>
-                    <i id="like-btn" class="fas fa-thumbs-up like-dislike-btn me-2" title="Like" data-liked="@false"></i>
-                    <i id="dislike-btn" class="fas fa-thumbs-down like-dislike-btn" title="Dislike" data-disliked="@false"></i>
-                </div>
             </div>
         </div>
         <!-- Question Content -->
@@ -51,7 +47,7 @@
 
         function CreateCardForQuestionsAndAnswers(data) {
             const card = `
-                    <div class="card question-card ms-5 mb-3">
+                    <div class="card question-card ms-4 mb-3">
                         <div class="card-header">
                             <i class="fas fa-info-circle"></i> Search Query Details
                         </div>
@@ -62,7 +58,7 @@
                             <p class="card-text" id="response-data">${data.searchedDataAnswerContext}</p>
                         </div>
                         <div class="card-footer">
-                            <p class="text-muted"><i class="fas fa-calendar-alt"></i> Asked on ${new Date(data.dateTime).toLocaleString()}</p>
+                            <p class="text-muted"><i class="fas fa-calendar-alt"></i> Asked on ${formatDateTime(data.dateTime)}</p>
                         </div>
                     </div>`;
 
