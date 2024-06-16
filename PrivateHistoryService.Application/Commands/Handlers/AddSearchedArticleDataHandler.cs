@@ -24,7 +24,7 @@ namespace PrivateHistoryService.Application.Commands.Handlers
             }
 
             var searchedArticleData = new SearchedArticleData(command.ArticleId, command.UserId, command.SearchedData, 
-                command.SearchedDataAnswer, command.DateTime.ToUtc());
+                command.SearchedDataAnswer, command.SearchedDataAnswerContext, command.DateTime.ToUtc());
 
             user.AddSearchedArticleData(searchedArticleData);
 
