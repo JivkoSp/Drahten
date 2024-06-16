@@ -178,11 +178,45 @@ function highlightMatchingText(textOne, textTwo, textTree = null) {
     if (textTree != null) {
 
         highlightedText = highlightedText.replace(textTree, (match) => {
-            return `<span style="background-color: #ff8000">${match}</span>`;
+            return `<span style="background-color: #E5C7EA">${match}</span>`;
         });
     }
 
     return highlightedText;
+}
+
+
+function ExtractAndHighlightText(textOne, textTwo, textTree = null) {
+
+    //Escape special characters in textTwo for safe use in regular expression.
+    const escapedTextTwo = textTwo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Create a regular expression to find all occurrences of textTwo within one or more sentences in textOne.
+    ///
+    /// [^.!?]* matches any character except ., ?, and ! zero or more times.
+    /// [.!?] matches the end of a sentence.
+    /// The gi flags make the regular expression global and case-insensitive (find all matches).
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const regex = new RegExp(`[^.!?]*${escapedTextTwo}[^.!?]*[.!?]`, 'gi');
+
+    // Find all matches in textOne
+    let matches = textOne.match(regex) || [];
+
+    if (textTree !== null) {
+
+        const escapedTextTree = textTree.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        const treeRegex = new RegExp(escapedTextTree, 'gi');
+
+        matches = matches.map((match) => {
+            return match.replace(treeRegex, (subMatch) => {
+                return `<span style="background-color: #E5C7EA">${subMatch}</span>`;
+            });
+        });
+    }
+
+    return matches;
 }
 
 
