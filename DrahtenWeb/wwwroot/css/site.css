@@ -337,6 +337,24 @@ body {
     animation: fadeOut 1s forwards;
 }
 
+#questionsAndAnswers {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.card-footer {
+    background-color: #f8f9fa; /* Optional: Background color for footer */
+    border-top: 1px solid #ddd; /* Optional: Border for better separation */
+    padding: 10px; /* Optional: Padding for better spacing */
+    text-align: right; /* Optional: Align text to the right */
+}
+
+.card-footer p {
+    margin: 0;
+    padding: 0;
+}
+
 @keyframes fadeOut {
     from {
         opacity: 1;
