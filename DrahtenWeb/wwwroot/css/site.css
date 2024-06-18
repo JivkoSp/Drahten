@@ -31,7 +31,7 @@ body {
 }
 
 .home-menu {
-    margin-top: 1.7rem;
+    margin-top: 0.2rem;
 }
 
 .home-menu-logo {
@@ -44,7 +44,7 @@ body {
 }
 
 .home-menu-logo:hover {
-    color: #0d95ef;
+    color: #686363;
 }
 
 .home-menu-content:hover {
@@ -344,10 +344,10 @@ body {
 }
 
 .card-footer {
-    background-color: #f8f9fa; /* Optional: Background color for footer */
-    border-top: 1px solid #ddd; /* Optional: Border for better separation */
-    padding: 10px; /* Optional: Padding for better spacing */
-    text-align: right; /* Optional: Align text to the right */
+    background-color: #f8f9fa; 
+    border-top: 1px solid #ddd;
+    padding: 10px; 
+    text-align: right; 
 }
 
 .card-footer p {
