@@ -42,7 +42,8 @@ builder.Services.AddAuthentication(options => {
             if(authFailedContext.HttpContext.Request != null)
             {
                 Console.WriteLine("Jwt token validation failed from Yarp Gateway.");
-                //TODO: Log information, about this event to logging service.
+
+                Log.Error(authFailedContext.Exception, "Jwt token validation failed from Yarp Gateway.");
             }
 
             return Task.CompletedTask;
