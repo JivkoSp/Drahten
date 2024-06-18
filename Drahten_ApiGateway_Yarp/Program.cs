@@ -1,7 +1,13 @@
+using Drahten_ApiGateway_Yarp.Middlewares;
+using Drahten_ApiGateway_Yarp.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var rateLimitOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+
+builder.Services.AddSingleton(rateLimitOptions);
 
 builder.Services.AddAuthentication(options => { 
 
@@ -45,6 +51,8 @@ var app = builder.Build();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<RateLimitMiddleware>(rateLimitOptions);
 
 app.MapReverseProxy();
 
