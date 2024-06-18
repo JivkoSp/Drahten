@@ -29,6 +29,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Security settings
+SECURE_SSL_REDIRECT = True  
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Define paths to SSL certificate and key
+CERT_FILE = os.getenv('CERT_FILE', '/certs/server.crt')
+KEY_FILE = os.getenv('KEY_FILE', '/certs/server.key')
+
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
@@ -36,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_celery_beat',
     'drahten_scraper',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
