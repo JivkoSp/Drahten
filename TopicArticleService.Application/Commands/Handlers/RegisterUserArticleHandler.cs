@@ -38,7 +38,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             };
 
             //Post message to the message broker about visiting the article with ID: ArticleId.
-            _messageBusPublisher.PublishViewedArticle(viewedArticleDto);
+            await _messageBusPublisher.PublishViewedArticleAsync(viewedArticleDto);
 
             var userArticle = _userArticleFactory.Create(command.UserId, command.ArticleId);
 
