@@ -6,13 +6,15 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly RateLimitOptions _options;
+        private readonly ILogger<RateLimitMiddleware> _logger;
         private static readonly Dictionary<string, int> RequestCounts = new();
         private static readonly Dictionary<string, DateTime> Blacklist = new();
 
-        public RateLimitMiddleware(RequestDelegate next, RateLimitOptions options)
+        public RateLimitMiddleware(RequestDelegate next, RateLimitOptions options, ILogger<RateLimitMiddleware> logger)
         {
             _next = next;
             _options = options;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -21,17 +23,18 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
             if (clientIp == null)
             {
-                // If we can't get the client IP address, log an error and proceed.
-                Console.WriteLine("Yarp --> Client IP address could not be determined!");
+                _logger.LogError("Yarp --> Client IP address could not be determined!");
+
                 await _next(context);
                 return;
             }
 
-            Console.WriteLine($"Yarp --> Request received from IP: {clientIp}");
+            _logger.LogInformation($"Yarp --> Request received from IP: {clientIp}");
 
             if (Blacklist.ContainsKey(clientIp) && Blacklist[clientIp] > DateTime.UtcNow)
             {
-                Console.WriteLine($"Yarp --> Blacklisted IP {clientIp} attempted to access the service!");
+                _logger.LogWarning($"Yarp --> Blacklisted IP {clientIp} attempted to access the service!");
+
                 context.Response.StatusCode = _options.BlacklistHttpStatusCode;
                 return;
             }
@@ -47,7 +50,7 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
                 if (RequestCounts[clientIp] > _options.RequestLimit)
                 {
-                    Console.WriteLine($"Yarp --> Rate limit exceeded for IP {clientIp}. Request count: {RequestCounts[clientIp]}");
+                    _logger.LogWarning($"Yarp --> Rate limit exceeded for IP {clientIp}. Request count: {RequestCounts[clientIp]}");
 
                     // Increment violation count
                     if (!context.Items.ContainsKey("ViolationCount"))
@@ -57,14 +60,14 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
                     context.Items["ViolationCount"] = (int)context.Items["ViolationCount"] + 1;
 
-                    Console.WriteLine($"Yarp --> Violation count for IP {clientIp}: {context.Items["ViolationCount"]}");
+                    _logger.LogInformation($"Yarp --> Violation count for IP {clientIp}: {context.Items["ViolationCount"]}");
 
                     // Check if the client should be blacklisted
                     if ((int)context.Items["ViolationCount"] > _options.ViolationThreshold)
                     {
                         Blacklist[clientIp] = DateTime.UtcNow.AddMinutes(_options.BlacklistDurationMinutes);
 
-                        Console.WriteLine($"Yarp --> IP {clientIp} has been blacklisted until {Blacklist[clientIp]}");
+                        _logger.LogWarning($"Yarp --> IP {clientIp} has been blacklisted until {Blacklist[clientIp]}");
                     }
 
                     // Reset request count for the period
@@ -73,7 +76,7 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
                     // Return 429 Too Many Requests status code
                     context.Response.StatusCode = _options.ViolationHttpStatusCode;
 
-                    Console.WriteLine($"Yarp --> Response for IP {clientIp} set to {_options.ViolationHttpStatusCode} --> Too Many Requests");
+                    _logger.LogWarning($"Yarp --> Response for IP {clientIp} set to {_options.ViolationHttpStatusCode} --> Too Many Requests");
 
                     return;
                 }
