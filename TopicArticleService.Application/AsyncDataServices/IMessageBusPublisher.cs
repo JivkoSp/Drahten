@@ -11,5 +11,6 @@ namespace TopicArticleService.Application.AsyncDataServices
         void PublishLikedArticleComment(LikedArticleCommentDto likedArticleCommentDto);
         void PublishDislikedArticleComment(DislikedArticleCommentDto dislikedArticleCommentDto);
         void PublishTopicSubscription(TopicSubscriptionDto topicSubscriptionDto);
+        Task PublishViewedArticleAsync(ViewedArticleDto viewedArticleDto);
     }
 }
