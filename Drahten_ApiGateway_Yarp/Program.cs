@@ -1,9 +1,24 @@
+using Drahten_ApiGateway_Yarp.Logging.Formatters;
 using Drahten_ApiGateway_Yarp.Middlewares;
 using Drahten_ApiGateway_Yarp.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console() // Add console sink.
+    .WriteTo.Http(requestUri: "http://localhost:5000",
+                  queueLimitBytes: 1000000,
+                  batchFormatter: new SerilogJsonFormatter()) //Add http sink.
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Host.UseSerilog();
 
 var rateLimitOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
 
