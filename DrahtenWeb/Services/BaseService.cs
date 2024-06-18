@@ -137,8 +137,6 @@ namespace DrahtenWeb.Services
             try
             {
                 // Execute the HTTP request within the retry policy
-               // var httpResponse = await _retryPolicy.ExecuteAsync(() => SendHttpRequestAsync(apiRequest, httpClient));
-
                 var httpResponse = await _retryPolicy.ExecuteAsync(context =>
                 {
                     // Capture apiRequest in the context to use it in the retry policy's logging
