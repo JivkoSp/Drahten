@@ -14,18 +14,40 @@ namespace DrahtenWeb.Services
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly AsyncRetryPolicy<HttpResponseMessage> _retryPolicy;
         public ResponseDto Response { get; set; } = new ResponseDto();
 
         public BaseService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
+
+            // Define the retry policy
+            _retryPolicy = Policy.HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.InternalServerError ||
+                                                                         r.StatusCode == HttpStatusCode.ServiceUnavailable ||
+                                                                         r.StatusCode == HttpStatusCode.BadGateway)
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (result, timeSpan, retryCount, context) =>
+                    {
+                        // TODO: Log the retry attempt
+                        if (context.TryGetValue("apiRequest", out var requestObj) && requestObj is ApiRequest apiRequest)
+                        {
+                            Console.WriteLine($"Retry {retryCount} for {apiRequest.Url} after {timeSpan.Seconds} " +
+                                $"seconds delay due to {result.Result.StatusCode}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Retry {retryCount} after {timeSpan.Seconds} seconds due to {result.Result.StatusCode}.");
+                        }
+                    });
         }
 
+        #region DESCRIPTION
         // <summary>
         /// Creates an <see cref="HttpRequestMessage"/> based on the specified <paramref name="apiRequest"/>.
         /// </summary>
         /// <param name="apiRequest">The <see cref="ApiRequest"/> object containing the details for the HTTP request.</param>
         /// <returns>A new instance of <see cref="HttpRequestMessage"/> configured with the data from <paramref name="apiRequest"/>.</returns>
+        #endregion
         private HttpRequestMessage CreateHttpRequestMessage(ApiRequest apiRequest)
         {
             var httpRequestMessage = new HttpRequestMessage
@@ -63,6 +85,7 @@ namespace DrahtenWeb.Services
             return httpRequestMessage;
         }
 
+        #region DESCRIPTION
         /// <summary>
         /// Sends an HTTP request based on the specified <paramref name="apiRequest"/> using the provided <paramref name="httpClient"/>.
         /// </summary>
@@ -71,12 +94,14 @@ namespace DrahtenWeb.Services
         /// <returns>
         /// A task representing the asynchronous operation. The task result is the <see cref="HttpResponseMessage"/> from the request.
         /// </returns>
+        #endregion
         private async Task<HttpResponseMessage> SendHttpRequestAsync(ApiRequest apiRequest, HttpClient httpClient)
         {
             var httpRequestMessage = CreateHttpRequestMessage(apiRequest);
             return await httpClient.SendAsync(httpRequestMessage);
         }
 
+        #region DESCRIPTION
         /// <summary>
         /// Sends an HTTP request based on the specified <paramref name="apiRequest"/> and asynchronously retrieves the response.
         /// </summary>
@@ -88,6 +113,7 @@ namespace DrahtenWeb.Services
         /// A task representing the asynchronous operation. The task result is the response deserialized into an object of type <typeparamref name="T"/>.
         /// </returns>
         /// <exception cref="UrlNotFoundException">Thrown when the URL in <paramref name="apiRequest"/> is null or empty.</exception>
+        #endregion
         public async Task<T> SendAsync<T>(ApiRequest apiRequest)
         {
             if (string.IsNullOrEmpty(apiRequest.Url))
@@ -108,22 +134,17 @@ namespace DrahtenWeb.Services
                     new AuthenticationHeaderValue("Bearer", apiRequest.AccessToken);
             }
 
-            // Define the retry policy
-            AsyncRetryPolicy<HttpResponseMessage> retryPolicy = Policy
-                .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.InternalServerError || 
-                                                        r.StatusCode == HttpStatusCode.ServiceUnavailable ||
-                                                        r.StatusCode == HttpStatusCode.BadGateway)
-                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    (result, timeSpan, retryCount, context) =>
-                    {
-                        // TODO: Log the retry attempt
-                        Console.WriteLine($"Retry {retryCount} for {apiRequest.Url} after {timeSpan.Seconds} seconds delay due to {result.Result.StatusCode}.");
-                    });
-
             try
             {
                 // Execute the HTTP request within the retry policy
-                var httpResponse = await retryPolicy.ExecuteAsync(() => SendHttpRequestAsync(apiRequest, httpClient));
+               // var httpResponse = await _retryPolicy.ExecuteAsync(() => SendHttpRequestAsync(apiRequest, httpClient));
+
+                var httpResponse = await _retryPolicy.ExecuteAsync(context =>
+                {
+                    // Capture apiRequest in the context to use it in the retry policy's logging
+                    return SendHttpRequestAsync(apiRequest, httpClient);
+                }, new Dictionary<string, object> { { "apiRequest", apiRequest } });
+
 
                 // Initialize the variable "httpResponseSerializedContent" with the CONTENT OF THE HTTP RESPONSE MESSAGE.
                 // This is json serialized string.
