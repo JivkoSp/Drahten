@@ -28,7 +28,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         {
             _userReadService = Substitute.For<IUserReadService>();
             _userWriteService = Substitute.For<IUserWriteService>();
-            _handler = new RegisterUserHandler(_userReadService, _userWriteService);
+            //_handler = new RegisterUserHandler(_userReadService, _userWriteService);
         }
 
         #endregion

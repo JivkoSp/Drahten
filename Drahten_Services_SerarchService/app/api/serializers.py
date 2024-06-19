@@ -42,6 +42,8 @@ class SearchedArticleDataDtoSerializer(serializers.Serializer):
     ArticleId = serializers.CharField(max_length=1000)
     UserId = serializers.CharField(max_length=1000)
     SearchedData = serializers.CharField(max_length=10000)
+    SearchedDataAnswer = serializers.CharField(max_length=100000)
+    SearchedDataAnswerContext = serializers.CharField(max_length=10000000)
     DateTime = serializers.DateTimeField()
     Event = serializers.CharField(max_length=100)
 
@@ -52,6 +54,8 @@ class SearchedArticleDataDtoSerializer(serializers.Serializer):
         instance.ArticleId = validated_data.get('ArticleId', instance.ArticleId)
         instance.UserId = validated_data.get('UserId', instance.UserId)
         instance.SearchedData = validated_data.get('SearchedData', instance.SearchedData)
+        instance.SearchedDataAnswer = validated_data.get('SearchedDataAnswer', instance.SearchedDataAnswer)
+        instance.SearchedDataAnswerContext = validated_data.get('SearchedDataAnswerContext', instance.SearchedDataAnswerContext)
         instance.DateTime = validated_data.get('DateTime', instance.DateTime)
         instance.Event = validated_data.get('Event', instance.Event)
         return instance

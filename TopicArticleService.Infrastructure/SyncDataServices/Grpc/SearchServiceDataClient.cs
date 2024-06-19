@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using TopicArticleService.Application.Dtos.SearchService;
 
 namespace TopicArticleService.Infrastructure.SyncDataServices.Grpc
@@ -9,17 +10,21 @@ namespace TopicArticleService.Infrastructure.SyncDataServices.Grpc
     {
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly ILogger<SearchServiceDataClient> _logger;
 
-        public SearchServiceDataClient(IConfiguration configuration, IMapper mapper)
+        public SearchServiceDataClient(IConfiguration configuration, IMapper mapper, ILogger<SearchServiceDataClient> logger)
         {
             _configuration = configuration;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //Returns all documents that are available in the SearchService.
         public async IAsyncEnumerable<(string, Document)> GetDocumentsAsync()
         {
             Console.WriteLine($"\n\n--> Calling the SearchService GRPC Server at address: {_configuration["GrpcSearchService"]}.\n\n");
+
+            _logger.LogInformation($"--> Calling the SearchService GRPC Server at address: {_configuration["GrpcSearchService"]}.");
 
             using var channel = GrpcChannel.ForAddress(_configuration["GrpcSearchService"]);
 
@@ -35,9 +40,11 @@ namespace TopicArticleService.Infrastructure.SyncDataServices.Grpc
             }
         }
 
-        public async IAsyncEnumerable<double> DocumentSimilarityCheckAsync(DocumentDto documentDto)
+        public SimilarityScoreResponse DocumentSimilarityCheckAsync(DocumentDto documentDto)
         {
             Console.WriteLine($"\n\n--> Calling the SearchService GRPC Server at address: {_configuration["GrpcSearchService"]}.\n\n");
+
+            _logger.LogInformation($"--> Calling the SearchService GRPC Server at address: {_configuration["GrpcSearchService"]}.");
 
             using var channel = GrpcChannel.ForAddress(_configuration["GrpcSearchService"]);
 
@@ -47,12 +54,7 @@ namespace TopicArticleService.Infrastructure.SyncDataServices.Grpc
 
             var reply = client.CheckDocumentSimilarity(document);
 
-            while(await reply.ResponseStream.MoveNext(CancellationToken.None))
-            {
-                var currentResponse = reply.ResponseStream.Current;
-
-                yield return currentResponse.SimilarityScore;
-            }
+            return reply;
         }
     }
 }

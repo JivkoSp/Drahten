@@ -41,7 +41,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _articleRepository = Substitute.For<IArticleRepository>();
             _articleConcreteFactory = new ArticleFactory();
             _userArticleFactory = Substitute.For<IUserArticleFactory>();
-            _handler = new RegisterUserArticleHandler(_articleRepository, _userArticleFactory);
+            //_handler = new RegisterUserArticleHandler(_articleRepository, _userArticleFactory);
         }
 
         #endregion

@@ -159,14 +159,6 @@ class CybersecurityNewsEuropeSemanticSearchDataViewSet(viewsets.ViewSet):
                 if not query_response:
                     return Response(status=status.HTTP_404_NOT_FOUND)
 
-                searchedArticleDataDto = dtos.SearchedArticleDataDto(articleId=questionDto['document_id'], 
-                                                                     userId=decoded_token['sub'], 
-                                                                     searchedData=questionDto['query'],
-                                                                     dateTime=datetime.now(pytz.utc))
-
-                # Post message to the message broker about searching information about document with ID: document_id by user with ID: userId.
-                self.messageBusPublisher.PublishSearchedDocumentData(searchedArticleDataDto)
-
                 query_response = models.search_engine_cybersecurity_news_europe.query_pipeline.run(
                     query = questionDto['query'],
                     documents=[query_response]
@@ -180,6 +172,16 @@ class CybersecurityNewsEuropeSemanticSearchDataViewSet(viewsets.ViewSet):
                         document = answer
                         break
                 
+                searchedArticleDataDto = dtos.SearchedArticleDataDto(articleId=questionDto['document_id'], 
+                                                                     userId=decoded_token['sub'], 
+                                                                     searchedData=questionDto['query'],
+                                                                     searchedDataAnswer=document['answer'],
+                                                                     searchedDataAnswerContext=document['context'],
+                                                                     dateTime=datetime.now(pytz.utc))
+
+                # Post message to the message broker about searching information about document with ID: document_id by user with ID: userId.
+                self.messageBusPublisher.PublishSearchedDocumentData(searchedArticleDataDto)
+
                 query_answer = models.NLPQueryAnswer(document)
 
                 serialized_query_answer = serializers.NLPQueryAnswerSerializer(query_answer)

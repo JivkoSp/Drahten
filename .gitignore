@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ignore the virtual environment directory
+venv/
+/Drahten_Services_SerarchService/venv/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -361,8 +365,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-venv
 
 *.env
 *.crt

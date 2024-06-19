@@ -15,22 +15,22 @@
         </div>
         <div class="col-md-3 col-lg-2">
             <div class="d-grid">
-                <a href="#" class="btn btn-primary">Person</a>
+                <a href="#" class="btn button-color font-monospace fw-bold">Person</a>
             </div>
         </div>
         <div class="col-md-3 col-lg-2">
             <div class="d-grid">
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
+                <a href="#" class="btn button-color font-monospace fw-bold" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
             </div>
         </div>
         <div class="col-md-3 col-lg-2">
             <div class="d-grid">
-                <a href="#" class="btn btn-primary">Public Meetings</a>
+                <a href="#" class="btn button-color font-monospace fw-bold">Public Meetings</a>
             </div>
         </div>
         <div class="col-md-3 col-lg-2">
             <div class="d-grid">
-                <a id="search-options" asp-controller="User" asp-action="UserSearchOptions" class="btn btn-primary">Search options</a>
+                <a id="search-options" asp-controller="User" asp-action="UserSearchOptions" class="btn button-color font-monospace fw-bold">Search options</a>
             </div>
         </div>
     </div>
@@ -113,7 +113,8 @@
                     //Send ajax HTTP GET request to the endpoint specified by <endpointName>Query.
                     $.ajax({
                         type: 'GET',
-                        url: '/Search/' + endpointName + 'Query',
+                        url: '/Search/CybersecurityNewsEuropeQuery',
+                        //url: '/Search/' + endpointName + 'Query',
                         data: {
                             'query': homeSearchInputValue
                         },

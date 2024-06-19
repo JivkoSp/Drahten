@@ -40,7 +40,7 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddHostedService<DbInitializer>();
 
-            services.AddHostedService<DbPrepper>();
+            //services.AddHostedService<DbPrepper>();
 
             services.AddScoped<IArticleRepository, PostgresArticleRepository>();
 

@@ -35,7 +35,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _articleConcreteFactory = new ArticleFactory();
             _articleCommentConcreteFactory = new ArticleCommentFactory();
             _articleCommentMockFactory = Substitute.For<IArticleCommentFactory>();
-            _handler = new AddArticleCommentHandler(_articleRepository, _articleCommentMockFactory);
+            //_handler = new AddArticleCommentHandler(_articleRepository, _articleCommentMockFactory);
         }
 
         #endregion

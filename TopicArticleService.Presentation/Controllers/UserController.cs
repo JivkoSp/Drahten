@@ -24,7 +24,7 @@ namespace TopicArticleService.Presentation.Controllers
             _responseDto = new ResponseDto();
         }
 
-        [HttpGet("articles/{ArticleId:guid}", Name = "GetUsersRelatedToArticle")]
+        [HttpGet("articles/{ArticleId}", Name = "GetUsersRelatedToArticle")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult> GetUsersRelatedToArticle([FromRoute] GetUsersRelatedToArticleQuery getUsersRelatedToArticleQuery)

@@ -24,10 +24,8 @@ namespace PrivateHistoryService.Tests.Unit.Domain.Entities.UserTests
 
         private SearchedArticleData GetSearchedArticleData()
         {
-            var searchedData = new SearchedData("...");
-
             var searchedArticleData = new SearchedArticleData(articleId: Guid.NewGuid(), userId: Guid.NewGuid(), 
-                searchedData: searchedData, dateTime: DateTimeOffset.Now);
+                searchedData: "...", searchedDataAnswer: ".....", searchedDataAnswerContext: "......", dateTime: DateTimeOffset.Now);
 
             return searchedArticleData;
         }

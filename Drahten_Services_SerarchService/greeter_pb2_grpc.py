@@ -75,7 +75,7 @@ class DocumentSimilarityCheckStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CheckDocumentSimilarity = channel.unary_stream(
+        self.CheckDocumentSimilarity = channel.unary_unary(
                 '/greeter.DocumentSimilarityCheck/CheckDocumentSimilarity',
                 request_serializer=greeter__pb2.Document.SerializeToString,
                 response_deserializer=greeter__pb2.SimilarityScoreResponse.FromString,
@@ -94,7 +94,7 @@ class DocumentSimilarityCheckServicer(object):
 
 def add_DocumentSimilarityCheckServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckDocumentSimilarity': grpc.unary_stream_rpc_method_handler(
+            'CheckDocumentSimilarity': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckDocumentSimilarity,
                     request_deserializer=greeter__pb2.Document.FromString,
                     response_serializer=greeter__pb2.SimilarityScoreResponse.SerializeToString,
@@ -120,7 +120,7 @@ class DocumentSimilarityCheck(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/greeter.DocumentSimilarityCheck/CheckDocumentSimilarity',
+        return grpc.experimental.unary_unary(request, target, '/greeter.DocumentSimilarityCheck/CheckDocumentSimilarity',
             greeter__pb2.Document.SerializeToString,
             greeter__pb2.SimilarityScoreResponse.FromString,
             options, channel_credentials,

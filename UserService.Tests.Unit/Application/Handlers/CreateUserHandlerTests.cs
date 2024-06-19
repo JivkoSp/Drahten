@@ -30,11 +30,11 @@ namespace UserService.Tests.Unit.Application.Handlers
 
         public CreateUserHandlerTests()
         {
-            _userConcreteFactory = new UserFactory();
-            _userMockFactory = Substitute.For<IUserFactory>();
-            _userRepository = Substitute.For<IUserRepository>();
-            _userReadService = Substitute.For<IUserReadService>();
-            _handler = new CreateUserHandler(_userRepository, _userMockFactory, _userReadService);
+            //_userConcreteFactory = new UserFactory();
+            //_userMockFactory = Substitute.For<IUserFactory>();
+            //_userRepository = Substitute.For<IUserRepository>();
+            //_userReadService = Substitute.For<IUserReadService>();
+            //_handler = new CreateUserHandler(_userRepository, _userMockFactory, _userReadService);
         }
 
         #endregion

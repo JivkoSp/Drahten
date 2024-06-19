@@ -86,7 +86,7 @@
                                     {
                                             <div class="card shadow rounded-3 mb-3">
                                                 <div class="card-body">
-                                                <h5 class="card-title">@Model.Users.FirstOrDefault(x => x.UserId == Guid.Parse(comment.UserId)).UserNickName</h5>
+                                                <h5 class="card-title">@Model.Users.FirstOrDefault(x => x.UserId == Guid.Parse(comment.UserId))?.UserNickName</h5>
                                                     <p class="card-text shadow-sm rounded-3">@comment.CommentValue</p>
                                                     <div id="comment-actions-@comment.ArticleCommentId" class="actions">
                                                     <i id="thumbs-up-@comment.ArticleCommentId" class="fas fa-thumbs-up" onclick="registerUserCommentLike('@comment.ArticleCommentId')"></i> @comment.ArticleCommentLikeDtos.Count

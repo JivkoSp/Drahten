@@ -12,7 +12,7 @@
     <ProjectGuid>e9079892-22c7-4d2d-9b95-30cd94c644cf</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <StartupFile>manage.py</StartupFile>
+    <StartupFile>Drahten_Services_SerarchService\settings.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

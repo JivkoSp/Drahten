@@ -6,26 +6,36 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 from loguru import logger
 from app.logging import handler
+from app.api import serializers
 
 
 class MessageClient:
-    def __init__(self):
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialize()
+        return cls._instance
+
+    def _initialize(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq_servicebus'))
         print(f"\n\n*** SearchService INITIALIZED THE MESSAGE CLIENT ***\n\n")
         logger.info("*** SearchService INITIALIZED THE MESSAGE CLIENT ***")
-    def GetConnection(self):
-        return self.connection
-
-messageClient = MessageClient()
 
 
 class MessageBusPublisher:
     def __init__(self):
-        self.connection = messageClient.GetConnection()
+        message_client = MessageClient()
+        self.connection = message_client.connection
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='search_service', exchange_type='direct')
         print("\n\n*** SearchService INITIALIZED THE MESSAGE PUBLISHER ***\n\n")
         logger.info("*** SearchService INITIALIZED THE MESSAGE PUBLISHER ***")
+
+    # TODO: Refactor the two methods (PublishNewDocument, PublishDocumentForSimilarityCheck).
+    #       The two methods should be just one method that is more generic and maybe accepts some type of object
+    #       that encapsulates the needed data.
 
     def PublishNewDocument(self, document, topicName):
         document = document.to_dict()
@@ -42,6 +52,8 @@ class MessageBusPublisher:
                              'TopicName' : topicName,
                              'Event': 'NewDocument'})
         )
+
+        print("\n\n*** PUBLISHED MESSAGE TO RABBITMQ ***\n\n") 
 
     def PublishDocumentForSimilarityCheck(self, document, spiderName):
         document = document.to_dict()
@@ -61,35 +73,35 @@ class MessageBusPublisher:
 
         print("\n\n*** PUBLISHED MESSAGE TO RABBITMQ ***\n\n")
 
-    def PublishSearchEvent(self):
-        search_info = {
-            'Data': 'some search data...',
-            'Event': 'Search_Information_Published'
-        }
+    def PublishSearchedDocumentData(self, searchedArticleDataDto):
+        serialized_searchedArticleDataDto = serializers.SearchedArticleDataDtoSerializer(searchedArticleDataDto)
         self.channel.basic_publish(
             exchange='search_service',
-            routing_key='search_service.event',
-            body=json.dumps({'Data': search_info['Data'], 'Event': search_info['Event']}))
+            routing_key='search_service.searched-article-data',
+            body=json.dumps(serialized_searchedArticleDataDto.data))
+        
+        print("\n\n*** PUBLISHED MESSAGE TO RABBITMQ ***\n\n")
 
 
 
 class MessageBusSubscriber:
     def __init__(self):
-        self.connection = messageClient.GetConnection()
+        message_client = MessageClient()
+        self.connection = message_client.connection
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='search_service', exchange_type='direct')
         self.queue_name = self.channel.queue_declare('test_queue').method.queue
-        self.channel.queue_bind(self.queue_name, 'search_service', 'search_service.smc')
+        self.channel.queue_bind(self.queue_name, 'search_service', 'search_service.similaritycheck')
+        # self.channel.queue_bind(self.queue_name, 'search_service', 'search_service.smc')
         self.model = SentenceTransformer("sentence-transformers/multi-qa-mpnet-base-dot-v1")
         self.messageBusPublisher = MessageBusPublisher()
-        print("\n\n*** SearchService INITIALIZED THE MESSAGE SUBSCRIBER ***\n\n")
         logger.info("*** SearchService INITIALIZED THE MESSAGE SUBSCRIBER ***")
 
     # TODO: Remove this to appropriate class (This should NOT be a part of the message subscriber).
     def _checkSimilarity(self, document_content, threshold=0.9):
         try:
             documents = models.search_engine_cybersecurity_news_europe.document_store.get_all_documents()
-            
+
             provided_document_embedding = self.model.encode(document_content)
 
             document_embeddings = [self.model.encode(document.content) for document in documents]
@@ -126,11 +138,7 @@ class MessageBusSubscriber:
             jsonMessage = body.decode()
             message = json.loads(jsonMessage)  # Parse the JSON string to dictionary
 
-            print(f"\n\n--> MESSAGE: {message}\n\n")
-
             similar_documents = self._checkSimilarity(message['Content'])
-
-            print(f"\nRETURNED FROM _checkSimilarity\n")
 
             if not similar_documents:
                 print(f"\n\nDOCUMENT HAS *** LESS *** THAN 90 PERCENT SIMILARITY WITH ALREADY EXISTING DOCUMENTS.\n\n")
@@ -142,11 +150,13 @@ class MessageBusSubscriber:
                                                         "article_published_date": message['PublishingDate'],
                                                         "article_author": message['Author'],
                                                         "article_link": message['Link']})
-                print(f"\n\nWRITING THE DOCUMENT: {new_document}\n\n")
                 models.search_engine_cybersecurity_news_europe.WriteDocuments([new_document])
+                # TODO: Implement retry mechanism for RabbitMq.
                 self.messageBusPublisher.PublishNewDocument(new_document, message['TopicName'])
+                # TODO: Log the event.
             else:
                 print(f"\n\nDOCUMENT HAS 90 OR MORE PERCENT SIMILARITY WITH DOCUMENT/S THAT ALREADY EXIST!\n\n")
+                # TODO: Log the event.
          except Exception as ex:
             print(f"\nEXCEPTION: {ex}\n")
 

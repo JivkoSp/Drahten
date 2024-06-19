@@ -22,7 +22,7 @@ namespace PrivateHistoryService.Tests.EndToEnd.Sync
             await Post(command, $"/privatehistory-service/users/{userId}");
 
             var addSearchedArticleDataCommand = new AddSearchedArticleDataCommand(ArticleId: Guid.NewGuid(), UserId: userId,
-                SearchedData: "...", DateTime: DateTimeOffset.Now);
+                SearchedData: "...", SearchedDataAnswer: "......", SearchedDataAnswerContext: "......", DateTime: DateTimeOffset.Now);
 
             return addSearchedArticleDataCommand;
         }

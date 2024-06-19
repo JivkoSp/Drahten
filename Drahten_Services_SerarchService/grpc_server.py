@@ -37,6 +37,8 @@ class DocumentSimilarityCheckService(greeter_pb2_grpc.DocumentSimilarityCheck):
     
     def CheckDocumentSimilarity(self, request, context):
     
+        print(f"\n\n--> RECEIVED DOCUMENT WITH CONTENT: {request.content}\n\n")
+
         query_response = models.search_engine_cybersecurity_news_europe.query_pipeline.run(
                 query = request.content,
                 params={
@@ -44,15 +46,22 @@ class DocumentSimilarityCheckService(greeter_pb2_grpc.DocumentSimilarityCheck):
                 }
         )
     
+        print(f"\n\n--> QUERY RESPONSE: {query_response}\n\n")
+
         if query_response is None:
             similarityScoreDto = greeter_pb2.SimilarityScoreResponse(similarityScore=0)
             yield similarityScoreDto
 
-        # The response is always a list of Haystack documents, but there will be only one returned document (top_k == 1).
-        document = query_response['documents'][0]
+        if query_response['documents']:
+            print(f"\n\nTHERE IS DOCUMENTS RETURNED\n\n")
+            # The response is always a list of Haystack documents, but there will be only one returned document (top_k == 1).
+            document = query_response['documents'][0]
+        else:
+            print(f"\n\nTHERE IS NO DOCUMENTS RETURNED\n\n")
 
         # Check if the document has less than 90% similarity with existing documents in ElasticSearch.
-        if document.score < 0.9:
+        if not query_response['documents'] or document.score < 0.9:
+            print(f"\n\nDOCUMENT HAS *** LESS *** THAN 90 PERCENT SIMILARITY WITH ALREADY EXISTING DOCUMENTS.\n\n")
             new_document = HaystackDocument(id= request.articleId,
                                                 content=request.content, 
                                                 meta={"article_prev_title": request.prevTitle,
@@ -61,12 +70,14 @@ class DocumentSimilarityCheckService(greeter_pb2_grpc.DocumentSimilarityCheck):
                                                     "article_published_date": request.publishingDate,
                                                     "article_author": request.author,
                                                     "article_link": request.link})
-            
+            print(f"\n\nWRITING THE DOCUMENT: {new_document}\n\n")
             models.search_engine_cybersecurity_news_europe.WriteDocuments([new_document])
+        else:
+            print(f"\n\nDOCUMENT HAS 90 OR MORE PERCENT SIMILARITY WITH DOCUMENT/S THAT ALREADY EXIST!\n\n")
 
         similarityScoreDto = greeter_pb2.SimilarityScoreResponse(similarityScore=document.score)
         
-        yield similarityScoreDto
+        return similarityScoreDto
 
 
 def InitializeGrpcServer():

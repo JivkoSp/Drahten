@@ -38,13 +38,13 @@ namespace UserService.Application.Commands.Handlers
 
             //Send Async message to a message bus.
 
-            var userPublishedDto = new UserPublishedDto
-            {
-                UserId = command.UserId,
-                Event = "User_Published"
-            };
+            //var userPublishedDto = new UserPublishedDto
+            //{
+            //    UserId = command.UserId,
+            //    Event = "User_Published"
+            //};
 
-            _messageBusPublisher.PublishNewUser(userPublishedDto);  
+            //_messageBusPublisher.PublishNewUser(userPublishedDto);  
         }
     }
 }

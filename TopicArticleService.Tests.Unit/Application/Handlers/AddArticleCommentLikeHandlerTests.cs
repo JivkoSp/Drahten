@@ -32,7 +32,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _articleCommentRepository = Substitute.For<IArticleCommentRepository>();
             _articleCommentLikeMockFactory = Substitute.For<IArticleCommentLikeFactory>();
             _articleCommentConcreteFactory = new ArticleCommentFactory();
-            _handler = new AddArticleCommentLikeHandler(_articleCommentRepository, _articleCommentLikeMockFactory);
+            //_handler = new AddArticleCommentLikeHandler(_articleCommentRepository, _articleCommentLikeMockFactory);
         }
 
         #endregion

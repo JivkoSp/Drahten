@@ -33,7 +33,7 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
         private SearchedArticleData GetSearchedArticleData()
         {
             var searchedArticleData = new SearchedArticleData(articleId: Guid.NewGuid(), userId: Guid.NewGuid(),
-                searchedData: "...", dateTime: DateTimeOffset.Now);
+                searchedData: "...", searchedDataAnswer: "......", searchedDataAnswerContext: ".......", dateTime: DateTimeOffset.Now);
 
             return searchedArticleData;
         }

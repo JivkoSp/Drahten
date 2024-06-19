@@ -24,7 +24,7 @@ namespace PrivateHistoryService.Tests.Unit.Application.Handlers
             var UserId = userId ?? Guid.NewGuid();
 
             var command = new AddSearchedArticleDataCommand(ArticleId: Guid.NewGuid(), UserId: UserId, 
-               SearchedData: "...", DateTime: DateTimeOffset.Now);
+               SearchedData: "...", SearchedDataAnswer: "......", SearchedDataAnswerContext: "......", DateTime: DateTimeOffset.Now);
 
             return command;
         }

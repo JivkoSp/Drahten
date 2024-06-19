@@ -9,7 +9,7 @@ service DocumentFinder {
 }
 
 service DocumentSimilarityCheck {
-    rpc CheckDocumentSimilarity(Document) returns (stream SimilarityScoreResponse);
+    rpc CheckDocumentSimilarity(Document) returns (SimilarityScoreResponse);
 }
 
 message FindDocumentsRequest {}

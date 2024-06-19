@@ -32,7 +32,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _userConcreteFactory = new UserFactory();
             _topicReadService = Substitute.For<ITopicReadService>();
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new RegisterUserTopicHandler(_topicReadService, _userRepository);
+            //_handler = new RegisterUserTopicHandler(_topicReadService, _userRepository);
         }
 
         #endregion

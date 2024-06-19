@@ -27,7 +27,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.UserTests
 
         private Topic GetTopic()
         {
-            var topic = _topicConcreteFactory.Create(Guid.NewGuid(), "topic1");
+            var topic = _topicConcreteFactory.Create(Guid.NewGuid(), "topic1", "topic01");
 
             return topic;
         }
