@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using PrivateHistoryService.Infrastructure.EventProcessing;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -12,14 +13,17 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
     {
         private readonly IConfiguration _configuration;
         private readonly IEventProcessor _eventProcessor;
+        private readonly ILogger<MessageBusSubscriber> _logger;
         private IConnection _connection;
         private IModel _channel;
         private string _queueName;
 
-        public MessageBusSubscriber(IConfiguration configuration, IEventProcessor eventProcessor)
+        public MessageBusSubscriber(IConfiguration configuration, IEventProcessor eventProcessor, ILogger<MessageBusSubscriber> logger)
         {
             _configuration = configuration;
             _eventProcessor = eventProcessor;
+            _logger = logger;
+
             InitializeRabbitMq();
         }
 
@@ -73,14 +77,14 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
                      exchange: "search_service",
                      routingKey: "search_service.searched-article-data");
 
-            Console.WriteLine("\n--> PrivateHistoryService listening on the message bus!\n");
+            _logger.LogInformation("PrivateHistoryService --> Listening on the message bus!");
 
             _connection.ConnectionShutdown += RabbitMqConnectionShutDown;
         }
 
         private void RabbitMqConnectionShutDown(object sender, ShutdownEventArgs args)
         {
-            Console.WriteLine("--> PrivateHistoryService connection shutdown!");
+            _logger.LogWarning("PrivateHistoryService --> RabbitMQ connection shutdown!");
         }
 
         //Listening for events from the message bus (RabbitMQ).
@@ -92,7 +96,7 @@ namespace PrivateHistoryService.Infrastructure.AsyncDataServices
 
             consumer.Received += async (ModuleHandle, deliverEventArgs) => {
 
-                Console.WriteLine("--> PrivateHistoryService event received!");
+                _logger.LogInformation("PrivateHistoryService --> RabbitMQ event received!");
 
                 var body = deliverEventArgs.Body;
 
