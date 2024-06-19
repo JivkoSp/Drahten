@@ -1,0 +1,111 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPrivacy.cshtml";
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container">
+    <h1 class="text-center mb-3"> <img src="~/logo/logo.png" class="img-fluid rounded" style="width:7rem;" alt="avatar" /></h1>
+        <h2 class="text-center">Privacy Policy</h2>
+        
+        <p><strong>Drahten</strong> (the “Company”) is committed to protecting the privacy of its users. This Privacy Policy (“Privacy Policy”) is designed to help you understand what information we gather, how we use it, what we do to protect it, and to assist you in making informed decisions when using our website. Unless otherwise indicated below, this Privacy Policy applies to any website that references this Privacy Policy, any Company website, as well as any data the Company may collect across partnered and unaffiliated sites.</p>
+
+        <p>For purposes of this Agreement, the terms “we,” “us,” and “our” refer to the Company. “You” refers to you, as a user of the website.</p>
+        
+        <h2>I. Consent</h2>
+
+        <p>By accessing our website, you accept our Privacy Policy and Terms of Use, and you consent to our collection, storage, use and disclosure of 
+            your personal information as described in this Privacy Policy. 
+            In addition, by using our website, or services across partnered and unaffiliated sites, you are accepting the policies and practices described in this Privacy Policy. 
+            Each time you visit our website, and any time you voluntarily provide us with information, you agree that you are consenting to our collection, 
+            use and disclosure of the information that you provide, and you are consenting to receive emails or otherwise be contacted, as described in this 
+            Privacy Policy. Whether or not you register or do any sort of business with us, this Privacy Policy applies to all users of the website.</p>
+
+        <h2>II. Information We Collect</h2>
+
+        <p>We may collect both “Non-Personal Information” and “Personal Information” about you. “Non-Personal Information” includes information that cannot be used 
+            to personally identify you, such as anonymous usage data, general demographic information we may collect, referring/exit pages and URLs, platform types, 
+            preferences you submit and preferences that are generated based on the data you submit and number of clicks. “Personal Information” includes information 
+            that can be used to personally identify you, such as your name, IP address and email address.</p>
+
+        <h3>Cookies</h3>
+
+        <p>We track this information using cookies, or small text files which include an anonymous unique identifier. 
+            Cookies are sent to a user’s browser from our servers and are stored on the user’s computer hard drive. 
+            Sending a cookie to a user’s browser enables us to collect Non-Personal Information about that user and keep a record of the user’s preferences 
+            when utilizing our services, both on an individual and aggregate basis.  
+            The Company may use both persistent and session cookies; persistent cookies remain on your computer after you close your session and until you delete them,
+            while session cookies expire when you close your browser. Persistent cookies can be removed by following your Internet browser help file directions. 
+            If you choose to disable cookies, some areas of the website may not work properly or you may be not able to use the website at all.</p>
+
+        <h3>Email Communications</h3>
+
+        <p>Based upon the Personal Information that you provide us, we may communicate with you in response to your inquiries to provide the services you request 
+            and to manage your account. We will communicate with you by email, in accordance with your wishes.</p>
+
+        <h3>Buttons, Tools, And Content From Other Companies</h3>
+
+        <p>Our websites may include features such as plugins, buttons, tools, or content that link to other companies. 
+            We may collect information about your use of these features. 
+            In addition, when you see or interact with these buttons, tools, or content, or view any of our web pages containing them, 
+            some information from your browser may automatically be sent to the other company. Please read that company’s privacy policy for more information.</p>
+
+        <h2>III. How We Use and Share Information</h2>
+
+        <p>The data that we collect about you may be used in the following ways:</p>
+
+        <ul>
+            <li>Troubleshooting our websites and diagnosing problems</li>
+            <li>Providing you with any services, support, or information you have requested</li>
+            <li>Better understanding user behavior on our sites so that we may update our website to better serve the needs and interests of our customers </li>
+            <li>Sending you information about our Company or our website</li>
+            <li>Reducing and addressing instances of fraud and protecting both you and the Company</li>
+        </ul>
+
+        <h3>Personal Information:</h3>
+
+        <p>In general, we do not sell, trade, rent or otherwise share your Personal Information with third parties without your consent. 
+            We may share your Personal Information with vendors and other third-party providers who are performing services for the Company. 
+            The vendors and third-party providers used by us will only collect, use and disclose your information to the extent necessary to 
+            allow them to perform the services they provide for the Company.</p>
+
+        <p>In addition, we may disclose your Personal Information if required to do so by law or if you violate our Terms of Use.</p>
+
+        <h3>Non-Personal Information:</h3>
+
+        <p>We use Non-Personal Information to help us improve the website and customize the user experience. We also aggregate Non-Personal Information in order 
+            to track trends and analyze use patterns of the website.
+            This Privacy Policy does not limit in any way our use or disclosure of Non-Personal Information and we reserve the right to use and disclose such 
+            Non-Personal Information to our partners, advertisers and other third parties at our sole discretion.</p>
+
+        <h2>IV. How We Protect Information</h2>
+
+        <p>We implement reasonable precautions and follow industry best practices in order to protect your Personal Information and ensure that such 
+            Personal Information is not accessed, disclosed, altered or destroyed. 
+            However, these measures do not guarantee that your information will not be accessed, disclosed, altered or destroyed by breach of such precautions. 
+            By using our website, you acknowledge that you understand and agree to assume these risks.</p>
+
+        <h2>V. Links to Other Websites</h2>
+
+        <p>As part of the website, we may provide links to or compatibility with other websites or applications. 
+            However, we are not responsible for the privacy practices employed by those websites or the information or content they contain. 
+            This Privacy Policy applies solely to information collected by us through the website. Therefore, this Privacy Policy does not apply to your use 
+            of a third-party website accessed by selecting a link via our website. To the extent that you access or use the website through or on another 
+            website or application, then the privacy policy of that other website or application will apply to your access or use of that site or application. 
+            We encourage our users to read the privacy statements of other websites before proceeding to use them.</p>
+
+        <h2>VI. Last Updated</h2>
+
+        <p class="mb-2">This Privacy Policy was last updated on Monday, Jun 17, 2024.</p>
+
+        <!-- Consent Form -->
+        <form method="post" asp-action="Consent" class="mt-4">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="consentAgreed" required>
+                    I agree to the terms and conditions
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Agree and Continue</button>
+            <a asp-controller="Home" asp-action="Logout" class="btn btn-danger">Disagree and Exit</a>
+        </form>
+    </div>
