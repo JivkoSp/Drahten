@@ -23,17 +23,17 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
             if (clientIp == null)
             {
-                _logger.LogError("Yarp --> Client IP address could not be determined!");
+                _logger.LogError("Yarp Gateway --> Client IP address could not be determined!");
 
                 await _next(context);
                 return;
             }
 
-            _logger.LogInformation($"Yarp --> Request received from IP: {clientIp}");
+            _logger.LogInformation($"Yarp Gateway --> Request received from IP: {clientIp}");
 
             if (Blacklist.ContainsKey(clientIp) && Blacklist[clientIp] > DateTime.UtcNow)
             {
-                _logger.LogWarning($"Yarp --> Blacklisted IP {clientIp} attempted to access the service!");
+                _logger.LogWarning($"Yarp Gateway --> Blacklisted IP {clientIp} attempted to access the service!");
 
                 context.Response.StatusCode = _options.BlacklistHttpStatusCode;
                 return;
@@ -50,7 +50,7 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
                 if (RequestCounts[clientIp] > _options.RequestLimit)
                 {
-                    _logger.LogWarning($"Yarp --> Rate limit exceeded for IP {clientIp}. Request count: {RequestCounts[clientIp]}");
+                    _logger.LogWarning($"Yarp Gateway --> Rate limit exceeded for IP {clientIp}. Request count: {RequestCounts[clientIp]}");
 
                     // Increment violation count
                     if (!context.Items.ContainsKey("ViolationCount"))
@@ -60,14 +60,14 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
 
                     context.Items["ViolationCount"] = (int)context.Items["ViolationCount"] + 1;
 
-                    _logger.LogInformation($"Yarp --> Violation count for IP {clientIp}: {context.Items["ViolationCount"]}");
+                    _logger.LogInformation($"Yarp Gateway --> Violation count for IP {clientIp}: {context.Items["ViolationCount"]}");
 
                     // Check if the client should be blacklisted
                     if ((int)context.Items["ViolationCount"] > _options.ViolationThreshold)
                     {
                         Blacklist[clientIp] = DateTime.UtcNow.AddMinutes(_options.BlacklistDurationMinutes);
 
-                        _logger.LogWarning($"Yarp --> IP {clientIp} has been blacklisted until {Blacklist[clientIp]}");
+                        _logger.LogWarning($"Yarp Gateway --> IP {clientIp} has been blacklisted until {Blacklist[clientIp]}");
                     }
 
                     // Reset request count for the period
@@ -76,7 +76,7 @@ namespace Drahten_ApiGateway_Yarp.Middlewares
                     // Return 429 Too Many Requests status code
                     context.Response.StatusCode = _options.ViolationHttpStatusCode;
 
-                    _logger.LogWarning($"Yarp --> Response for IP {clientIp} set to {_options.ViolationHttpStatusCode} --> Too Many Requests");
+                    _logger.LogWarning($"Yarp Gateway --> Response for IP {clientIp} set to {_options.ViolationHttpStatusCode} --> Too Many Requests!");
 
                     return;
                 }
