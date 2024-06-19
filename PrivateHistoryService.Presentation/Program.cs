@@ -64,8 +64,7 @@ builder.Services.AddAuthentication(options => {
         {
             if (authFailedContext.HttpContext.Request != null)
             {
-                Console.WriteLine("Jwt token validation failed from PrivateHistoryService.");
-                //TODO: Log information, about this event to logging service.
+                Log.Error("PrivateHistoryService --> Jwt token validation failed!");
             }
 
             return Task.CompletedTask;
