@@ -1,3 +1,4 @@
+using DrahtenWeb.Attributes;
 using DrahtenWeb.Dtos;
 using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Extensions;
@@ -26,6 +27,7 @@ namespace DrahtenWeb.Controllers
             _topicArticleService = topicArticleService;
         }
 
+        [CheckTermsAndConditions]
         public async Task<IActionResult> Index()
         {
             var response = new ResponseDto();
