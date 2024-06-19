@@ -1,4 +1,5 @@
 using DrahtenWeb.Automapper.Profiles;
+using DrahtenWeb.Logging.Formatters;
 using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
@@ -6,10 +7,24 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
+using Serilog;
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console() // Add console sink.
+    .WriteTo.Http(requestUri: "http://localhost:5000",
+                  queueLimitBytes: 1000000,
+                  batchFormatter: new SerilogJsonFormatter()) //Add http sink.
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Host.UseSerilog();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IPrivateHistoryService, PrivateHistoryService>();
@@ -42,7 +57,20 @@ builder.Services.AddAuthentication(options => {
 
     options.Events.OnSigningIn = context => {
 
-        //TODO: Log information, about this event to logging service.
+        var ipAddress = context.HttpContext.Connection.RemoteIpAddress?.ToString();
+        var userName = context.Principal?.Identity?.Name;
+
+        Log.Information($"DrahtenWeb --> User signing In: {userName} from IP: {ipAddress} at {DateTimeOffset.Now.ToUniversalTime()}");
+
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnSigningOut = context =>
+    {
+        var ipAddress = context.HttpContext.Connection.RemoteIpAddress?.ToString();
+        var userName = context.HttpContext.User?.Identity?.Name;
+
+        Log.Information($"DrahtenWeb --> User signing Out: {userName} from IP: {ipAddress} at {DateTimeOffset.Now.ToUniversalTime()}");
 
         return Task.CompletedTask;
     };
