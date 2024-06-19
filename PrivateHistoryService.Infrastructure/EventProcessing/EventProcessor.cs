@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PrivateHistoryService.Application.Dtos;
 using PrivateHistoryService.Application.Services.ReadServices;
 using PrivateHistoryService.Application.Services.WriteServices;
@@ -7,6 +8,7 @@ using PrivateHistoryService.Domain.Factories.Interfaces;
 using PrivateHistoryService.Domain.Repositories;
 using PrivateHistoryService.Domain.ValueObjects;
 using PrivateHistoryService.Infrastructure.Dtos;
+using PrivateHistoryService.Infrastructure.Schedulers;
 using System.Text.Json;
 using static System.Formats.Asn1.AsnWriter;
 
@@ -30,44 +32,46 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMapper _mapper;
+        private readonly ILogger<EventProcessor> _logger;
 
-        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper)
+        public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, ILogger<EventProcessor> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _mapper = mapper;
+            _logger = logger;
         }
 
         private EventType DetermineEvent(string notificationMessage)
         {
-            Console.WriteLine("--> PrivateHistoryService EventProcessor: Determining Event Type.");
+            _logger.LogInformation("PrivateHistoryService --> EventProcessor: Determining Event Type.");
 
             var eventType = JsonSerializer.Deserialize<MessageBusEventDto>(notificationMessage);
 
             switch (eventType.Event)
             {
                 case "ViewedArticle":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: ViewedArticle event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: ViewedArticle event detected!");
                     return EventType.ViewedArticle;
                 case "LikedArticle":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: LikedArticle event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: LikedArticle event detected!");
                     return EventType.LikedArticle;
                 case "DislikedArticle":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: DislikedArticle event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: DislikedArticle event detected!");
                     return EventType.DislikedArticle;
                 case "CommentedArticle":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: CommentedArticle event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: CommentedArticle event detected!");
                     return EventType.CommentedArticle;
                 case "LikedArticleComment":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: LikedArticleComment event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: LikedArticleComment event detected!");
                     return EventType.LikedArticleComment;
                 case "DislikedArticleComment":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: DislikedArticleComment event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: DislikedArticleComment event detected!");
                     return EventType.DislikedArticleComment;
                 case "TopicSubscription":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: TopicSubscription event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: TopicSubscription event detected!");
                     return EventType.TopicSubscription;
                 case "SearchedArticleData":
-                    Console.WriteLine("PrivateHistoryService --> EventProcessor: SearchedArticleData event detected!");
+                    _logger.LogInformation("PrivateHistoryService --> EventProcessor: SearchedArticleData event detected!");
                     return EventType.SearchedArticleData;
                 default:
                     return EventType.Undetermined;
