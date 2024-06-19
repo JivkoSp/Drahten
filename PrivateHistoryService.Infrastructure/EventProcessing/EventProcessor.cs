@@ -98,7 +98,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             }
         }
 
-        private async Task WriteViewedArticle(string article)
+        private async Task WriteViewedArticleAsync(string article)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -113,7 +113,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await viewedArticleWriteService.AddViewedArticleAsync(viewedArticle);
         }
 
-        private async Task WriteLikedArticle(string likedArticle)
+        private async Task WriteLikedArticleAsync(string likedArticle)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -126,7 +126,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await likedArticleWriteService.AddLikedArticleAsync(likedArticleValueObject);
         }
 
-        private async Task WriteDislikedArticle(string dislikedArticle)
+        private async Task WriteDislikedArticleAsync(string dislikedArticle)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -139,7 +139,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await dislikedArticleWriteService.AddDislikedArticleAsync(dislikedArticleValueObject);
         }
 
-        private async Task WriteCommentedArticle(string commentedArticle)
+        private async Task WriteCommentedArticleAsync(string commentedArticle)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -152,7 +152,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await commentedArticleWriteService.AddCommentedArticleAsync(commentedArticleValueObject);
         }
 
-        private async Task WriteLikedArticleComment(string likedArticleComment)
+        private async Task WriteLikedArticleCommentAsync(string likedArticleComment)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -165,7 +165,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await likedArticleCommentWriteService.AddLikedArticleCommentAsync(likedArticleCommentValueObject);
         }
 
-        private async Task WriteDislikedArticleComment(string dislikedArticleComment)
+        private async Task WriteDislikedArticleCommentAsync(string dislikedArticleComment)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -178,7 +178,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await dislikedArticleCommentWriteService.AddDislikedArticleCommentAsync(dislikedArticleCommentValueObject);
         }
 
-        private async Task WriteTopicSubscription(string topicSubscription)
+        private async Task WriteTopicSubscriptionAsync(string topicSubscription)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -193,7 +193,7 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             await topicSubscriptionWriteService.AddTopicSubscriptionAsync(topicSubscriptionValueObject);
         }
 
-        private async Task WriteSearchedArticleData(string searchedArticleData)
+        private async Task WriteSearchedArticleDataAsync(string searchedArticleData)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
@@ -213,28 +213,28 @@ namespace PrivateHistoryService.Infrastructure.EventProcessing
             switch (eventType)
             {
                 case EventType.ViewedArticle:
-                    await WriteViewedArticle(message);
+                    await WriteViewedArticleAsync(message);
                     break;
                 case EventType.LikedArticle:
-                    await WriteLikedArticle(message);
+                    await WriteLikedArticleAsync(message);
                     break;
                 case EventType.DislikedArticle:
-                    await WriteDislikedArticle(message);
+                    await WriteDislikedArticleAsync(message);
                     break;
                 case EventType.CommentedArticle:
-                    await WriteCommentedArticle(message);
+                    await WriteCommentedArticleAsync(message);
                     break;
                 case EventType.LikedArticleComment:
-                    await WriteLikedArticleComment(message);
+                    await WriteLikedArticleCommentAsync(message);
                     break;
                 case EventType.DislikedArticleComment:
-                    await WriteDislikedArticleComment(message);
+                    await WriteDislikedArticleCommentAsync(message);
                     break;
                 case EventType.TopicSubscription:
-                    await WriteTopicSubscription(message);
+                    await WriteTopicSubscriptionAsync(message);
                     break;
                 case EventType.SearchedArticleData:
-                    await WriteSearchedArticleData(message);
+                    await WriteSearchedArticleDataAsync(message);
                     break;
             }
         }
