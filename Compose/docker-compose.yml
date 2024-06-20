@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-    django-rest-api:
-        container_name: "search_service_api"
+    search-service:
+        container_name: "search_service"
         restart: unless-stopped
         image: jivkospasov/searchservice:latest
         volumes:
@@ -22,7 +22,7 @@ services:
         image: jivkospasov/searchservice:latest
         command: python manage.py startgrpcserver
         depends_on:
-          - django-rest-api
+          - search-service
         ports:
           - "50051:50051"
         networks:
@@ -34,7 +34,7 @@ services:
         image: jivkospasov/searchservice:latest
         command: python manage.py start_rabbitmq_consumer
         depends_on:
-          - django-rest-api
+          - search-service
         networks:
           - drahten_network
 
@@ -44,7 +44,7 @@ services:
         image: jivkospasov/searchservice:latest
         command: celery -A Drahten_Services_SerarchService worker -l INFO
         depends_on:
-          - django-rest-api
+          - search-service
           - rabbitmq
         networks:
           - drahten_network
@@ -55,7 +55,7 @@ services:
         image: jivkospasov/searchservice:latest
         command: celery -A Drahten_Services_SerarchService beat -l INFO
         depends_on:
-          - django-rest-api
+          - search-service
           - rabbitmq
           - celery-worker
         networks:
