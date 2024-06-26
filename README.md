@@ -4,10 +4,10 @@
 
 ## Table of Contents
 1. [What is Drahten?](#what-is-drahten)
-2. [Why Security Matters](#why-security-matters)
-3. [Achieving Sufficient Security](#achieving-sufficient-security)
-4. [Will This Product Solve My Problem?](#will-this-product-solve-my-problem)
-5. [Architecture Overview](#architecture-overview)
+2. [Architecture Overview](#architecture-overview)
+3. [Why Security Matters](#why-security-matters)
+4. [Achieving Sufficient Security](#achieving-sufficient-security)
+5. [Will This Product Solve My Problem?](#will-this-product-solve-my-problem)
 
 ## What is Drahten?
 
@@ -41,3 +41,34 @@ If you are looking for a secure application framework that provides robust acces
 Moreover, Drahten offers advanced capabilities for scraping information from various websites, performing semantic searches on the retrieved information, and generating questions based on the semantic meaning of the data. This is achieved through a custom search engine implemented by the project. These features enable efficient data retrieval and analysis, making Drahten an excellent choice for applications requiring intelligent data processing and query generation.
 
 While no system can guarantee "absolute security," Drahten aims to provide "sufficient security" to protect your data and maintain the integrity of your application.
+
+
+## What features are available?
+
+The application offers the following services:
+
+1. Automatic information retrieval through the application on topics that the user has requested to receive information about in the field of:
+   1.1. Laws and news related to cybersecurity;
+   1.2. New threats related to cybersecurity;
+   1.3. Users.
+   
+2. Semantic search of information from a specific document (news article) related to a topic that the user has requested to receive information about.
+   2.1. Searching for information by providing a question from the user;
+   2.2. Automatic generation of questions by the application based on the semantics of the document (news article), with the ability to provide an answer and indicate the context from which the answer was extracted;
+   2.3. Automatic summarization of the document (news article).
+   
+3. Creation of private and public histories related to the user's work within the system.
+   3.1. The private history should provide information about viewed documents (news articles), users, and searched information on topics. Information should be stored based on specified time and deleted after expiration of that time;
+   3.2. The public history should be created by selecting parts from the private history.
+
+The application achieves security and reliability of the offered services through:
+1. Security:
+   1.1. Access control in the application through an authentication server, operating as an independent service. The authentication server must implement the following internet protocols: OpenID and OAuth 2.0;
+   1.2. Use of a gateway to ensure that the services offered by the application are as independent as possible from the application's interface. This means that the application's interface should only know the location of the gateway, and the gateway should forward requests to the respective services;
+   1.3. Event logging system for events occurring within the services offered by the application;
+   1.4. Encryption of transmitted information from each service to and from the database;
+   1.5. Operation of the services offered by the application in separate containers.
+
+2. Reliability:
+   2.1. The application must use microservices architecture, thereby dividing the system into individual components. The goal is to make the system more reliable so that it remains functional in case of service failure;
+   2.2. Each service (component) of the system must have a separate database to ensure that in case of a breach in the system, the information from the system is not located in one place.
