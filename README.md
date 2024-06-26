@@ -1,7 +1,4 @@
 #Drahten
-<p align="center">
-    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG" alt="Logo" width="250">
-</p>
 
 ## Table of Contents
 1. [What is Drahten?](#what-is-drahten)
