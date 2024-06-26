@@ -48,9 +48,9 @@ While no system can guarantee "absolute security," Drahten aims to provide "suff
 The application offers the following services:
 
 1. Automatic information retrieval through the application on topics that the user has requested to receive information about in the field of:
-   1.1. Laws and news related to cybersecurity;
-   1.2. New threats related to cybersecurity;
-   1.3. Users.
+   * Laws and news related to cybersecurity;
+   * New threats related to cybersecurity;
+   * Users.
    
 2. Semantic search of information from a specific document (news article) related to a topic that the user has requested to receive information about.
    2.1. Searching for information by providing a question from the user;
