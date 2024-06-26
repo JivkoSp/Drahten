@@ -17,6 +17,10 @@ Drahten is an open-source project utilizing a **microservices architecture** wri
 - Information retrieval
 - Data encryption
 
+## Architecture Overview
+
+![Architecture Overview](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/ArchitectureOverview.PNG)
+
 ## Why Security Matters
 
 In the realm of computer systems and networks, defining "absolute security" is impossible. The rapid evolution of information technologies, the reduced timeframes for comprehensive testing of information systems, the increasing capabilities of individual users, and the potential for human errors (such as non-compliance with organizational security policies, configuration mistakes, and missed updates of critical applications and systems) are just some of the challenges that make "absolute security" unattainable. Therefore, the goal is to achieve "sufficient security."
@@ -38,7 +42,3 @@ If you are looking for a secure application framework that provides robust acces
 Moreover, Drahten offers advanced capabilities for scraping information from various websites, performing semantic searches on the retrieved information, and generating questions based on the semantic meaning of the data. This is achieved through a custom search engine implemented by the project. These features enable efficient data retrieval and analysis, making Drahten an excellent choice for applications requiring intelligent data processing and query generation.
 
 While no system can guarantee "absolute security," Drahten aims to provide "sufficient security" to protect your data and maintain the integrity of your application.
-
-## Architecture Overview
-
-![Architecture Overview](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/ArchitectureOverview.PNG)
