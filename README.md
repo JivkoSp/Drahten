@@ -8,6 +8,7 @@
 3. [Why Security Matters](#why-security-matters)
 4. [Achieving Sufficient Security](#achieving-sufficient-security)
 5. [Will This Product Solve My Problem?](#will-this-product-solve-my-problem)
+6. [What features are available?](#what-features-are-available)
 
 ## What is Drahten?
 
