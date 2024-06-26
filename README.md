@@ -1,5 +1,4 @@
 <p align="center">
-    # Drahten
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG" alt="Logo" width="250">
 </p>
 
