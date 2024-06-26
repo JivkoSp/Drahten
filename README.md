@@ -1,4 +1,7 @@
-![Drahten Logo](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG" alt="Logo" width="400">
+</p>
 
 # What is Drahten?
 
