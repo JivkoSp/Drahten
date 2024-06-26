@@ -1,5 +1,5 @@
-<p align="center" style="background-color: lightblue; padding: 20px;">
-    <strong style="font-size: 2em; display: block;">Drahten</strong>
+#Drahten
+<p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG" alt="Logo" width="250">
 </p>
 
