@@ -2,13 +2,6 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo.PNG" alt="Logo" width="250">
 </p>
 
-## Table of Contents
-1. [What is Drahten?](#what-is-drahten)
-2. [Architecture Overview](#architecture-overview)
-3. [Will This Product Solve My Problem?](#will-this-product-solve-my-problem)
-4. [What features are available?](#what-features-are-available)
-5. [Detailed technical project explanation](#detailed-technical-project-explanation)
-
 ## What is Drahten?
 
 Drahten is an open-source project utilizing a **microservices architecture** written in .NET Core 8.0. The project focuses on creating a secure application that encompasses:
@@ -24,6 +17,7 @@ Drahten is an open-source project utilizing a **microservices architecture** wri
 
 * Intro
   - [Capabilities](Docs/intro-capabilities.md)
+  - [Overall design](Docs/intro-design.md)
 
 ## Why Security Matters
 
