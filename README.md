@@ -92,19 +92,19 @@ While no system can guarantee "absolute security," Drahten aims to provide "suff
 3.   ctions performed by users (e.g., Login/Logout, visited pages within the application);
 4. Names, nicknames (aliases), and email addresses of users.
 * TopicArticle Service - A service responsible for actions and storing information in a PostgreSQL database regarding documents (news/articles) on topics offered by this service. The actions managed by this service include:
-** Subscribing users to receive information on topics provided by the application;
-** Registering new documents on topics provided by the application;
-** Creating comments on documents for subscribed topics;
-** Creating likes/dislikes for documents on subscribed topics;
-** Registering users who have viewed documents on subscribed topics.
+1. Subscribing users to receive information on topics provided by the application;
+2. Registering new documents on topics provided by the application;
+3. Creating comments on documents for subscribed topics;
+4. Creating likes/dislikes for documents on subscribed topics;
+5. Registering users who have viewed documents on subscribed topics.
 * PrivateHistory Service - A service responsible for the user's private history, providing information on:
-** Viewed documents (news/articles);
-** Viewed user profiles;
-** Topics the user has subscribed to;
-** Searched information on topics and documents;
-** Commented documents;
-** Liked/Disliked documents.
-** Information is stored for a specified time and deleted after the expiration of that time. Users can remove parts or the entire history before the expiration time.
+1. Viewed documents (news/articles);
+2. Viewed user profiles;
+3. Topics the user has subscribed to;
+4. Searched information on topics and documents;
+5. Commented documents;
+6. Liked/Disliked documents.
+7. Information is stored for a specified time and deleted after the expiration of that time. Users can remove parts or the entire history before the expiration time.
 * PublicHistory Service - A service responsible for the user's public history, which can contain parts or the entire private history. The public history is created by selecting parts from the private history. Information is stored indefinitely, and users can remove parts or the entire history at any time.
 * Search Service - A service responsible for searching information from the internet regarding topics offered by the application. It also handles semantic searches of information offered by the application. The searched information is stored in an Elasticsearch database.
 * Chat Service - A service providing communication between users through text messages. Text messages are stored in a PostgreSQL database.
