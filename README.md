@@ -29,8 +29,8 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
-<div class="flex-container">
-    <div class="flex-item-left">
+<div style="display: flex;">
+    <div style="flex: 1;">
         <ul>
             <li>Intro
                 <ul>
@@ -47,8 +47,8 @@ In this project, "sufficient security" is accomplished through the following mea
             </li>
         </ul>
     </div>
-    <div class="flex-item-right">
-        <img src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" alt="GIF" />
+    <div style="padding-right: 20px;">
+        <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
     </div>
 </div>
 
