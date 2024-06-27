@@ -5,6 +5,6 @@ The technologies chosen are [cloud-agnostic](https://www.cloudzero.com/blog/clou
 * Integration - RabbitMq, gRPC, HTTP
 * Data storage - PostgreSQL, Elasticsearch
 * Operations - Docker, Kubernetes
-* Services - .NET, ASP.NET, EF Core, Python, Django, Celery, Scrapy, Haystack, Kibana, Logstash
+* Services - .NET, ASP.NET, EF Core, Python, Django, Celery, Scrapy, Haystack, Kibana, Logstash, Keycloak
 * Libraries - Serilog, AutoMapper, Polly
 * Automated testing - NUnit, Testcontainers
