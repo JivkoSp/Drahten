@@ -7,4 +7,4 @@ The technologies chosen are [cloud-agnostic](https://www.cloudzero.com/blog/clou
 * Operations - Docker, Kubernetes
 * Services - .NET, ASP.NET, EF Core, Python, Django, Celery, Scrapy, Haystack, Kibana, Logstash
 * Libraries - Serilog, AutoMapper, Polly
-* Automated testing - NUnit
+* Automated testing - NUnit, Testcontainers
