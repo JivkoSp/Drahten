@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TopicArticleService.Domain.Entities;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
@@ -8,10 +9,13 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
     internal sealed class WriteDbContext : DbContext
     {
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IEncryptionProvider _encryptionProvider;
 
-        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory) : base(options)
+        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory,
+            IEncryptionProvider encryptionProvider) : base(options)
         {
             _loggerFactory = loggerFactory;
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<Article> Articles { get; set; }
@@ -37,14 +41,14 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
             //Applying configurations for the entity models - START 
 
             modelBuilder.ApplyConfiguration(new ArticleConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleDislikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentDislikeConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleDislikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentLikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentDislikeConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new TopicConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserTopicConfiguration());
+            modelBuilder.ApplyConfiguration(new UserTopicConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new UserArticleConfiguration());
 
             //Applying configurations for the entity models - END
