@@ -1,4 +1,4 @@
-# Will This Product Solve My Problem?
+# Product purpose
 
 If you are looking for a secure application framework that provides robust access control, reliable information retrieval, and strong data encryption, **Drahten** is designed to meet those needs. By leveraging a **microservices architecture**, Drahten ensures that each service is isolated and secure, while the use of an authentication server and reverse proxy server provides centralized user authentication and authorization. Additionally, the encryption of data in transit and the comprehensive logging system contribute to the overall security and transparency of the application.
 
