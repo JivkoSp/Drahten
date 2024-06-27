@@ -29,6 +29,33 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
+<div class="flex-container">
+    <div class="flex-item-left">
+        <ul>
+            <li>Intro
+                <ul>
+                    <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
+                    <li><a href="Docs/intro-purpose.md">Purpose</a></li>
+                    <li><a href="Docs/intro-design.md">Overall design</a></li>
+                    <li><a href="Docs/intro-technologies.md">Technologies</a></li>
+                </ul>
+            </li>
+            <li>Design
+                <ul>
+                    <li><a href="Docs/intro-technologies.md">Search Service</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="flex-item-right">
+        <img src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" alt="GIF" />
+    </div>
+</div>
+
+
+
+# Documentation 
+
  <div>
         <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
  </div>
