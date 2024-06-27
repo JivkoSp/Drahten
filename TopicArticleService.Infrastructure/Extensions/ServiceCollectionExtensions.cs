@@ -11,6 +11,7 @@ using TopicArticleService.Domain.Repositories;
 using TopicArticleService.Infrastructure.AsyncDataServices;
 using TopicArticleService.Infrastructure.Automapper.Profiles;
 using TopicArticleService.Infrastructure.EntityFramework.Contexts;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using TopicArticleService.Infrastructure.EntityFramework.Initialization;
 using TopicArticleService.Infrastructure.EntityFramework.Options;
 using TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase;
@@ -32,6 +33,8 @@ namespace TopicArticleService.Infrastructure.Extensions
         {
             var postgresOptions = configuration.GetOptions<PostgresOptions>("Postgres");
 
+            services.AddSingleton<IEncryptionProvider>(new EncryptionProvider("A1B2C3D4E5F60789"));
+
             services.AddDbContext<ReadDbContext>(options => options.UseNpgsql(postgresOptions.ConnectionString));
 
             services.AddDbContext<WriteDbContext>(options => options.UseNpgsql(postgresOptions.ConnectionString));
@@ -40,7 +43,7 @@ namespace TopicArticleService.Infrastructure.Extensions
 
             services.AddHostedService<DbInitializer>();
 
-            //services.AddHostedService<DbPrepper>();
+            services.AddHostedService<DbPrepper>();
 
             services.AddScoped<IArticleRepository, PostgresArticleRepository>();
 
