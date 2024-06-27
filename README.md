@@ -34,6 +34,8 @@ In this project, "sufficient security" is accomplished through the following mea
   - [Capabilities](Docs/intro-capabilities.md)
   - [Overall design](Docs/intro-design.md)
   - [Technologies](Docs/intro-technologies.md)
+* Design
+  - [Search Service](Docs/intro-technologies.md)
 
 
 ## Will This Product Solve My Problem?
