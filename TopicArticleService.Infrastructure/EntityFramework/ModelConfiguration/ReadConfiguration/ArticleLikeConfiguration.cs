@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using TopicArticleService.Infrastructure.EntityFramework.Models;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration
 {
     internal sealed class ArticleLikeConfiguration : IEntityTypeConfiguration<ArticleLikeReadModel>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ArticleLikeConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<ArticleLikeReadModel> builder)
         {
             //Table name
@@ -16,6 +25,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             //Property config
             builder.Property(p => p.DateTime)
+             .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
              .IsRequired();
 
             //Relationships
