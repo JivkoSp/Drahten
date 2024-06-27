@@ -30,7 +30,7 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
-<div style="width: 300px;"> </div>
+<img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" width="250" style="visibility: hidden;">
 <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" width="250">
 
 * Intro
