@@ -28,9 +28,6 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
 # Documentation <img src="https://media.giphy.com/media/WV9R2niZMMbcE5a9um/giphy.gif" width="50">
-
-<img src="https://media.giphy.com/media/WV9R2niZMMbcE5a9um/giphy.gif" width="100">
- 
  * Intro
     - [Capabilities](Docs/intro-capabilities.md)
     - [Purpose](Docs/intro-purpose.md)
