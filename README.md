@@ -27,9 +27,10 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Data Encryption**: Information transmitted between services and the database is encrypted.
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
-<div style="display: flex; align-items: center; justify-content: center; height: 250px; position: relative;">
-  <h1 style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%);">Documentation</h1>
-  <img src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="120" style="position: absolute; right: 0;">
+
+<div style="position: relative; display: flex; align-items: center; height: 120px;">
+  <h1 style="flex: 1; text-align: center; margin: 0;">Documentation</h1>
+  <img src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="120" style="margin-left: 10px;">
 </div>
 
 * Intro
