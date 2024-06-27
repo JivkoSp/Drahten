@@ -29,7 +29,7 @@ In this project, "sufficient security" is accomplished through the following mea
 
 
 # Documentation 
-<div width="400">
+<div style="max-width: 400px;">
     <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" width="250">
     <div style="flex: 1;">
         <ul>
