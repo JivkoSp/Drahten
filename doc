@@ -1,0 +1,26 @@
+Questions that the documentation must answer:
+
+What is this product?
+Will this product solve my problem?
+What features are available?
+How do I get started? As you write a getting started document, some questions you should ask yourself are:
+What are the quickest explanations of what this service is and what its core features do?
+What are the simplest steps to install and use your product?
+What are the most important questions new users will have?
+What are the cool things they can do with your service?
+How do I authenticate against your API?
+How do I use a specific feature?
+*** Conceptual documentation *** Conceptual documentation helps users understand the concepts and ideas behind your service. It describes how your service works to your users. Conceptual content should avoid implementation details. Implementation details belong in procedural documentation.
+
+*** Procedural documentation *** Includes tutorials and how-to guides—anything from installation instructions to API integrations. A procedural document shows readers how to accomplish a specific goal by following a set of structured steps. A single step should describe a single action that a user takes. These are some useful patterns for writing guides and tutorials:
+
+Make the guide stand on its own as much as possible with all the actions users need on a single page.
+Keep the number of steps limited to what’s necessary for your users. When a procedure contains many steps, the procedure looks overwhelming and complex to users. Longer procedures also create more opportunities for mistakes and tend to require more maintenance.
+Avoid lengthy explanations. A few sentences of explanation or a well-placed image is useful, but too much additional content within a procedure tends to overwhelm users. A good practice is to write procedures that allow a user to see two or more steps on a standard monitor screen. If you find your procedure contains many explanations, consider separating that information out into a conceptual guide. Note that this doesn’t apply to code examples.
+*** Reference documentation *** Reference documentation is all about cause and effect: which actions produce which results. This is also true for troubleshooting. Sometimes users encounter errors or friction, and reference documentation helps them quickly get back on track.
+
+API reference:
+Good API documentation:
+Provides a detailed reference for all its resources and endpoints;
+Offers plenty of examples;
+Lists and defines status codes and error messages. Your API reference should offer an example request and example response to that request.
