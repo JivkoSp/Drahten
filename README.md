@@ -30,10 +30,12 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
-<div style="display: flex; align-items: flex-start;">
-    <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250" style="margin-right: 20px;">
-    <div style="flex: 1;">
-        <ul style="list-style-type: none; padding-left: 0;">
+
+
+<div style="overflow: hidden;">
+    <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250" style="margin-right: 10px;">
+    <div style="margin-right: 10px;">
+        <ul style="list-style-type: none; padding: 0;">
             <li>Intro
                 <ul style="list-style-type: none; padding-left: 0;">
                     <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
