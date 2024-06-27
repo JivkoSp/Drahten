@@ -1,13 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserService.Domain.Entities;
 using UserService.Domain.ValueObjects;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public UserConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<User> builder)
         {
             //Table name
@@ -15,13 +23,7 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.WriteCon
 
             //Primary key
             builder.HasKey(key => key.Id);
-
-            var fullNameConverter = new ValueConverter<UserFullName, string>(x => x, x => new UserFullName(x));
-
-            var nickNameConverter = new ValueConverter<UserNickName, string>(x => x, x => new UserNickName(x));
-
-            var emailAddressConverter = new ValueConverter<UserEmailAddress, string>(x => x, x => new UserEmailAddress(x));
-
+            
             //Property config - Start
 
             builder.Property(p => p.Id)
@@ -29,17 +31,17 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.WriteCon
                 .HasColumnName("UserId");
 
             builder.Property(typeof(UserFullName), "_userFullName")
-                .HasConversion(fullNameConverter)
+                .HasConversion(new EncryptedUserFullNameConverter(_encryptionProvider))
                 .HasColumnName("UserFullName")
                 .IsRequired();
 
             builder.Property(typeof(UserNickName), "_userNickName")
-                .HasConversion(nickNameConverter)
+                .HasConversion(new EncryptedUserNickNameConverter(_encryptionProvider))
                 .HasColumnName("UserNickName")
                 .IsRequired();
 
             builder.Property(typeof(UserEmailAddress), "_userEmailAddress")
-                .HasConversion(emailAddressConverter)
+                .HasConversion(new EncryptedUserEmailAddressConverter(_encryptionProvider))
                 .HasColumnName("UserEmailAddress")
                 .IsRequired();
 
