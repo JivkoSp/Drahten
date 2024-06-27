@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration;
 using UserService.Infrastructure.EntityFramework.Models;
 
@@ -6,8 +7,11 @@ namespace UserService.Infrastructure.EntityFramework.Contexts
 {
     internal sealed class ReadDbContext : DbContext
     {
-        public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ReadDbContext(DbContextOptions<ReadDbContext> options, IEncryptionProvider encryptionProvider) : base(options)
         {
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<UserReadModel> Users { get; set; }
@@ -21,10 +25,10 @@ namespace UserService.Infrastructure.EntityFramework.Contexts
             base.OnModelCreating(modelBuilder);
 
             //Applying configurations for the entity models
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new BannedUserConfiguration());
-            modelBuilder.ApplyConfiguration(new ContactRequestConfiguration());
-            modelBuilder.ApplyConfiguration(new UserTrackingConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new BannedUserConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ContactRequestConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new UserTrackingConfiguration(_encryptionProvider));
         }
     }
 }
