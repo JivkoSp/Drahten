@@ -45,8 +45,8 @@ In this project, "sufficient security" is accomplished through the following mea
                     <li><a href="Docs/intro-technologies.md">Search Service</a></li>
                 </ul>
             </li>
+            <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
         </ul>
-        <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
     </div>
 </div>
 
