@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using UserService.Domain.Entities;
 using UserService.Domain.ValueObjects;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using UserService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration;
 
 namespace UserService.Infrastructure.EntityFramework.Contexts
@@ -9,10 +10,13 @@ namespace UserService.Infrastructure.EntityFramework.Contexts
     internal sealed class WriteDbContext : DbContext
     {
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IEncryptionProvider _encryptionProvider;
 
-        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory) : base(options)
+        public WriteDbContext(DbContextOptions<WriteDbContext> options, ILoggerFactory loggerFactory,
+            IEncryptionProvider encryptionProvider) : base(options)
         {
             _loggerFactory = loggerFactory;
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<User> Users { get; set; }
@@ -34,10 +38,10 @@ namespace UserService.Infrastructure.EntityFramework.Contexts
             base.OnModelCreating(modelBuilder);
 
             //Applying configurations for the entity models
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new BannedUserConfiguration());
-            modelBuilder.ApplyConfiguration(new ContactRequestConfiguration());
-            modelBuilder.ApplyConfiguration(new UserTrackingConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new BannedUserConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ContactRequestConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new UserTrackingConfiguration(_encryptionProvider));
         }
     }
 }
