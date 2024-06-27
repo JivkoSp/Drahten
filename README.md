@@ -29,9 +29,11 @@ In this project, "sufficient security" is accomplished through the following mea
 
 
 <div style="display: flex; align-items: center; justify-content: center;">
-  <h1 style="margin-right: 10px; margin-top: 0; margin-bottom: 0;">Documentation</h1>
-  <img src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="120" style="display: inline;">
+  <h1 style="margin-right: 10px; margin-top: 0; margin-bottom: 0;"></h1>
+  
 </div>
+
+# Documentation **<img src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="100" style="display: inline;">**
  
 * Intro
     - [Capabilities](Docs/intro-capabilities.md)
