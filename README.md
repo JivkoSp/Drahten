@@ -52,20 +52,3 @@ In this project, "sufficient security" is accomplished through the following mea
     </div>
 </div>
 
-
-
-# Documentation 
-
- <div>
-        <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
- </div>
-  
-* Intro
-    - [Capabilities](Docs/intro-capabilities.md)
-    - [Purpose](Docs/intro-purpose.md)
-    - [Overall design](Docs/intro-design.md)
-    - [Technologies](Docs/intro-technologies.md)
-* Design
-    - [Search Service](Docs/intro-technologies.md)
-
-
