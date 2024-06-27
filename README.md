@@ -87,9 +87,9 @@ While no system can guarantee "absolute security," Drahten aims to provide "suff
 * Gui - Graphical User Interface (frontend) that indirectly connects to all services offered by the application. Users access the services through this interface.
 * Api Gateway - Reverse proxy server (gateway) implemented using YARP. It connects the graphical interface with all the services offered by the application. Additionally, it performs authentication and authorization functions, providing extra security for the services.
 * User Service - A service responsible for storing information in a PostgreSQL database about general actions and information related to users in the application, such as:
-** Sent/Received requests for contact with other users;
-** Sent requests to block other users;
-** Actions performed by users (e.g., Login/Logout, visited pages within the application);
+- Sent/Received requests for contact with other users;
+-  Sent requests to block other users;
+-   ctions performed by users (e.g., Login/Logout, visited pages within the application);
 ** Names, nicknames (aliases), and email addresses of users.
 * TopicArticle Service - A service responsible for actions and storing information in a PostgreSQL database regarding documents (news/articles) on topics offered by this service. The actions managed by this service include:
 ** Subscribing users to receive information on topics provided by the application;
