@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using UserService.Infrastructure.EntityFramework.Models;
 
 namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration
 {
     internal sealed class ContactRequestConfiguration : IEntityTypeConfiguration<ContactRequestReadModel>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ContactRequestConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<ContactRequestReadModel> builder)
         {
             //Table name
@@ -15,9 +24,11 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConf
             builder.HasKey(key => new { key.IssuerUserId, key.ReceiverUserId });
 
             //Property config
-            builder.Property(p => p.Message);
+            builder.Property(p => p.Message)
+             .HasConversion(new EncryptedStringConverter(_encryptionProvider));
 
             builder.Property(p => p.DateTime)
+             .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
              .IsRequired();
 
             //Relationships
