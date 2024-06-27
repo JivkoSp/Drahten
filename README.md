@@ -32,10 +32,10 @@ In this project, "sufficient security" is accomplished through the following mea
 
 <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" width="250">
 
-* **Intro**
+* Intro
     - [Capabilities](Docs/intro-capabilities.md)
     - [Purpose](Docs/intro-purpose.md)
     - [Overall design](Docs/intro-design.md)
     - [Technologies](Docs/intro-technologies.md)
-* **Design**
+*Design
     - [Search Service](Docs/intro-technologies.md)
