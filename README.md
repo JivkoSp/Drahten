@@ -112,7 +112,7 @@ While no system can guarantee "absolute security," Drahten aims to provide "suff
 11. Log Collection Service - A service responsible for collecting and recording information about events occurring in the services offered by the application in an Elasticsearch database.
 
 
-### Designing a service responsible for actions related to searching information from the internet on topics offered by the application - Search Service.
+### Search Service - Service responsible for actions related to searching information from the internet on topics offered by the application 
 
 ![Architecture Overview](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/SearchService-1.PNG)
 
