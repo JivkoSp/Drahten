@@ -10,6 +10,7 @@ using UserService.Domain.Repositories;
 using UserService.Infrastructure.AsyncDataServices;
 using UserService.Infrastructure.Automapper.Profiles;
 using UserService.Infrastructure.EntityFramework.Contexts;
+using UserService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 using UserService.Infrastructure.EntityFramework.Initialization;
 using UserService.Infrastructure.EntityFramework.Options;
 using UserService.Infrastructure.EntityFramework.Repositories;
@@ -27,6 +28,8 @@ namespace UserService.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var postgresOptions = configuration.GetOptions<PostgresOptions>("Postgres");
+
+            services.AddSingleton<IEncryptionProvider>(new EncryptionProvider("A1B2C3D4E5F60789"));
 
             services.AddDbContext<ReadDbContext>(options => options.UseNpgsql(postgresOptions.ConnectionString));
 
