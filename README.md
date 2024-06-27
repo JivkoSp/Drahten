@@ -46,9 +46,7 @@ In this project, "sufficient security" is accomplished through the following mea
                 </ul>
             </li>
         </ul>
-        <div style="padding-right: 60px;">
-            <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
-        </div>
+        <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
     </div>
 </div>
 
