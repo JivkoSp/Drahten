@@ -20,6 +20,11 @@ Drahten is an open-source project utilizing a **microservices architecture** wri
 
 ![Architecture Overview](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/ArchitectureOverview.PNG)
 
+# Documentation
+
+* Intro
+  - [Capabilities](Docs/intro-capabilities.md)
+
 ## Why Security Matters
 
 In the realm of computer systems and networks, defining "absolute security" is impossible. The rapid evolution of information technologies, the reduced timeframes for comprehensive testing of information systems, the increasing capabilities of individual users, and the potential for human errors (such as non-compliance with organizational security policies, configuration mistakes, and missed updates of critical applications and systems) are just some of the challenges that make "absolute security" unattainable. Therefore, the goal is to achieve "sufficient security."
