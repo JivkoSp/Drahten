@@ -30,14 +30,11 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
-
-
-<div style="overflow: hidden;">
-    <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250" style="margin-right: 10px;">
-    <div style="margin-right: 10px;">
-        <ul style="list-style-type: none; padding: 0;">
+ <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
+     <div style="flex: 1;">
+        <ul>
             <li>Intro
-                <ul style="list-style-type: none; padding-left: 0;">
+                <ul>
                     <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
                     <li><a href="Docs/intro-purpose.md">Purpose</a></li>
                     <li><a href="Docs/intro-design.md">Overall design</a></li>
@@ -45,10 +42,9 @@ In this project, "sufficient security" is accomplished through the following mea
                 </ul>
             </li>
             <li>Design
-                <ul style="list-style-type: none; padding-left: 0;">
+                <ul>
                     <li><a href="Docs/intro-technologies.md">Search Service</a></li>
                 </ul>
             </li>
         </ul>
     </div>
-</div>
