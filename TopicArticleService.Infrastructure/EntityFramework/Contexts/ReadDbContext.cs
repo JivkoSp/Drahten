@@ -2,13 +2,17 @@
 using TopicArticleService.Infrastructure.EntityFramework.Models;
 using TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.ReadConfiguration;
 using TopicArticleService.Infrastructure.Extensions;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
 {
     internal sealed class ReadDbContext : DbContext
     {
-        public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ReadDbContext(DbContextOptions<ReadDbContext> options, IEncryptionProvider encryptionProvider) : base(options)
         {
+            _encryptionProvider = encryptionProvider;
         }
 
         public DbSet<ArticleReadModel> Articles { get; set; }
@@ -29,14 +33,14 @@ namespace TopicArticleService.Infrastructure.EntityFramework.Contexts
             //Applying configurations for the entity models - START 
 
             modelBuilder.ApplyConfiguration(new ArticleConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleDislikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleCommentDislikeConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleLikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleDislikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentLikeConfiguration(_encryptionProvider));
+            modelBuilder.ApplyConfiguration(new ArticleCommentDislikeConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new TopicConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserTopicConfiguration());
+            modelBuilder.ApplyConfiguration(new UserTopicConfiguration(_encryptionProvider));
             modelBuilder.ApplyConfiguration(new UserArticleConfiguration());
 
             //Applying configurations for the entity models - END
