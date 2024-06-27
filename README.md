@@ -29,9 +29,9 @@ In this project, "sufficient security" is accomplished through the following mea
 
 
 # Documentation 
-
- <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
-     <div style="flex: 1;">
+<div style="display: flex;">
+    <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
+    <div style="flex: 1;">
         <ul>
             <li>Intro
                 <ul>
@@ -48,3 +48,5 @@ In this project, "sufficient security" is accomplished through the following mea
             </li>
         </ul>
     </div>
+</div>
+
