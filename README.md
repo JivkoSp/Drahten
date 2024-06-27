@@ -29,23 +29,13 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
- <img align="left" src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="100">
-
-<ul>
-  <li>Intro
-    <ul>
-      <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
-      <li><a href="Docs/intro-purpose.md">Purpose</a></li>
-      <li><a href="Docs/intro-design.md">Overall design</a></li>
-      <li><a href="Docs/intro-technologies.md">Technologies</a></li>
-    </ul>
-  </li>
-  <li>Design
-    <ul>
-      <li><a href="Docs/intro-technologies.md">Search Service</a></li>
-    </ul>
-  </li>
-</ul>
+ <img align="left" src="https://media.giphy.com/media/dtx5w2AEddGtULI9v4/giphy.gif" width="100" style="padding:10">
  
- 
+ * Intro
+    - [Capabilities](Docs/intro-capabilities.md)
+    - [Purpose](Docs/intro-purpose.md)
+    - [Overall design](Docs/intro-design.md)
+    - [Technologies](Docs/intro-technologies.md)
+* Design
+    - [Search Service](Docs/intro-technologies.md)
 
