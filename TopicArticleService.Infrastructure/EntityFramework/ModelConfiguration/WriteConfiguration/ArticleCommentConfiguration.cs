@@ -3,11 +3,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopicArticleService.Domain.Entities;
 using TopicArticleService.Domain.ValueObjects;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionConverters;
+using TopicArticleService.Infrastructure.EntityFramework.Encryption.EncryptionProvider;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.WriteConfiguration
 {
     internal sealed class ArticleCommentConfiguration : IEntityTypeConfiguration<ArticleComment>
     {
+        private readonly IEncryptionProvider _encryptionProvider;
+
+        public ArticleCommentConfiguration(IEncryptionProvider encryptionProvider)
+        {
+            _encryptionProvider = encryptionProvider;
+        }
+
         public void Configure(EntityTypeBuilder<ArticleComment> builder)
         {
             //Table name
@@ -15,15 +24,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
 
             //Primary key
             builder.HasKey(key => key.Id);
-
-            var commentValueConverter = new ValueConverter<ArticleCommentValue, string>(x => x.Value, x => new ArticleCommentValue(x));
-
-            var commentDateTimeConverter = new ValueConverter<ArticleCommentDateTime, DateTimeOffset>(x => x.DateTime, 
-                x => new ArticleCommentDateTime(x));
-
-            var userIdConverter = new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x)));
-
-            var parentCommentIdConverter = new ValueConverter<ArticleCommentID, Guid>(x => x.Value, x => new ArticleCommentID(x));
 
             //Property config - Start
 
@@ -36,22 +36,22 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                 .HasColumnName("ArticleCommentId");
 
             builder.Property(typeof(ArticleCommentValue), "_commentValue")
-                .HasConversion(commentValueConverter)
+                .HasConversion(new EncryptedArticleCommentValueConverter(_encryptionProvider))
                 .HasColumnName("Comment")
                 .IsRequired();
 
             builder.Property(typeof(ArticleCommentDateTime), "_dateTime")
-                .HasConversion(commentDateTimeConverter)
+                .HasConversion(new EncryptedArticleCommentDateTimeConverter(_encryptionProvider))
                 .HasColumnName("DateTime")
                 .IsRequired();
 
             builder.Property(typeof(UserID), "_userId")
-                .HasConversion(userIdConverter)
+                .HasConversion(new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x))))
                 .HasColumnName("UserId")
                 .IsRequired();
 
             builder.Property(typeof(ArticleCommentID), "_parentArticleCommentId")
-                .HasConversion(parentCommentIdConverter)
+                .HasConversion(new ValueConverter<ArticleCommentID, Guid>(x => x.Value, x => new ArticleCommentID(x)))
                 .HasColumnName("ParentArticleCommentId");
 
             //Property config - End
