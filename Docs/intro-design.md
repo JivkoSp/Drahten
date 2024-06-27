@@ -54,7 +54,7 @@
    
 **Scrapy** - Used for extracting information from websites through Web Crawler processes.
    
-**Celery Scheduler** - Used to execute Scrapy at predefined intervals.
+* **Celery Scheduler** - Used to execute Scrapy at predefined intervals.
    
 **Web sites** - Web pages from which the Web Crawler extracts information.
     
