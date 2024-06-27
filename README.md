@@ -30,7 +30,7 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Documentation 
 
-![Documentation GIF](https://giphy.com/gifs/cat-laptop-document-heIX5HfWgEYlW)
+<iframe src="https://giphy.com/embed/heIX5HfWgEYlW" width="480" height="480" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/cat-laptop-document-heIX5HfWgEYlW">via GIPHY</a></p>
 
 * Intro
   - [Capabilities](Docs/intro-capabilities.md)
