@@ -31,18 +31,16 @@ In this project, "sufficient security" is accomplished through the following mea
 
 <div style="display: flex;">
     
-<div style="margin-left: 20px;">
+<div style="margin-left: 20rem;">
     <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
 </div>
-<div style="flex: 1;">
-    * Intro
+   * Intro
       - [Capabilities](Docs/intro-capabilities.md)
       - [Purpose](Docs/intro-purpose.md)
       - [Overall design](Docs/intro-design.md)
       - [Technologies](Docs/intro-technologies.md)
     * Design
       - [Search Service](Docs/intro-technologies.md)
-</div>
 </div>
 
 
