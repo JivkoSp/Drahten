@@ -27,28 +27,6 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Data Encryption**: Information transmitted between services and the database is encrypted.
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
-# Documentation 
-
-<div style="display: flex;">
-    <img align="right" src="https://media.giphy.com/media/heIX5HfWgEYlW/giphy.gif" height="250">
-    <div style="flex: 1;">
-        <ul>
-            <li>Intro
-                <ul>
-                    <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
-                    <li><a href="Docs/intro-purpose.md">Purpose</a></li>
-                    <li><a href="Docs/intro-design.md">Overall design</a></li>
-                    <li><a href="Docs/intro-technologies.md">Technologies</a></li>
-                </ul>
-            </li>
-            <li>Design
-                <ul>
-                    <li><a href="Docs/intro-technologies.md">Search Service</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
 
 # Documentation 
 
