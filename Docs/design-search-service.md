@@ -29,7 +29,7 @@
 * **Logging** - Used for recording information about various events in the Search service. This information is forwarded to the Log Collection Service.
 
 
-# A diagram describing the operation of the information collection blocks from the internet (Scrapy and Celery Scheduler) and information search (Haystack and ElasticSearch)
+## A diagram describing the operation of the information collection blocks from the internet (Scrapy and Celery Scheduler) and information search (Haystack and ElasticSearch)
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/SearchService-4.PNG" alt="Logo" width="800">
