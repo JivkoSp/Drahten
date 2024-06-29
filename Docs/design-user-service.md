@@ -47,13 +47,24 @@
     - Field **ReceiverUserId** - Part of a composite primary key. It serves as a component of the primary key of the table and also as a foreign key, establishing a 1:N
     relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
     - Field **DateTime** - Date and time of the user being banned. The field type is "timestamp with time zone" - storing date, time, and timezone information.
-
-    
 * **Table "ContactRequest"** - The purpose of this table is to represent information regarding contact requests with users. It contains the columns: IssuerUserId, ReceiverUserId, Message, DateTime.
    <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseContactRequestTable.PNG" alt="Logo" width="550">
    </p>
+
+    - Field **IssuerUserId** - Part of a composite primary key. It serves as a component of the primary key of the table and also as a foreign key, establishing a 1:N
+    relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **ReceiverUserId** - Part of a composite primary key. It serves as a component of the primary key of the table and also as a foreign key, establishing a 1:N
+    relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **Message** - Message regarding a contact request with the user. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **DateTime** - Date and time of the sent contact request. The field type is "timestamp with time zone" - storing date, time, and timezone information.
 * **Table "UserTracking"** - The purpose of this table is to represent information about actions performed by users (e.g., Login/Logout, Visited page (URL) in the application, etc.). It contains the columns: UserTrackingId, Action, DateTime, Referrer, UserId.
   <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseUserTrackingTable.PNG" alt="Logo" width="550">
   </p>
+
+    - Field **UserTrackingId** - Primary key of the table. Serves as a unique identifier. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (with or without dashes).
+    - **Field Action** - Action performed by the user. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **DateTime** - Date and time when the action was performed. The field type is "timestamp with time zone" - storing date, time, and timezone information.
+    - Field **Referrer** - Referrer that directed the user to the current action (e.g., URL of a website). The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **UserId** - Foreign key establishing a 1:N relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
