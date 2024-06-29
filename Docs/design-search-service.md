@@ -1,6 +1,6 @@
-<p align="center">
-   <h1> Search Service </h1>
-</p>
+<div style="text-align: center;">
+  <h1>Search Service</h1>
+</div>
 
 # Responsible for actions related to searching information from the internet on topics offered by the application
 
