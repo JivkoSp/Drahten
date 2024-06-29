@@ -1,4 +1,7 @@
-# Search Service 
+<p align="center">
+   <h1> Search Service </h1>
+</p>
+
 # Responsible for actions related to searching information from the internet on topics offered by the application
 
 <p align="center">
