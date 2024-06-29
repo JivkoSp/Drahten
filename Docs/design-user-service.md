@@ -31,3 +31,15 @@
     <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseUserTable.PNG" alt="Logo" width="550">
     </p>
+* **Table "BannedUser"** - The purpose of this table is to represent information about banned users. It contains the columns: IssuerUserId, ReceiverUserId, DateTime.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseBannedUserTable.PNG" alt="Logo" width="550">
+    </p>
+* **Table "ContactRequest"** - The purpose of this table is to represent information regarding contact requests with users. It contains the columns: IssuerUserId, ReceiverUserId, Message, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseContactRequestTable.PNG" alt="Logo" width="550">
+   </p>
+* **Table "UserTracking"** - The purpose of this table is to represent information about actions performed by users (e.g., Login/Logout, Visited page (URL) in the application, etc.). It contains the columns: UserTrackingId, Action, DateTime, Referrer, UserId.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseUserTrackingTable.PNG" alt="Logo" width="550">
+  </p>
