@@ -33,9 +33,9 @@
     </p>
 - Field **UserId** - Primary key of the table. Serves as a unique identifier for the user. The field type is "text" - capable of storing text up to 1 GB in size.
 - Field **Version** - User version. Indicates the current version of the user, for example: 0 - indicates that the user is new and has not performed any actions; 1, ... N - indicates that actions have been performed. If within one request (one HTTP request), the user performs more than one action, the version will only increment once. This is done to prevent cases where the version increases suddenly, for example, from 1 to 4. The field type is "integer" - capable of storing numbers up to 4 bytes in size.
-- **Field UserFullName** - Full name of the user. The field type is "text" - capable of storing text up to 1 GB in size.
-- **Field UserNickName** - User nickname. The field type is "text" - capable of storing text up to 1 GB in size.
-- **Field UserEmailAddress** - User's email address. The field type is "text" - capable of storing text up to 1 GB in size.
+    - **Field UserFullName** - Full name of the user. The field type is "text" - capable of storing text up to 1 GB in size.
+    - **Field UserNickName** - User nickname. The field type is "text" - capable of storing text up to 1 GB in size.
+    - **Field UserEmailAddress** - User's email address. The field type is "text" - capable of storing text up to 1 GB in size.
 * **Table "BannedUser"** - The purpose of this table is to represent information about banned users. It contains the columns: IssuerUserId, ReceiverUserId, DateTime.
     <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseBannedUserTable.PNG" alt="Logo" width="550">
