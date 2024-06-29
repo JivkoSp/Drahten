@@ -8,11 +8,13 @@
 
 ### The components of the diagram have the following meaning
 
-Actor - This can be a user or a process from the application. The user or process requests information by sending HTTP requests to the User Service API. The diagram in Figure II.12 provides examples of endpoints that offer access to the following functionalities:
-Find all issued bans by user. Responds to HTTP GET;
-Register banned user. Responds to HTTP POST;
-Update contact request message. Responds to HTTP PUT.
-User Service API - This is a .NET web API providing various endpoints. Upon receiving a request for one of the provided endpoints, the request is analyzed by the authentication and authorization block - JWT Authentication & Authorization. If the request meets the necessary authentication and authorization level required by the intended endpoint, the request is executed. A JSON-formatted response is returned to the party/entity that made the request to the User Service API.
-JWT Authentication & Authorization - A layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the User Service API;
-PostgreSQL Database - A database for storing information from the User Service;
-Logging - Used for capturing information about various events in the User Service. This information is sent to the Log Collection Service.
+* **Actor** - This can be a user or a process from the application. The user or process requests information by sending HTTP requests to the User Service API.
+  The diagram provides examples of endpoints that offer access to the following functionalities:
+    - Find all issued bans by user. Responds to HTTP GET;
+    - Register banned user. Responds to HTTP POST;
+    - Update contact request message. Responds to HTTP PUT.
+* **User Service API** - This is a .NET web API providing various endpoints. Upon receiving a request for one of the provided endpoints, the request is analyzed by the authentication and authorization block - JWT 
+ Authentication & Authorization. If the request meets the necessary authentication and authorization level required by the intended endpoint, the request is executed. A JSON-formatted response is returned to the party/entity that made the request to the User Service API.
+* **JWT Authentication & Authorization** - A layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the User Service API;
+* **PostgreSQL Database** - A database for storing information from the User Service;
+* **Logging** - Used for capturing information about various events in the User Service. This information is sent to the Log Collection Service.
