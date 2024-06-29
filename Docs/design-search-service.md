@@ -37,7 +37,7 @@
 
 ### The components of the diagram have the following meaning
 
-#### Block 1 describes the operation of the information collection blocks from the internet (Scrapy and Celery Scheduler). The components of this block are colored green and have the following meaning:
+### Block 1 #### Describes the operation of the information collection blocks from the internet (Scrapy and Celery Scheduler). The components of this block are colored green and have the following meaning:
 
 Celery Beat - A task scheduler that publishes messages to the Message Bus to initiate Web Crawling processes.
 Celery Worker - A process that starts tasks by receiving requests for their initiation from the Message Bus.
