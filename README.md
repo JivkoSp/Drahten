@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="700">
+    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="600">
 </p>
 
 ## What is Drahten?
@@ -27,7 +27,7 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Data Encryption**: Information transmitted between services and the database is encrypted.
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
- ## 📃Documentation
+ ## 📖 Documentation
  * Intro
     - [Capabilities](Docs/intro-capabilities.md)
     - [Purpose](Docs/intro-purpose.md)
