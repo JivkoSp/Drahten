@@ -28,3 +28,6 @@
 ### Description of the tables
 
 * **Table "User"** - The purpose of this table is to link a user authenticated by the Auth Service with the information in the User Service related to them. It contains the columns: UserId, Version, UserFullName, UserNickName, UserEmailAddress.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseUserTable.PNG" alt="Logo" width="500">
+    </p>
