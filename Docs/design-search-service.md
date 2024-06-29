@@ -1,4 +1,5 @@
-# Search Service - Responsible for actions related to searching information from the internet on topics offered by the application
+# Search Service 
+# Responsible for actions related to searching information from the internet on topics offered by the application
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/SearchService-1.PNG" alt="Logo" width="450">
