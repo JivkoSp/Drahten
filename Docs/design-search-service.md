@@ -1,12 +1,12 @@
 # Search Service
 
-# Responsible for actions related to searching information from the internet on topics offered by the application
+## Responsible for actions related to searching information from the internet on topics offered by the application
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/SearchService-1.PNG" alt="Logo" width="450">
 </p>
 
-## The components of the diagram have the following meaning
+### The components of the diagram have the following meaning
 
 * **Actor** - This can be a user or a process from the application. The user or process requests information. In the diagram, an example request for "Cybersecurity news from Europe and America" is shown. The request is forwarded to the Search Service API, which then returns a response containing the appropriate HTTP code and information (if found).
    
@@ -35,7 +35,7 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/SearchService-4.PNG" alt="Logo" width="800">
 </p>
 
-## The components of the diagram have the following meaning
+### The components of the diagram have the following meaning
 
 Block 1 describes the operation of the information collection blocks from the internet (Scrapy and Celery Scheduler). The components of this block are colored green and have the following meaning:
 
