@@ -18,3 +18,6 @@
 * **JWT Authentication & Authorization** - A layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the User Service API;
 * **PostgreSQL Database** - A database for storing information from the User Service;
 * **Logging** - Used for capturing information about various events in the User Service. This information is sent to the Log Collection Service.
+
+## A diagram describing the tables of the User Service database, the relationships between them, and the information they represent.
+
