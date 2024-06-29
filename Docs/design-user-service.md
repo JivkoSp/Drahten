@@ -41,6 +41,14 @@
     <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseBannedUserTable.PNG" alt="Logo" width="550">
     </p>
+    
+    - Field **IssuerUserId** - Part of a composite primary key. It serves as a component of the primary key of the table and also as a foreign key, establishing a 1
+    relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **ReceiverUserId** - Part of a composite primary key. It serves as a component of the primary key of the table and also as a foreign key, establishing a 1
+    relationship with the User table. The field type is "text" - capable of storing text up to 1 GB in size.
+    - Field **DateTime** - Date and time of the user being banned. The field type is "timestamp with time zone" - storing date, time, and timezone information.
+
+    
 * **Table "ContactRequest"** - The purpose of this table is to represent information regarding contact requests with users. It contains the columns: IssuerUserId, ReceiverUserId, Message, DateTime.
    <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabaseContactRequestTable.PNG" alt="Logo" width="550">
