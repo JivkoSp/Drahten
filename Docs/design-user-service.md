@@ -22,5 +22,5 @@
 ## A diagram describing the tables of the User Service database, the relationships between them, and the information they represent.
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabase.PNG" alt="Logo" width="900">
+    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserServiceDatabase.PNG" alt="Logo" width="800">
 </p>
