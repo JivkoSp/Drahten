@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="600">
 </p>
 
-# NOTE
+## NOTE
 ```
 Be aware that this project is under development, has some bugs, and some of the features mentioned in the Architecture Overview are not yet finished.
 If you decide to fork it, you will need a machine with parameters similar to these:
