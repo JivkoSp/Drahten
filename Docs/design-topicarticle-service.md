@@ -43,3 +43,11 @@ A JSON response is returned to the entity/person that made the request to the To
     - Field **TopicName** – The name of the topic. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
     - Field **TopicFullName** – The full (entire) name of the topic. For example: There are topics A and B. Topic B is a subtopic of topic A. The full name of topic B is: AB. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
     - Field **ParentTopicId** - A foreign key establishing a 1:N relationship with the same table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
+* **Table "UserTopic"** - The purpose of this table is to serve as a linking table between the **"User"** and **"Topic"** tables, as these two tables are related to each other with an N:N (many-to-many) relationship. It contains the columns: UserId, TopicId, SubscriptionTime.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseUserTopicTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **TopicId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Topic table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+    - Field **SubscriptionTime** - The time at which a user subscribes to a topic from the **"Topic"** table. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
