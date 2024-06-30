@@ -6,11 +6,11 @@
 ```
 Be aware that this project is under development, has some bugs, and some of the features mentioned
 in the Architecture Overview are not yet finished.
-If you decide to fork it, you will need a machine with parameters similar to these:
 
-RAM: 64GB (The Search Service, in particular, consumes a lot of RAM)
-GPU: At least 8GB of RAM
-CPU: Currently tested with Ryzen 5 generation
+If you decide to fork it, you will need a machine with parameters similar to these:
+ - RAM: 64GB (The Search Service, in particular, consumes a lot of RAM)
+ - GPU: At least 8GB of RAM
+ - CPU: Currently tested with Ryzen 5 generation
 ```
 
 ## What is Drahten?
