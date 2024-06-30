@@ -12,6 +12,8 @@ If you decide to fork it, you will need a machine with parameters similar to the
 - **GPU**: At least 8GB of RAM
 - **CPU**: Currently tested with Ryzen 5 generation
 
+
+
 ## What is Drahten?
 
 Drahten is an open-source project utilizing a **microservices architecture** written in .NET Core 8.0. The project focuses on creating a secure application that encompasses:
