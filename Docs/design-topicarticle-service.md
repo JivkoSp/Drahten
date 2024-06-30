@@ -20,3 +20,26 @@ A JSON response is returned to the entity/person that made the request to the To
 
 ## A diagram describing the tables of the Topic Article Service database, the relationships between them, and the information they represent.
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabase.PNG" alt="Logo" width="700">
+</p>
+
+### Description of the tables
+
+* **Table "User"** - The purpose of this table is to link a user, who is authenticated by the Auth Service, with the information in the TopicArticle Service that pertains to them. It contains the columns: UserId, Version.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseUserTable.PNG" alt="Logo" width="550">
+    </p>
+
+    - Field **UserId** – The primary key of the table. It serves as a unique identifier for a user. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
+    - Field **Version** – The user version. It indicates the current version of the user, for example: 0 – means the user is new and has not performed any actions; 1, ... N – indicates that actions have been performed. If within a single request (one HTTP request) the user performs more than one action, the version will increment only once. This is done to avoid cases where the version jumps suddenly, for example from 1 to 4. The field type is "integer" – it can store numbers up to 4 bytes in size.
+* **Table "Topic"** - The purpose of this table is to present information regarding topics that a user can subscribe to. It contains the columns: TopicId, Version, TopicName, TopicFullName, ParentTopicId.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseTopicTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **TopicId** - The primary key of the table. It serves as a unique identifier. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
+    - Field **Version** - The version of the topic. It indicates the current version of the topic, for example: 0 – means there are no changes in the topic. 1, ... N – indicates that changes have been made. If more than one change is made within a single request (one HTTP request), the version will increment only once. This is done to avoid cases where the version jumps suddenly, for example from 1 to 4. The field type is "integer" – it can store numbers up to 4 bytes in size.
+    - Field **TopicName** – The name of the topic. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
+    - Field **TopicFullName** – The full (entire) name of the topic. For example: There are topics A and B. Topic B is a subtopic of topic A. The full name of topic B is: AB. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
+    - Field **ParentTopicId** - A foreign key establishing a 1:N relationship with the same table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
