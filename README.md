@@ -12,7 +12,7 @@ If you decide to fork it, you will need a machine with parameters similar to the
 - **GPU**: At least 8GB of RAM
 - **CPU**: Currently tested with Ryzen 5 generation
 
-
+---
 
 ## What is Drahten?
 
