@@ -102,27 +102,19 @@ services:
           - "127.0.0.1:2222:22"
         networks:
           - drahten_network
-
-    postgre_db:
-        container_name: user_service_postgredb
-        image: postgres:14.2
-        volumes:
-          - user_service_postgredb_vlm:/var/lib/postgresql/data/
-        env_file:
-          - ./database.dev.env
-        healthcheck:
-          test: "exit 0"
-        ports:
-          - "127.0.0.1:5433:5432"
-          - "127.0.0.1:2223:22"
-        networks:
-          - drahten_network
   
     postgredb_topic_article_service:
         container_name: topicarticle_service_postgredb
         image: postgres:14.2
+        command: [
+          "postgres",
+          "-c", "ssl=on",
+          "-c", "ssl_cert_file=/var/lib/postgresql/certs/server.crt",
+          "-c", "ssl_key_file=/var/lib/postgresql/certs/server.key"
+        ]
         volumes:
           - topicarticle_service_postgredb_vlm:/var/lib/postgresql/data/
+          - ./database-certs:/var/lib/postgresql/certs
         env_file:
           - ./database-topic-article-service.dev.env
         healthcheck:
@@ -136,8 +128,15 @@ services:
     postgredb_user_service:
         container_name: userservice_postgredb
         image: postgres:14.2
+        command: [
+          "postgres",
+          "-c", "ssl=on",
+          "-c", "ssl_cert_file=/var/lib/postgresql/certs/server.crt",
+          "-c", "ssl_key_file=/var/lib/postgresql/certs/server.key"
+        ]
         volumes:
           - userservice_postgredb_vlm:/var/lib/postgresql/data/
+          - ./database-certs:/var/lib/postgresql/certs
         env_file:
           - ./database-user-service.dev.env
         healthcheck:
