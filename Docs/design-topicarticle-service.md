@@ -98,3 +98,32 @@ A JSON response is returned to the entity/person that made the request to the To
     - Field **ArticleId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
     - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
     - Field **DateTime** - The time when the user approved the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+
+ ---
+
+* Table **"ArticleDislike"** - The purpose of this table is to represent information about dislikes (disapprovals) of a document (news) related to a topic to which a user has subscribed. It contains the columns: ArticleId, UserId, DateTime.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleDislikeTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **ArticleId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **DateTime** - The time when the user disliked the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+
+ ---
+
+* Table **"ArticleComment"** - The purpose of this table is to represent information about comments on a document (news) related to a topic to which a user has subscribed. It contains the columns: ArticleCommentId, Version, Comment, DateTime, ParentArticleCommentId, ArticleId, UserId.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleCommentTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **ArticleCommentId** - Primary key of the table. It serves as a unique identifier. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+    - Field **Version** - Version of the comment. It indicates the current version of the comment, for example: 0 – means the comment has no changes. 1, ... N – indicates changes have been made. If more than one change is made within a single request (HTTP request), the version will be incremented only once. This is done to avoid cases where the version jumps suddenly, for example, from 1 to 4. The field type is "integer" – it can store numbers up to 4 bytes in size.
+    - Field **Comment** - The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **DateTime** - The time when the user commented on the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+    - Field **ParentArticleCommentId** - Foreign key establishing a 1:N relationship within the same table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+    - Field **ArticleId** - Foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **UserId** - Foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+  
+
+ 
