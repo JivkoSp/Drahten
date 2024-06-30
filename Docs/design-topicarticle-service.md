@@ -125,5 +125,25 @@ A JSON response is returned to the entity/person that made the request to the To
     - Field **ArticleId** - Foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
     - Field **UserId** - Foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
   
+ ---
 
+* Table **"ArticleCommentLike"** - The purpose of this table is to represent information about likes (approvals) on a comment for a document (news) related to a topic to which a user has subscribed. It contains the columns: ArticleCommentId, UserId, DateTime.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleCommentLikeTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **ArticleCommentId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the ArticleComment table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **DateTime** - The time when the user approved the comment for the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
  
+ ---
+
+ * Table **"ArticleCommentDislike"** - The purpose of this table is to represent information about dislikes (disapprovals) of a comment on a document (news) related to a topic to which a user has subscribed. It contains the columns: ArticleCommentId, UserId, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleCommentDislikeTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **ArticleCommentId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the ArticleComment table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **DateTime** - The time when the user disliked (disapproved) the comment on the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+  
