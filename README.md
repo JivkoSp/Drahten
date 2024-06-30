@@ -48,4 +48,5 @@ In this project, "sufficient security" is accomplished through the following mea
 * Design
     - [Search Service](Docs/design-search-service.md)
     - [User Service](Docs/design-user-service.md)
+    - [Topic Article Service](Docs/design-topicarticle-service.md)
 
