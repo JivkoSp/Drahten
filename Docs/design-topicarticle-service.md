@@ -43,7 +43,7 @@ A JSON response is returned to the entity/person that made the request to the To
     - Field **TopicName** – The name of the topic. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
     - Field **TopicFullName** – The full (entire) name of the topic. For example: There are topics A and B. Topic B is a subtopic of topic A. The full name of topic B is: AB. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
     - Field **ParentTopicId** - A foreign key establishing a 1:N relationship with the same table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
-* **Table "UserTopic"** - The purpose of this table is to serve as a linking table between the **"User"** and **"Topic"** tables, as these two tables are related to each other with an N:N (many-to-many) relationship. It contains the columns: UserId, TopicId, SubscriptionTime.
+* **Table "UserTopic"** - The purpose of this table is to serve as a linking table between the **User** and **Topic** tables, as these two tables are related to each other with an N:N (many-to-many) relationship. It contains the columns: UserId, TopicId, SubscriptionTime.
   <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseUserTopicTable.PNG" alt="Logo" width="550">
   </p>
@@ -51,3 +51,33 @@ A JSON response is returned to the entity/person that made the request to the To
     - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
     - Field **TopicId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Topic table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
     - Field **SubscriptionTime** - The time at which a user subscribes to a topic from the **"Topic"** table. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+* Table **"Article"** - The purpose of this table is to represent information about documents (news) related to the topics to which a user has subscribed. It contains the columns: ArticleId, Version, PrevTitle, Title, Content, PublishingDate, Author, Link, TopicId.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **ArticleId** - The primary key of the table. It serves as a unique identifier. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **Version** - Version of the document. It shows the current version of the document, for example: 0 – indicates no changes in the document. 1, ... N – indicates changes have been made. If more than one change is made within a single request (one HTTP request), the version will be incremented only once. This is done to avoid cases where the version jumps, for example, from 1 to 4. The field type is "integer" – it can store numbers up to 4 bytes in size.
+    - Field **PrevTitle** – Previous title of the document. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **Title** - Title of the document. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **Content** - Content of the document. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **PublishingDate** - Date and time of publishing the document. The field type is "text" – it can store text up to 1 GB (gigabyte). The reason this field is of type "text" instead of "timestamp with time zone" is that the documents are retrieved from the internet. Different websites may use different formats for presenting the date and time. Using text ensures there are no potential issues with converting from one format to another.
+    - Field **Author** - Author of the document. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **Link** – The address from where the document was retrieved. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **TopicId** - Foreign key establishing a 1:N relationship with the Topic table. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens).
+* Table **"UserArticle"** - The purpose of this table is to serve as a linking table between the **"User"** and **"Article"** tables, as these two tables are related to each other with an N:N (many-to-many) relationship. It contains the columns: UserId, ArticleId.
+  <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseUserArticleTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N
+    relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **ArticleId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+* Table **"ArticleLike"** - The purpose of this table is to represent information about likes (approvals) of a document (news) related to a topic to which a user has subscribed. It contains the columns: ArticleId, UserId, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseArticleLikeTable.PNG" alt="Logo" width="550">
+  </p>
+
+    - Field **ArticleId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the Article table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **UserId** - Part of a composite primary key. It serves as part of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte).
+    - Field **DateTime** - The time when the user approved the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
