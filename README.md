@@ -2,6 +2,16 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="600">
 </p>
 
+# NOTE
+```
+Be aware that this project is under development, has some bugs, and some of the features mentioned in the Architecture Overview are not yet finished.
+If you decide to fork it, you will need a machine with parameters similar to these:
+
+RAM: 64GB (The Search Service, in particular, consumes a lot of RAM)
+GPU: At least 8GB of RAM
+CPU: Currently tested with Ryzen 5 generation
+```
+
 ## What is Drahten?
 
 Drahten is an open-source project utilizing a **microservices architecture** written in .NET Core 8.0. The project focuses on creating a secure application that encompasses:
