@@ -27,7 +27,7 @@ A JSON response is returned to the entity/person that made the request to the To
 </p>
 
 ### Description of the tables
-
+---
 * **Table "User"** - The purpose of this table is to link a user, who is authenticated by the Auth Service, with the information in the TopicArticle Service that pertains to them. It contains the columns: UserId, Version.
     <p align="center">
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabaseUserTable.PNG" alt="Logo" width="550">
