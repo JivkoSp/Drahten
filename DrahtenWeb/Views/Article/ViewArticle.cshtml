@@ -14,8 +14,8 @@
             <!-- Display the search bar -->
             <div class="search-bar mb-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search...">
-                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                    <input id="user-search" type="text" class="form-control" placeholder="Search...">
+                    <button id="user-search-button" class="btn btn-outline-secondary" type="button">Search</button>
                 </div>
             </div>
             <hr>
@@ -236,6 +236,42 @@
                 error: (response) => {
                     console.log("error", response);
                 }
+            });
+
+            $("#user-search-button").click(() => {
+
+                const searchedData = $("#user-search").val();
+
+                //Send ajax HTTP GET request to /Article/ArticleSemanticSearch.
+                $.ajax({
+                    type: 'GET',
+                    url: '/Article/ArticleSemanticSearch',
+                    data: {
+                        'articleId': articleId,
+                        'question': searchedData
+                    },
+                    success: (response) => {
+
+                        if (response != null) {
+
+                            const highlightedText = highlightMatchingText(response.document.article_data,
+                                response.context,
+                                response.answer);
+
+                            $("#article-data").html(highlightedText);
+                        }
+                    },
+                    complete: () => {
+
+
+                    },
+                    failure: (reponse) => {
+                        console.log("failure", response);
+                    },
+                    error: (response) => {
+                        console.log("error", response);
+                    }
+                });
             });
 
 
