@@ -5,6 +5,7 @@ from django.db import models
 from haystack.document_stores import ElasticsearchDocumentStore
 from haystack import Pipeline
 from haystack.nodes import PreProcessor, BM25Retriever, FARMReader, TransformersSummarizer, QuestionGenerator
+from app import dtos
 
 class SearchEngine():
 
@@ -94,25 +95,25 @@ class SearchEngine():
     
 
 
-class NLPQueryAnswer(models.Model):
+class NLPQueryAnswer:
     def __init__(self, answer):
-        self.answer = answer['answer']
-        self.answer_type = answer['type']
-        self.score = answer['score']
-        self.context = answer['context']
-        self.offsets_in_document = answer['offsets_in_document']
-        self.offsets_in_context = answer['offsets_in_context']
-        self.document_id = answer['document_ids'][0]
-        self.document = answer['meta']
-    
-    answer = ""
-    answer_type = ""
-    score = None
-    context = None
-    offsets_in_document = None
-    offsets_in_context = None
-    document_id = []
-    document = []
+        self.DocumentId = answer['document_ids'][0]
+        self.Answer = answer['answer']
+        self.AnswerType = answer['type']
+        self.Score = answer['score']
+        self.Context = answer['context']
+        self.OffsetsInDocument = answer['offsets_in_document']
+        self.OffsetsInContext = answer['offsets_in_context']
+         # Extract only the required fields for DocumentDto
+        document_meta = answer['meta']
+        self.Document = dtos.DocumentDto(
+            article_prev_title=document_meta['article_prev_title'],
+            article_title=document_meta['article_title'],
+            article_data=document_meta['article_data'],
+            article_published_date=document_meta['article_published_date'],
+            article_author=document_meta['article_author'],
+            article_link=document_meta['article_link']
+        )
 
 
 
