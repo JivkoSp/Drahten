@@ -38,12 +38,14 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
                         UserId = left_side.UserId,
                         TopicId = left_side.TopicId,
                         SubscriptionTime = left_side.SubscriptionTime,
-                        TopicName = right_side.TopicName
+                        TopicName = right_side.TopicName,
+                        TopicFullName = right_side.TopicFullName
                 }).Select(x => new UserTopicDto
                     {
                          UserId = x.UserId,
                          TopicId = x.TopicId,
                          TopicName = x.TopicName,
+                         TopicFullName = x.TopicFullName,
                          SubscriptionTime = x.SubscriptionTime
                     })
                 .ToListAsync();
