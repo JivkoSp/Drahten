@@ -29,3 +29,23 @@ class SummarizedDocumentDto(models.Model):
 
     DocumentId = ""
     DocumentSummary = ""
+
+
+class DocumentDto:
+    def __init__(self, article_prev_title, article_title, article_data, article_published_date, article_author, article_link):
+        self.ArticlePrevTitle = article_prev_title
+        self.ArticleTitle = article_title
+        self.ArticleData = article_data
+        self.ArticlePublishedDate = article_published_date
+        self.ArticleAuthor = article_author
+        self.ArticleLink = article_link
+    
+    def to_dict(self):
+        return {
+            'ArticlePrevTitle': self.ArticlePrevTitle,
+            'ArticleTitle': self.ArticleTitle,
+            'ArticleData': self.ArticleData,
+            'ArticlePublishedDate': self.ArticlePublishedDate,
+            'ArticleAuthor': self.ArticleAuthor,
+            'ArticleLink': self.ArticleLink,
+        }
