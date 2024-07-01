@@ -24,13 +24,13 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
         class: "card-title text-center"
     });
 
-    hElementCardTitle.text(article.TopicFullName);
+    hElementCardTitle.text(article.topicFullName);
 
     const pElementCardText = $("<p>", {
         class: "card-text"
     });
 
-    pElementCardText.text(article.PrevTitle);
+    pElementCardText.text(article.prevTitle);
 
     const divElementCardFooter = $("<div>", {
         class: "card-footer d-flex justify-content-between align-items-center"
@@ -41,11 +41,11 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
     });
 
     smallElementCardFooterInfo.text(`Comments: ${articleComments.length} | Views: ${usersRelatedToArticle.length}
-    | Likes: ${article.ArticleLikeDtos.length} | Dislikes: ${article.ArticleDislikeDtos.length}`);
+    | Likes: ${article.articleLikeDtos.length} | Dislikes: ${article.articleDislikeDtos.length}`);
 
     const buttonElementCardFooter = $("<button>", {
         type: "button",
-        'data-formId': "card-form-" + article.ArticleId,
+        'data-formId': "card-form-" + article.articleId,
         class: "btn button-color font-monospace",
         onclick: "submitCardForm()"
     });
@@ -53,7 +53,7 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
     buttonElementCardFooter.text("Read");
 
     const formElement = $("<form>", {
-        id: "card-form-" + article.ArticleId,
+        id: "card-form-" + article.articleId,
         action: "/Article/ViewArticle",
         class: "shadow rounded",
         method: "post"
@@ -62,61 +62,61 @@ function CreateDocumentCard(divElementArticleList, article, articleComments, use
     const inputElementArticleId = $("<input>", {
         type: "hidden",
         name: "ArticleId",
-        value: article.ArticleId
+        value: article.articleId
     });
 
     const inputElementArticlePrevTitle = $("<input>", {
         type: "hidden",
         name: "PrevTitle",
-        value: article.PrevTitle
+        value: article.prevTitle
     });
 
     const inputElementArticleTitle = $("<input>", {
         type: "hidden",
         name: "Title",
-        value: article.Title
+        value: article.title
     });
 
     const inputElementArticleData = $("<input>", {
         type: "hidden",
         name: "Content",
-        value: article.Content
+        value: article.content
     });
 
     const inputElementArticlePublishedDate = $("<input>", {
         type: "hidden",
         name: "PublishingDate",
-        value: article.PublishingDate
+        value: article.publishingDate
     });
 
     const inputElementArticleAuthor = $("<input>", {
         type: "hidden",
         name: "Author",
-        value: article.Author
+        value: article.author
     });
 
     const inputElementArticleLink = $("<input>", {
         type: "hidden",
         name: "Link",
-        value: article.Link
+        value: article.link
     });
 
     const inputElementTopicId = $("<input>", {
         type: "hidden",
         name: "TopicId",
-        value: article.TopicId
+        value: article.topicId
     });
 
     const inputElementArticleLikes = $("<input>", {
         type: "hidden",
         name: "articleLikeDtos",
-        value: JSON.stringify(article.ArticleLikeDtos)
+        value: JSON.stringify(article.articleLikeDtos)
     });
 
     const inputElementArticleDislikes = $("<input>", {
         type: "hidden",
         name: "articleDislikeDtos",
-        value: JSON.stringify(article.ArticleDislikeDtos)
+        value: JSON.stringify(article.articleDislikeDtos)
     });
 
     const inputElementArticleComments = $("<input>", {
