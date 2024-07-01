@@ -2,11 +2,11 @@
 {
     public class NLPQueryAnswerDto
     {
-        public string document_id { get; set; } = string.Empty;
-        public string? answer { get; set; }
-        public string? answer_type { get; set; }
-        public float? score { get; set; }
-        public string? context { get; set; }
-        public DocumentDto? document { get; set; }
+        public string DocumentId { get; set; } 
+        public string Answer { get; set; }
+        public string AnswerType { get; set; }
+        public float Score { get; set; }
+        public string Context { get; set; }
+        public DocumentDto Document { get; set; }
     }
 }
