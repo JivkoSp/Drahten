@@ -28,5 +28,29 @@ namespace DrahtenWeb.Extensions
 
             return builder.ToString();
         }
+
+        public static string FromSnakeToPascalCase(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            StringBuilder builder = new StringBuilder();
+
+            builder.Append(char.ToUpper(value[0]));
+
+            for (int i = 1; i < value.Length; i++)
+            {
+                if (value[i] == '_')
+                {
+                    builder.Append(char.ToUpper(value[i+1]));
+                    i++;
+                    continue;
+                }
+
+                builder.Append(value[i]);
+            }
+
+            return builder.ToString();
+        }
     }
 }
