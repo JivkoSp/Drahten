@@ -1,6 +1,9 @@
 ﻿using DrahtenWeb.Dtos;
+using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Extensions;
+using DrahtenWeb.Services;
 using DrahtenWeb.Services.IServices;
+using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +14,12 @@ namespace DrahtenWeb.Controllers
     public class SearchController : Controller
     {
         private readonly ISearchService _searchService;
-        private readonly IUserService _userService;
+        private readonly ITopicArticleService _topicArticleService;
 
-        public SearchController(ISearchService searchService, IUserService userService)
+        public SearchController(ISearchService searchService, ITopicArticleService topicArticleService)
         {
             _searchService = searchService;
-            _userService = userService;
+            _topicArticleService = topicArticleService;
         }
 
         [HttpGet]
@@ -43,13 +46,30 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                var semanticSearchViewModel = new SemanticSearchViewModel();
+
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 var response = await _searchService.GetAllMathingDocumentsNewsCybersecurityEurope<ResponseDto>(query, accessToken);
 
-                var documents = response.Map<List<NLPQueryAnswerDto>>();
+                var nLPQueryAnswerDtos = response.Map<List<NLPQueryAnswerDto>>();
 
-                return new JsonResult(documents);
+                foreach (var nLPQueryAnswerDto in nLPQueryAnswerDtos)
+                {
+                    var articleResponseDto = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(nLPQueryAnswerDto.DocumentId, accessToken);
+
+                    var articleCommentsResponseDto = await _topicArticleService.GetArticleCommentsAsync<ResponseDto>(nLPQueryAnswerDto.DocumentId, accessToken);
+
+                    var usersRelatedToArticleResponseDto = await _topicArticleService.GetUsersRelatedToArticleAsync<ResponseDto>(nLPQueryAnswerDto.DocumentId, accessToken);
+
+                    semanticSearchViewModel.Articles.Add(articleResponseDto.Map<ArticleDto>());
+
+                    semanticSearchViewModel.ArticleComments[nLPQueryAnswerDto.DocumentId] = articleCommentsResponseDto.Map<List<ReadArticleCommentDto>>();
+
+                    semanticSearchViewModel.UsersRelatedToArticle[nLPQueryAnswerDto.DocumentId] = usersRelatedToArticleResponseDto.Map<List<ReadUserArticleDto>>();
+                }
+
+                return new JsonResult(semanticSearchViewModel);
             }
             catch (Exception ex)
             {
