@@ -2,11 +2,11 @@
 {
     public class DocumentDto
     {
-        public string? article_prev_title { get; set; }
-        public string? article_title { get; set; }
-        public string? article_data { get; set; }
-        public string? article_published_date { get; set; }
-        public string? article_author { get; set; }
-        public string? article_link { get; set; }
+        public string ArticlePrevTitle { get; set; }
+        public string ArticleTitle { get; set; }
+        public string ArticleData { get; set; }
+        public string ArticlePublishedDate { get; set; }
+        public string ArticleAuthor { get; set; }
+        public string ArticleLink { get; set; }
     }
 }
