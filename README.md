@@ -54,6 +54,6 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Private History Service](Docs/design-privatehistory-service.md)
     - [Log Collection Service](Docs/design-logcollection-service.md)
 * Usage 🚀
-   - How to Run
-   - API Documentation
+   - [How to Run](Docs/usage-how-to-run.md)
+   - [API Documentation](Docs/usage-api-documentation.md)
 
