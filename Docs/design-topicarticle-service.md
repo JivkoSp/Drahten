@@ -20,7 +20,7 @@ A JSON response is returned to the entity/person that made the request to the To
 
 ---
 
-## A diagram describing the tables of the Topic Article Service database, the relationships between them, and the information they represent.
+## A diagram describing the tables of the Topic Article Service database, the relationships between them, and the information they represent
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/TopicArticleServiceDatabase.PNG" alt="Logo" width="700">
