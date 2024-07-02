@@ -40,20 +40,20 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
  ## 📖 Documentation
- * Intro📜
+ * Intro 📜
     - [Capabilities](Docs/intro-capabilities.md)
     - [Purpose](Docs/intro-purpose.md)
     - [Overall design](Docs/intro-design.md)
     - [Technologies](Docs/intro-technologies.md)
-* Design Decisions🧩
+* Design Decisions 🧩
   - [Authentication and Authorization](Docs/design-decision-authentication%26authorization.md)
-* Design🛠️
+* Design 🛠️
     - [Search Service](Docs/design-search-service.md)
     - [User Service](Docs/design-user-service.md)
     - [Topic Article Service](Docs/design-topicarticle-service.md)
     - [Private History Service](Docs/design-privatehistory-service.md)
     - [Log Collection Service](Docs/design-logcollection-service.md)
-* Usage🚀
+* Usage 🚀
    - How to Run
    - API Documentation
 
