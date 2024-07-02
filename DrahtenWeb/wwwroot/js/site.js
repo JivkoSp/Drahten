@@ -185,6 +185,21 @@ function highlightMatchingText(textOne, textTwo, textTree = null) {
     return highlightedText;
 }
 
+function highlightMatchingKeywords(textOne, textTwo) {
+
+    //Escape special characters in textTwo for safe use in regular expression.
+    const escapedTextTwo = textTwo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    const regex = new RegExp(escapedTextTwo, 'gi');
+
+    //Replace the matches in textOne with <span>...</span> wrapped matches.
+    let highlightedText = textOne.replace(regex, (match) => {
+        return `<span style="background-color: yellow">${match}</span>`;
+    });
+
+    return highlightedText;
+}
+
 
 function ExtractAndHighlightText(textOne, textTwo, textTree = null) {
 
@@ -281,7 +296,7 @@ function CreateHistoryTable(tableData) {
                     tdElement.append(tableData[key][i]);
                 } else {
                     // Set the text if it's not a jQuery element.
-                    tdElement.text(tableData[key][i]);
+                    tdElement.html(tableData[key][i]);
                 }
 
                 trElementTableRow.append(tdElement);
