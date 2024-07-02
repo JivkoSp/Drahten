@@ -12,3 +12,7 @@
   incoming HTTPS requests and encrypts outgoing HTTPS responses;
 * **Improved Reliability** - The reverse proxy server can enhance the reliability of backend services by implementing load balancing mechanisms.
   Incoming requests can be distributed among multiple instances of the same service, balancing the service load. It can also limit the number and speed of incoming requests, preventing service overload.
+
+## Limiting HTTP Requests in the Reverse Proxy Server
+
+Limiting requests aligns with the principle of layered security, where each layer provides an additional checkpoint, thereby enhancing the overall security of the application. The gateway (reverse proxy server) enforces a more general policy for request limiting, while individual services can have more specific policies. Distributing the responsibilities for traffic limiting also helps in better handling large volumes of traffic.
