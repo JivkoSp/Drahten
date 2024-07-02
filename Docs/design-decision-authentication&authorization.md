@@ -19,11 +19,11 @@ client using a refresh token. However, this cannot be done by the attacker, as K
 
 ## Hashing user passwords
 
-The algorithm chosen for hashing user passwords is [pbkdf2-sha512](ietf.org/rfc/rfc2898.txt). The hashing algorithm pbkdf2-sha512 is a widely used method for securely hashing passwords. 
+The algorithm chosen for hashing user passwords is [pbkdf2-sha512](https://www.ietf.org/rfc/rfc2898.txt). The hashing algorithm pbkdf2-sha512 is a widely used method for securely hashing passwords. 
 I selected this algorithm for the following reasons:
   - **Security and Key Reliability** - SHA-512, part of the SHA-2 family, generates a 512-bit hash value (64 bytes) and is used for digital signatures, password hashing, cryptocurrencies, and various cryptographic protocols like TLS, PGP, and SSH. PBKDF2 is specifically designed to make password cracking more difficult, requiring significant computational effort to generate each hash;
   - **Use of Salt (Salted Hashes)** - PBKDF2 includes a salt with each password hash. This ensures that the same password will generate different hashes when different salts are used, preventing malicious actors from using precomputed rainbow tables. This technique is also known as a [rainbow table attack](https://medium.com/@jsquared7/password-cracking-what-is-a-rainbow-table-attack-and-how-to-prevent-it-7904000ffcff).
   - **Iterative Hashing** - PBKDF2 can be configured to use a large number of iterations (also known as rounds). Each iteration requires separate hash computation, significantly slowing down brute-force attacks. 
-  - **Compliance with Standards** - PBKDF2 is part of the PKCS #5 standard (also known as RFC 8018) [RFC 8018: PKCS #5: Password-Based Cryptography Specification Version 2.1 (rfc-editor.org)], making it well-documented and widely accepted for password hashing.
+  - **Compliance with Standards** - PBKDF2 is part of the PKCS #5 standard (also known as [RFC 8018](https://www.rfc-editor.org/rfc/rfc8018)), making it well-documented and widely accepted for password hashing.
 
 This choice of pbkdf2-sha512 ensures robust security measures are in place for handling user passwords within the application, aligning with industry standards and best practices in password security.
