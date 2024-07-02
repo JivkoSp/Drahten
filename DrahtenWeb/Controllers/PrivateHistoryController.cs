@@ -8,7 +8,10 @@ using DrahtenWeb.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DrahtenWeb.Controllers
 {
@@ -18,13 +21,24 @@ namespace DrahtenWeb.Controllers
         private readonly IPrivateHistoryService _privateHistoryService;
         private readonly ITopicArticleService _topicArticleService;
         private readonly IUserService _userService;
+        private readonly IMemoryCache _cache;
+        private readonly MemoryCacheEntryOptions _cacheEntryOptions;
+        private const string ViewedArticlesCacheKey = "ViewedArticlesDataCache";
+        private const string RetrievedViewedArticlesCacheKey = "RetrievedViewedArticlesDataCache";
 
         public PrivateHistoryController(IPrivateHistoryService privateHistoryService, ITopicArticleService topicArticleService,
-            IUserService userService)
+            IUserService userService, IMemoryCache cache)
         {
             _privateHistoryService = privateHistoryService;
             _topicArticleService = topicArticleService;
             _userService = userService;
+            _cache = cache;
+
+            _cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1),
+                SlidingExpiration = TimeSpan.FromMinutes(10)
+            };
         }
 
         [HttpGet]
@@ -32,6 +46,9 @@ namespace DrahtenWeb.Controllers
         {
             try
             {
+                ArticleDto articleDto;
+                List<ViewedArticleDto> allArticles;
+
                 // The response type that will be returned from calling the services.
                 var response = new ResponseDto();
 
@@ -43,7 +60,41 @@ namespace DrahtenWeb.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                response = await _privateHistoryService.GetViewedArticlesAsync<ResponseDto>(userId, accessToken);
+                if (!_cache.TryGetValue(ViewedArticlesCacheKey, out allArticles))
+                {
+                    response = await _privateHistoryService.GetViewedArticlesAsync<ResponseDto>(userId, accessToken);
+
+                    var articlesForCaching = new List<ViewedArticleViewModel>();
+
+                    allArticles = response.Map<List<ViewedArticleDto>>();
+
+                    foreach (var article in allArticles)
+                    {
+                        response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(article.ArticleId, accessToken);
+
+                        articleDto = response.Map<ArticleDto>();
+
+                        var viewedArticleViewModel = new ViewedArticleViewModel
+                        {
+                            ViewedArticleId = article.ViewedArticleId,
+                            Article = articleDto,
+                            UserId = article.UserId,
+                            DateTime = article.DateTime,
+                            RetentionUntil = article.RetentionUntil
+                        };
+
+                        articlesForCaching.Add(viewedArticleViewModel);
+
+                        // Save data in cache
+                        _cache.Set(article.ArticleId, viewedArticleViewModel, _cacheEntryOptions);
+                    }
+
+                    // Save data in cache
+                    _cache.Set(ViewedArticlesCacheKey, allArticles, _cacheEntryOptions);
+
+                    //This is done in order to be able to have keyword searching for all articles.
+                    _cache.Set(RetrievedViewedArticlesCacheKey, articlesForCaching, _cacheEntryOptions);
+                }
 
                 if (pageNumber < 1)
                 {
@@ -51,8 +102,6 @@ namespace DrahtenWeb.Controllers
                 }
 
                 const int pageSize = 5;
-
-                var allArticles = response.Map<List<ViewedArticleDto>>();
 
                 int articlesCount = allArticles.Count;
 
@@ -64,16 +113,7 @@ namespace DrahtenWeb.Controllers
 
                 foreach (var article in articles)
                 {
-                    response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(article.ArticleId, accessToken);
-
-                    var viewedArticleViewModel = new ViewedArticleViewModel
-                    {
-                        ViewedArticleId = article.ViewedArticleId,
-                        Article = response.Map<ArticleDto>(),
-                        UserId = article.UserId,
-                        DateTime = article.DateTime,
-                        RetentionUntil = article.RetentionUntil
-                    };
+                    var viewedArticleViewModel = _cache.Get<ViewedArticleViewModel>(article.ArticleId);
 
                     historyArticleViewModel.Articles.Add(viewedArticleViewModel);
                 }
@@ -81,6 +121,68 @@ namespace DrahtenWeb.Controllers
                 historyArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyArticleViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult SearchedViewedArticles(string searchedViewedArticles, int pageNumber = 1)
+        {
+            var allViewedArticleViewModels = JsonConvert.DeserializeObject<List<ViewedArticleViewModel>>(searchedViewedArticles);
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            const int pageSize = 5;
+
+            int articlesCount = allViewedArticleViewModels.Count;
+
+            var pagination = new Pagination(articlesCount, pageNumber, pageSize);
+
+            int skipArticles = (pageNumber - 1) * pageSize;
+
+            var viewedArticleViewModels = allViewedArticleViewModels.Skip(skipArticles).Take(pagination.PageSize).ToList();
+
+            var historyArticleViewModel = new HistoryArticleViewModel
+            {
+                Articles = viewedArticleViewModels,
+                Pagination = pagination
+            };
+
+            return new JsonResult(historyArticleViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult SearchViewedArticles(string query)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(query))
+                {
+                    return Json(new List<string>());
+                }
+
+                var cachedArticles = _cache.Get<List<ViewedArticleViewModel>>(RetrievedViewedArticlesCacheKey);
+
+                // Check if cachedArticles is null
+                if (cachedArticles == null)
+                {
+                    // Handle the case where the data is not in cache
+                    return Json(new List<ViewedArticleDto>());
+                }
+
+                cachedArticles.RemoveAll(x => x.Article.ArticleId == null);
+
+                // Filter the cached data
+                var result = cachedArticles
+                    .Where(x => x.Article.Title.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
