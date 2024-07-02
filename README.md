@@ -41,12 +41,13 @@ In this project, "sufficient security" is accomplished through the following mea
 
  ## 📖 Documentation
  * Intro 📜
-    - [Capabilities](Docs/intro-capabilities.md)
     - [Purpose](Docs/intro-purpose.md)
+    - [Capabilities](Docs/intro-capabilities.md)
     - [Overall design](Docs/intro-design.md)
     - [Technologies](Docs/intro-technologies.md)
 * Design Decisions 🧩
   - [Authentication and Authorization](Docs/design-decision-authentication%26authorization.md)
+  -  [Reverse Proxy](Docs/)
 * Design 🛠️
     - [Search Service](Docs/design-search-service.md)
     - [User Service](Docs/design-user-service.md)
