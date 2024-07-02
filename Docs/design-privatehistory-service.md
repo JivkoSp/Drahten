@@ -16,3 +16,47 @@
 * **JWT Authentication & Authorization** - Layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the PrivateHistory Service API.
 * **PostgreSQL Database** - A database for storing information from the PrivateHistory Service.
 * **Logging** - Serves to detect information regarding various events in the PrivateHistory Service. This information is forwarded to the Log Collection Service.
+
+---
+
+## A diagram describing the tables of the Private History Service database, the relationships between them, and the information they represent
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabase.PNG" alt="Logo" width="700">
+</p>
+
+### Description of the tables
+---
+* **Table "User"** - The purpose of this table is to establish a link between a user authenticated by the Auth Service and the information in the PrivateHistory Service related to them. It contains the columns: UserId, Version.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseUserTable.PNG" alt="Logo" width="550">
+    </p>
+
+    - Field **UserId** – Primary Key of the table. It serves as a unique identifier for the user. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **Version** – User version. It indicates the current version of the user, for example: 0 – means that the user is new and has not performed any actions; 1, ... N – indicates that actions have been performed. If within a single request (one HTTP request) the user performs more than one action, the version will be incremented only once. This is done to avoid cases where the version increases suddenly, for example from 1 to 4. The field type is "integer" – it can store numbers up to 4 bytes in size.
+
+ ---
+
+ * **Table "CommentedArticle"** - The purpose of this table is to present information regarding comments made by users on documents (news articles) related to topics to which the users have subscribed. It contains the columns: CommentedArticleId, ArticleId, UserId, ArticleComment, DateTime.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseCommentedArticleTable.PNG" alt="Logo" width="550">
+    </p>
+
+    - Field **CommentedArticleId** – Primary Key of the table. It serves as a unique identifier. The field type is "uuid" – universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens);
+    - Field **ArticleId** – Foreign key establishing an indirect 1:N relationship with the Document (Article) table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **UserId** – Foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **ArticleComment** – Comment. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **DateTime** – The time when the user commented on the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+
+ ---
+
+* **Table "LikedArticle"** - The purpose of this table is to present information regarding approved documents (news, articles) related to topics to which the user has subscribed. It contains the columns: ArticleId, UserId, DateTime.
+    <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseLikedArticleTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **ArticleId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing an indirect 1:N relationship with the Document (Article) table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **UserId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **DateTime** - The time when the user approved the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
+ 
+
