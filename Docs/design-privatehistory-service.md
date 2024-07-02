@@ -12,9 +12,9 @@
   - Find all commented articles from user. Responds to HTTP GET;
   - Find all searched article data from user. Responds to HTTP GET;
   - Register commented article from user. Responds to HTTP POST.
-* **PrivateHistory Service API** - Represents a .NET web API providing various endpoints. Upon receiving a request for one of the provided endpoints, the request is analyzed by the authentication and authorization block - JWT Authentication & Authorization. If the request meets the required level of authentication and authorization for the intended endpoint, the request is executed. A response in JSON format is returned to the party/entity that made the request to the PrivateHistory Service API.
-* **JWT Authentication & Authorization** - Layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the PrivateHistory Service API.
-* **PostgreSQL Database** - A database for storing information from the PrivateHistory Service.
+* **PrivateHistory Service API** - Represents a .NET web API providing various endpoints. Upon receiving a request for one of the provided endpoints, the request is analyzed by the authentication and authorization block - JWT Authentication & Authorization. If the request meets the required level of authentication and authorization for the intended endpoint, the request is executed. A response in JSON format is returned to the party/entity that made the request to the PrivateHistory Service API;
+* **JWT Authentication & Authorization** - Layer for authentication and authorization, requiring JWT tokens to authenticate the party/entity requesting access to protected resources from the PrivateHistory Service API;
+* **PostgreSQL Database** - A database for storing information from the PrivateHistory Service;
 * **Logging** - Serves to detect information regarding various events in the PrivateHistory Service. This information is forwarded to the Log Collection Service.
 
 ---
@@ -89,9 +89,9 @@
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseDislikedArticleCommentTable.PNG" alt="Logo" width="550">
     </p>
 
-    - Field **ArticleCommentId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing an indirect 1:N relationship with the ArticleComment table from the TopicArticle Service. The field type is "uuid" – universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
-    - Field **UserId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
-    - Field **ArticleId** - Foreign key establishing an indirect 1:N relationship with the Article table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
+    - Field **ArticleCommentId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing an indirect 1:N relationship with the ArticleComment table from the TopicArticle Service. The field type is "uuid" – universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens);
+    - Field **UserId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **ArticleId** - Foreign key establishing an indirect 1:N relationship with the Article table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
     - Field **DateTime** - The time when the user disliked a comment on a document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
 
 ---
@@ -101,10 +101,10 @@
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseSearchedArticleDataTable.PNG" alt="Logo" width="550">
     </p>
 
-    - Field **SearchedArticleDataId** - Primary Key of the table. It serves as a unique identifier. The field type is "uuid" – universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens).
-    - Field **ArticleId** - Foreign Key establishing an indirect 1:N relationship with the Article table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
-    - Field **UserId** - Foreign Key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
-    - Field **SearchedData** - Searched data for the document. The field type is "text" – it can store text up to 1 GB (gigabyte) in size.
+    - Field **SearchedArticleDataId** - Primary Key of the table. It serves as a unique identifier. The field type is "uuid" – universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36 character string (without or with hyphens);
+    - Field **ArticleId** - Foreign Key establishing an indirect 1:N relationship with the Article table from the TopicArticle Service. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **UserId** - Foreign Key establishing a 1:N relationship with the User table. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
+    - Field **SearchedData** - Searched data for the document. The field type is "text" – it can store text up to 1 GB (gigabyte) in size;
     - Field **DateTime** - The time when the user searched for information about the document. The field type is "timestamp with time zone" – it stores the date, time, and time zone information.
 
 ---
@@ -114,9 +114,43 @@
         <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseSearchedTopicDataTable.PNG" alt="Logo" width="550">
     </p>
 
-    - Field **SearchedTopicDataId** - Primary key of the table. It serves as a unique identifier. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes).
-    - Field **TopicId** - Foreign key, establishing an indirect 1:N relationship to the Topic table from the TopicArticle Service. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes).
-    - Field **UserId** - Foreign key, establishing a 1:N relationship to the User table. The field type is "text" - capable of storing text up to 1 GB (gigabyte) in size.
-    - Field **SearchedData** - Searched data for the topic. The field type is "text" - capable of storing text up to 1 GB (gigabyte) in size.
+    - Field **SearchedTopicDataId** - Primary key of the table. It serves as a unique identifier. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes);
+    - Field **TopicId** - Foreign key, establishing an indirect 1:N relationship to the Topic table from the TopicArticle Service. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes);
+    - Field **UserId** - Foreign key, establishing a 1:N relationship to the User table. The field type is "text" - capable of storing text up to 1 GB (gigabyte) in size;
+    - Field **SearchedData** - Searched data for the topic. The field type is "text" - capable of storing text up to 1 GB (gigabyte) in size;
     - Field **DateTime** - The timestamp when the user searched for information on the topic. The field type is "timestamp with time zone" - storing date, time, and time zone information.
       
+---
+
+* **Table "TopicSubscription"** - The purpose of this table is to represent information regarding the time when a user subscribes to topics offered by the application. It contains the columns: TopicId, UserId, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseTopicSubscriptionTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **TopicId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing an indirect 1:N relationship with the "Topic" table from the TopicArticle Service. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes);
+    - Field **UserId** - Part of the composite primary key. It serves as a component of the primary key of the table and as a foreign key establishing a 1:N relationship with the "User" table. The field type is "text" - capable of storing text up to 1 GB (gigabyte) in size;
+    - Field **DateTime** - The timestamp indicating when the user subscribed to the topic. The field type is "timestamp with time zone" - storing date, time, and time zone information.
+
+---
+
+* **Table "ViewedArticle"** - The purpose of this table is to represent information regarding the time when users view documents. It contains the columns: ViewedArticleId, ArticleId, UserId, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseViewedArticleTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **ViewedArticleId** - The primary key of the table. It serves as a unique identifier. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes);
+    - Field **ArticleId** - A foreign key establishing an indirect 1:N relationship with the Article table from the TopicArticle Service. The field type is "text" – capable of storing text up to 1 GB (gigabyte);
+    - Field **UserId** - A foreign key establishing a 1:N relationship with the "User" table. The field type is "text" – capable of storing text up to 1 GB (gigabyte);
+    - Field **DateTime** - The time when the user viewed the document. The field type is "timestamp with time zone" – storing date, time, and time zone information.
+
+---
+
+* **Table "ViewedUser"** - The purpose of this table is to present information regarding the time of viewing users' public history by other users. It contains the columns: ViewedUserReadModelId, ViewerUserId, ViewedUserId, DateTime.
+   <p align="center">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/PrivateHistoryServiceDatabaseViewedUserTable.PNG" alt="Logo" width="550">
+   </p>
+
+    - Field **ViewedUserReadModelId** - The primary key of the table. It serves as a unique identifier. The field type is "uuid" – a universally unique identifier that stores a 128-bit number. It can be represented as a 32 or 36-character string (with or without hyphens);
+    - Field **ViewerUserId** - A foreign key establishing a 1:N relationship with the User table. The field type is "text" – capable of storing text up to 1 GB (gigabyte);
+    - Field **ViewedUserId** - A foreign key establishing a 1:N relationship with the User table. The field type is "text" – capable of storing text up to 1 GB (gigabyte);
+    - Field **DateTime** - The time when a user viewed another user's public history. The field type is "timestamp with time zone" – storing the date, time, and time zone information.
