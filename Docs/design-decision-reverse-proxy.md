@@ -15,4 +15,4 @@
 
 ## Limiting HTTP Requests in the Reverse Proxy Server
 
-Limiting requests aligns with the principle of layered security, where each layer provides an additional checkpoint, thereby enhancing the overall security of the application. The gateway (reverse proxy server) enforces a more general policy for request limiting, while individual services can have more specific policies. Distributing the responsibilities for traffic limiting also helps in better handling large volumes of traffic.
+Limiting requests aligns with the [principle of layered security](https://www.cloudflare.com/learning/security/glossary/what-is-defense-in-depth/), where each layer provides an additional checkpoint, thereby enhancing the overall security of the application. The gateway (reverse proxy server) enforces a more general policy for request limiting, while individual services can have more specific policies. Distributing the responsibilities for traffic limiting also helps in better handling large volumes of traffic.
