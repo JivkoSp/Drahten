@@ -14,7 +14,7 @@
                         <span class="input-group-text">
                             <i class="fa fa-search text-primary"></i>
                         </span>
-                        <input type="text" class="form-control" placeholder="Search by keyword..." />
+                        <input id="search" type="text" class="form-control" placeholder="Search by keyword..." />
                     </div>
                 </div>
                 <div class="card-body">
@@ -120,6 +120,7 @@
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $("document").ready(() => {
 
@@ -234,6 +235,48 @@
 
                 DisplayTopicSubscriptions(pageNumber);
             });
+
+            $(document).on('click', '[id^="searchedViewedArticlesTablePage-"]', function () {
+
+                const pageNumber = this.id.replace(/.*-/, ''); // Get what comes after the dash
+
+                const searchedViewedArticles = $("#searchedViewedArticles").val();
+
+                DisplaySearchedViewedArticles(searchedViewedArticles, pageNumber);
+            });
+
+
+            $("#search").on("keyup", function () {
+
+                var query = $(this).val();
+
+                if (query.length >= 1) {  // Start suggesting if the query is not empty.
+
+                    //Send ajax HTTP GET request to /PrivateHistory/SearchViewedArticles.
+                    $.ajax({
+                        type: 'GET',
+                        url: '/PrivateHistory/SearchViewedArticles',
+                        data: {
+                            'query': query
+                        },
+                        success: (response) => {
+                          
+                            let searchedViewedArticles = JSON.stringify(response);
+
+                            DisplaySearchedViewedArticles(searchedViewedArticles, 1, query);
+                        },
+                        failure: (reponse) => {
+                            console.log("failure", response);
+                        },
+                        error: (response) => {
+                            console.log("error", response);
+                        }
+                    });
+                }
+                else{
+                    DisplayViewedArticles();
+                }
+            });
         });
 
         function displayEndDateTime(retentionUntil) {
@@ -265,6 +308,157 @@
                 },
                 success: (response) => {
                     console.log("success", response);
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+        function DisplaySearchedViewedArticles(searchedViewedArticles, pageNumber = 1, query = '') {
+
+            //Send ajax HTTP POST request to /PrivateHistory/SearchedViewedArticles.
+            $.ajax({
+                type: 'POST',
+                url: '/PrivateHistory/SearchedViewedArticles',
+                data: {
+                    'searchedViewedArticles': searchedViewedArticles,
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementViewedArticlesTableContainer = $("<div>", {
+                            id: "searchedViewedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        const inputElementSearchedViewedArticles = $("<input>", {
+                            id: "searchedViewedArticles",
+                            type: "hidden",
+                            value: searchedViewedArticles
+                        });
+
+                        $("#historyTableContainer").append(divElementViewedArticlesTableContainer);
+
+                        $("#historyTableContainer").append(inputElementSearchedViewedArticles);
+
+                        const tableData = {
+                            'Article': [],
+                            'Watched': [],
+                            'View': [],
+                            'Remove': [],
+                            'Move': []
+                        };
+
+                        response.articles.forEach((element) => {
+
+                            const buttonElementViewArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-primary btn-sm",
+                                html: '<i class="fas fa-eye"></i>'
+                            });
+
+                            buttonElementViewArticle.on("click", () => {
+
+                                // Serialize the article object to JSON
+                                const articleJson = JSON.stringify(element.article);
+
+                                const form = $('<form>', {
+                                    method: 'POST',
+                                    action: '/PrivateHistoryArticle/ViewArticle'
+                                });
+
+                                const input = $('<input>', {
+                                    type: 'hidden',
+                                    name: 'articleJson',
+                                    value: articleJson
+                                });
+
+                                form.append(input);
+
+                                $('body').append(form);
+
+                                // Submit the form
+                                form.submit();
+                            });
+
+
+                            const buttonElementRemoveArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveArticle.on("click", (event) => {
+
+                                // The table row containing the clicked button
+                                const row = $(event.currentTarget).closest("tr");
+
+                                // Visual indicator that the row is deleting.
+                                row.addClass("fade-out");
+
+                                //Send ajax HTTP DELETE request to /PrivateHistory/RemoveViewedArticle.
+                                $.ajax({
+                                    type: 'DELETE',
+                                    url: '/PrivateHistory/RemoveViewedArticle',
+                                    data: {
+                                        'viewedArticleId': element.viewedArticleId
+                                    },
+                                    success: (response) => {
+
+                                        // Remove the table row containing the clicked button
+                                        row.remove();
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        row.removeClass("fade-out");
+                                    }
+                                });
+                            });
+
+                            const buttonElementMove = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-success btn-sm",
+                                html: '<i class="fas fa-share"></i>'
+                            });
+
+                            buttonElementMove.on("click", () => {
+                                console.log("Move to public");
+                            });
+
+                            const highlightedTitle = highlightMatchingKeywords(element.article.title, query);
+
+                            tableData['Article'].push(highlightedTitle);
+                            tableData['Watched'].push(formatDateTime(element.dateTime));
+                            tableData['View'].push(buttonElementViewArticle);
+                            tableData['Remove'].push(buttonElementRemoveArticle);
+                            tableData['Move'].push(buttonElementMove);
+
+                            displayEndDateTime(element.retentionUntil);
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#searchedViewedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "searchedViewedArticlesTablePage");
+
+                            $("#searchedViewedArticlesTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
                 },
                 failure: (reponse) => {
                     console.log("failure", response);
