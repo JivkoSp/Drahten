@@ -25,5 +25,3 @@ I selected this algorithm for the following reasons:
   - **Use of Salt (Salted Hashes)** - PBKDF2 includes a salt with each password hash. This ensures that the same password will generate different hashes when different salts are used, preventing malicious actors from using precomputed rainbow tables. This technique is also known as a [rainbow table attack](https://medium.com/@jsquared7/password-cracking-what-is-a-rainbow-table-attack-and-how-to-prevent-it-7904000ffcff).
   - **Iterative Hashing** - PBKDF2 can be configured to use a large number of iterations (also known as rounds). Each iteration requires separate hash computation, significantly slowing down brute-force attacks. 
   - **Compliance with Standards** - PBKDF2 is part of the PKCS #5 standard (also known as [RFC 8018](https://www.rfc-editor.org/rfc/rfc8018)), making it well-documented and widely accepted for password hashing.
-
-This choice of pbkdf2-sha512 ensures robust security measures are in place for handling user passwords within the application, aligning with industry standards and best practices in password security.
