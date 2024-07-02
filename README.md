@@ -33,10 +33,10 @@ In the realm of computer systems and networks, defining "absolute security" is i
 
 In this project, "sufficient security" is accomplished through the following measures:
 
-- **Microservice Architecture**: The entire application is built using microservices, with each service running in a separate container and having its own database.
-- **User Authentication**: Users are authenticated via an authentication server that operates as an independent service within a container.
-- **Reverse Proxy Server**: A reverse proxy server acts as a single entry point for client applications, enforcing authentication and authorization policies for backend services.
-- **Data Encryption**: Information transmitted between services and the database is encrypted.
+- **Microservice Architecture**: The entire application is built using microservices, with each service running in a separate container and having its own database;
+- **User Authentication**: Users are authenticated via an authentication server that operates as an independent service within a container;
+- **Reverse Proxy Server**: A reverse proxy server acts as a single entry point for client applications, enforcing authentication and authorization policies for backend services;
+- **Data Encryption**: Information transmitted between services and the database is encrypted;
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
  ## 📖 Documentation
@@ -50,4 +50,5 @@ In this project, "sufficient security" is accomplished through the following mea
     - [User Service](Docs/design-user-service.md)
     - [Topic Article Service](Docs/design-topicarticle-service.md)
     - [Private History Service](Docs/design-privatehistory-service.md)
+    - [Log Collection Service](Docs/design-logcollection-service.md)
 
