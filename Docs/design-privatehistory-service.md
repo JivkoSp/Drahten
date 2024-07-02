@@ -111,7 +111,7 @@
 
 * **Table "SearchedTopicData"** - The purpose of this table is to present information regarding searched data for topics to which the user has subscribed. It contains the columns: SearchedTopicDataId, TopicId, UserId, SearchedData, DateTime.
     <p align="center">
-        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/Assets/PrivateHistoryServiceDatabaseSearchedTopicDataTable.PNG" alt="Logo" width="550">
+        <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/Assets/PrivateHistoryServiceDatabaseSearchedArticleDataTable.PNG" alt="Logo" width="550">
     </p>
 
     - Field **SearchedTopicDataId** - Primary key of the table. It serves as a unique identifier. The field type is "uuid" - universally unique identifier, storing a 128-bit number. It can be represented as a 32 or 36-character string (with or without dashes).
