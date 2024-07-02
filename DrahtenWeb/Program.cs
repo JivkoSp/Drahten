@@ -48,6 +48,8 @@ builder.Services.AddAutoMapper(configAction => {
     configAction.AddProfile<ArticleProfile>();
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddAuthentication(options => {
 
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
