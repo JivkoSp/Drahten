@@ -17,8 +17,14 @@
 
 Limiting requests aligns with the [principle of layered security](https://www.cloudflare.com/learning/security/glossary/what-is-defense-in-depth/), where each layer provides an additional checkpoint, thereby enhancing the overall security of the application. The gateway (reverse proxy server) enforces a more general policy for request limiting, while individual services can have more specific policies. Distributing the responsibilities for traffic limiting also helps in better handling large volumes of traffic.
 
-### The rate limiting policy in the gateway is shown in the figure below
+### An example of the rate limiting policy in the gateway is shown in the figure below
 
 <p align="left">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/YarpPolicy.PNG" alt="Logo" width="350">
 </p>
+
+#### Description of the components shown in the diagram
+
+* **Rate Limiting** (RequestLimit) – A maximum threshold of up to 50 requests per minute (The specified number of requests is an example and can be adjusted according to the application's needs);
+* **Violation Tracking** (ViolationThreshold) – Monitoring how many times each client (identified by their IP address) exceeds the request limit within a specified period. For example, 5 times within one hour;
+* **Blacklist** – If a client exceeds the request limit threshold more than 5 times within one hour, their IP address is added to a blacklist. This filters out systematic violators of the policy, who are likely to be malicious actors rather than random spikes in request volume.
