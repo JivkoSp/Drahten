@@ -19,9 +19,11 @@ Limiting requests aligns with the [principle of layered security](https://www.cl
 
 ### An example of the rate limiting policy in the gateway is shown in the figure below
 
-<p align="left">
-    <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/YarpPolicy.PNG" alt="Logo" width="350">
-</p>
+---
+
+  <p align="left">
+      <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/YarpPolicy.PNG" alt="Logo" width="350">
+  </p>
 
 #### Description of the components shown in the diagram
 
