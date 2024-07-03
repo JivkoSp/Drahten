@@ -42,39 +42,26 @@ In this project, "sufficient security" is accomplished through the following mea
 - **Event Logging System**: An event logging system captures events occurring within the application's services, providing a clear overview of the system's activities from a centralized location.
 
 <h2>📖 <a href="https://jivkosp.github.io/Drahten/" target="_blank">Documentation</a></h2>
-<ul>
-  <li><strong>Intro 📜</strong>
-    <ul>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/intro-purpose.md">Purpose</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/intro-capabilities.md">Capabilities</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/intro-design.md">Overall design</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/intro-technologies.md">Technologies</a></li>
-    </ul>
-  </li>
-  <li><strong>Design Decisions 🧩</strong>
-    <ul>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-decision-authentication-and-authorization.md">Authentication and Authorization</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-decision-reverse-proxy.md">Reverse Proxy</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-decision-messaging.md">Messaging</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-decision-containerization.md">Containerization</a></li>
-    </ul>
-  </li>
-  <li><strong>Design 🛠️</strong>
-    <ul>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-search-service.md">Search Service</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-user-service.md">User Service</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-topicarticle-service.md">Topic Article Service</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-privatehistory-service.md">Private History Service</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/design-logcollection-service.md">Log Collection Service</a></li>
-    </ul>
-  </li>
-  <li><strong>Usage 🚀</strong>
-    <ul>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/usage-how-to-run.md">How to Run</a></li>
-      <li><a href="https://github.com/JivkoSp/Drahten/blob/master/Docs/usage-api-documentation.md">API Documentation</a></li>
-    </ul>
-  </li>
-</ul>
+
+* **Intro** 📜
+    - [Purpose](Docs/intro-purpose.md)
+    - [Capabilities](Docs/intro-capabilities.md)
+    - [Overall design](Docs/intro-design.md)
+    - [Technologies](Docs/intro-technologies.md)
+* **Design Decisions** 🧩
+  - [Authentication and Authorization](Docs/design-decision-authentication-and-authorization.md)
+  -  [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
+  -  [Messaging](Docs/design-decision-messaging.md)
+  -  [Containerization](Docs/design-decision-containerization.md)
+* **Design** 🛠️
+    - [Search Service](Docs/design-search-service.md)
+    - [User Service](Docs/design-user-service.md)
+    - [Topic Article Service](Docs/design-topicarticle-service.md)
+    - [Private History Service](Docs/design-privatehistory-service.md)
+    - [Log Collection Service](Docs/design-logcollection-service.md)
+* **Usage** 🚀
+   - [How to Run](Docs/usage-how-to-run.md)
+   - [API Documentation](Docs/usage-api-documentation.md) whit html
 
 ---
 
