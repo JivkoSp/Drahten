@@ -35,7 +35,7 @@ However, there are cases when a response from the recipient is not needed; the r
 
 ## gRPC
 
-**gRPC** uses a communication protocol known as Protocol Buffer or Protobuf [https://datatracker.ietf.org/doc/html/draft-rfernando-protocol-buffers-00]
+**gRPC** uses a communication protocol known as [Protocol Buffer or Protobuf](https://datatracker.ietf.org/doc/html/draft-rfernando-protocol-buffers-00) 
 
 This protocol allows for extremely efficient serialization of messages during their transfer from one service to another. gRPC operates over HTTP/2, which has many advantages over its predecessor, HTTP/1.1. Some of these advantages include multiplexing (handling multiple data streams in one request), HTTP header compression, which reduces message size, and server push, which allows messages to be sent from the server to a connected client without an explicit request from the client. The main advantages of gRPC over alternatives like GraphQL, RabbitMQ, and REST are as follows:
 
