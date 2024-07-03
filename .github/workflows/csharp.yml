@@ -1,12 +1,11 @@
 name: C# Build and Test
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+push:
+  branches: [ "master" ]
+pull_request:
+  branches: [ "master" ]
+
 
 jobs:
   build:
