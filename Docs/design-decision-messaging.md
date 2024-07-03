@@ -32,5 +32,3 @@ However, there are cases when a response from the recipient is not needed; the r
 - If a message recipient is temporarily unavailable, unlike HTTP, the message is safely buffered and stored in RabbitMQ, and the message is delivered when the recipient becomes available again.
 - The discoverability of messages by the recipient is also simplified. All that needs to be known is the location of RabbitMQ and the name of the queue from which messages should be retrieved. This means that the queue name serves as the address of the service for receiving messages.
 - Each queue can serve multiple recipients and balance the load.
-
-Reliable communication between the services provided by the application is also one of the tasks of the current thesis. To achieve service reliability, communication between them must also be reliable.
