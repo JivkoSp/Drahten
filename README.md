@@ -58,8 +58,9 @@ In this project, "sufficient security" is accomplished through the following mea
    - [How to Run](Docs/usage-how-to-run.md)
    - [API Documentation](Docs/usage-api-documentation.md)
 
+---
 
-## Project Structure for the services: User Service, Topic Article Service, Private History Service and Public History Service 
+### Project Structure for the services: User Service, Topic Article Service, Private History Service and Public History Service 
 
 ```js
 Project
