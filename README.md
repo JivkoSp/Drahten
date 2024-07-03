@@ -60,6 +60,8 @@ In this project, "sufficient security" is accomplished through the following mea
 
 ---
 
+### ⚠️ The below is only an example (The documentation is not yet complete)
+
 #### Project Structure for the services: User Service, Topic Article Service, Private History Service and Public History Service 
 
 ```js
