@@ -43,23 +43,6 @@ In this project, "sufficient security" is accomplished through the following mea
 
  ## 📖 Documentation
  * Visit my [Website Documentation](https://jivkosp.github.io/Drahten/) 🌐
- * Intro 📜
-    - [Purpose](Docs/intro-purpose.md)
-    - [Capabilities](Docs/intro-capabilities.md)
-    - [Overall design](Docs/intro-design.md)
-    - [Technologies](Docs/intro-technologies.md)
-* Design Decisions 🧩
-  - [Authentication and Authorization](Docs/design-decision-authentication%26authorization.md)
-  -  [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
-* Design 🛠️
-    - [Search Service](Docs/design-search-service.md)
-    - [User Service](Docs/design-user-service.md)
-    - [Topic Article Service](Docs/design-topicarticle-service.md)
-    - [Private History Service](Docs/design-privatehistory-service.md)
-    - [Log Collection Service](Docs/design-logcollection-service.md)
-* Usage 🚀
-   - [How to Run](Docs/usage-how-to-run.md)
-   - [API Documentation](Docs/usage-api-documentation.md)
 
 ---
 
