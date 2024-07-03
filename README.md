@@ -50,6 +50,7 @@ In this project, "sufficient security" is accomplished through the following mea
 * Design Decisions 🧩
   - [Authentication and Authorization](Docs/design-decision-authentication-and-authorization.md)
   -  [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
+  -  [Messaging](Docs/design-decision-messaging.md)
 * Design 🛠️
     - [Search Service](Docs/design-search-service.md)
     - [User Service](Docs/design-user-service.md)
