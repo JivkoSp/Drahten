@@ -2,6 +2,9 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="600">
 </p>
 
+![Build Status](https://img.shields.io/travis/com/jivkosp/Drahten.svg)
+![Coverage](https://img.shields.io/codecov/c/github/jivkosp/Drahten.svg)
+
 ## ⚠️ Important Notice
 
 **Be aware that this project is under development, has some bugs, and some of the features mentioned in the Architecture Overview are not yet finished.**
