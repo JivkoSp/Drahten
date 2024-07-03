@@ -61,7 +61,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Log Collection Service](Docs/design-logcollection-service.md)
 * **Usage** 🚀
    - [How to Run](Docs/usage-how-to-run.md)
-   - [API Documentation](Docs/usage-api-documentation.md) whit html
+   - [API Documentation](Docs/usage-api-documentation.md)
 
 ---
 
