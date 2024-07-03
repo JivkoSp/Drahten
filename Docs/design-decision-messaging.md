@@ -1,11 +1,17 @@
 # Messaging
 
 Communication between different services is an old problem. On one hand, there are various protocols that define the means of transport and different participants. 
+####
 Examples of such protocols include SMTP, FTP, HTTP, and WebSockets, all based on TCP/UDP protocols. Their goal is to create a format for reliably transmitting a message and finding its correct recipient. 
+####
 On the other hand, communication can be viewed from the perspective of the message itself. A message exists in one system, then gets transferred to another (it is transported), meaning the message has a lifecycle. 
-As the message travels from one system to another, it is important to know where the message is and who "owns" it at any given moment. The communication protocols mentioned above can ensure that the ownership 
+As the message travels from one system to another, it is important to know where the message is and who "owns" it at any given moment. 
+####
+The communication protocols mentioned above can ensure that the ownership 
 (and "physical" location) of the message is transferred from one system to another. The transmission of a message can be seen as a transaction ("contract") between two parties while both are present. Most of the time, 
-this active exchange is desirable, for instance, querying the status of a service and expecting a timely and accurate response. However, there are cases when a response from the recipient is not needed; the recipient 
+this active exchange is desirable, for instance, querying the status of a service and expecting a timely and accurate response.
+####
+However, there are cases when a response from the recipient is not needed; the recipient 
 just needs to temporarily take ownership of the message and ensure that the message reaches its location. When a monolithic system is broken down into separate subsystems, one of the biggest problems to solve is which
 communication technology to use. 
 
