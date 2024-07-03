@@ -24,7 +24,7 @@ However, there are cases when a response from the recipient is not needed; the r
 
 ---
 
-## Using RabbitMQ for Reliable Communication
+## Using RabbitMQ for Reliable Communication between services via Pub-Sub mechanism
 
 **RabbitMQ** can help in both cases by using message queues as a means of transport:
 
@@ -33,7 +33,7 @@ However, there are cases when a response from the recipient is not needed; the r
 - The discoverability of messages by the recipient is also simplified. All that needs to be known is the location of RabbitMQ and the name of the queue from which messages should be retrieved. This means that the queue name serves as the address of the service for receiving messages;
 - Each queue can serve multiple recipients and balance the load.
 
-## gRPC
+## gRPC for direct communication between services
 
 **gRPC** uses a communication protocol known as [Protocol Buffer or Protobuf](https://datatracker.ietf.org/doc/html/draft-rfernando-protocol-buffers-00) 
 
@@ -44,3 +44,5 @@ This protocol allows for extremely efficient serialization of messages during th
   * **Easy and Intuitive Setup** - With built-in code generators;
   * **De Facto Standard Mechanism** - For direct communication between microservices;
   * **Cross-Language Communication** - Allows communication between applications written in different languages.
+
+
