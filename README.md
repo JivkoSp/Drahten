@@ -61,7 +61,7 @@ In this project, "sufficient security" is accomplished through the following mea
 
 ## Project Structure
 
-```
+```json
 Project
 ├── src
 │   ├── main.py
