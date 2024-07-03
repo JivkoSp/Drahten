@@ -1,0 +1,46 @@
+# Enable sudo to be able to install packages
+sudo: required
+
+# Specify the services needed
+services:
+  - docker
+
+# Specify the matrix to include multiple languages
+matrix:
+  include:
+    # C# Configuration
+    - language: csharp
+      mono: none
+      dotnet: 3.1  # Specify the .NET Core version
+      install:
+        - dotnet restore
+      script:
+        - dotnet build
+        - dotnet test
+
+    # Node.js Configuration for JavaScript
+    - language: node_js
+      node_js:
+        - "14"  # Specify the Node.js version
+      install:
+        - npm install
+      script:
+        - npm test
+
+    # Python Configuration
+    - language: python
+      python:
+        - "3.8"  # Specify the Python version
+      install:
+        - pip install -r requirements.txt
+      script:
+        - pytest --cov=your_package_name  # Replace with your package name
+      after_success:
+        - codecov
+
+notifications:
+  email:
+    recipients:
+      - atjspasov@gmail.com
+    on_success: never
+    on_failure: always
