@@ -2,6 +2,8 @@
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/logo2.PNG" alt="Logo" width="600">
 </p>
 
+[![CodeQL](https://github.com/jivkosp/Drahten/workflows/CodeQL/badge.svg)](https://github.com/jivkosp/Drahten/actions/workflows/codeql.yml)
+
 ## ⚠️ Important Notice
 
 **Be aware that this project is under development, has some bugs, and some of the features mentioned in the Architecture Overview are not yet finished.**
