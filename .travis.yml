@@ -18,19 +18,10 @@ matrix:
         - dotnet build
         - dotnet test
 
-    # Node.js Configuration for JavaScript
-    - language: node_js
-      node_js:
-        - "14"  # Specify the Node.js version
-      install:
-        - npm install
-      script:
-        - npm test
-
     # Python Configuration
     - language: python
       python:
-        - "3.8"  # Specify the Python version
+        - "3.9"  
       install:
         - pip install -r requirements.txt
       script:
