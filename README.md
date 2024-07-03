@@ -61,11 +61,16 @@ In this project, "sufficient security" is accomplished through the following mea
 
 # Project Name
 
+graph TD;
+    A[Main Entry] --> B[Module 1]
+    A --> C[Module 2]
+    B --> D[Test Module 1]
+    C --> E[Test Module 2]
 
 
 ## Project Structure
 
-
+```plaintext
 Project
 ├── src
 │   ├── main.py
@@ -79,6 +84,7 @@ Project
 ├── .gitignore
 ├── README.md
 └── requirements.txt
+
 
 
 
