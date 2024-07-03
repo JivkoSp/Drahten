@@ -355,6 +355,41 @@ body {
     padding: 0;
 }
 
+.masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+}
+
+.btn-topic-subscribe {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.btn-topic-subscribe:hover {
+    background-color: #444;
+ }
+
+.topic-card-title {
+    text-align: center;
+}
+
+.topic-card-body {
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.topic-card-text {
+    flex-grow: 1;
+}
+
 @keyframes fadeOut {
     from {
         opacity: 1;
