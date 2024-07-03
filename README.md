@@ -59,13 +59,9 @@ In this project, "sufficient security" is accomplished through the following mea
    - [API Documentation](Docs/usage-api-documentation.md)
 
 
-# Project Name
-
-
 ## Project Structure
 
 ```
-{
 Project
 ├── src
 │   ├── main.py
@@ -79,8 +75,7 @@ Project
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-}```
-
+```
 
 ### Directory/File Descriptions
 
