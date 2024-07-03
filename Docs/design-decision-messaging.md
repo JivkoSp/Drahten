@@ -13,13 +13,13 @@ However, there are cases when a response from the recipient is not needed; the r
 **HTTP** can be given as an example of direct communication for connecting individual services. Although this protocol is well-supported and a solid choice, it has some drawbacks:
 
 - **Service Discovery**: 
-  - Service discovery is not solved. A possible solution is using DNS. 
-  - As the system scales and grows, the complexity of finding and load balancing also increases.
+  - Service discovery is not solved. A possible solution is using DNS;
+  - As the system scales and grows, the complexity of finding and load balancing also increases;
   - RabbitMQ can mitigate the increased complexity of the solution.
 
 - **Ephemeral Communication**: 
-  - Communication is ephemeral (short-lived). 
-  - Messages may be lost or duplicated.
+  - Communication is ephemeral (short-lived);
+  - Messages may be lost or duplicated;
   - If a service is temporarily unavailable, message delivery fails and the message is lost (i.e., the message cannot be received after the service is restored).
 
 ---
@@ -28,7 +28,19 @@ However, there are cases when a response from the recipient is not needed; the r
 
 **RabbitMQ** can help in both cases by using message queues as a means of transport:
 
-- The services provided by the application can publish and consume messages, decentralizing the "end-to-end" message delivery from the availability of the final recipient (a service that needs to receive messages).
-- If a message recipient is temporarily unavailable, unlike HTTP, the message is safely buffered and stored in RabbitMQ, and the message is delivered when the recipient becomes available again.
-- The discoverability of messages by the recipient is also simplified. All that needs to be known is the location of RabbitMQ and the name of the queue from which messages should be retrieved. This means that the queue name serves as the address of the service for receiving messages.
+- The services provided by the application can publish and consume messages, decentralizing the "end-to-end" message delivery from the availability of the final recipient (a service that needs to receive messages);
+- If a message recipient is temporarily unavailable, unlike HTTP, the message is safely buffered and stored in RabbitMQ, and the message is delivered when the recipient becomes available again;
+- The discoverability of messages by the recipient is also simplified. All that needs to be known is the location of RabbitMQ and the name of the queue from which messages should be retrieved. This means that the queue name serves as the address of the service for receiving messages;
 - Each queue can serve multiple recipients and balance the load.
+
+## gRPC
+
+**gRPC** uses a communication protocol known as Protocol Buffer or Protobuf [https://datatracker.ietf.org/doc/html/draft-rfernando-protocol-buffers-00]
+
+This protocol allows for extremely efficient serialization of messages during their transfer from one service to another. gRPC operates over HTTP/2, which has many advantages over its predecessor, HTTP/1.1. Some of these advantages include multiplexing (handling multiple data streams in one request), HTTP header compression, which reduces message size, and server push, which allows messages to be sent from the server to a connected client without an explicit request from the client. The main advantages of gRPC over alternatives like GraphQL, RabbitMQ, and REST are as follows:
+
+  * **High Performance** - Thanks to the use of HTTP/2 features and a message exchange mechanism that uses fewer resources compared to the mentioned alternatives;
+  * **Multiple Connection Options** - Instead of just the standard request/response mechanism available with HTTP;
+  * **Easy and Intuitive Setup** - With built-in code generators;
+  * **De Facto Standard Mechanism** - For direct communication between microservices;
+  * **Cross-Language Communication** - Allows communication between applications written in different languages.
