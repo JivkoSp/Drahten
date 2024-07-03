@@ -52,5 +52,27 @@ namespace DrahtenWeb.Extensions
 
             return builder.ToString();
         }
+
+        public static string PascalCaseWithSpaces(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            StringBuilder builder = new StringBuilder();
+
+            builder.Append(value[0]);
+
+            for (int i = 1; i < value.Length; i++)
+            {
+                if (char.IsUpper(value[i]))
+                {
+                    builder.Append(" ");
+                }
+
+                builder.Append(value[i]);
+            }
+
+            return builder.ToString();
+        }
     }
 }
