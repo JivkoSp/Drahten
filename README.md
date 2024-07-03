@@ -58,3 +58,27 @@ In this project, "sufficient security" is accomplished through the following mea
    - [How to Run](Docs/usage-how-to-run.md)
    - [API Documentation](Docs/usage-api-documentation.md)
 
+
+# Project Name
+
+
+
+## Project Structure
+
+```plaintext
+Project
+├── src
+│   ├── main.py
+│   ├── module
+│   │   ├── __init__.py
+│   │   ├── module1.py
+│   │   └── module2.py
+├── tests
+│   ├── test_main.py
+│   ├── test_module1.py
+├── .gitignore
+├── README.md
+└── requirements.txt
+
+
+
