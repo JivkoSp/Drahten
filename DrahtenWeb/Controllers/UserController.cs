@@ -21,38 +21,25 @@ namespace DrahtenWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserSearchOptions()
+        public async Task<IActionResult> UserSearchOptions()
         {
-            return View();
-        }
+            var userSearchOptionsViewModel = new UserSearchOptionsViewModel();
 
-        [HttpGet]
-        public async Task<IActionResult> LoadPartialViewUserSearchOptions()
-        {
-            try
-            {
-                var userSearchOptionsViewModel = new UserSearchOptionsViewModel();
+            //Get the user id.
+            //Here the NameIdentifier claim type represents the user id.
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                //Get the user id.
-                //Here the NameIdentifier claim type represents the user id.
-                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _topicArticleService.GetTopicsAsync<ResponseDto>(accessToken);
 
-                var response = await _topicArticleService.GetTopicsAsync<ResponseDto>(accessToken);
+            userSearchOptionsViewModel.Topics = response.Map<List<TopicDto>>();
 
-                userSearchOptionsViewModel.Topics = response.Map<List<TopicDto>>();
+            response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
-                response =  await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
+            userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
 
-                userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
-
-                return PartialView(viewName: "_SideSearchOptionsMenu", model: userSearchOptionsViewModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return View(userSearchOptionsViewModel);
         }
 
         [HttpPost]
