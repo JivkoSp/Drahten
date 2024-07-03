@@ -1,27 +1,30 @@
-﻿<div class="row">
-    <div class="col">
-        <h3 class="text-center">Currently subscribed topics</h3>
-        <hr />
-        <div class="row mt-4">
-            <!--
-                Here goes the list of subscribed topics for the user.
-            -->
-            <!--
-                Example Start
-            -->
+﻿@using DrahtenWeb.Extensions
+@model UserSearchOptionsViewModel
 
-            <div class="col">
-                <h5>Cybersecurity</h5>
-            </div>
-            <div class="col">
-                <h5>Programming</h5>
-            </div>
+<div class="row">
+    <h1 class="text-center mb-4">Available Topics</h1>
+    <div class="masonry">
 
-            <!--
-                Example End
-            -->
-
-        </div>
+        @{
+            foreach(var topic in Model.Topics)
+            {
+                if(topic.Children.Count == 0)
+                {
+                    <div class="card masonry-item">
+                        <img src="https://via.placeholder.com/400x600" class="card-img-top" alt="...">
+                        <div class="topic-card-body d-flex flex-column">
+                            <h5 class="topic-card-title text-center pt-2 pb-2">@topic.TopicFullName.FromSnakeToPascalCase().PascalCaseWithSpaces()</h5>
+                            <p class="topic-card-text ps-2">Number of Documents: </p>
+                            <p class="topic-card-text ps-2">Number of Subscriptions: </p>
+                            <p class="topic-card-text ps-2">Newest Document Date: </p>
+                            <p class="topic-card-text ps-2">Oldest Document Date: </p>
+                            <p class="topic-card-text ps-2">Sources: </p>
+                            <button class="btn btn-topic-subscribe mt-auto" onclick="subscribeToTopic('@topic.TopicId')">Subscribe</button>
+                        </div>
+                    </div>
+                }
+            }
+        }
     </div>
 </div>
 
@@ -29,74 +32,36 @@
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
-        $("document").ready(() => {
+       
+        function subscribeToTopic(topicId) {
 
-            $("#searchoptions-menu-container").load("@Url.Action("LoadPartialViewUserSearchOptions", "User")");
+            console.log("subscribed");
 
-            // $("#CybersecurityNewsEurope").click(() => {
+            //TODO: Uncomment the ajax call when finished with the development of this page.
+            //It is commented for now just for testing purposes.
 
-            //     //Get the topic id
-            //     topic_id = $("#Topic-CybersecurityNewsEurope").val();
+            // //Send async POST http request to /User/UserTopicSubscription
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/User/UserTopicSubscription',
+            //     data: {
+            //         'topicId': topicId
+            //     },
+            //     //TODO: Log the messages for success, failure or error to logging service.
+            //     success: (response) => {
 
-            //     console.log(topic_id);
+            //         console.log("success", response);
+            //     },
+            //     failure: (reponse) => {
 
-            //     //Send async POST http request to /User/UserTopicSubscription
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/User/UserTopicSubscription',
-            //         data: {
-            //             'topic_id': topic_id
-            //         },
-            //         //TODO: Log the messages for success, failure or error to logging service.
-            //         success: (response) => {
+            //         console.log("failure", response);
+            //     },
+            //     error: (response) => {
 
-            //             console.log("success", response);
-            //         },
-            //         failure: (reponse) => {
-
-            //             console.log("failure", response);
-            //         },
-            //         error: (response) => {
-
-            //             console.log("error", response);
-            //         }
-            //     });
-            //});
-        });
-
-        function subscribeToTopic(topicId, haveChildren) {
-
-            //Check if the topic has any children topics.
-            if(haveChildren == 0){
-
-                console.log(topicId);
-
-                //The topic does NOT have children topics.
-
-                //Send async POST http request to /User/UserTopicSubscription
-                $.ajax({
-                    type: 'POST',
-                    url: '/User/UserTopicSubscription',
-                    data: {
-                        'topicId': topicId
-                    },
-                    //TODO: Log the messages for success, failure or error to logging service.
-                    success: (response) => {
-
-                        console.log("success", response);
-                    },
-                    failure: (reponse) => {
-
-                        console.log("failure", response);
-                    },
-                    error: (response) => {
-
-                        console.log("error", response);
-                    }
-                });
-            }
+            //         console.log("error", response);
+            //     }
+            // });
         }
-
 
     </script>
 }
