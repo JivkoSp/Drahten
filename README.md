@@ -45,33 +45,33 @@ In this project, "sufficient security" is accomplished through the following mea
 <ul>
   <li><strong>Intro 📜</strong>
     <ul>
-      <li><a href="Docs/intro-purpose.md">Purpose</a></li>
-      <li><a href="Docs/intro-capabilities.md">Capabilities</a></li>
-      <li><a href="Docs/intro-design.md">Overall design</a></li>
-      <li><a href="Docs/intro-technologies.md">Technologies</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/intro-purpose.md">Purpose</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/intro-capabilities.md">Capabilities</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/intro-design.md">Overall design</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/intro-technologies.md">Technologies</a></li>
     </ul>
   </li>
   <li><strong>Design Decisions 🧩</strong>
     <ul>
-      <li><a href="Docs/design-decision-authentication-and-authorization.md">Authentication and Authorization</a></li>
-      <li><a href="Docs/design-decision-reverse-proxy.md">Reverse Proxy</a></li>
-      <li><a href="Docs/design-decision-messaging.md">Messaging</a></li>
-      <li><a href="Docs/design-decision-containerization.md">Containerization</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-decision-authentication-and-authorization.md">Authentication and Authorization</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-decision-reverse-proxy.md">Reverse Proxy</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-decision-messaging.md">Messaging</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-decision-containerization.md">Containerization</a></li>
     </ul>
   </li>
   <li><strong>Design 🛠️</strong>
     <ul>
-      <li><a href="Docs/design-search-service.md">Search Service</a></li>
-      <li><a href="Docs/design-user-service.md">User Service</a></li>
-      <li><a href="Docs/design-topicarticle-service.md">Topic Article Service</a></li>
-      <li><a href="Docs/design-privatehistory-service.md">Private History Service</a></li>
-      <li><a href="Docs/design-logcollection-service.md">Log Collection Service</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-search-service.md">Search Service</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-user-service.md">User Service</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-topicarticle-service.md">Topic Article Service</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-privatehistory-service.md">Private History Service</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/design-logcollection-service.md">Log Collection Service</a></li>
     </ul>
   </li>
   <li><strong>Usage 🚀</strong>
     <ul>
-      <li><a href="Docs/usage-how-to-run.md">How to Run</a></li>
-      <li><a href="Docs/usage-api-documentation.md">API Documentation</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/usage-how-to-run.md">How to Run</a></li>
+      <li><a href="https://github.com/JivkoSp/Drahten/tree/master/Docs/usage-api-documentation.md">API Documentation</a></li>
     </ul>
   </li>
 </ul>
