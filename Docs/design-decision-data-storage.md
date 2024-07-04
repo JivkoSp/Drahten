@@ -28,6 +28,7 @@
   - **Replication** - Supports both synchronous and asynchronous replication;
   - **Backup and Restore** - Tools for consistent backups and point-in-time recovery.
 
+--- 
 
 ## Using Elasticsearch has the following advantages for searching data
 
