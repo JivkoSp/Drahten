@@ -49,10 +49,13 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Overall design](Docs/intro-design.md)
     - [Technologies](Docs/intro-technologies.md)
 * **Design Decisions** 🧩
-  - [Authentication and Authorization](Docs/design-decision-authentication-and-authorization.md)
-  -  [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
-  -  [Messaging](Docs/design-decision-messaging.md)
-  -  [Containerization](Docs/design-decision-containerization.md)
+    - [Authentication and Authorization](Docs/design-decision-authentication-and-authorization.md)
+    - [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
+    - [Messaging](Docs/design-decision-messaging.md)
+    - [Containerization](Docs/design-decision-containerization.md)
+    - [Fault Handling](Docs/design-decision-fault-handling.md)
+    - [Data Storage](Docs/)
+    - [Semantic Search](Docs/)
 * **Design** 🛠️
     - [Search Service](Docs/design-search-service.md)
     - [User Service](Docs/design-user-service.md)
