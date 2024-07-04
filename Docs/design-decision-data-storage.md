@@ -5,7 +5,7 @@
 * **Robust Feature Set** - PostgreSQL offers a comprehensive set of features that are beneficial for various use cases:
   - **ACID Compliance** - Ensures data integrity and reliability;
   - **Support for Advanced Data Types** - Such as JSON, XML, and arrays, which can be useful for microservices handling complex data structures;
-  - **Full-Text Search** - Built-in support for full-text search capabilities.
+  - **Full-Text Search** - Built-in support for full-text search capabilities. </br>
 * **Scalability and Performance** - PostgreSQL is designed to handle high concurrency and large datasets:
   - **Horizontal Scalability** - Supports sharding and partitioning, which is essential for scaling a microservices architecture;
   - **Query Optimization** - Advanced query planner and optimizer that enhance performance;
