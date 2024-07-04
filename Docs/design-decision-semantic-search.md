@@ -14,11 +14,11 @@ However, Elasticsearch is only one part of the puzzle. Applying semantic search 
 
 Elasticsearch and Haystack make an excellent combination for building modern search solutions. Some of the advantages of using them together include:
 
-#### Easy Integration
-Haystack provides a convenient wrapper for Elasticsearch, defined as ElasticsearchDocumentStore, which allows for easy document indexing, querying, and updating using Python. Haystack also supports other document stores, such as SQL, which can be used alongside Elasticsearch for various use cases.
+### Easy Integration
+  Haystack provides a convenient wrapper for Elasticsearch, defined as ElasticsearchDocumentStore, which allows for easy document indexing, querying, and updating using Python. Haystack also supports other document stores, such as SQL, which can be used alongside Elasticsearch for various use cases.
 
-#### Scalability
-Elasticsearch can scale horizontally across multiple nodes and clusters, handling large volumes of data. Haystack can also scale components up or down when constructing search pipelines, depending on the load and available resources. For example, documents can be retrieved using the BM25Retriever, based on the TF-IDF algorithm, or the EmbeddingRetriever, which utilizes a language model. These are two different methods for information retrieval, and the choice between them can affect the speed, accuracy, and overall complexity of the search engine.
+### Scalability
+  Elasticsearch can scale horizontally across multiple nodes and clusters, handling large volumes of data. Haystack can also scale components up or down when constructing search pipelines, depending on the load and available resources. For example, documents can be retrieved using the BM25Retriever, based on the TF-IDF algorithm, or the EmbeddingRetriever, which utilizes a language model. These are two different methods for information retrieval, and the choice between them can affect the speed, accuracy, and overall complexity of the search engine.
 
-#### Flexibility
-Elasticsearch and Haystack allow for the creation of customized search solutions by choosing different components and language models for various domain-specific tasks. They support different formats and languages, making them suitable for diverse and multilingual data and queries.
+### Flexibility
+  Elasticsearch and Haystack allow for the creation of customized search solutions by choosing different components and language models for various domain-specific tasks. They support different formats and languages, making them suitable for diverse and multilingual data and queries.
