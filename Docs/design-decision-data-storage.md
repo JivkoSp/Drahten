@@ -1,6 +1,6 @@
 # Data Storage
 
-# Using PostgreSQL has the following advantages
+# Using PostgreSQL has the following advantages for storing data
 
 * **Robust Feature Set** - PostgreSQL offers a comprehensive set of features that are beneficial for various use cases:
   - **ACID Compliance** - Ensures data integrity and reliability;
