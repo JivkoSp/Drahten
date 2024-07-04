@@ -54,7 +54,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Messaging](Docs/design-decision-messaging.md)
     - [Containerization](Docs/design-decision-containerization.md)
     - [Fault Handling](Docs/design-decision-fault-handling.md)
-    - [Data Storage](Docs/)
+    - [Data Storage](Docs/design-decision-data-storage.md)
     - [Semantic Search](Docs/)
 * **Design** 🛠️
     - [Search Service](Docs/design-search-service.md)
