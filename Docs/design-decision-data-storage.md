@@ -32,6 +32,11 @@
 
 # Using Elasticsearch has the following advantages for searching data
 
+## But Wait a Minute, Why is Elasticsearch Even Needed?
+
+While PostgreSQL is excellent for structured data storage and relational querying, there are scenarios in a microservices architecture where specialized search capabilities are required. 
+One of the services (Search Service) will offer semantic search capabilities, making Elasticsearch a necessary addition. Here are the advantages:
+
 * **Full-Text Search Capabilities** 
   - **Natural Language Processing (NLP)** - Elasticsearch is optimized for full-text search and provides features such as tokenization, stemming, and synonym handling, making it highly effective for searching textual data;
   - **Relevance Scoring** - Uses advanced algorithms to rank search results based on relevance, improving the accuracy and usefulness of search results.
