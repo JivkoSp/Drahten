@@ -1,6 +1,6 @@
 # Data Storage
 
-## Using PostgreSQL has the following advantages
+# Using PostgreSQL has the following advantages
 
 * **Robust Feature Set** - PostgreSQL offers a comprehensive set of features that are beneficial for various use cases:
   - **ACID Compliance** - Ensures data integrity and reliability;
@@ -30,7 +30,7 @@
 
 --- 
 
-## Using Elasticsearch has the following advantages for searching data
+# Using Elasticsearch has the following advantages for searching data
 
 * **Full-Text Search Capabilities** 
   - **Natural Language Processing (NLP)** - Elasticsearch is optimized for full-text search and provides features such as tokenization, stemming, and synonym handling, making it highly effective for searching textual data;
