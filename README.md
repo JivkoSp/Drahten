@@ -6,7 +6,7 @@
 
 ## ⚠️ Important Notice
 
-**Be aware that this project is under development, has some bugs, and some of the features mentioned in the Architecture Overview are not yet finished.**
+**Be aware that this project is under development, has some bugs, and some of the features (The PublicHistory Service) mentioned in the Architecture Overview are not yet finished.**
 
 If you decide to fork it, you will need a machine with parameters similar to these:
 
