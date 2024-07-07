@@ -2,6 +2,7 @@
 using PublicHistoryService.Application.Commands;
 using PublicHistoryService.Application.Commands.Handlers;
 using PublicHistoryService.Application.Exceptions;
+using PublicHistoryService.Domain.Entities;
 using PublicHistoryService.Domain.Factories;
 using PublicHistoryService.Domain.Factories.Interfaces;
 using PublicHistoryService.Domain.Repositories;
