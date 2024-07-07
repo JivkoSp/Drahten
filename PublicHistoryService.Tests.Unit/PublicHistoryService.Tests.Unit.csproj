@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PublicHistoryService.Application\PublicHistoryService.Application.csproj" />
     <ProjectReference Include="..\PublicHistoryService.Domain\PublicHistoryService.Domain.csproj" />
   </ItemGroup>
 
