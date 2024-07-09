@@ -81,15 +81,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C7E713F-A00
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2415BC36-A642-4F8C-845C-83F34912F201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Domain", "PublicHistoryService.Domain\PublicHistoryService.Domain.csproj", "{D36293D1-DE9A-4454-B2EF-24074DA990A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHistoryService.Domain", "PublicHistoryService.Domain\PublicHistoryService.Domain.csproj", "{D36293D1-DE9A-4454-B2EF-24074DA990A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Application", "PublicHistoryService.Application\PublicHistoryService.Application.csproj", "{CEBAA3F1-0C5C-408E-8D00-545ADFED3D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHistoryService.Application", "PublicHistoryService.Application\PublicHistoryService.Application.csproj", "{CEBAA3F1-0C5C-408E-8D00-545ADFED3D48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Infrastructure", "PublicHistoryService.Infrastructure\PublicHistoryService.Infrastructure.csproj", "{E55E857D-5FD8-4321-AC37-973B5B09ED99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHistoryService.Infrastructure", "PublicHistoryService.Infrastructure\PublicHistoryService.Infrastructure.csproj", "{E55E857D-5FD8-4321-AC37-973B5B09ED99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Presentation", "PublicHistoryService.Presentation\PublicHistoryService.Presentation.csproj", "{F11242CF-B96A-451D-816E-80EE3A964B0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHistoryService.Presentation", "PublicHistoryService.Presentation\PublicHistoryService.Presentation.csproj", "{F11242CF-B96A-451D-816E-80EE3A964B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Tests.Unit", "PublicHistoryService.Tests.Unit\PublicHistoryService.Tests.Unit.csproj", "{500C9723-6397-4FD4-B380-6277FF47658E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHistoryService.Tests.Unit", "PublicHistoryService.Tests.Unit\PublicHistoryService.Tests.Unit.csproj", "{500C9723-6397-4FD4-B380-6277FF47658E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHistoryService.Tests.EndToEnd", "PublicHistoryService.Tests.EndToEnd\PublicHistoryService.Tests.EndToEnd.csproj", "{7AB80162-1025-40D3-8A91-B8773FF8CD0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -201,6 +203,10 @@ Global
 		{500C9723-6397-4FD4-B380-6277FF47658E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500C9723-6397-4FD4-B380-6277FF47658E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{500C9723-6397-4FD4-B380-6277FF47658E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB80162-1025-40D3-8A91-B8773FF8CD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB80162-1025-40D3-8A91-B8773FF8CD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB80162-1025-40D3-8A91-B8773FF8CD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB80162-1025-40D3-8A91-B8773FF8CD0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,6 +250,7 @@ Global
 		{E55E857D-5FD8-4321-AC37-973B5B09ED99} = {1C7E713F-A009-4B8E-8F2D-0D058E5CAF25}
 		{F11242CF-B96A-451D-816E-80EE3A964B0F} = {1C7E713F-A009-4B8E-8F2D-0D058E5CAF25}
 		{500C9723-6397-4FD4-B380-6277FF47658E} = {2415BC36-A642-4F8C-845C-83F34912F201}
+		{7AB80162-1025-40D3-8A91-B8773FF8CD0D} = {2415BC36-A642-4F8C-845C-83F34912F201}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6C9AC8C-2975-4FB7-A54D-1A923FB284A9}

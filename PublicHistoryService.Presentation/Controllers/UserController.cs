@@ -8,9 +8,10 @@ using PublicHistoryService.Presentation.Dtos;
 
 namespace PublicHistoryService.Presentation.Controllers
 {
-    [Authorize]
+    //TODO: Uncomment the line below after the integration tests.
+    //[Authorize]
     [ApiController]
-    [Route("privatehistory-service/users")]
+    [Route("publichistory-service/users")]
     public class UserController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
