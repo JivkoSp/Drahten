@@ -23,7 +23,7 @@ namespace PublicHistoryService.Infrastructure.EntityFramework.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("private-history-service");
+            modelBuilder.HasDefaultSchema("public-history-service");
 
             base.OnModelCreating(modelBuilder);
 
