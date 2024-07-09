@@ -32,4 +32,10 @@
     <ProjectReference Include="..\PublicHistoryService.Application\PublicHistoryService.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+		<_Parameter1>PublicHistoryService.Tests.EndToEnd</_Parameter1>
+	</AssemblyAttribute>
+  </ItemGroup>
+	
 </Project>
