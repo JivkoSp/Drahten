@@ -1,5 +1,4 @@
 ﻿using DrahtenWeb.Dtos.PublicHistoryService;
-using DrahtenWeb.Dtos.TopicArticleService;
 using DrahtenWeb.Models;
 using DrahtenWeb.Services.IServices;
 
