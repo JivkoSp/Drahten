@@ -48,5 +48,20 @@ namespace DrahtenWeb.Controllers
 
             await _publicHistoryService.AddSearchedArticleDataAsync<ResponseDto>(writeSearchedArticleDataDto, accessToken);
         }
+
+        [HttpPost]
+        public async Task ViewedArticle(string articleId, string userId, DateTimeOffset dateTime)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var writeViewedArticleDto = new WriteViewedArticleDto
+            {
+                ArticleId = Guid.Parse(articleId),
+                UserId = Guid.Parse(userId),
+                DateTime = dateTime
+            };
+
+            await _publicHistoryService.AddViewedArticleAsync<ResponseDto>(writeViewedArticleDto, accessToken);
+        }
     }
 }
