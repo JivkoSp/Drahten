@@ -1,4 +1,6 @@
-﻿using DrahtenWeb.Models;
+﻿using DrahtenWeb.Dtos.PublicHistoryService;
+using DrahtenWeb.Dtos.TopicArticleService;
+using DrahtenWeb.Models;
 using DrahtenWeb.Services.IServices;
 
 namespace DrahtenWeb.Services
@@ -63,6 +65,71 @@ namespace DrahtenWeb.Services
             {
                 ApiType = ApiType.GET,
                 Url = $"https://localhost:7076/publichistory-service/users/{userId}/viewed-users/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> AddCommentedArticleAsync<TEntity>(WriteCommentedArticleDto writeCommentedArticleDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/publichistory-service/users/{writeCommentedArticleDto.UserId}/commented-articles/{writeCommentedArticleDto.ArticleId}",
+                Data = writeCommentedArticleDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> AddSearchedArticleDataAsync<TEntity>(WriteSearchedArticleDataDto writeSearchedArticleDataDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/publichistory-service/users/{writeSearchedArticleDataDto.UserId}/searched-articles/{writeSearchedArticleDataDto.ArticleId}",
+                Data = writeSearchedArticleDataDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> AddSearchedTopicDataAsync<TEntity>(WriteSearchedTopicDataDto writeSearchedTopicDataDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/publichistory-service/users/{writeSearchedTopicDataDto.UserId}/searched-topics/{writeSearchedTopicDataDto.TopicId}",
+                Data = writeSearchedTopicDataDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> AddViewedArticleAsync<TEntity>(WriteViewedArticleDto writeViewedArticleDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/publichistory-service/users/{writeViewedArticleDto.UserId}/viewed-articles/{writeViewedArticleDto.ArticleId}",
+                Data = writeViewedArticleDto,
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> AddViewedUserAsync<TEntity>(WriteViewedUserDto writeViewedUserDto, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.POST,
+                Url = $"https://localhost:7076/publichistory-service/users/{writeViewedUserDto.ViewerUserId}/viewed-users/{writeViewedUserDto.ViewedUserId}",
+                Data = writeViewedUserDto,
                 AccessToken = accessToken
             });
 
