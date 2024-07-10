@@ -577,26 +577,28 @@
 
                             buttonElementMove.on("click", () => {
 
-                                //Send ajax HTTP POST request to /PublicHistory/CommentedArticleAsync.
+                                //Send ajax HTTP POST request to /PublicHistory/ViewedArticle.
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/PublicHistory/CommentedArticleAsync',
+                                    url: '/PublicHistory/ViewedArticle',
                                     data: {
                                         'articleId': element.article.articleId,
                                         'userId': element.userId,
-                                        '': ''
+                                        'dateTime': element.dateTime
                                     },
                                     success: (response) => {
 
-                                       //TODO: Color the added row
+                                        console.log("Ok");
+
+                                        //TODO: Color the added row
                                     },
                                     failure: (reponse) => {
                                         console.log("failure", response);
-                                        row.removeClass("fade-out");
+                                        //row.removeClass("fade-out");
                                     },
                                     error: (response) => {
                                         console.log("error", response);
-                                        row.removeClass("fade-out");
+                                        //row.removeClass("fade-out");
                                     }
                                 });
                             });
