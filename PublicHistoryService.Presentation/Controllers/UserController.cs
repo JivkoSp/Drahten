@@ -8,8 +8,7 @@ using PublicHistoryService.Presentation.Dtos;
 
 namespace PublicHistoryService.Presentation.Controllers
 {
-    //TODO: Uncomment the line below after the integration tests.
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("publichistory-service/users")]
     public class UserController : ControllerBase
