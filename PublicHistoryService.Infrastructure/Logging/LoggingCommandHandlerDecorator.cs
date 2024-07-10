@@ -25,15 +25,15 @@ namespace PublicHistoryService.Infrastructure.Logging
 
             try
             {
-                _logger.LogInformation($"PrivateHistoryService --> Started processing {commandTypeName} command.");
+                _logger.LogInformation($"PublicHistoryService --> Started processing {commandTypeName} command.");
 
                 await _commandHandler.HandleAsync(command);
 
-                _logger.LogInformation($"PrivateHistoryService --> Finished processing {commandTypeName} command.");
+                _logger.LogInformation($"PublicHistoryService --> Finished processing {commandTypeName} command.");
             }
             catch
             {
-                _logger.LogError($"PrivateHistoryService --> Failed to process {commandTypeName} command.");
+                _logger.LogError($"PublicHistoryService --> Failed to process {commandTypeName} command.");
 
                 throw; // Throw the exception to the ErrorHandlerMiddleware.
             }
