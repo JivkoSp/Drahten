@@ -31,9 +31,9 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     
-                    <h5 class="card-title text-success">Private History</h5>
+                    <h5 id="menuHeaderTitle" class="card-title text-success">Private History</h5>
 
-                    <ul class="nav nav-pills flex-column">
+                    <ul id="menu" class="nav nav-pills flex-column">
                         <li id="viewedArticles" class="nav-item">
                             <a class="home-menu-content nav-link text-black" href="#"><i class="fas fa-file-alt pe-1"></i> Articles</a>
                         </li>
@@ -69,10 +69,10 @@
                         <button class="btn button-color btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#retentionModal">
                             <i class="fas fa-clock pe-1"></i> Set Retention Period
                         </button>
-                        <button class="btn button-color btn-sm btn-custom">
+                        <button id="privateHistory" class="btn button-color btn-sm btn-custom">
                             <i class="fas fa-lock pe-1"></i> Private
                         </button>
-                        <button class="btn button-color btn-sm btn-custom">
+                        <button id="publicHistory" class="btn button-color btn-sm btn-custom">
                             <i class="fas fa-lock-open pe-1"></i> Public
                         </button>
                     </div>
@@ -277,6 +277,142 @@
                     DisplayViewedArticles();
                 }
             });
+
+            $("#privateHistory").on('click', () => {
+
+                $("#menuHeaderTitle").text("Private History");
+
+                DisplayViewedArticles();
+
+                //TODO: Encapsulate this in function
+
+                const liElementViewedArticles = $("<li>", {
+                    id: "viewedArticles",
+                    class: "nav-item"
+                });
+
+                 const aElementViewedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-black",
+                    html: '<i class="fas fa-file-alt pe-1"></i> Articles'
+                });
+
+                liElementViewedArticles.append(aElementViewedArticles);
+
+                const liElementViewedUsers = $("<li>", {
+                    id: "viewedUsers",
+                    class: "nav-item"
+                });
+
+                const aElementViewedUsers = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-user pe-1"></i> Users'
+                });
+
+                liElementViewedUsers.append(aElementViewedUsers);
+
+                const liElementLikedArticles = $("<li>", {
+                    id: "likedArticles",
+                    class: "nav-item"
+                });
+
+                const aElementLikedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked articles'
+                });
+
+                liElementLikedArticles.append(aElementLikedArticles);
+
+                const liElementDislikedArticles = $("<li>", {
+                    id: "dislikedArticles",
+                    class: "nav-item"
+                });
+
+                const aElementDislikedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked articles'
+                });
+
+                liElementDislikedArticles.append(aElementDislikedArticles);
+
+                const liElementCommentedArticles = $("<li>", {
+                    id: "commentedArticles",
+                    class: "nav-item"
+                });
+
+                const aElementCommentedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-comment pe-1"></i> Commented articles'
+                });
+
+                liElementCommentedArticles.append(aElementCommentedArticles);
+
+                const liElementLikedArticleComments = $("<li>", {
+                    id: "likedArticleComments",
+                    class: "nav-item"
+                });
+
+                const aElementLikedArticleComments = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked article comments'
+                });
+
+                liElementLikedArticleComments.append(aElementLikedArticleComments);
+
+                const liElementDislikedArticleComments = $("<li>", {
+                    id: "dislikedArticleComments",
+                    class: "nav-item"
+                });
+
+                const aElementDislikedArticleComments = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked article comments'
+                });
+
+                liElementDislikedArticleComments.append(aElementDislikedArticleComments);
+
+                const liElementSearchedTopicData = $("<li>", {
+                    id: "searchedTopicData",
+                    class: "nav-item"
+                });
+
+                const aElementSearchedTopicData = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data'
+                });
+
+                liElementSearchedTopicData.append(aElementSearchedTopicData);
+
+                const liElementTopicSubscriptions = $("<li>", {
+                    id: "topicSubscriptions",
+                    class: "nav-item"
+                });
+
+                const aElementTopicSubscriptions = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-rss pe-1"></i> Topic subscriptions'
+                });
+
+                liElementTopicSubscriptions.append(aElementTopicSubscriptions);
+
+                $("#menu").empty();
+
+                $("#menu").append(liElementViewedArticles);
+                $("#menu").append(liElementViewedUsers);
+                $("#menu").append(liElementLikedArticles);
+                $("#menu").append(liElementDislikedArticles);
+                $("#menu").append(liElementCommentedArticles);
+                $("#menu").append(liElementLikedArticleComments);
+                $("#menu").append(liElementDislikedArticleComments);
+                $("#menu").append(liElementSearchedTopicData);
+                $("#menu").append(liElementTopicSubscriptions);
+            });
+
+            $("#publicHistory").on('click', () => {
+
+                $("#menuHeaderTitle").text("Public History");
+
+                DisplayViewedArticlesPublicHistory();
+            });
         });
 
         function displayEndDateTime(retentionUntil) {
@@ -316,6 +452,11 @@
                     console.log("error", response);
                 }
             });
+        }
+
+        function DisplayViewedArticlesPublicHistory() {
+
+
         }
 
         function DisplaySearchedViewedArticles(searchedViewedArticles, pageNumber = 1, query = '') {
