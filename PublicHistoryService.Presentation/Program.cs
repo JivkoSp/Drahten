@@ -47,6 +47,8 @@ builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
 builder.Services.AddTransient<RateLimitingMiddleware>();
 
+builder.Services.AddTransient<UserRegistrationMiddleware>();
+
 builder.Services.AddAuthentication(options => {
 
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -102,6 +104,8 @@ app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseMiddleware<RateLimitingMiddleware>();
+
+app.UseMiddleware<UserRegistrationMiddleware>();
 
 app.MapControllers();
 
