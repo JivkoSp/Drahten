@@ -576,7 +576,29 @@
                             });
 
                             buttonElementMove.on("click", () => {
-                                console.log("Move to public");
+
+                                //Send ajax HTTP POST request to /PublicHistory/CommentedArticleAsync.
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/PublicHistory/CommentedArticleAsync',
+                                    data: {
+                                        'articleId': element.article.articleId,
+                                        'userId': element.userId,
+                                        '': ''
+                                    },
+                                    success: (response) => {
+
+                                       //TODO: Color the added row
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        row.removeClass("fade-out");
+                                    }
+                                });
                             });
 
                             tableData['Article'].push(element.article.title);
@@ -1042,7 +1064,30 @@
                             });
 
                             buttonElementMove.on("click", () => {
-                                console.log("Move to public");
+
+                                //Send ajax HTTP POST request to /PublicHistory/CommentedArticle.
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/PublicHistory/CommentedArticle',
+                                    data: {
+                                        'articleId': element.article.articleId,
+                                        'userId': element.userId,
+                                        'articleComment': element.articleComment,
+                                        'dateTime': element.dateTime
+                                    },
+                                    success: (response) => {
+
+                                        //TODO: Color the added row
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        //row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        //row.removeClass("fade-out");
+                                    }
+                                });
                             });
 
                             tableData['Article'].push(element.article.title);
