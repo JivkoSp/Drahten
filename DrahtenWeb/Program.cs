@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using Polly;
 using Serilog;
 
 // Add Serilog configuration
@@ -29,6 +28,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IPrivateHistoryService, PrivateHistoryService>();
 
+builder.Services.AddHttpClient<IPublicHistoryService, PublicHistoryService>();
+
 builder.Services.AddHttpClient<ITopicArticleService, TopicArticleService>();
 
 builder.Services.AddHttpClient<IUserService, UserService>();
@@ -36,6 +37,8 @@ builder.Services.AddHttpClient<IUserService, UserService>();
 builder.Services.AddHttpClient<ISearchService, SearchService>();
 
 builder.Services.AddScoped<IPrivateHistoryService, PrivateHistoryService>();
+
+builder.Services.AddScoped<IPublicHistoryService, PublicHistoryService>();
 
 builder.Services.AddScoped<ITopicArticleService, TopicArticleService>();
 
