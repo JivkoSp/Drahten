@@ -15,6 +15,7 @@ using PublicHistoryService.Infrastructure.EntityFramework.Services.ReadServices;
 using PublicHistoryService.Infrastructure.Exceptions;
 using PublicHistoryService.Infrastructure.Exceptions.Interfaces;
 using PublicHistoryService.Infrastructure.Logging;
+using PublicHistoryService.Infrastructure.UserRegistration;
 
 namespace PublicHistoryService.Infrastructure.Extensions
 {
@@ -58,6 +59,8 @@ namespace PublicHistoryService.Infrastructure.Extensions
             });
 
             services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
+
+            services.AddScoped<IUserSynchronizer, UserSynchronizer>();
 
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
