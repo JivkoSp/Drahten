@@ -815,7 +815,32 @@
                             });
 
                             buttonElementMove.on("click", () => {
-                                console.log("Move to public");
+
+                                //Send ajax HTTP POST request to /PublicHistory/SearchedArticleData.
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/PublicHistory/SearchedArticleData',
+                                    data: {
+                                        'articleId': element.article.articleId,
+                                        'userId': element.userId,
+                                        'searchedData': element.searchedData,
+                                        'dateTime': element.dateTime
+                                    },
+                                    success: (response) => {
+
+                                        console.log("Ok");
+
+                                        //TODO: Color the added row
+                                    },
+                                    failure: (reponse) => {
+                                        console.log("failure", response);
+                                        //row.removeClass("fade-out");
+                                    },
+                                    error: (response) => {
+                                        console.log("error", response);
+                                        //row.removeClass("fade-out");
+                                    }
+                                });
                             });
 
 
