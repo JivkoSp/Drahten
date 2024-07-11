@@ -21,7 +21,9 @@ namespace DrahtenWeb.Controllers
         private readonly IMemoryCache _cache;
         private readonly MemoryCacheEntryOptions _cacheEntryOptions;
         private const string ViewedArticlesCacheKey = "ViewedArticlesDataCache";
+        private const string CommentedArticleCacheKey = "CommentedArticleDataCache";
         private const string RetrievedViewedArticlesCacheKey = "RetrievedViewedArticlesDataCache";
+        private const string RetrievedCommentedArticlesCacheKey = "RetrievedCommentedArticlesDataCache";
 
         public PublicHistoryController(IPublicHistoryService publicHistoryService, ITopicArticleService topicArticleService, IMemoryCache cache)
         {
@@ -115,6 +117,93 @@ namespace DrahtenWeb.Controllers
                 historyArticleViewModel.Pagination = pagination;
 
                 return new JsonResult(historyArticleViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CommentedArticles(int pageNumber = 1)
+        {
+            try
+            {
+                ArticleDto articleDto;
+                List<ReadCommentedArticleDto> allCommentedArticles;
+
+                // The response type that will be returned from calling the services.
+                var response = new ResponseDto();
+
+                var historyCommentedArticleViewModel = new HistoryCommentedArticleViewModel();
+
+                //Get the user id.
+                //Here the NameIdentifier claim type represents the user id.
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                if (!_cache.TryGetValue(CommentedArticleCacheKey, out allCommentedArticles))
+                {
+                    response = await _publicHistoryService.GetCommentedArticlesAsync<ResponseDto>(userId, accessToken);
+
+                    var commentedArticlesForCaching = new List<CommentedArticleViewModel>();
+
+                    allCommentedArticles = response.Map<List<ReadCommentedArticleDto>>();
+
+                    foreach (var commentedArticle in allCommentedArticles)
+                    {
+                        response = await _topicArticleService.GetArticleByIdAsync<ResponseDto>(commentedArticle.ArticleId, accessToken);
+
+                        articleDto = response.Map<ArticleDto>();
+
+                        var commentedArticleViewModel = new CommentedArticleViewModel
+                        {
+                            CommentedArticleId = commentedArticle.CommentedArticleId,
+                            Article = response.Map<ArticleDto>(),
+                            UserId = commentedArticle.UserId,
+                            ArticleComment = commentedArticle.ArticleComment,
+                            DateTime = commentedArticle.DateTime
+                        };
+
+                        commentedArticlesForCaching.Add(commentedArticleViewModel);
+
+                        // Save data in cache
+                        _cache.Set(commentedArticle.ArticleId, commentedArticleViewModel, _cacheEntryOptions);
+                    }
+
+                    // Save data in cache
+                    _cache.Set(CommentedArticleCacheKey, allCommentedArticles, _cacheEntryOptions);
+
+                    //This is done in order to be able to have keyword searching for all articles.
+                    _cache.Set(RetrievedCommentedArticlesCacheKey, commentedArticlesForCaching, _cacheEntryOptions);
+                }
+
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+
+                const int pageSize = 5;
+
+                int commentedArticlesCount = allCommentedArticles.Count;
+
+                var pagination = new Pagination(commentedArticlesCount, pageNumber, pageSize);
+
+                int skipCommentedArticles = (pageNumber - 1) * pageSize;
+
+                var commentedArticles = allCommentedArticles.Skip(skipCommentedArticles).Take(pagination.PageSize).ToList();
+
+                foreach (var commentedArticle in commentedArticles)
+                {
+                    var commentedArticleViewModel = _cache.Get<CommentedArticleViewModel>(commentedArticle.ArticleId);
+
+                    historyCommentedArticleViewModel.CommentedArticles.Add(commentedArticleViewModel);
+                }
+
+                historyCommentedArticleViewModel.Pagination = pagination;
+
+                return new JsonResult(historyCommentedArticleViewModel);
             }
             catch (Exception ex)
             {
