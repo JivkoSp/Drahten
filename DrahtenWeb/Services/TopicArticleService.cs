@@ -22,6 +22,18 @@ namespace DrahtenWeb.Services
             return response;
         }
 
+        public async Task<TEntity> GetTopicSubscriptionsAsync<TEntity>(Guid topicId, string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/topic-article-service/topics/{topicId}/subscriptions/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
         public async Task<TEntity> GetParentTopicWithChildrenAsync<TEntity>(Guid topicId, string accessToken)
         {
             var response = await SendAsync<TEntity>(new ApiRequest
@@ -40,6 +52,18 @@ namespace DrahtenWeb.Services
             {
                 ApiType = ApiType.GET,
                 Url = $"https://localhost:7076/topic-article-service/topics/{userId}/user-topics/",
+                AccessToken = accessToken
+            });
+
+            return response;
+        }
+
+        public async Task<TEntity> GetArticlesAsync<TEntity>(string accessToken)
+        {
+            var response = await SendAsync<TEntity>(new ApiRequest
+            {
+                ApiType = ApiType.GET,
+                Url = $"https://localhost:7076/topic-article-service/articles/",
                 AccessToken = accessToken
             });
 
