@@ -1,6 +1,6 @@
 # User Service Project Structure 
 
-## The project is divided into four main layers:
+### The project is divided into four main layers:
 
 * **Domain** - Contains the core business logic and rules, including entities, events, exceptions, factories, repositories, and value objects;
 * **Application** - Manages service interfaces and application logic, bridging the domain and infrastructure layers.
