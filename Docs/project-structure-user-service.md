@@ -1,9 +1,6 @@
 # User Service Project Structure 
 
-## Introduction
-The User Service is designed using Clean Architecture and Domain-Driven Design principles to ensure scalability, maintainability, and testability. This service is responsible for managing user-related data and operations, including authentication, authorization, and interaction with a PostgreSQL database.
-
-### The project is divided into four main layers:
+## The project is divided into four main layers:
 
 * **Domain** - Contains the core business logic and rules, including entities, events, exceptions, factories, repositories, and value objects;
 * **Application** - Manages service interfaces and application logic, bridging the domain and infrastructure layers.
