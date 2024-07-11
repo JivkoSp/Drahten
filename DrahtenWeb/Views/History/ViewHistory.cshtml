@@ -412,6 +412,63 @@
                 $("#menuHeaderTitle").text("Public History");
 
                 DisplayViewedArticlesPublicHistory();
+
+                //TODO: Encapsulate this in function
+
+                const liElementViewedArticles = $("<li>", {
+                    id: "viewedArticlesPublicHistory",
+                    class: "nav-item"
+                });
+
+                const aElementViewedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-black",
+                    html: '<i class="fas fa-file-alt pe-1"></i> Articles'
+                });
+
+                liElementViewedArticles.append(aElementViewedArticles);
+
+                const liElementViewedUsers = $("<li>", {
+                    id: "viewedUsersPublicHistory",
+                    class: "nav-item"
+                });
+
+                const aElementViewedUsers = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-user pe-1"></i> Users'
+                });
+
+                liElementViewedUsers.append(aElementViewedUsers);
+
+                const liElementCommentedArticles = $("<li>", {
+                    id: "commentedArticlesPublicHistory",
+                    class: "nav-item"
+                });
+
+                const aElementCommentedArticles = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-comment pe-1"></i> Commented articles'
+                });
+
+                liElementCommentedArticles.append(aElementCommentedArticles);
+
+                const liElementSearchedTopicData = $("<li>", {
+                    id: "searchedTopicDataPublicHistory",
+                    class: "nav-item"
+                });
+
+                const aElementSearchedTopicData = $("<a>", {
+                    class: "home-menu-content nav-link text-secondary",
+                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data'
+                });
+
+                liElementSearchedTopicData.append(aElementSearchedTopicData);
+
+                $("#menu").empty();
+
+                $("#menu").append(liElementViewedArticles);
+                $("#menu").append(liElementViewedUsers);
+                $("#menu").append(liElementCommentedArticles);
+                $("#menu").append(liElementSearchedTopicData);
             });
         });
 
@@ -454,9 +511,85 @@
             });
         }
 
-        function DisplayViewedArticlesPublicHistory() {
+        function DisplayViewedArticlesPublicHistory(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PublicHistory/ViewedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PublicHistory/ViewedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementViewedArticlesTableContainer = $("<div>", {
+                            id: "viewedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementViewedArticlesTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Watched': [],
+                            'View': [],
+                            'Remove': []
+                        };
+
+                        response.articles.forEach((element) => {
+
+                            const buttonElementViewArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-primary btn-sm",
+                                html: '<i class="fas fa-eye"></i>'
+                            });
+
+                            buttonElementViewArticle.on("click", () => {
+
+                               
+                            });
 
 
+                            const buttonElementRemoveArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveArticle.on("click", (event) => {
+
+                               
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Watched'].push(formatDateTime(element.dateTime));
+                            tableData['View'].push(buttonElementViewArticle);
+                            tableData['Remove'].push(buttonElementRemoveArticle);
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#viewedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "viewedArticlesTablePage");
+
+                            $("#viewedArticlesTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
         }
 
         function DisplaySearchedViewedArticles(searchedViewedArticles, pageNumber = 1, query = '') {
