@@ -130,6 +130,10 @@
                 DisplayViewedArticles();
             });
 
+            $(document).on('click', '#viewedArticlesPublicHistory', function () {
+                DisplayViewedArticlesPublicHistory();
+            });
+
             $(document).on('click', '#viewedUsers', function () {
                 DisplayViewedUsers();
             });
@@ -148,6 +152,10 @@
 
             $(document).on('click', '#commentedArticles', function () {
                 DisplayCommentedArticles();
+            });
+
+            $(document).on('click', '#commentedArticlesPublicHistory', function () {
+                DisplayCommentedArticlesPublicHistory();
             });
 
             $(document).on('click', '#likedArticleComments', function () {
@@ -293,7 +301,8 @@
 
                  const aElementViewedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-black",
-                    html: '<i class="fas fa-file-alt pe-1"></i> Articles'
+                    html: '<i class="fas fa-file-alt pe-1"></i> Articles',
+                    href: "#"
                 });
 
                 liElementViewedArticles.append(aElementViewedArticles);
@@ -305,7 +314,8 @@
 
                 const aElementViewedUsers = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-user pe-1"></i> Users'
+                    html: '<i class="fas fa-user pe-1"></i> Users',
+                    href: "#"
                 });
 
                 liElementViewedUsers.append(aElementViewedUsers);
@@ -317,7 +327,8 @@
 
                 const aElementLikedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked articles'
+                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked articles',
+                    href: "#"
                 });
 
                 liElementLikedArticles.append(aElementLikedArticles);
@@ -329,7 +340,8 @@
 
                 const aElementDislikedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked articles'
+                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked articles',
+                    href: "#"
                 });
 
                 liElementDislikedArticles.append(aElementDislikedArticles);
@@ -341,7 +353,8 @@
 
                 const aElementCommentedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-comment pe-1"></i> Commented articles'
+                    html: '<i class="fas fa-comment pe-1"></i> Commented articles',
+                    href: "#"
                 });
 
                 liElementCommentedArticles.append(aElementCommentedArticles);
@@ -353,7 +366,8 @@
 
                 const aElementLikedArticleComments = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked article comments'
+                    html: '<i class="fas fa-thumbs-up pe-1"></i> Liked article comments',
+                    href: "#"
                 });
 
                 liElementLikedArticleComments.append(aElementLikedArticleComments);
@@ -365,7 +379,8 @@
 
                 const aElementDislikedArticleComments = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked article comments'
+                    html: '<i class="fas fa-thumbs-down pe-1"></i> Disliked article comments',
+                    href: "#"
                 });
 
                 liElementDislikedArticleComments.append(aElementDislikedArticleComments);
@@ -377,7 +392,8 @@
 
                 const aElementSearchedTopicData = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data'
+                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data',
+                    href: "#"
                 });
 
                 liElementSearchedTopicData.append(aElementSearchedTopicData);
@@ -389,7 +405,8 @@
 
                 const aElementTopicSubscriptions = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-rss pe-1"></i> Topic subscriptions'
+                    html: '<i class="fas fa-rss pe-1"></i> Topic subscriptions',
+                    href: "#"
                 });
 
                 liElementTopicSubscriptions.append(aElementTopicSubscriptions);
@@ -422,7 +439,8 @@
 
                 const aElementViewedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-black",
-                    html: '<i class="fas fa-file-alt pe-1"></i> Articles'
+                    html: '<i class="fas fa-file-alt pe-1"></i> Articles',
+                    href: "#"
                 });
 
                 liElementViewedArticles.append(aElementViewedArticles);
@@ -434,7 +452,8 @@
 
                 const aElementViewedUsers = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-user pe-1"></i> Users'
+                    html: '<i class="fas fa-user pe-1"></i> Users',
+                    href: "#"
                 });
 
                 liElementViewedUsers.append(aElementViewedUsers);
@@ -446,7 +465,8 @@
 
                 const aElementCommentedArticles = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-comment pe-1"></i> Commented articles'
+                    html: '<i class="fas fa-comment pe-1"></i> Commented articles',
+                    href: "#"
                 });
 
                 liElementCommentedArticles.append(aElementCommentedArticles);
@@ -458,7 +478,8 @@
 
                 const aElementSearchedTopicData = $("<a>", {
                     class: "home-menu-content nav-link text-secondary",
-                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data'
+                    html: '<i class="fas fa-tags pe-1"></i> Searched topic data',
+                    href: "#"
                 });
 
                 liElementSearchedTopicData.append(aElementSearchedTopicData);
@@ -1398,6 +1419,76 @@
                             tableData['Move'].push(buttonElementMove);
 
                             displayEndDateTime(element.retentionUntil);
+                        });
+
+                        const tableElement = CreateHistoryTable(tableData);
+
+                        $("#commentedArticlesTableContainer").append(tableElement);
+
+                        if (response.pagination.totalPages > 0) {
+
+                            const divElementPaginationContainer = CreateHistoryTablePagination(response.pagination, "commentedArticlesTablePage");
+
+                            $("#commentedArticlesTableContainer").append(divElementPaginationContainer);
+                        }
+                    }
+                },
+                failure: (reponse) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
+                    console.log("error", response);
+                }
+            });
+        }
+
+        
+        function DisplayCommentedArticlesPublicHistory(pageNumber = 1) {
+
+            //Send ajax HTTP GET request to /PublicHistory/CommentedArticles.
+            $.ajax({
+                type: 'GET',
+                url: '/PublicHistory/CommentedArticles',
+                data: {
+                    'pageNumber': pageNumber
+                },
+                success: (response) => {
+
+                    if (response != null) {
+
+                        $("#historyTableContainer").empty();
+
+                        const divElementCommentedArticlesTableContainer = $("<div>", {
+                            id: "commentedArticlesTableContainer",
+                            class: "container mt-1"
+                        });
+
+                        $("#historyTableContainer").append(divElementCommentedArticlesTableContainer);
+
+                        const tableData = {
+                            'Article': [],
+                            'Comment': [],
+                            'Time': [],
+                            'Remove': []
+                        };
+
+                        response.commentedArticles.forEach((element) => {
+
+                            const buttonElementRemoveCommentedArticle = $("<button>", {
+                                type: "button",
+                                class: "btn btn-outline-danger btn-sm",
+                                html: '<i class="fas fa-trash"></i>'
+                            });
+
+                            buttonElementRemoveCommentedArticle.on("click", (event) => {
+
+                               
+                            });
+
+                            tableData['Article'].push(element.article.title);
+                            tableData['Comment'].push(element.articleComment);
+                            tableData['Time'].push(formatDateTime(element.dateTime));
+                            tableData['Remove'].push(buttonElementRemoveCommentedArticle);
                         });
 
                         const tableElement = CreateHistoryTable(tableData);
