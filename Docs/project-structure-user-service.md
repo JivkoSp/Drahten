@@ -12,6 +12,12 @@ The User Service is designed using Clean Architecture and Domain-Driven Design p
 
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
+<style>
+  details details {
+    margin-left: 20px;
+  }
+</style>
+
 <details>
   <summary><b>UserService</b></summary>
   <details>
