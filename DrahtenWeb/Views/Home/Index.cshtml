@@ -3,74 +3,70 @@
 @using DrahtenWeb.Extensions
 @model UserSearchOptionsViewModel
 
-    <div class="row mx-2 mt-1 gy-2">
-        <div class="col-md-12 col-lg-4">
-            <div class="card-text input-group input-group-md">
-                <span id="home-search-span" class="input-group-text rounded-start-5">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </span>
-                <input id="home-search-input-endpoint" type="hidden" />
-                <input id="home-search-input-topicId" type="hidden"/>
-                <input id="home-search-input" type="text" class="form-control rounded-end-5 shadow" placeholder="Search something..." />
+<div class="bottom-buttons">
+    <div class="container">
+        <div class="row mx-2 gy-3">
+            <div class="col-12 d-flex justify-content-center">
+                <div class="card-text input-group input-group-md w-75">
+                    <span id="home-search-span" class="input-group-text rounded-start-5">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                    <input id="home-search-input-endpoint" type="hidden" />
+                    <input id="home-search-input-topicId" type="hidden" />
+                    <input id="home-search-input" type="text" class="form-control rounded-end-5 shadow" placeholder="Search something..." />
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 col-lg-2">
-            <div class="d-grid">
-                <a href="#" class="btn button-color font-monospace fw-bold">Person</a>
-            </div>
-        </div>
-        <div class="col-md-3 col-lg-2">
-            <div class="d-grid">
-                <a href="#" class="btn button-color font-monospace fw-bold" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
-            </div>
-        </div>
-        <div class="col-md-3 col-lg-2">
-            <div class="d-grid">
-                <a href="#" class="btn button-color font-monospace fw-bold">Public Meetings</a>
-            </div>
-        </div>
-        <div class="col-md-3 col-lg-2">
-            <div class="d-grid">
-                <a id="search-options" asp-controller="User" asp-action="UserSearchOptions" class="btn button-color font-monospace fw-bold">Search options</a>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="d-grid w-25 m-2">
+                    <a href="#" class="btn button-color font-monospace fw-bold">Person</a>
+                </div>
+                <div class="d-grid w-25 m-2">
+                    <a href="#" class="btn button-color font-monospace fw-bold" data-bs-toggle="modal" data-bs-target="#topicModal">Topic</a>
+                </div>
+                <div class="d-grid w-25 m-2">
+                    <a href="#" class="btn button-color font-monospace fw-bold">Public Meetings</a>
+                </div>
+                <div class="d-grid w-25 m-2">
+                    <a id="search-options" asp-controller="User" asp-action="UserSearchOptions" class="btn button-color font-monospace fw-bold">Search options</a>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="topicModal" class="modal fade" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Subscribed topics</h5>
-                    <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-text input-group input-group-md">
-                        <span class="input-group-text rounded-start-5">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </span>
+<div id="topicModal" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Subscribed topics</h5>
+                <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card-text input-group input-group-md">
+                    <span class="input-group-text rounded-start-5">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
                         <input type="text" class="form-control rounded-end-5 shadow" placeholder="Search topic..." />
-                    </div>
-
-                    <div class="text-dark d-flex flex-wrap mt-2 justify-content-center">
-                        @foreach (var userTopic in Model.UserTopics)
-                        {
-                            <input id="subscribedTopicFullName-@userTopic.TopicId" type="hidden" value="@userTopic.TopicFullName.FromSnakeToPascalCase()" />
-                            <div id="subscribedTopicName-@userTopic.TopicId" class="subscribed-topic-card card shadow" 
+                </div>
+                <div class="text-dark d-flex flex-wrap mt-2 justify-content-center">
+                    @foreach (var userTopic in Model.UserTopics)
+                    {
+                        <input id="subscribedTopicFullName-@userTopic.TopicId" type="hidden" value="@userTopic.TopicFullName.FromSnakeToPascalCase()" />
+                        <div id="subscribedTopicName-@userTopic.TopicId" class="subscribed-topic-card card shadow" 
                                  onclick="selectTopicSearch('@userTopic.TopicId')">
-                                <i class="fa fa-globe card-icon" aria-hidden="true"></i>
-                                <span class="card-title">@userTopic.TopicName</span>
-                            </div>
-                        }
-                    </div>
+                            <i class="fa fa-globe card-icon" aria-hidden="true"></i>
+                            <span class="card-title">@userTopic.TopicName</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Content about user topics -->
 
-    <div id="article-list" class="row text-black border-top border-dark shadow mt-3 mx-2 overflow-auto">
+    <div id="article-list" class="row text-black border-top border-dark mt-3 mx-2 scrollable">
         <!--
            Search content goes here.
         -->
