@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DrahtenWeb.Extensions
 {
@@ -73,6 +74,56 @@ namespace DrahtenWeb.Extensions
             }
 
             return builder.ToString();
+        }
+
+        public static string ExtractDomainFromUrl(this string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return url;
+
+            // Regular expression to capture the HTTP protocol and domain
+            string pattern = @"^(?:https?:\/\/)?(?:www\.)?([^\/]+)";
+
+            Regex regex = new Regex(pattern);
+
+            // Match the URL
+            Match match = regex.Match(url);
+
+            if (match.Success)
+            {
+                // Extract the domain with protocol
+                string domain = match.Groups[1].Value;
+
+                return domain;
+            }
+
+            // Return the original URL if no match is found
+            return url;
+        }
+
+        public static string ExtractDomainWithProtocolFromUrl(this string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return url;
+
+            // Regular expression to capture the HTTP protocol and domain
+            string pattern = @"^(https?:\/\/(?:www\.)?[^\/]+)";
+
+            Regex regex = new Regex(pattern);
+
+            // Match the URL
+            Match match = regex.Match(url);
+
+            if (match.Success)
+            {
+                // Extract the domain with protocol
+                string domain = match.Groups[1].Value;
+
+                return domain;
+            }
+
+            // Return the original URL if no match is found
+            return url;
         }
     }
 }
