@@ -1,97 +1,95 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Drahten</title>
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DrahtenWeb.styles.css" asp-append-version="true" />
-</head>
-<body>
-    
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <partial name="_SideHomeMenu" />
-            <div class="col py-3">
-                <!-- Main -->
-                <main>
-                    @RenderBody()
-                </main>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - Drahten</title>
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/DrahtenWeb.styles.css" asp-append-version="true" />
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <!-- Burger Menu -->
+        <div class="burger-menu" id="burger-menu">
+            <i id="burder-menu-icon" class="fas fa-bars fa-2x"></i>
+        </div>
+        <div class="container-fluid flex-grow-1">
+            <div class="row flex-nowrap">
+                <partial name="_SideHomeMenu" />
+                <div class="col py-3 d-flex flex-column">
+                    <!-- Main -->
+                    <main class="flex-grow-1">
+                        @RenderBody()
+                    </main>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer Start -->
-
-    <footer class="text-center text-white bg-dark shadow border-top border-light">
-
-        <!-- Grid container Start -->
-
-        <div class="container-fluid">
-
-            <!-- Section - Links Start -->
-
-            <section>
-                <div class="row text-center d-flex justify-content-center pt-5 gy-4">
-                    <div class="col-md-2">
-                        <h6 class="fw-bold">
-                            <a href="#">About us</a>
-                        </h6>
+        <!-- Footer -->
+        <footer class="text-center text-white bg-dark shadow border-top border-light mt-auto">
+            <div class="container-fluid py-3">
+                <section>
+                    <div class="row text-center d-flex justify-content-center pt-3 gy-4">
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <h6 class="fw-bold">
+                                <a href="#">About us</a>
+                            </h6>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <h6 class="fw-bold">
+                                <a href="#">Contact</a>
+                            </h6>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <h6 class="fw-bold">
+                                <a href="#">Help</a>
+                            </h6>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <h6 class="fw-bold">
-                            <a href="#">Contact</a>
-                        </h6>
+                </section>
+                <hr class="my-4" />
+                <section class="mb-4">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-8">
+                            <p class="small">
+                                rigmfbldmfiekkddoldrfdkldfjgirnfdosdierwpwrweropwnl;fndsfpsdojrewr
+                                fdgjdfpgdfutprotjerpnmgl;dfjgpdfguprtjerpwmgpdofgipoerkt[pigd[f
+                                fdgdfgopidfgdfjgpdofgjpdofgjpdof
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <h6 class="fw-bold">
-                            <a href="#">Help</a>
-                        </h6>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section - Links End -->
-
-            <hr class="my-5" />
-
-            <!-- Section - Text Start -->
-
-            <section class="mb-5">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <p>
-                            rigmfbldmfiekkddoldrfdkldfjgirnfdosdierwpwrweropwnl;fndsfpsdojrewr
-                            fdgjdfpgdfutprotjerpnmgl;dfjgpdfguprtjerpwmgpdofgipoerkt[pigd[f
-                            fdgdfgopidfgdfjgpdofgjpdofgjpdof
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section - Text End -->
-
-        </div>
-
-        <!-- Grid container End -->
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-            <div class="mb-1">
-                <img src="~/logo/logo.png" class="img-fluid rounded" style="width: 5.2rem;" alt="avatar" />
+                </section>
             </div>
-            Copyright &copy; Drahten 2023
-        </div>
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+                <div class="mb-1">
+                    <img src="~/logo/logo.png" class="img-fluid rounded" style="width: 5.2rem;" alt="avatar" />
+                </div>
+                Copyright &copy; Drahten 2023
+            </div>
+        </footer>
 
-    </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script>
+            $(document).ready(() => {
+                $('#burger-menu').on('click', function () {
+                    var menuContainer = $('#home-menu-container');
 
-    <!-- Footer End -->
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+                    if (menuContainer.hasClass('show')) {
+                        menuContainer.removeClass('show');
+                        $('#burger-menu').removeClass('text-white'); 
+                        $('#logo-text').show();
+                    } else {
+                        menuContainer.addClass('show');
+                        $('#burger-menu').addClass('text-white'); 
+                        $('#logo-text').hide();
+                    }
+                });
+            });
+        </script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
 </html>
