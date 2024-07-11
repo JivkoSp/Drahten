@@ -1,58 +1,59 @@
-```js
-UserService
-├── src
-│   ├── UserService.Domain
-│   │   ├── Entities
-│   │   │   ├── _README.md
-│   │   │   ├── AggregateRoot.cs
-│   │   │   ├── User.cs
-│   │   ├── Events
-│   │   │   ├── _README.md
-│   │   │   ├── BannedUserAdded.cs
-│   │   │   ├── BannedUserRemoved.cs
-│   │   │   ├── ContactRequestAdded.cs
-│   │   │   ├── ContactRequestRemoved.cs
-│   │   │   ├── IDomainEvent.cs
-│   │   │   ├── UserTrackingAuditAdded.cs
-│   │   ├── Exceptions
-│   │   ├── Factories
-│   │   ├── Repositories
-│   │   ├── ValueObjects
-│   ├── UserService.Application
-│   │   ├── _README.md
-│   │   ├── Services
-│   ├── UserService.Infrastructure
-│   │   ├── _README.md
-│   │   ├── Persistence
-│   │   │   ├── UserRepository.cs
-│   │   ├── ExternalServices
-│   ├── UserService.Presentation
-│   │   ├── Controllers
-│   │   ├── DTOs
-├── tests
-│   ├── UserService.Tests
-│   │   ├── Unit
-│   │   │   ├── Domain
-│   │   │   │   ├── Entities
-│   │   │   │   │   ├── AggregateRootTests.cs
-│   │   │   │   │   ├── UserTests.cs
-│   │   │   │   ├── Events
-│   │   │   │   │   ├── BannedUserAddedTests.cs
-│   │   │   │   │   ├── BannedUserRemovedTests.cs
-│   │   │   │   │   ├── ContactRequestAddedTests.cs
-│   │   │   │   │   ├── ContactRequestRemovedTests.cs
-│   │   │   │   │   ├── UserTrackingAuditAddedTests.cs
-│   │   │   ├── Application
-│   │   │   │   ├── Services
-│   │   │   ├── Infrastructure
-│   │   │   │   ├── Persistence
-│   │   │   │   │   ├── UserRepositoryTests.cs
-├── .gitignore
-├── README.md
-└── requirements.txt
-```
 
-### Directory/File Descriptions
+# User Service Project Structure 
+
+- **UserService**
+  - **src**
+    - **UserService.Domain**
+      - **Entities**
+        - [_README.md](UserService/src/UserService.Domain/Entities/_README.md)
+        - AggregateRoot.cs
+        - User.cs
+      - **Events**
+        - [_README.md](UserService/src/UserService.Domain/Events/_README.md)
+        - BannedUserAdded.cs
+        - BannedUserRemoved.cs
+        - ContactRequestAdded.cs
+        - ContactRequestRemoved.cs
+        - IDomainEvent.cs
+        - UserTrackingAuditAdded.cs
+      - **Exceptions**
+      - **Factories**
+      - **Repositories**
+      - **ValueObjects**
+    - **UserService.Application**
+      - [_README.md](UserService/src/UserService.Application/_README.md)
+      - **Services**
+    - **UserService.Infrastructure**
+      - [_README.md](UserService/src/UserService.Infrastructure/_README.md)
+      - **Persistence**
+        - UserRepository.cs
+      - **ExternalServices**
+    - **UserService.Presentation**
+      - **Controllers**
+      - **DTOs**
+  - **tests**
+    - **UserService.Tests**
+      - **Unit**
+        - **Domain**
+          - **Entities**
+            - AggregateRootTests.cs
+            - UserTests.cs
+          - **Events**
+            - BannedUserAddedTests.cs
+            - BannedUserRemovedTests.cs
+            - ContactRequestAddedTests.cs
+            - ContactRequestRemovedTests.cs
+            - UserTrackingAuditAddedTests.cs
+        - **Application**
+          - **Services**
+        - **Infrastructure**
+          - **Persistence**
+            - UserRepositoryTests.cs
+- [.gitignore](UserService/.gitignore)
+- [README.md](UserService/README.md)
+- [requirements.txt](UserService/requirements.txt)
+  
+## Directory/File Descriptions
 
 | Directory/File                          | Description                                                   |
 |-----------------------------------------|---------------------------------------------------------------|
