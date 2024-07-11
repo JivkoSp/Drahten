@@ -9,35 +9,35 @@
 function CreateDocumentCard(divElementArticleList, article, articleComments, usersRelatedToArticle) {
 
     const divElementCardContainer = $("<div>", {
-        class: "col-4 mt-4"
+        class: "col-12 mt-4 col-md-6 col-xl-4"
     });
 
     const divElementCard = $("<div>", {
-        class: "card h-100"
+        class: "card-article shadow"
     });
 
     const divElementCardBody = $("<div>", {
-        class: "card-body"
+        class: "card-article-body d-flex flex-column justify-content-between p-3"
     });
      
     const hElementCardTitle = $("<h5>", {
-        class: "card-title text-center"
+        class: "card-article-title text-center mb-3"
     });
 
-    hElementCardTitle.text(article.topicFullName);
+    hElementCardTitle.text(article.title);
 
     const pElementCardText = $("<p>", {
-        class: "card-text"
+        class: "card-article-text text-muted mb-3"
     });
 
     pElementCardText.text(article.prevTitle);
 
     const divElementCardFooter = $("<div>", {
-        class: "card-footer d-flex justify-content-between align-items-center"
+        class: "card-article-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center p-3"
     });
 
     const smallElementCardFooterInfo = $("<small>", {
-        class: "text-muted"
+        class: "card-article-info text-muted"
     });
 
     smallElementCardFooterInfo.text(`Comments: ${articleComments.length} | Views: ${usersRelatedToArticle.length}
