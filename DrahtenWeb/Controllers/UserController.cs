@@ -35,9 +35,43 @@ namespace DrahtenWeb.Controllers
 
             userSearchOptionsViewModel.Topics = response.Map<List<TopicDto>>();
 
+            foreach(var topic in userSearchOptionsViewModel.Topics)
+            {
+                if (userSearchOptionsViewModel.TopicArticles.ContainsKey(topic.TopicId) == false)
+                {
+                    userSearchOptionsViewModel.TopicArticles.Add(topic.TopicId, new List<ArticleDto>());
+                }
+
+                if (userSearchOptionsViewModel.TopicSubscriptions.ContainsKey(topic.TopicId) == false)
+                {
+                    userSearchOptionsViewModel.TopicSubscriptions.Add(topic.TopicId, new List<UserTopicDto>());
+                }
+
+                if(userSearchOptionsViewModel.TopicSources.ContainsKey(topic.TopicId) == false)
+                {
+                    userSearchOptionsViewModel.TopicSources.Add(topic.TopicId, new HashSet<KeyValuePair<string, string>>());
+                }
+
+                response = await _topicArticleService.GetTopicSubscriptionsAsync<ResponseDto>(topic.TopicId, accessToken);
+
+                userSearchOptionsViewModel.TopicSubscriptions[topic.TopicId] = response.Map<List<UserTopicDto>>();
+            }
+
             response = await _topicArticleService.GetTopicsRelatedToUserAsync<ResponseDto>(userId, accessToken);
 
             userSearchOptionsViewModel.UserTopics = response.Map<List<UserTopicDto>>();
+
+            response = await _topicArticleService.GetArticlesAsync<ResponseDto>(accessToken);
+
+            var articles = response.Map<List<ArticleDto>>();
+
+            foreach (var article in articles) 
+            {
+                userSearchOptionsViewModel.TopicArticles[article.TopicId].Add(article);
+
+                userSearchOptionsViewModel.TopicSources[article.TopicId]
+                    .Add(new KeyValuePair<string, string>(article.Link.ExtractDomainWithProtocolFromUrl(), article.Link.ExtractDomainFromUrl()));
+            }
 
             return View(userSearchOptionsViewModel);
         }
