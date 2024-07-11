@@ -24,6 +24,25 @@ namespace TopicArticleService.Presentation.Controllers
             _responseDto = new ResponseDto();
         }
 
+        [HttpGet("articles/", Name = "GetArticles")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetArticles([FromRoute] GetArticlesQuery getArticlesQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getArticlesQuery);
+
+            _responseDto.Result = result;
+
+            if (result.Count == 0)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
+
         [HttpGet("articles/{ArticleId}", Name = "GetArticle")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
