@@ -77,6 +77,7 @@ namespace TopicArticleService.Infrastructure.Extensions
                 configAction.AddProfile<ArticleCommentDislikeProfile>();
                 configAction.AddProfile<TopicProfile>();
                 configAction.AddProfile<DocumentProfile>();
+                configAction.AddProfile<UserTopicProfile>();
             });
 
             services.AddSingleton<IMessageBusPublisher, MessageBusPublisher>();
