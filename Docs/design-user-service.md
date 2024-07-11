@@ -1,6 +1,7 @@
 # User Service
 
-## Responsible for storing information in a PostgreSQL database regarding more general actions and information related to the user in the application
+## Introduction
+The User Service is designed using Clean Architecture and Domain-Driven Design principles to ensure scalability, maintainability, and testability. This service is responsible for managing user-related data and operations, including authentication, authorization, and interaction with a PostgreSQL database.
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/UserService-1.PNG" alt="Logo" width="450">
