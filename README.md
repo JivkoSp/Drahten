@@ -62,7 +62,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Topic Article Service](Docs/design-topicarticle-service.md)
     - [Private History Service](Docs/design-privatehistory-service.md)
     - [Log Collection Service](Docs/design-logcollection-service.md)
-* **Project Structure**
+* **Project Structure** 📂
     - [User Service Project Structure](Docs/)
 * **Usage** 🚀
    - [How to Run](Docs/usage-how-to-run.md)
