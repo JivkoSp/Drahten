@@ -5,8 +5,10 @@ namespace DrahtenWeb.Services.IServices
     public interface ITopicArticleService : IBaseService
     {
         Task<TEntity> GetTopicsAsync<TEntity>(string accessToken);
+        Task<TEntity> GetTopicSubscriptionsAsync<TEntity>(Guid topicId, string accessToken);
         Task<TEntity> GetParentTopicWithChildrenAsync<TEntity>(Guid topicId, string accessToken);
         Task<TEntity> GetTopicsRelatedToUserAsync<TEntity>(Guid userId, string accessToken);
+        Task<TEntity> GetArticlesAsync<TEntity>(string accessToken);
         Task<TEntity> GetArticleByIdAsync<TEntity>(string articleId, string accessToken);
         Task<TEntity> GetUserArticlesAsync<TEntity>(string userId, string accessToken);
         Task<TEntity> GetArticleLikesAsync<TEntity>(string articleId, string accessToken);
