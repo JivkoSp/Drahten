@@ -39,6 +39,25 @@ namespace TopicArticleService.Presentation.Controllers
             return Ok(_responseDto);
         }
 
+        [HttpGet("{TopicId:guid}/subscriptions/")]
+        [ProducesResponseType(typeof(ResponseDto), 200)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
+        public async Task<ActionResult> GetTopicSubscriptions([FromRoute] GetTopicSubscriptionsQuery getTopicSubscriptionsQuery)
+        {
+            var result = await _queryDispatcher.DispatchAsync(getTopicSubscriptionsQuery);
+
+            _responseDto.Result = result;
+
+            if (result.Count == 0)
+            {
+                return NotFound(_responseDto);
+            }
+
+            _responseDto.IsSuccess = true;
+
+            return Ok(_responseDto);
+        }
+
         [HttpGet("{TopicId:guid}/parent-topic/")]
         [ProducesResponseType(typeof(ResponseDto), 200)]
         [ProducesResponseType(typeof(ResponseDto), 404)]
