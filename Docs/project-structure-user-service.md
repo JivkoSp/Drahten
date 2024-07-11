@@ -1,4 +1,4 @@
-```
+```yml
 UserService
 ├── src
 │   ├── UserService.Domain
