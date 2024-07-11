@@ -3,23 +3,32 @@
 
 <div class="row">
     <h1 class="text-center mb-4">Available Topics</h1>
-    <div class="masonry">
-
+    <div class="card-container">
         @{
-            foreach(var topic in Model.Topics)
+            @foreach (var topic in Model.Topics)
             {
-                if(topic.Children.Count == 0)
+                if (topic.Children.Count == 0)
                 {
-                    <div class="card masonry-item">
-                        <img src="https://via.placeholder.com/400x600" class="card-img-top" alt="...">
-                        <div class="topic-card-body d-flex flex-column">
+                    <div class="card modern-card">
+                        <div class="topic-card-body d-flex flex-column gap-1">
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <i class="fas fa-code modern-card-icon"></i>
+                            </div>
                             <h5 class="topic-card-title text-center pt-2 pb-2">@topic.TopicFullName.FromSnakeToPascalCase().PascalCaseWithSpaces()</h5>
-                            <p class="topic-card-text ps-2">Number of Documents: </p>
-                            <p class="topic-card-text ps-2">Number of Subscriptions: </p>
-                            <p class="topic-card-text ps-2">Newest Document Date: </p>
-                            <p class="topic-card-text ps-2">Oldest Document Date: </p>
-                            <p class="topic-card-text ps-2">Sources: </p>
-                            <button class="btn btn-topic-subscribe mt-auto" onclick="subscribeToTopic('@topic.TopicId')">Subscribe</button>
+                            <p class="topic-card-text ps-2 mb-1">Number of Articles: <span class="badge bg-primary">@Model.TopicArticles[topic.TopicId].Count</span></p>
+                            <p class="topic-card-text ps-2 mb-1">Number of Subscriptions: <span class="badge bg-success">@Model.TopicSubscriptions[topic.TopicId].Count</span></p>
+                            <div class="overflow-auto flex-grow-1 modern-card-content">
+                                <ul class="nav nav-pills flex-column mb-5 ps-2">
+                                    <li>Sources:</li>
+                                    @foreach (var keyValuePair in Model.TopicSources[topic.TopicId])
+                                    {
+                                        <li class="nav-item">
+                                            <a href="@keyValuePair.Key" target="_blank" class="modern-card-link">@keyValuePair.Value</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <button class="btn btn-topic-subscribe mt-auto modern-card-btn" onclick="subscribeToTopic('@topic.TopicId')">Subscribe</button>
                         </div>
                     </div>
                 }
