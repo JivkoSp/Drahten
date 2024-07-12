@@ -12,7 +12,7 @@ This structured approach ensures a clear separation of concerns, making the code
 ```plaintext
 UserService
 ├── src
-│   ├── UserService.Domain
+│   ├── UserService.Domain 📂
 │   │   ├── Entities
 │   │   │   ├── _README.txt
 │   │   │   ├── AggregateRoot.cs
@@ -221,9 +221,9 @@ UserService
   <details>
   <summary>src</summary>
 
-  * UserService.Domain
+  * UserService.Domain 📂
     <details>
-    <summary>Entities</summary>
+    <summary>Entities 📂</summary>
 
     * _README.txt
     * AggregateRoot.cs
@@ -231,7 +231,7 @@ UserService
     </details>
 
     <details>
-    <summary>Events</summary>
+    <summary>Events 📂</summary>
 
     * _README.txt
     * BannedUserAdded.cs
@@ -243,30 +243,30 @@ UserService
     </details>
 
     <details>
-    <summary>Exceptions</summary>
+    <summary>Exceptions 📂</summary>
 
     * _README.txt
     * CustomDomainLayerExceptions.cs
     </details>
 
     <details>
-    <summary>Factories</summary>
+    <summary>Factories 📂</summary>
 
-    * Interfaces
+    * Interfaces 📂
       * IUserFactory.cs
     * _README.txt
     * UserFactory.cs
     </details>
 
     <details>
-    <summary>Repositories</summary>
+    <summary>Repositories 📂</summary>
 
     * _README.txt
     * IUserRepository.cs
     </details>
 
     <details>
-    <summary>ValueObjects</summary>
+    <summary>ValueObjects 📂</summary>
 
     * _README.txt
     * BannedUser.cs
@@ -278,20 +278,20 @@ UserService
     * UserTracking.cs
     </details>
 
-  * UserService.Application
+  * UserService.Application 📂
     <details>
-    <summary>AsyncDataServices</summary>
+    <summary>AsyncDataServices 📂</summary>
 
     * IMessageBusPublisher.cs
     </details>
 
     <details>
-    <summary>Commands</summary>
+    <summary>Commands 📂</summary>
 
-    * Dispatcher
+    * Dispatcher 📂
       * ICommandDispatcher.cs
       * InMemoryCommandDispatcher.cs
-    * Handlers
+    * Handlers 📂
       * _README.txt
       * AddContactRequestHandler.cs
       * AddToAuditTrailHandler.cs
@@ -315,7 +315,7 @@ UserService
     </details>
 
     <details>
-    <summary>Dtos</summary>
+    <summary>Dtos 📂</summary>
 
     * _README.txt
     * IssuedBanByUserDto.cs
@@ -327,20 +327,20 @@ UserService
     </details>
 
     <details>
-    <summary>Exceptions</summary>
+    <summary>Exceptions 📂</summary>
 
     * _README.txt
     * CustomApplicationLayerExceptions.cs
     </details>
 
     <details>
-    <summary>Extensions</summary>
+    <summary>Extensions 📂</summary>
 
     * ServiceCollectionExtensions.cs
     </details>
 
     <details>
-    <summary>Queries</summary>
+    <summary>Queries 📂</summary>
 
     * Dispatcher
       * _README.txt
@@ -352,9 +352,9 @@ UserService
     </details>
 
     <details>
-    <summary>Services</summary>
+    <summary>Services 📂</summary>
 
-    * ReadServices
+    * ReadServices 📂
       * PostgresUserReadService.cs
     </details>
 
