@@ -23,6 +23,8 @@ namespace TopicArticleService.Domain.Entities
 
         internal Topic(TopicId id, TopicName topicName, TopicFullName topicFullName, TopicId parentTopicId = null)
         {
+            ValidateConstructorParameters<NullUserParametersException>([id, topicName, topicFullName]);
+
             Id = id;
             _topicName = topicName;
             _topicFullName = topicFullName;
