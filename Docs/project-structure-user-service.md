@@ -267,6 +267,8 @@ UserService
 
 | Directory/File                                              | Description                                                   |
 |-------------------------------------------------------------|---------------------------------------------------------------|
+| Domain Layer |
+|-----------------------------------------------------------------------------------------------------------------------------|
 | `UserService/src/UserService.Domain/Entities/`              | Contains domain entities representing core business concepts. |
 | `UserService/src/UserService.Domain/Events/`                | Includes domain events capturing significant changes or actions. |
 | `UserService/src/UserService.Domain/Exceptions/`            | Houses custom exceptions specific to domain logic.             |
