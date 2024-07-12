@@ -1,4 +1,5 @@
 ﻿using TopicArticleService.Domain.Events;
+using TopicArticleService.Domain.Exceptions;
 
 namespace TopicArticleService.Domain.Entities
 {
@@ -33,6 +34,20 @@ namespace TopicArticleService.Domain.Entities
 
             Version++;
             _versionIncremented = true;
+        }
+
+        // This method validates constructor parameters to ensure none of them are null.
+        // If any parameter is found to be null, it throws an instance of the specified exception type.
+        protected void ValidateConstructorParameters<TException>(object[] parameters)
+            where TException : DomainException
+        {
+            if (parameters.Any(x => x == null))
+            {
+                // Create an instance of TException using reflection
+                TException exceptionInstance = Activator.CreateInstance(typeof(TException), true) as TException;
+
+                throw exceptionInstance;
+            }
         }
     }
 }
