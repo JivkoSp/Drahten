@@ -218,164 +218,253 @@ UserService
 ```
 
 * UserService
-  * src
-    * UserService.Domain
-      * Entities
+  <details>
+  <summary>src</summary>
+
+  * UserService.Domain
+    <details>
+    <summary>Entities</summary>
+
+    * _README.txt
+    * AggregateRoot.cs
+    * User.cs
+    </details>
+
+    <details>
+    <summary>Events</summary>
+
+    * _README.txt
+    * BannedUserAdded.cs
+    * BannedUserRemoved.cs
+    * ContactRequestAdded.cs
+    * ContactRequestRemoved.cs
+    * IDomainEvent.cs
+    * UserTrackingAuditAdded.cs
+    </details>
+
+    <details>
+    <summary>Exceptions</summary>
+
+    * _README.txt
+    * CustomDomainLayerExceptions.cs
+    </details>
+
+    <details>
+    <summary>Factories</summary>
+
+    * Interfaces
+      * IUserFactory.cs
+    * _README.txt
+    * UserFactory.cs
+    </details>
+
+    <details>
+    <summary>Repositories</summary>
+
+    * _README.txt
+    * IUserRepository.cs
+    </details>
+
+    <details>
+    <summary>ValueObjects</summary>
+
+    * _README.txt
+    * BannedUser.cs
+    * ContactRequest.cs
+    * UserEmailAddress.cs
+    * UserFullName.cs
+    * UserID.cs
+    * UserNickName.cs
+    * UserTracking.cs
+    </details>
+
+  * UserService.Application
+    <details>
+    <summary>AsyncDataServices</summary>
+
+    * IMessageBusPublisher.cs
+    </details>
+
+    <details>
+    <summary>Commands</summary>
+
+    * Dispatcher
+      * ICommandDispatcher.cs
+      * InMemoryCommandDispatcher.cs
+    * Handlers
+      * _README.txt
+      * AddContactRequestHandler.cs
+      * AddToAuditTrailHandler.cs
+      * BanUserHandler.cs
+      * CreateUserHandler.cs
+      * ICommandHandler.cs
+      * RemoveIssuedContactRequestHandler.cs
+      * RemoveReceivedContactRequestHandler.cs
+      * UnbanUserHandler.cs
+      * UpdateContactRequestMessageHandler.cs
+    * _README.txt
+    * AddContactRequestCommand.cs
+    * AddToAuditTrailCommand.cs
+    * BanUserCommand.cs
+    * CreateUserCommand.cs
+    * ICommand.cs
+    * RemoveIssuedContactRequestCommand.cs
+    * RemoveReceivedContactRequestCommand.cs
+    * UnbanUserCommand.cs
+    * UpdateContactRequestMessageCommand.cs
+    </details>
+
+    <details>
+    <summary>Dtos</summary>
+
+    * _README.txt
+    * IssuedBanByUserDto.cs
+    * IssuedContactRequestByUserDto.cs
+    * ReceivedBanByUserDto.cs
+    * ReceivedContactRequestByUserDto.cs
+    * UserDto.cs
+    * UserPublishedDto.cs
+    </details>
+
+    <details>
+    <summary>Exceptions</summary>
+
+    * _README.txt
+    * CustomApplicationLayerExceptions.cs
+    </details>
+
+    <details>
+    <summary>Extensions</summary>
+
+    * ServiceCollectionExtensions.cs
+    </details>
+
+    <details>
+    <summary>Queries</summary>
+
+    * Dispatcher
+      * _README.txt
+      * InMemoryQueryDispatcher.cs
+      * IQueryDispatcher.cs
+    * Handlers
+      * _README.txt
+      * IQueryHandler.cs
+    </details>
+
+    <details>
+    <summary>Services</summary>
+
+    * ReadServices
+      * PostgresUserReadService.cs
+    </details>
+
+  * UserService.Infrastructure
+    <details>
+    <summary>AsyncDataServices</summary>
+
+    * MessageBusPublisher.cs
+    </details>
+
+    <details>
+    <summary>Automapper</summary>
+
+    * Profiles
+      * BannedUserProfile.cs
+      * ContactRequestProfile.cs
+      * UserProfile.cs
+    </details>
+
+    <details>
+    <summary>EntityFramework</summary>
+
+    * Contexts
+      * ReadDbContext.cs
+      * WriteDbContext.cs
+    * Encryption
+      * EncryptionConverters
+        * EncryptedDateTimeOffsetConverter.cs
+        * EncryptedStringConverter.cs
+        * EncryptedUserEmailAddressConverter.cs
+        * EncryptedUserFullNameConverter.cs
+        * EncryptedUserNickNameConverter.cs
+      * EncryptionProvider
+        * IEncryptionProvider.cs
+        * EncryptionProvider.cs
+    * Initialization
+      * DbInitializer.cs
+    * Migrations
+      * EntityFramework database migrations
+    * ModelConfiguration
+      * ReadConfiguration
         * _README.txt
-        * AggregateRoot.cs
-        * User.cs
-      * Events
-        * _README.txt
-        * BannedUserAdded.cs
-        * BannedUserRemoved.cs
-        * ContactRequestAdded.cs
-        * ContactRequestRemoved.cs
-        * IDomainEvent.cs
-        * UserTrackingAuditAdded.cs
-      * Exceptions
-        * _README.txt
-        * CustomDomainLayerExceptions.cs
-      * Factories
-        * Interfaces
-          * IUserFactory.cs
-        * _README.txt
-        * UserFactory.cs
-      * Repositories
-        * _README.txt
-        * IUserRepository.cs
-      * ValueObjects
-        * _README.txt
-        * BannedUser.cs
-        * ContactRequest.cs
-        * UserEmailAddress.cs
-        * UserFullName.cs
-        * UserID.cs
-        * UserNickName.cs
-        * UserTracking.cs
-    * UserService.Application
-      * AsyncDataServices
-        * IMessageBusPublisher.cs
-      * Commands
-        * Dispatcher
-          * ICommandDispatcher.cs
-          * InMemoryCommandDispatcher.cs
-        * Handlers
-          * _README.txt
-          * AddContactRequestHandler.cs
-          * AddToAuditTrailHandler.cs
-          * BanUserHandler.cs
-          * CreateUserHandler.cs
-          * ICommandHandler.cs
-          * RemoveIssuedContactRequestHandler.cs
-          * RemoveReceivedContactRequestHandler.cs
-          * UnbanUserHandler.cs
-          * UpdateContactRequestMessageHandler.cs
-        * _README.txt
-        * AddContactRequestCommand.cs
-        * AddToAuditTrailCommand.cs
-        * BanUserCommand.cs
-        * CreateUserCommand.cs
-        * ICommand.cs
-        * RemoveIssuedContactRequestCommand.cs
-        * RemoveReceivedContactRequestCommand.cs
-        * UnbanUserCommand.cs
-        * UpdateContactRequestMessageCommand.cs
-      * Dtos
-        * _README.txt
-        * IssuedBanByUserDto.cs
-        * IssuedContactRequestByUserDto.cs
-        * ReceivedBanByUserDto.cs
-        * ReceivedContactRequestByUserDto.cs
-        * UserDto.cs
-        * UserPublishedDto.cs
-      * Exceptions
-        * _README.txt
-        * CustomApplicationLayerExceptions.cs
-      * Extensions
-        * ServiceCollectionExtensions.cs
-      * Queries
-        * Dispatcher
-          * _README.txt
-          * InMemoryQueryDispatcher.cs
-          * IQueryDispatcher.cs
-        * Handlers
-          * _README.txt
-          * IQueryHandler.cs
-    * UserService.Infrastructure
-      * AsyncDataServices
-        * MessageBusPublisher.cs
-      * Automapper
-        * Profiles
-          * BannedUserProfile.cs
-          * ContactRequestProfile.cs
-          * UserProfile.cs
-      * EntityFramework
-        * Contexts
-          * ReadDbContext.cs
-          * WriteDbContext.cs
-        * Encryption
-          * EncryptionConverters
-            * EncryptedDateTimeOffsetConverter.cs
-            * EncryptedStringConverter.cs
-            * EncryptedUserEmailAddressConverter.cs
-            * EncryptedUserFullNameConverter.cs
-            * EncryptedUserNickNameConverter.cs
-          * EncryptionProvider
-            * IEncryptionProvider.cs
-            * EncryptionProvider.cs
-        * Initialization
-          * DbInitializer.cs
-        * Migrations
-          * EntityFramework database migrations
-        * ModelConfiguration
-          * ReadConfiguration
-            * _README.txt
-            * BannedUserConfiguration.cs
-            * ContactRequestConfiguration.cs
-            * UserConfiguration.cs
-            * UserTrackingConfiguration.cs
-          * WriteConfiguration
-            * BannedUserConfiguration.cs
-            * ContactRequestConfiguration.cs
-            * UserConfiguration.cs
-            * UserTrackingConfiguration.cs
-        * Models
-          * _README.txt
-          * BannedUserReadModel.cs
-          * ContactRequestReadModel.cs
-          * UserReadModel.cs
-          * UserTrackingReadModel.cs
-        * Options
-          * PostgresOptions.cs
-        * Repositories
-          * PostgresUserRepository.cs
-        * Services
-          * ReadServices
-            * PostgresUserReadService.cs
-      * Exceptions
-        * Interfaces
-          * IExceptionToResponseMapper.cs
-        * ExceptionResponse.cs
-        * ExceptionToResponseMapper.cs
-        * InfrastructureException.cs
-        * NullDbContextException.cs
-      * Extensions
-        * ServiceCollectionExtensions.cs
-        * ConfigurationExtensions.cs
-      * Logging
-        * Formatters
-          * SerilogJsonFormatter.cs
-        * LoggingCommandHandlerDecorator.cs
-      * Queries
-        * Handlers
-          * GetIssuedBansByUserHandler.cs
-          * GetIssuedContactRequestsByUserHandler.cs
-          * GetReceivedBansByUserHandler.cs
-          * GetReceivedContactRequestByUserHandler.cs
-          * GetUserHandler.cs
-      * UserRegistration
-        * IUserSynchronizer.cs
-        * UserSynchronizer.cs
+        * BannedUserConfiguration.cs
+        * ContactRequestConfiguration.cs
+        * UserConfiguration.cs
+        * UserTrackingConfiguration.cs
+      * WriteConfiguration
+        * BannedUserConfiguration.cs
+        * ContactRequestConfiguration.cs
+        * UserConfiguration.cs
+        * UserTrackingConfiguration.cs
+    * Models
+      * _README.txt
+      * BannedUserReadModel.cs
+      * ContactRequestReadModel.cs
+      * UserReadModel.cs
+      * UserTrackingReadModel.cs
+    * Options
+      * PostgresOptions.cs
+    * Repositories
+      * PostgresUserRepository.cs
+    * Services
+      * ReadServices
+        * PostgresUserReadService.cs
+    </details>
+
+    <details>
+    <summary>Exceptions</summary>
+
+    * Interfaces
+      * IExceptionToResponseMapper.cs
+    * ExceptionResponse.cs
+    * ExceptionToResponseMapper.cs
+    * InfrastructureException.cs
+    * NullDbContextException.cs
+    </details>
+
+    <details>
+    <summary>Extensions</summary>
+
+    * ServiceCollectionExtensions.cs
+    * ConfigurationExtensions.cs
+    </details>
+
+    <details>
+    <summary>Logging</summary>
+
+    * Formatters
+      * SerilogJsonFormatter.cs
+    * LoggingCommandHandlerDecorator.cs
+    </details>
+
+    <details>
+    <summary>Queries</summary>
+
+    * Handlers
+      * GetIssuedBansByUserHandler.cs
+      * GetIssuedContactRequestsByUserHandler.cs
+      * GetReceivedBansByUserHandler.cs
+      * GetReceivedContactRequestByUserHandler.cs
+      * GetUserHandler.cs
+    </details>
+
+    <details>
+    <summary>UserRegistration</summary>
+
+    * IUserSynchronizer.cs
+    * UserSynchronizer.cs
+    </details>
+
   * tests
     * UserService.Tests.EndToEnd
       * Extensions
@@ -405,10 +494,11 @@ UserService
           * UnbanUserHandlerTests.cs
           * UpdateContactRequestMessageHandlerTests.cs
       * Domain
+</details>
+
 * .gitignore
 * README.md
 * requirements.txt
-
 
   
 ## Directory/File Descriptions
