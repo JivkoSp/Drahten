@@ -14,172 +14,172 @@ UserService
 ├── src 📦
 │   ├── UserService.Domain 📂
 │   │   ├── Entities 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── AggregateRoot.cs 📄
-│   │   │   ├── User.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── AggregateRoot.cs 
+│   │   │   ├── User.cs 
 │   │   ├── Events 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── BannedUserAdded.cs 📄
-│   │   │   ├── BannedUserRemoved.cs 📄
-│   │   │   ├── ContactRequestAdded.cs 📄
-│   │   │   ├── ContactRequestRemoved.cs 📄
-│   │   │   ├── IDomainEvent.cs 📄
-│   │   │   ├── UserTrackingAuditAdded.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── BannedUserAdded.cs 
+│   │   │   ├── BannedUserRemoved.cs 
+│   │   │   ├── ContactRequestAdded.cs 
+│   │   │   ├── ContactRequestRemoved.cs 
+│   │   │   ├── IDomainEvent.cs 
+│   │   │   ├── UserTrackingAuditAdded.cs 
 │   │   ├── Exceptions 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── CustomDomainLayerExceptions.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── CustomDomainLayerExceptions.cs 
 │   │   ├── Factories 📂
 │   │   │   ├── Interfaces 📂
-│   │   │   │   ├── IUserFactory.cs 📄
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── UserFactory.cs 📄
+│   │   │   │   ├── IUserFactory.cs 
+│   │   │   ├── _README.txt 
+│   │   │   ├── UserFactory.cs 
 │   │   ├── Repositories 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── IUserRepository.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── IUserRepository.cs 
 │   │   ├── ValueObjects 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── BannedUser.cs 📄
-│   │   │   ├── ContactRequest.cs 📄
-│   │   │   ├── UserEmailAddress.cs 📄
-│   │   │   ├── UserFullName.cs 📄
-│   │   │   ├── UserID.cs 📄
-│   │   │   ├── UserNickName.cs 📄
-│   │   │   ├── UserTracking.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── BannedUser.cs 
+│   │   │   ├── ContactRequest.cs 
+│   │   │   ├── UserEmailAddress.cs 
+│   │   │   ├── UserFullName.cs 
+│   │   │   ├── UserID.cs 
+│   │   │   ├── UserNickName.cs 
+│   │   │   ├── UserTracking.cs 
 │   ├── UserService.Application 📂
 │   │   ├── AsyncDataServices 📂
-│   │   │   ├── IMessageBusPublisher.cs 📄
+│   │   │   ├── IMessageBusPublisher.cs 
 │   │   ├── Commands 📂
 │   │   │   ├── Dispatcher 📂
-│   │   │   │   ├── ICommandDispatcher.cs 📄
-│   │   │   │   ├── InMemoryCommandDispatcher.cs 📄
+│   │   │   │   ├── ICommandDispatcher.cs 
+│   │   │   │   ├── InMemoryCommandDispatcher.cs 
 │   │   │   ├── Handlers 📂
-│   │   │   │   ├── _README.txt 📄
-│   │   │   │   ├── AddContactRequestHandler.cs 📄
-│   │   │   │   ├── AddToAuditTrailHandler.cs 📄
-│   │   │   │   ├── BanUserHandler.cs 📄
-│   │   │   │   ├── CreateUserHandler.cs 📄
-│   │   │   │   ├── ICommandHandler.cs 📄
-│   │   │   │   ├── RemoveIssuedContactRequestHandler.cs 📄
-│   │   │   │   ├── RemoveReceivedContactRequestHandler.cs 📄
-│   │   │   │   ├── UnbanUserHandler.cs 📄
-│   │   │   │   ├── UpdateContactRequestMessageHandler.cs 📄
-│   │   ├── _README.txt 📄
-│   │   ├── AddContactRequestCommand.cs 📄
-│   │   ├── AddToAuditTrailCommand.cs 📄
-│   │   ├── BanUserCommand.cs 📄
-│   │   ├── CreateUserCommand.cs 📄
-│   │   ├── ICommand.cs 📄
-│   │   ├── RemoveIssuedContactRequestCommand.cs 📄
-│   │   ├── RemoveReceivedContactRequestCommand.cs 📄
-│   │   ├── UnbanUserCommand.cs 📄
-│   │   ├── UpdateContactRequestMessageCommand.cs 📄
+│   │   │   │   ├── _README.txt 
+│   │   │   │   ├── AddContactRequestHandler.cs 
+│   │   │   │   ├── AddToAuditTrailHandler.cs 
+│   │   │   │   ├── BanUserHandler.cs 
+│   │   │   │   ├── CreateUserHandler.cs 
+│   │   │   │   ├── ICommandHandler.cs 
+│   │   │   │   ├── RemoveIssuedContactRequestHandler.cs 
+│   │   │   │   ├── RemoveReceivedContactRequestHandler.cs 
+│   │   │   │   ├── UnbanUserHandler.cs 
+│   │   │   │   ├── UpdateContactRequestMessageHandler.cs 
+│   │   ├── _README.txt 
+│   │   ├── AddContactRequestCommand.cs 
+│   │   ├── AddToAuditTrailCommand.cs 
+│   │   ├── BanUserCommand.cs 
+│   │   ├── CreateUserCommand.cs 
+│   │   ├── ICommand.cs 
+│   │   ├── RemoveIssuedContactRequestCommand.cs 
+│   │   ├── RemoveReceivedContactRequestCommand.cs 
+│   │   ├── UnbanUserCommand.cs 
+│   │   ├── UpdateContactRequestMessageCommand.cs 
 │   │   ├── Dtos 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── IssuedBanByUserDto.cs 📄
-│   │   │   ├── IssuedContactRequestByUserDto.cs 📄
-│   │   │   ├── ReceivedBanByUserDto.cs 📄
-│   │   │   ├── ReceivedContactRequestByUserDto.cs 📄
-│   │   │   ├── UserDto.cs 📄
-│   │   │   ├── UserPublishedDto.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── IssuedBanByUserDto.cs 
+│   │   │   ├── IssuedContactRequestByUserDto.cs 
+│   │   │   ├── ReceivedBanByUserDto.cs 
+│   │   │   ├── ReceivedContactRequestByUserDto.cs 
+│   │   │   ├── UserDto.cs 
+│   │   │   ├── UserPublishedDto.cs 
 │   │   ├── Exceptions 📂
-│   │   │   ├── _README.txt 📄
-│   │   │   ├── CustomApplicationLayerExceptions.cs 📄
+│   │   │   ├── _README.txt 
+│   │   │   ├── CustomApplicationLayerExceptions.cs 
 │   │   ├── Extensions 📂
-│   │   │   ├── ServiceCollectionExtensions.cs 📄
+│   │   │   ├── ServiceCollectionExtensions.cs 
 │   │   ├── Queries 📂
 │   │   │   ├── Dispatcher 📂
-│   │   │   │   ├── _README.txt 📄
-│   │   │   │   ├── InMemoryQueryDispatcher.cs 📄
-│   │   │   │   ├── IQueryDispatcher.cs 📄
+│   │   │   │   ├── _README.txt 
+│   │   │   │   ├── InMemoryQueryDispatcher.cs 
+│   │   │   │   ├── IQueryDispatcher.cs 
 │   │   ├── Handlers 📂
-│   │   │   │   ├── _README.txt 📄
-│   │   │   │   ├── IQueryHandler.cs 📄
-│   │   ├── _README.txt 📄
-│   │   ├── GetIssuedBansByUserQuery.cs 📄
-│   │   ├── GetIssuedContactRequestsByUserQuery.cs 📄
-│   │   ├── GetReceivedBansByUserQuery.cs 📄
-│   │   ├── GetReceivedContactRequestByUserQuery.cs 📄
-│   │   ├── GetUserQuery.cs 📄
-│   │   ├── IQuery.cs 📄
+│   │   │   │   ├── _README.txt 
+│   │   │   │   ├── IQueryHandler.cs 
+│   │   ├── _README.txt 
+│   │   ├── GetIssuedBansByUserQuery.cs 
+│   │   ├── GetIssuedContactRequestsByUserQuery.cs 
+│   │   ├── GetReceivedBansByUserQuery.cs 
+│   │   ├── GetReceivedContactRequestByUserQuery.cs 
+│   │   ├── GetUserQuery.cs 
+│   │   ├── IQuery.cs 
 │   │   ├── Services 📂
 │   │   │   ├── ReadServices 📂
-│   │   │   │   ├── IUserReadService.cs 📄
-│   │   ├── _README.txt 📄
+│   │   │   │   ├── IUserReadService.cs
+│   │   ├── _README.txt
 │   ├── UserService.Infrastructure 📂
 │   │   ├── AsyncDataServices 📂
-│   │   │   ├── MessageBusPublisher.cs 📄
+│   │   │   ├── MessageBusPublisher.cs
 │   │   ├── Automapper 📂
 │   │   │   ├── Profiles 📂
-│   │   │   │   ├── BannedUserProfile.cs 📄
-│   │   │   │   ├── ContactRequestProfile.cs 📄
-│   │   │   │   ├── UserProfile.cs 📄
+│   │   │   │   ├── BannedUserProfile.cs
+│   │   │   │   ├── ContactRequestProfile.cs
+│   │   │   │   ├── UserProfile.cs
 │   │   ├── EntityFramework 📂
 │   │   │   ├── Contexts 📂
-│   │   │   │   ├── ReadDbContext.cs 📄
-│   │   │   │   ├── WriteDbContext.cs 📄
+│   │   │   │   ├── ReadDbContext.cs
+│   │   │   │   ├── WriteDbContext.cs
 │   │   │   ├── Encryption 📂
 │   │   │   │   ├── EncryptionConverters 📂
-│   │   │   │   │   ├── EncryptedDateTimeOffsetConverter.cs 📄
-│   │   │   │   │   ├── EncryptedStringConverter.cs 📄
-│   │   │   │   │   ├── EncryptedUserEmailAddressConverter.cs 📄
-│   │   │   │   │   ├── EncryptedUserFullNameConverter.cs 📄
-│   │   │   │   │   ├── EncryptedUserNickNameConverter.cs 📄
+│   │   │   │   │   ├── EncryptedDateTimeOffsetConverter.cs
+│   │   │   │   │   ├── EncryptedStringConverter.cs
+│   │   │   │   │   ├── EncryptedUserEmailAddressConverter.cs
+│   │   │   │   │   ├── EncryptedUserFullNameConverter.cs
+│   │   │   │   │   ├── EncryptedUserNickNameConverter.cs
 │   │   │   │   ├── EncryptionProvider 📂
-│   │   │   │   │   ├── IEncryptionProvider.cs 📄
-│   │   │   │   │   ├── EncryptionProvider.cs 📄
+│   │   │   │   │   ├── IEncryptionProvider.cs
+│   │   │   │   │   ├── EncryptionProvider.cs
 │   │   │   ├── Initialization 📂
-│   │   │   │   ├── DbInitializer.cs 📄
+│   │   │   │   ├── DbInitializer.cs
 │   │   │   ├── Migrations 📂
-│   │   │   │   ├── EntityFramework database migrations 📄
+│   │   │   │   ├── EntityFramework database migrations
 │   │   │   ├── ModelConfiguration 📂
 │   │   │   │   ├── ReadConfiguration 📂
-│   │   │   │   │   ├── _README.txt 📄
-│   │   │   │   │   ├── BannedUserConfiguration.cs 📄
-│   │   │   │   │   ├── ContactRequestConfiguration.cs 📄
-│   │   │   │   │   ├── UserConfiguration.cs 📄
-│   │   │   │   │   ├── UserTrackingConfiguration.cs 📄
+│   │   │   │   │   ├── _README.txt
+│   │   │   │   │   ├── BannedUserConfiguration.cs
+│   │   │   │   │   ├── ContactRequestConfiguration.cs
+│   │   │   │   │   ├── UserConfiguration.cs
+│   │   │   │   │   ├── UserTrackingConfiguration.cs
 │   │   │   │   ├── WriteConfiguration 📂
-│   │   │   │   │   ├── BannedUserConfiguration.cs 📄
-│   │   │   │   │   ├── ContactRequestConfiguration.cs 📄
-│   │   │   │   │   ├── UserConfiguration.cs 📄
-│   │   │   │   │   ├── UserTrackingConfiguration.cs 📄
+│   │   │   │   │   ├── BannedUserConfiguration.cs
+│   │   │   │   │   ├── ContactRequestConfiguration.cs
+│   │   │   │   │   ├── UserConfiguration.cs
+│   │   │   │   │   ├── UserTrackingConfiguration.cs
 │   │   │   ├── Models 📂
-│   │   │   │   ├── _README.txt 📄
-│   │   │   │   ├── BannedUserReadModel.cs 📄
-│   │   │   │   ├── ContactRequestReadModel.cs 📄
-│   │   │   │   ├── UserReadModel.cs 📄
-│   │   │   │   ├── UserTrackingReadModel.cs 📄
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── BannedUserReadModel.cs
+│   │   │   │   ├── ContactRequestReadModel.cs
+│   │   │   │   ├── UserReadModel.cs
+│   │   │   │   ├── UserTrackingReadModel.cs
 │   │   │   ├── Options 📂
-│   │   │   │   ├── PostgresOptions.cs 📄
+│   │   │   │   ├── PostgresOptions.cs
 │   │   │   ├── Repositories 📂
-│   │   │   │   ├── PostgresUserRepository.cs 📄
+│   │   │   │   ├── PostgresUserRepository.cs
 │   │   │   ├── Services 📂
 │   │   │   │   ├── ReadServices 📂
-│   │   │   │   │   ├── PostgresUserReadService.cs 📄
+│   │   │   │   │   ├── PostgresUserReadService.cs
 │   │   ├── Exceptions 📂
 │   │   │   ├── Interfaces 📂
-│   │   │   │   ├── IExceptionToResponseMapper.cs 📄
-│   │   │   ├── ExceptionResponse.cs 📄
-│   │   │   ├── ExceptionToResponseMapper.cs 📄
-│   │   │   ├── InfrastructureException.cs 📄
-│   │   │   ├── NullDbContextException.cs 📄
+│   │   │   │   ├── IExceptionToResponseMapper.cs
+│   │   │   ├── ExceptionResponse.cs 
+│   │   │   ├── ExceptionToResponseMapper.cs
+│   │   │   ├── InfrastructureException.cs
+│   │   │   ├── NullDbContextException.cs
 │   │   ├── Extensions 📂
-│   │   │   ├── ServiceCollectionExtensions.cs 📄
-│   │   │   ├── ConfigurationExtensions.cs 📄
+│   │   │   ├── ServiceCollectionExtensions.cs
+│   │   │   ├── ConfigurationExtensions.cs
 │   │   ├── Logging 📂
 │   │   │   ├── Formatters 📂
-│   │   │   │   ├── SerilogJsonFormatter.cs 📄
-│   │   │   ├── LoggingCommandHandlerDecorator.cs 📄
+│   │   │   │   ├── SerilogJsonFormatter.cs
+│   │   │   ├── LoggingCommandHandlerDecorator.cs
 │   │   ├── Queries 📂
 │   │   │   ├── Handlers 📂
-│   │   │   │   ├── GetIssuedBansByUserHandler.cs 📄
-│   │   │   │   ├── GetIssuedContactRequestsByUserHandler.cs 📄
-│   │   │   │   ├── GetReceivedBansByUserHandler.cs 📄
-│   │   │   │   ├── GetReceivedContactRequestByUserHandler.cs 📄
+│   │   │   │   ├── GetIssuedBansByUserHandler.cs
+│   │   │   │   ├── GetIssuedContactRequestsByUserHandler.cs
+│   │   │   │   ├── GetReceivedBansByUserHandler.cs
+│   │   │   │   ├── GetReceivedContactRequestByUserHandler.cs
 │   │   │   │   ├── GetUserHandler.cs
 │   │   ├── UserRegistration 📂
-│   │   │   ├── IUserSynchronizer.cs 📄
-│   │   │   ├── UserSynchronizer.cs 📄
+│   │   │   ├── IUserSynchronizer.cs
+│   │   │   ├── UserSynchronizer.cs
 │   ├── UserService.Presentation 📂
 │   │   ├── Controllers
 │   │   ├── DTOs
