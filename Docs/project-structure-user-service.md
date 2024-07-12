@@ -219,37 +219,44 @@ UserService
 
 * UserService
   <details>
-    <summary>src</summary>
-    
-    * UserService.Domain
-      <details>
-          <summary>Entities</summary>
-          - _README.txt
-          - AggregateRoot.cs
-          - User.cs
-      </details>
-      <details>
-         <summary>Events</summary>
-          - _README.txt
-          - BannedUserAdded.cs
-          - BannedUserRemoved.cs
-          - ContactRequestAdded.cs
-          - ContactRequestRemoved.cs
-          - IDomainEvent.cs
-          - UserTrackingAuditAdded.cs
-      </details>
-      <details>
-        <summary>Exceptions</summary>
-          - _README.txt
-          - CustomDomainLayerExceptions.cs
-      </details>
-      <details>
-        <summary>Factories</summary>
-        * Interfaces
-          - IUserFactory.cs
-        * _README.txt
-        * UserFactory.cs
-      </details>
+  <summary>src</summary>
+
+  * UserService.Domain
+    <details>
+    <summary>Entities</summary>
+
+    * _README.txt
+    * AggregateRoot.cs
+    * User.cs
+    </details>
+
+    <details>
+    <summary>Events</summary>
+
+    * _README.txt
+    * BannedUserAdded.cs
+    * BannedUserRemoved.cs
+    * ContactRequestAdded.cs
+    * ContactRequestRemoved.cs
+    * IDomainEvent.cs
+    * UserTrackingAuditAdded.cs
+    </details>
+
+    <details>
+    <summary>Exceptions</summary>
+
+    * _README.txt
+    * CustomDomainLayerExceptions.cs
+    </details>
+
+    <details>
+    <summary>Factories</summary>
+
+    * Interfaces
+      * IUserFactory.cs
+    * _README.txt
+    * UserFactory.cs
+    </details>
 
     <details>
     <summary>Repositories</summary>
@@ -493,7 +500,6 @@ UserService
 * README.md
 * requirements.txt
 
-  
 ## Directory/File Descriptions
 
 | Directory/File                          | Description                                                   |
