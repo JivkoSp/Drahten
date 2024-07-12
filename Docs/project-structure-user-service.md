@@ -27,7 +27,7 @@ UserService
 │   │   │   ├── UserTrackingAuditAdded.cs 
 │   │   ├── Exceptions 📂
 │   │   │   ├── _README.txt 
-│   │   │   ├── CustomDomainLayerExceptions.cs 
+│   │   │   ├── <<CustomDomainLayerExceptions>>
 │   │   ├── Factories 📂
 │   │   │   ├── Interfaces 📂
 │   │   │   │   ├── IUserFactory.cs 
@@ -50,6 +50,7 @@ UserService
 │   │   │   ├── IMessageBusPublisher.cs 
 │   │   ├── Commands 📂
 │   │   │   ├── Dispatcher 📂
+│   │   │   │   ├── _README.txt 
 │   │   │   │   ├── ICommandDispatcher.cs 
 │   │   │   │   ├── InMemoryCommandDispatcher.cs 
 │   │   │   ├── Handlers 📂
@@ -83,7 +84,7 @@ UserService
 │   │   │   ├── UserPublishedDto.cs 
 │   │   ├── Exceptions 📂
 │   │   │   ├── _README.txt 
-│   │   │   ├── CustomApplicationLayerExceptions.cs 
+│   │   │   ├── <<CustomApplicationLayerExceptions>> 
 │   │   ├── Extensions 📂
 │   │   │   ├── ServiceCollectionExtensions.cs 
 │   │   ├── Queries 📂
@@ -104,7 +105,7 @@ UserService
 │   │   ├── Services 📂
 │   │   │   ├── ReadServices 📂
 │   │   │   │   ├── IUserReadService.cs
-│   │   ├── _README.txt
+│   │   |   ├── _README.txt
 │   ├── UserService.Infrastructure 📂
 │   │   ├── AsyncDataServices 📂
 │   │   │   ├── MessageBusPublisher.cs
@@ -130,7 +131,7 @@ UserService
 │   │   │   ├── Initialization 📂
 │   │   │   │   ├── DbInitializer.cs
 │   │   │   ├── Migrations 📂
-│   │   │   │   ├── EntityFramework database migrations
+│   │   │   │   ├── <<EntityFramework database migrations>>
 │   │   │   ├── ModelConfiguration 📂
 │   │   │   │   ├── ReadConfiguration 📂
 │   │   │   │   │   ├── _README.txt
@@ -181,8 +182,18 @@ UserService
 │   │   │   ├── IUserSynchronizer.cs
 │   │   │   ├── UserSynchronizer.cs
 │   ├── UserService.Presentation 📂
-│   │   ├── Controllers
-│   │   ├── DTOs
+│   │   ├── Properties 📂
+│   │   │   ├── launchSettings.json
+│   │   ├── Controllers 📂
+│   │   │   ├── UserController.cs
+│   │   ├── Dtos 📂
+│   │   │   ├── ResponseDto.cs
+│   │   ├── Middlewares 📂
+│   │   │   ├── ErrorHandlerMiddleware.cs
+│   │   │   ├── RateLimitingMiddleware.cs
+│   │   │   ├── UserRegistrationMiddleware.cs
+│   │   ├── appsettings.json
+│   │   ├── Program.cs
 ├── tests 🧪
 │   ├── UserService.Tests.EndToEnd
 │   │   ├── Extensions 📂
@@ -190,7 +201,7 @@ UserService
 │   │   ├── Factories 📂
 │   │   │   ├── UserServiceApplicationFactory.cs
 │   │   ├── Sync 📂
-│   │   │   ├── [_README.txt](tests/UserService.Tests.EndToEnd/Sync/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── BaseSyncIntegrationTest.cs
 │   │   │   ├── RegisterBannedUserTests.cs
 │   │   │   ├── RegisterContactRequestTests.cs
@@ -212,9 +223,18 @@ UserService
 │   │   │   │   ├── UnbanUserHandlerTests.cs
 │   │   │   │   ├── UpdateContactRequestMessageHandlerTests.cs
 │   │   ├── Domain 📂
-├── .gitignore
-├── README.md
-└── requirements.txt
+│   │   │   ├── Entities 📂
+│   │   │   │   ├── UserTests 📂
+│   │   │   │   |   ├── _README.txt
+│   │   │   │   |   ├── AddToAuditTrail.cs
+│   │   │   │   |   ├── BanUser.cs
+│   │   │   │   |   ├── IssueContactRequest.cs
+│   │   │   │   |   ├── ReceiveContactRequest.cs
+│   │   │   │   |   ├── RemoveReceivedContactRequest.cs
+│   │   │   │   |   ├── UnbanUser.cs
+│   │   │   ├── Factories 📂
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── UserFactoryTests.cs
 ```
 
 ## Directory/File Descriptions
