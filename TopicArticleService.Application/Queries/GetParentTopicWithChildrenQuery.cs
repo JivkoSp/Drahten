@@ -2,8 +2,5 @@
 
 namespace TopicArticleService.Application.Queries
 {
-    public class GetParentTopicWithChildrenQuery : IQuery<TopicDto>
-    {
-        public Guid TopicId { get; set; }
-    }
+    public record GetParentTopicWithChildrenQuery(Guid TopicId) : IQuery<TopicDto>;
 }
