@@ -10,57 +10,153 @@
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
    ```
-      UserService
-      ├── src
-      │   ├── UserService.Domain
-      │   │   ├── Entities
-      │   │   │   ├── _README.md
-      │   │   │   ├── AggregateRoot.cs
-      │   │   │   ├── User.cs
-      │   │   ├── Events
-      │   │   │   ├── _README.md
-      │   │   │   ├── BannedUserAdded.cs
-      │   │   │   ├── BannedUserRemoved.cs
-      │   │   │   ├── ContactRequestAdded.cs
-      │   │   │   ├── ContactRequestRemoved.cs
-      │   │   │   ├── IDomainEvent.cs
-      │   │   │   ├── UserTrackingAuditAdded.cs
-      │   │   ├── Exceptions
-      │   │   ├── Factories
-      │   │   ├── Repositories
-      │   │   ├── ValueObjects
-      │   ├── UserService.Application
-      │   │   ├── _README.md
-      │   │   ├── Services
-      │   ├── UserService.Infrastructure
-      │   │   ├── _README.md
-      │   │   ├── Persistence
-      │   │   │   ├── UserRepository.cs
-      │   │   ├── ExternalServices
-      │   ├── UserService.Presentation
-      │   │   ├── Controllers
-      │   │   ├── DTOs
-      ├── tests
-      │   ├── UserService.Tests
-      │   │   ├── Unit
-      │   │   │   ├── Domain
-      │   │   │   │   ├── Entities
-      │   │   │   │   │   ├── AggregateRootTests.cs
-      │   │   │   │   │   ├── UserTests.cs
-      │   │   │   │   ├── Events
-      │   │   │   │   │   ├── BannedUserAddedTests.cs
-      │   │   │   │   │   ├── BannedUserRemovedTests.cs
-      │   │   │   │   │   ├── ContactRequestAddedTests.cs
-      │   │   │   │   │   ├── ContactRequestRemovedTests.cs
-      │   │   │   │   │   ├── UserTrackingAuditAddedTests.cs
-      │   │   │   ├── Application
-      │   │   │   │   ├── Services
-      │   │   │   ├── Infrastructure
-      │   │   │   │   ├── Persistence
-      │   │   │   │   │   ├── UserRepositoryTests.cs
-      ├── .gitignore
-      ├── README.md
-      └── requirements.txt
+     UserService
+├── src
+│   ├── UserService.Domain
+│   │   ├── Entities
+│   │   │   ├── _README.txt
+│   │   │   ├── AggregateRoot.cs
+│   │   │   ├── User.cs
+│   │   ├── Events
+│   │   │   ├── _README.txt
+│   │   │   ├── BannedUserAdded.cs
+│   │   │   ├── BannedUserRemoved.cs
+│   │   │   ├── ContactRequestAdded.cs
+│   │   │   ├── ContactRequestRemoved.cs
+│   │   │   ├── IDomainEvent.cs
+│   │   │   ├── UserTrackingAuditAdded.cs
+│   │   ├── Exceptions
+│   │   │   ├── _README.txt
+│   │   │   ├── CustomDomainLayerExceptions.cs
+│   │   ├── Factories
+│   │   │   ├── Interfaces
+│   │   │   │   ├── IUserFactory.cs
+│   │   │   ├── _README.txt
+│   │   │   ├── UserFactory.cs
+│   │   ├── Repositories
+│   │   │   ├── _README.txt
+│   │   │   ├── IUserRepository.cs
+│   │   ├── ValueObjects
+│   │   │   ├── _README.txt
+│   │   │   ├── BannedUser.cs
+│   │   │   ├── ContactRequest.cs
+│   │   │   ├── UserEmailAddress.cs
+│   │   │   ├── UserFullName.cs
+│   │   │   ├── UserID.cs
+│   │   │   ├── UserNickName.cs
+│   │   │   ├── UserTracking.cs
+│   ├── UserService.Application
+│   │   ├── AsyncDataServices
+│   │   │   ├── IMessageBusPublisher.cs
+│   │   ├── Commands
+│   │   │   ├── Dispatcher
+│   │   │   │   ├── ICommandDispatcher.cs
+│   │   │   │   ├── InMemoryCommandDispatcher.cs
+│   │   │   ├── Handlers
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── AddContactRequestHandler.cs
+│   │   │   │   ├── AddToAuditTrailHandler.cs
+│   │   │   │   ├── BanUserHandler.cs
+│   │   │   │   ├── CreateUserHandler.cs
+│   │   │   │   ├── ICommandHandler.cs
+│   │   │   │   ├── RemoveIssuedContactRequestHandler.cs
+│   │   │   │   ├── RemoveReceivedContactRequestHandler.cs
+│   │   │   │   ├── UnbanUserHandler.cs
+│   │   │   │   ├── UpdateContactRequestMessageHandler.cs
+│   │   │   ├── _README.txt
+│   │   │   ├── AddContactRequestCommand.cs
+│   │   │   ├── AddToAuditTrailCommand.cs
+│   │   │   ├── BanUserCommand.cs
+│   │   │   ├── CreateUserCommand.cs
+│   │   │   ├── ICommand.cs
+│   │   │   ├── RemoveIssuedContactRequestCommand.cs
+│   │   │   ├── RemoveReceivedContactRequestCommand.cs
+│   │   │   ├── UnbanUserCommand.cs
+│   │   │   ├── UpdateContactRequestMessageCommand.cs
+│   │   ├── Dtos
+│   │   │   ├── _README.txt
+│   │   │   ├── IssuedBanByUserDto.cs
+│   │   │   ├── IssuedContactRequestByUserDto.cs
+│   │   │   ├── ReceivedBanByUserDto.cs
+│   │   │   ├── ReceivedContactRequestByUserDto.cs
+│   │   │   ├── UserDto.cs
+│   │   │   ├── UserPublishedDto.cs
+│   │   ├── Exceptions
+│   │   │   ├── README.txt
+│   │   │   ├── CustomApplicationLayerExceptions.cs
+│   │   ├── Extensions
+│   │   │   ├── ServiceCollectionExtensions.cs
+│   │   ├── Queries
+│   │   │   ├── Dispatcher
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── InMemoryQueryDispatcher.cs
+│   │   │   │   ├── IQueryDispatcher.cs
+│   │   │   ├── Handlers
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── IQueryHandler.cs
+│   │   │   ├── _README.txt
+│   │   │   ├── GetIssuedBansByUserQuery.cs
+│   │   │   ├── GetIssuedContactRequestsByUserQuery.cs
+│   │   │   ├── GetReceivedBansByUserQuery.cs
+│   │   │   ├── GetReceivedContactRequestByUserQuery.cs
+│   │   │   ├── GetUserQuery.cs
+│   │   │   ├── IQuery.cs
+│   │   ├── Services
+│   │   │   ├── ReadServices
+│   │   │   │   ├── IUserReadService.cs
+│   │   │   ├── _README.txt
+│   ├── UserService.Infrastructure
+│   │   ├── _README.txt
+│   │   ├── Persistence
+│   │   │   ├── UserRepository.cs
+│   │   ├── ExternalServices
+│   ├── UserService.Presentation
+│   │   ├── Controllers
+│   │   ├── DTOs
+├── tests
+│   ├── UserService.Tests.EndToEnd
+│   │   ├── Extensions
+│   │   │   ├── IServiceCollectionExtensions.cs
+│   │   ├── Factories
+│   │   │   ├── UserServiceApplicationFactory.cs
+│   │   ├── Sync
+│   │   │   ├── _README.txt
+│   │   │   ├── BaseSyncIntegrationTest.cs
+│   │   │   ├── RegisterBannedUserTests.cs
+│   │   │   ├── RegisterContactRequestTests.cs
+│   │   │   ├── RegisterUserActivityTests.cs
+│   │   │   ├── RegisterUserTests.cs
+│   │   │   ├── RemoveBannedUserTests.cs
+│   │   │   ├── RemoveIssuedContactRequestTests.cs
+│   │   │   ├── RemoveReceivedContactRequestTests.cs
+│   │   │   ├── UpdateContactRequestMessageTests.cs
+│   ├── UserService.Tests.Unit
+│   │   ├── Application
+│   │   │   ├── Handlers
+│   │   │   │   ├── AddContactRequestHandlerTests.cs
+│   │   │   │   ├── AddToAuditTrailHandlerTests.cs
+│   │   │   │   ├── BanUserHandlerTests.cs
+│   │   │   │   ├── CreateUserHandlerTests.cs
+│   │   │   │   ├── RemoveIssuedContactRequestHandlerTests.cs
+│   │   │   │   ├── RemoveReceivedContactRequestHandlerTests.cs
+│   │   │   │   ├── UnbanUserHandlerTests.cs
+│   │   │   │   ├── UpdateContactRequestMessageHandlerTests.cs
+│   │   ├── Domain
+│   │   │   ├── Entities
+│   │   │   │   ├── AggregateRootTests.cs
+│   │   │   │   ├── UserTests.cs
+│   │   │   ├── Events
+│   │   │   │   ├── BannedUserAddedTests.cs
+│   │   │   │   ├── BannedUserRemovedTests.cs
+│   │   │   │   ├── ContactRequestAddedTests.cs
+│   │   │   │   ├── ContactRequestRemovedTests.cs
+│   │   │   │   ├── UserTrackingAuditAddedTests.cs
+│   ├── Infrastructure
+│   │   ├── Persistence
+│   │   │   ├── UserRepositoryTests.cs
+├── .gitignore
+├── README.md
+└── requirements.txt
    ```
   
 ## Directory/File Descriptions
