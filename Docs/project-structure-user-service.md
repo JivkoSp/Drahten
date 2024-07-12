@@ -15,7 +15,7 @@ UserService
 ├── src 📦
 │   ├── UserService.Domain 📂
 │   │   ├── Entities 📂
-│   │   │   ├── [_README.txt](Docs/)
+│   │   │   ├── _README.txt <<https://github.com/JivkoSp/Drahten/edit/master/Docs/project-structure-user-service.md>>
 │   │   │   ├── AggregateRoot.cs 
 │   │   │   ├── User.cs
 ----------------------------
