@@ -10,13 +10,15 @@
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
 ```plaintext
+------------------------------------------------------------------
 UserService
 ├── src 📦
 │   ├── UserService.Domain 📂
 │   │   ├── Entities 📂
 │   │   │   ├── _README.txt 
 │   │   │   ├── AggregateRoot.cs 
-│   │   │   ├── User.cs 
+│   │   │   ├── User.cs
+----------------------------
 │   │   ├── Events 📂
 │   │   │   ├── _README.txt 
 │   │   │   ├── BannedUserAdded.cs 
@@ -24,18 +26,22 @@ UserService
 │   │   │   ├── ContactRequestAdded.cs 
 │   │   │   ├── ContactRequestRemoved.cs 
 │   │   │   ├── IDomainEvent.cs 
-│   │   │   ├── UserTrackingAuditAdded.cs 
+│   │   │   ├── UserTrackingAuditAdded.cs
+----------------------------
 │   │   ├── Exceptions 📂
 │   │   │   ├── _README.txt 
 │   │   │   ├── <<CustomDomainLayerExceptions>>
+----------------------------
 │   │   ├── Factories 📂
 │   │   │   ├── Interfaces 📂
 │   │   │   │   ├── IUserFactory.cs 
 │   │   │   ├── _README.txt 
-│   │   │   ├── UserFactory.cs 
+│   │   │   ├── UserFactory.cs
+----------------------------
 │   │   ├── Repositories 📂
 │   │   │   ├── _README.txt 
-│   │   │   ├── IUserRepository.cs 
+│   │   │   ├── IUserRepository.cs
+----------------------------
 │   │   ├── ValueObjects 📂
 │   │   │   ├── _README.txt 
 │   │   │   ├── BannedUser.cs 
@@ -44,15 +50,17 @@ UserService
 │   │   │   ├── UserFullName.cs 
 │   │   │   ├── UserID.cs 
 │   │   │   ├── UserNickName.cs 
-│   │   │   ├── UserTracking.cs 
+│   │   │   ├── UserTracking.cs
+----------------------------
 │   ├── UserService.Application 📂
 │   │   ├── AsyncDataServices 📂
-│   │   │   ├── IMessageBusPublisher.cs 
+│   │   │   ├── IMessageBusPublisher.cs
+----------------------------
 │   │   ├── Commands 📂
 │   │   │   ├── Dispatcher 📂
 │   │   │   │   ├── _README.txt 
 │   │   │   │   ├── ICommandDispatcher.cs 
-│   │   │   │   ├── InMemoryCommandDispatcher.cs 
+│   │   │   │   ├── InMemoryCommandDispatcher.cs
 │   │   │   ├── Handlers 📂
 │   │   │   │   ├── _README.txt 
 │   │   │   │   ├── AddContactRequestHandler.cs 
@@ -73,7 +81,8 @@ UserService
 │   │   ├── RemoveIssuedContactRequestCommand.cs 
 │   │   ├── RemoveReceivedContactRequestCommand.cs 
 │   │   ├── UnbanUserCommand.cs 
-│   │   ├── UpdateContactRequestMessageCommand.cs 
+│   │   ├── UpdateContactRequestMessageCommand.cs
+----------------------------
 │   │   ├── Dtos 📂
 │   │   │   ├── _README.txt 
 │   │   │   ├── IssuedBanByUserDto.cs 
@@ -81,18 +90,22 @@ UserService
 │   │   │   ├── ReceivedBanByUserDto.cs 
 │   │   │   ├── ReceivedContactRequestByUserDto.cs 
 │   │   │   ├── UserDto.cs 
-│   │   │   ├── UserPublishedDto.cs 
+│   │   │   ├── UserPublishedDto.cs
+----------------------------
 │   │   ├── Exceptions 📂
 │   │   │   ├── _README.txt 
-│   │   │   ├── <<CustomApplicationLayerExceptions>> 
+│   │   │   ├── <<CustomApplicationLayerExceptions>>
+----------------------------
 │   │   ├── Extensions 📂
-│   │   │   ├── ServiceCollectionExtensions.cs 
+│   │   │   ├── ServiceCollectionExtensions.cs
+----------------------------
 │   │   ├── Queries 📂
 │   │   │   ├── Dispatcher 📂
 │   │   │   │   ├── _README.txt 
 │   │   │   │   ├── InMemoryQueryDispatcher.cs 
-│   │   │   │   ├── IQueryDispatcher.cs 
-│   │   ├── Handlers 📂
+│   │   │   │   ├── IQueryDispatcher.cs
+----------------------------
+│   │   |   ├── Handlers 📂
 │   │   │   │   ├── _README.txt 
 │   │   │   │   ├── IQueryHandler.cs 
 │   │   ├── _README.txt 
@@ -101,19 +114,23 @@ UserService
 │   │   ├── GetReceivedBansByUserQuery.cs 
 │   │   ├── GetReceivedContactRequestByUserQuery.cs 
 │   │   ├── GetUserQuery.cs 
-│   │   ├── IQuery.cs 
+│   │   ├── IQuery.cs
+----------------------------
 │   │   ├── Services 📂
 │   │   │   ├── ReadServices 📂
 │   │   │   │   ├── IUserReadService.cs
 │   │   |   ├── _README.txt
+----------------------------
 │   ├── UserService.Infrastructure 📂
 │   │   ├── AsyncDataServices 📂
 │   │   │   ├── MessageBusPublisher.cs
+----------------------------
 │   │   ├── Automapper 📂
 │   │   │   ├── Profiles 📂
 │   │   │   │   ├── BannedUserProfile.cs
 │   │   │   │   ├── ContactRequestProfile.cs
 │   │   │   │   ├── UserProfile.cs
+----------------------------
 │   │   ├── EntityFramework 📂
 │   │   │   ├── Contexts 📂
 │   │   │   │   ├── ReadDbContext.cs
@@ -157,6 +174,7 @@ UserService
 │   │   │   ├── Services 📂
 │   │   │   │   ├── ReadServices 📂
 │   │   │   │   │   ├── PostgresUserReadService.cs
+----------------------------
 │   │   ├── Exceptions 📂
 │   │   │   ├── Interfaces 📂
 │   │   │   │   ├── IExceptionToResponseMapper.cs
@@ -164,13 +182,16 @@ UserService
 │   │   │   ├── ExceptionToResponseMapper.cs
 │   │   │   ├── InfrastructureException.cs
 │   │   │   ├── NullDbContextException.cs
+----------------------------
 │   │   ├── Extensions 📂
 │   │   │   ├── ServiceCollectionExtensions.cs
 │   │   │   ├── ConfigurationExtensions.cs
+----------------------------
 │   │   ├── Logging 📂
 │   │   │   ├── Formatters 📂
 │   │   │   │   ├── SerilogJsonFormatter.cs
 │   │   │   ├── LoggingCommandHandlerDecorator.cs
+----------------------------
 │   │   ├── Queries 📂
 │   │   │   ├── Handlers 📂
 │   │   │   │   ├── GetIssuedBansByUserHandler.cs
@@ -178,9 +199,11 @@ UserService
 │   │   │   │   ├── GetReceivedBansByUserHandler.cs
 │   │   │   │   ├── GetReceivedContactRequestByUserHandler.cs
 │   │   │   │   ├── GetUserHandler.cs
+----------------------------
 │   │   ├── UserRegistration 📂
 │   │   │   ├── IUserSynchronizer.cs
 │   │   │   ├── UserSynchronizer.cs
+----------------------------
 │   ├── UserService.Presentation 📂
 │   │   ├── Properties 📂
 │   │   │   ├── launchSettings.json
@@ -194,6 +217,7 @@ UserService
 │   │   │   ├── UserRegistrationMiddleware.cs
 │   │   ├── appsettings.json
 │   │   ├── Program.cs
+----------------------------
 ├── tests 🧪
 │   ├── UserService.Tests.EndToEnd
 │   │   ├── Extensions 📂
@@ -211,6 +235,7 @@ UserService
 │   │   │   ├── RemoveIssuedContactRequestTests.cs
 │   │   │   ├── RemoveReceivedContactRequestTests.cs
 │   │   │   ├── UpdateContactRequestMessageTests.cs
+----------------------------
 │   ├── UserService.Tests.Unit
 │   │   ├── Application 📂
 │   │   │   ├── Handlers 📂
@@ -235,7 +260,7 @@ UserService
 │   │   │   ├── Factories 📂
 │   │   │   │   ├── _README.txt
 │   │   │   │   ├── UserFactoryTests.cs
-│   │   │   │   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+------------------------------------------------------------------
 ```
 
 ## Directory/File Descriptions
