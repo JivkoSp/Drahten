@@ -265,8 +265,6 @@ UserService
 
 ## Directory/File Descriptions
 
-## Directory/File Descriptions
-
 | Directory/File                                              | Description                                                   |
 |-------------------------------------------------------------|---------------------------------------------------------------|
 | `UserService/src/UserService.Domain/Entities/`              | Contains domain entities representing core business concepts. |
@@ -275,18 +273,20 @@ UserService
 | `UserService/src/UserService.Domain/Factories/`             | Provides factories for creating domain entities.               |
 | `UserService/src/UserService.Domain/Repositories/`          | Defines interfaces or base classes for data access operations. |
 | `UserService/src/UserService.Domain/ValueObjects/`          | Contains immutable value objects used within the domain.       |
+| `UserService/src/UserService.Application/AsyncDataServices/`         | TODO     |
+| `UserService/src/UserService.Application/Commands/`         | TODO     |
+| `UserService/src/UserService.Application/Dtos/`         | TODO     |
+| `UserService/src/UserService.Application/Exceptions/`         | TODO     |
+| `UserService/src/UserService.Application/Extensions/`         | TODO     |
+| `UserService/src/UserService.Application/Queries/`         | TODO     |
 | `UserService/src/UserService.Application/Services/`         | Implements application services containing business logic.     |
-| `UserService/src/UserService.Infrastructure/Persistence/`    | Manages data access logic, including repository implementations. |
-| `UserService/src/UserService.Infrastructure/ExternalServices/` | Integrates with external services or APIs.                   |
+| `UserService/src/UserService.Infrastructure/AsyncDataServices/`    | |
 | `UserService/src/UserService.Presentation/Controllers/`      | Contains API controllers handling HTTP requests and responses. |
 | `UserService/src/UserService.Presentation/DTOs/`            | Provides Data Transfer Objects (DTOs) for API input and output. |
 | `UserService/tests/UserService.Tests/Unit/Domain/Entities/`  | Houses unit tests for domain entities and aggregate roots.     |
 | `UserService/tests/UserService.Tests/Unit/Domain/Events/`    | Includes unit tests for domain events and event handlers.      |
 | `UserService/tests/UserService.Tests/Unit/Application/Services/` | Contains unit tests for application layer services.        |
 | `UserService/tests/UserService.Tests/Unit/Infrastructure/Persistence/` | Includes unit tests for repository implementations.  |
-| `UserService/.gitignore`                                    | Specifies files and directories to ignore in version control.  |
-| `UserService/README.md`                                     | Provides project documentation with an overview and instructions. |
-| `UserService/requirements.txt`                              | Lists dependencies required for the project.                   |
 
 
 
