@@ -2,10 +2,10 @@
 
 ### The project is divided into four main layers:
 
-* **Domain** - Contains the core business logic and rules, including entities, events, exceptions, factories, repositories, and value objects;
-* **Application** - Manages service interfaces and application logic, bridging the domain and infrastructure layers.
-* **Infrastructure** - Handles data persistence, external services, and other infrastructural concerns.
-* **Presentation** - Provides the API controllers and data transfer objects (DTOs) for handling HTTP requests and responses.
+* **Domain** - Contains the core business logic and rules, including entities (Objects that can be identified by an identifier are defined as Entities), events, exceptions, factories, repositories, and value objects (Objects that are compared by their value and do not have an identifier are known as Value Objects). This layer has no external dependencies on other layers or libraries. It defines interfaces that specify the allowed actions;
+* **Application** - This layer orchestrates (manages) the work of the domain layer. It has dependencies on the domain layer;
+* **Infrastructure** - Here are the implementations of the interfaces provided by the domain layer, application layer and dependencies on libraries such as RabbitMQ, EntityFramework, etc. It has dependencies on the application layer;
+* **Presentation** - This layer is the entry point of the service (application) and is implemented as a web API. Provides the API controllers and data transfer objects (DTOs) for handling HTTP requests and responses;
 
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
