@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TopicArticleService.Domain.Exceptions;
+﻿using TopicArticleService.Domain.Exceptions;
 
 namespace TopicArticleService.Domain.ValueObjects
 {
