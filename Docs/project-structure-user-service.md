@@ -267,8 +267,6 @@ UserService
 
 | Directory/File                                              | Description                                                   |
 |-------------------------------------------------------------|---------------------------------------------------------------|
-| Domain Layer |
-|-----------------------------------------------------------------------------------------------------------------------------|
 | `UserService/src/UserService.Domain/Entities/`              | Contains domain entities representing core business concepts. |
 | `UserService/src/UserService.Domain/Events/`                | Includes domain events capturing significant changes or actions. |
 | `UserService/src/UserService.Domain/Exceptions/`            | Houses custom exceptions specific to domain logic.             |
@@ -282,7 +280,7 @@ UserService
 | `UserService/src/UserService.Application/Extensions/`         | TODO     |
 | `UserService/src/UserService.Application/Queries/`         | TODO     |
 | `UserService/src/UserService.Application/Services/`         | Implements application services containing business logic.     |
-| `UserService/src/UserService.Infrastructure/AsyncDataServices/`    | |
+| `UserService/src/UserService.Infrastructure/AsyncDataServices/`    | TODO |
 | `UserService/src/UserService.Presentation/Controllers/`      | Contains API controllers handling HTTP requests and responses. |
 | `UserService/src/UserService.Presentation/DTOs/`            | Provides Data Transfer Objects (DTOs) for API input and output. |
 | `UserService/tests/UserService.Tests/Unit/Domain/Entities/`  | Houses unit tests for domain entities and aggregate roots.     |
