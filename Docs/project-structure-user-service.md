@@ -9,8 +9,8 @@
 
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
-   ```js
-     UserService
+   ```
+UserService
 ├── src
 │   ├── UserService.Domain
 │   │   ├── Entities
@@ -106,10 +106,47 @@ This structured approach ensures a clear separation of concerns, making the code
 │   │   │   │   ├── IUserReadService.cs
 │   │   │   ├── _README.txt
 │   ├── UserService.Infrastructure
-│   │   ├── _README.txt
-│   │   ├── Persistence
-│   │   │   ├── UserRepository.cs
-│   │   ├── ExternalServices
+│   │   ├── AsyncDataServices
+│   │   │   ├── MessageBusPublisher.cs
+│   │   ├── Automapper
+│   │   │   ├── Profiles
+│   │   │   │   ├── BannedUserProfile.cs
+│   │   │   │   ├── ContactRequestProfile.cs
+│   │   │   │   ├── UserProfile.cs
+│   │   ├── EntityFramework
+│   │   │   ├── Contexts
+│   │   │   │   ├── ReadDbContext.cs
+│   │   │   │   ├── WriteDbContext.cs
+│   │   │   ├── Encryption
+│   │   │   │   ├── EncryptionConverters
+│   │   │   │   │   ├── EncryptedDateTimeOffsetConverter.cs
+│   │   │   │   │   ├── EncryptedStringConverter.cs
+│   │   │   │   │   ├── EncryptedUserEmailAddressConverter.cs
+│   │   │   │   │   ├── EncryptedUserFullNameConverter.cs
+│   │   │   │   │   ├── EncryptedUserNickNameConverter.cs
+│   │   │   │   ├── EncryptionProvider
+│   │   │   │   │   ├── IEncryptionProvider.cs
+│   │   │   │   │   ├── EncryptionProvider.cs
+│   │   │   ├── Initialization
+│   │   │   │   ├── DbInitializer.cs
+│   │   │   ├── Migrations
+│   │   │   │   ├── EntityFramework database migrations
+│   │   │   ├── ModelConfiguration
+│   │   │   │   ├── ReadConfiguration
+│   │   │   │   │   ├── _README.txt
+│   │   │   │   │   ├── BannedUserConfiguration.cs
+│   │   │   │   │   ├── ContactRequestConfiguration.cs
+│   │   │   │   │   ├── UserConfiguration.cs
+│   │   │   │   │   ├── UserTrackingConfiguration.cs
+│   │   │   ├── Models
+│   │   │   ├── Options
+│   │   │   ├── Repositories
+│   │   │   ├── Services
+│   │   ├── Exceptions
+│   │   ├── Extensions
+│   │   ├── Logging
+│   │   ├── Queries
+│   │   ├── UserRegistration
 │   ├── UserService.Presentation
 │   │   ├── Controllers
 │   │   ├── DTOs
@@ -142,18 +179,6 @@ This structured approach ensures a clear separation of concerns, making the code
 │   │   │   │   ├── UnbanUserHandlerTests.cs
 │   │   │   │   ├── UpdateContactRequestMessageHandlerTests.cs
 │   │   ├── Domain
-│   │   │   ├── Entities
-│   │   │   │   ├── AggregateRootTests.cs
-│   │   │   │   ├── UserTests.cs
-│   │   │   ├── Events
-│   │   │   │   ├── BannedUserAddedTests.cs
-│   │   │   │   ├── BannedUserRemovedTests.cs
-│   │   │   │   ├── ContactRequestAddedTests.cs
-│   │   │   │   ├── ContactRequestRemovedTests.cs
-│   │   │   │   ├── UserTrackingAuditAddedTests.cs
-│   ├── Infrastructure
-│   │   ├── Persistence
-│   │   │   ├── UserRepositoryTests.cs
 ├── .gitignore
 ├── README.md
 └── requirements.txt
