@@ -167,9 +167,9 @@ UserService
 │   │   │   ├── ServiceCollectionExtensions.cs
 │   │   │   ├── ConfigurationExtensions.cs
 │   │   ├── Logging
-│   │   │   ├── LoggingCommandHandlerDecorator.cs
 │   │   │   ├── Formatters
 │   │   │   │   ├── SerilogJsonFormatter.cs
+│   │   │   ├── LoggingCommandHandlerDecorator.cs
 │   │   ├── Queries
 │   │   │   ├── Handlers
 │   │   │   │   ├── GetIssuedBansByUserHandler.cs
