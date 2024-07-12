@@ -4,7 +4,7 @@ namespace TopicArticleService.Domain.ValueObjects
 {
     public record TopicName
     {
-        public string Value { get; }
+        internal string Value { get; }
 
         public TopicName(string value)
         {
