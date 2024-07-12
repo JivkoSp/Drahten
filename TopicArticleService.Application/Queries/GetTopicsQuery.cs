@@ -2,7 +2,5 @@
 
 namespace TopicArticleService.Application.Queries
 {
-    public class GetTopicsQuery : IQuery<List<TopicDto>>
-    {
-    }
+    public record GetTopicsQuery : IQuery<List<TopicDto>>;
 }
