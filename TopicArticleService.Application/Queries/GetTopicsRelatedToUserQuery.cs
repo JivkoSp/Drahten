@@ -2,8 +2,5 @@
 
 namespace TopicArticleService.Application.Queries
 {
-    public class GetTopicsRelatedToUserQuery : IQuery<List<UserTopicDto>>
-    {
-        public Guid UserId { get; set; }
-    }
+    public record GetTopicsRelatedToUserQuery(Guid UserId) : IQuery<List<UserTopicDto>>;
 }
