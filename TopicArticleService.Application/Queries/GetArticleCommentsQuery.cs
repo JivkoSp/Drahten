@@ -2,8 +2,5 @@
 
 namespace TopicArticleService.Application.Queries
 {
-    public class GetArticleCommentsQuery : IQuery<List<ArticleCommentDto>>
-    {
-        public string ArticleId { get; set; }
-    }
+    public record GetArticleCommentsQuery(string ArticleId) : IQuery<List<ArticleCommentDto>>;
 }
