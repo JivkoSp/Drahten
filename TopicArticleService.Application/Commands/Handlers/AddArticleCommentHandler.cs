@@ -43,7 +43,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             _messageBusPublisher.PublishCommentedArticle(commentedArticleDto);
 
             var articleComment = _articleCommentFactory.Create(command.ArticleCommentId, command.CommentValue, 
-                command.DateTime.ToUtc(), command.UserId, command.ParentArticleCommentId);
+                command.DateTime.ToUniversalTime(), command.UserId, command.ParentArticleCommentId);
 
             article.AddComment(articleComment);
 

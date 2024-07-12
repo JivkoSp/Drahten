@@ -48,7 +48,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             _messageBusPublisher.PublishDislikedArticleComment(dislikedArticleCommentDto);
 
             var articleCommentDislike = _articleCommentDislikeFactory.Create(command.ArticleCommentId, 
-                command.UserId, command.DateTime.ToUtc());
+                command.UserId, command.DateTime.ToUniversalTime());
 
             articleComment.AddDislike(articleCommentDislike);
 

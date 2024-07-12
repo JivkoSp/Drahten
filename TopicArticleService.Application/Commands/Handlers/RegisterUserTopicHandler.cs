@@ -1,7 +1,6 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Domain.Repositories;
 using TopicArticleService.Domain.ValueObjects;
@@ -48,7 +47,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about adding topic subscription for topic with ID: TopicId by user with ID: UserId.
             _messageBusPublisher.PublishTopicSubscription(topicSubscriptionDto);
 
-            var userTopic = new UserTopic(command.UserId, command.TopicId, command.DateTime.ToUtc());
+            var userTopic = new UserTopic(command.UserId, command.TopicId, command.DateTime.ToUniversalTime());
 
             user.SubscribeToTopic(userTopic);
 
