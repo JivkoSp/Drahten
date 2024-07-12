@@ -220,6 +220,7 @@ UserService
 * UserService
   <details>
     <summary>src</summary>
+    
     * UserService.Domain
       <details>
           <summary>Entities</summary>
