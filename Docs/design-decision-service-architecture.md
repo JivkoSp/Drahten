@@ -1,5 +1,7 @@
 # Service Architecture
 
+![Clean Architecture](https://raw.githubusercontent.com/JivkoSp/Drahten/master/Assets/CleanArchitecture.PNG)
+
 ## I have chosen Clean Architecture because of the principles it focuses on
 
 * **Independence of framework components** - The architecture should be independent of any specific external framework or component. This allows for easier portability and adaptability to changes in the technologies
