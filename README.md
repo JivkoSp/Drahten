@@ -49,6 +49,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Overall design](Docs/intro-design.md)
     - [Technologies](Docs/intro-technologies.md)
 * **Design Decisions** 🧩
+    - [Service Architecture](Docs/design-decision-service-architecture.md)
     - [Authentication and Authorization](Docs/design-decision-authentication-and-authorization.md)
     - [Reverse Proxy](Docs/design-decision-reverse-proxy.md)
     - [Messaging](Docs/design-decision-messaging.md)
@@ -63,7 +64,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Private History Service](Docs/design-privatehistory-service.md)
     - [Log Collection Service](Docs/design-logcollection-service.md)
 * **Project Structure** 📂
-    - [User Service Project Structure](Docs/project-structure-user-service.md) --> THE DESCRIPTION IS NOT DONE 
+    - [User Service Project Structure](Docs/project-structure-user-service.md)
 * **Usage** 🚀
    - [How to Run](Docs/usage-how-to-run.md)
    - [API Documentation](Docs/usage-api-documentation.md)
