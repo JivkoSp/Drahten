@@ -265,28 +265,25 @@ UserService
 
 ## Directory/File Descriptions
 
-| Directory/File                                              | Description                                                   |
-|-------------------------------------------------------------|---------------------------------------------------------------|
-| `UserService/src/UserService.Domain/Entities/`              | Contains domain entities representing core business concepts. |
-| `UserService/src/UserService.Domain/Events/`                | Includes domain events capturing significant changes or actions. |
-| `UserService/src/UserService.Domain/Exceptions/`            | Houses custom exceptions specific to domain logic.             |
-| `UserService/src/UserService.Domain/Factories/`             | Provides factories for creating domain entities.               |
-| `UserService/src/UserService.Domain/Repositories/`          | Defines interfaces or base classes for data access operations. |
-| `UserService/src/UserService.Domain/ValueObjects/`          | Contains immutable value objects used within the domain.       |
-| `UserService/src/UserService.Application/AsyncDataServices/`         | TODO     |
-| `UserService/src/UserService.Application/Commands/`         | TODO     |
-| `UserService/src/UserService.Application/Dtos/`         | TODO     |
-| `UserService/src/UserService.Application/Exceptions/`         | TODO     |
-| `UserService/src/UserService.Application/Extensions/`         | TODO     |
-| `UserService/src/UserService.Application/Queries/`         | TODO     |
-| `UserService/src/UserService.Application/Services/`         | Implements application services containing business logic.     |
-| `UserService/src/UserService.Infrastructure/AsyncDataServices/`    | TODO |
-| `UserService/src/UserService.Presentation/Controllers/`      | Contains API controllers handling HTTP requests and responses. |
-| `UserService/src/UserService.Presentation/DTOs/`            | Provides Data Transfer Objects (DTOs) for API input and output. |
-| `UserService/tests/UserService.Tests/Unit/Domain/Entities/`  | Houses unit tests for domain entities and aggregate roots.     |
-| `UserService/tests/UserService.Tests/Unit/Domain/Events/`    | Includes unit tests for domain events and event handlers.      |
-| `UserService/tests/UserService.Tests/Unit/Application/Services/` | Contains unit tests for application layer services.        |
-| `UserService/tests/UserService.Tests/Unit/Infrastructure/Persistence/` | Includes unit tests for repository implementations.  |
+| Layer          | Directory/File                                                    | Description                                                   |
+|----------------|-------------------------------------------------------------------|---------------------------------------------------------------|
+| Domain         | `UserService/src/UserService.Domain/Entities/`                    | Contains domain entities representing core business concepts. |
+| Domain         | `UserService/src/UserService.Domain/Events/`                      | Includes domain events capturing significant changes or actions. |
+| Domain         | `UserService/src/UserService.Domain/Exceptions/`                  | Houses custom exceptions specific to domain logic.             |
+| Domain         | `UserService/src/UserService.Domain/Factories/`                   | Provides factories for creating domain entities.               |
+| Domain         | `UserService/src/UserService.Domain/Repositories/`                | Defines interfaces or base classes for data access operations. |
+| Domain         | `UserService/src/UserService.Domain/ValueObjects/`                | Contains immutable value objects used within the domain.       |
+| Application    | `UserService/src/UserService.Application/AsyncDataServices/`      | TODO     |
+| Application    | `UserService/src/UserService.Application/Commands/`               | TODO     |
+| Application    | `UserService/src/UserService.Application/Dtos/`                   | TODO     |
+| Application    | `UserService/src/UserService.Application/Exceptions/`             | TODO     |
+| Application    | `UserService/src/UserService.Application/Extensions/`             | TODO     |
+| Application    | `UserService/src/UserService.Application/Queries/`                | TODO     |
+| Application    | `UserService/src/UserService.Application/Services/`               | Implements application services containing business logic.     |
+| Infrastructure | `UserService/src/UserService.Infrastructure/AsyncDataServices/`   | TODO |
+| Presentation   | `UserService/src/UserService.Presentation/Controllers/`           | Contains API controllers handling HTTP requests and responses. |
+| Presentation   | `UserService/src/UserService.Presentation/DTOs/`                  | Provides Data Transfer Objects (DTOs) for API input and output. |
+
 
 
 
