@@ -9,7 +9,6 @@
 
 This structured approach ensures a clear separation of concerns, making the codebase easier to manage and extend. Below is an outline of the project's directory structure:
 
-UserService
 ```plaintext
 UserService
 ├── src
@@ -183,7 +182,7 @@ UserService
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-
+```
   
 ## Directory/File Descriptions
 
