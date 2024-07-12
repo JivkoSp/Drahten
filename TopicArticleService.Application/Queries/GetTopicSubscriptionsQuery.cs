@@ -2,8 +2,5 @@
 
 namespace TopicArticleService.Application.Queries
 {
-    public class GetTopicSubscriptionsQuery : IQuery<List<UserTopicDto>>
-    {
-        public Guid TopicId { get; set; }
-    }
+    public record GetTopicSubscriptionsQuery(Guid TopicId) : IQuery<List<UserTopicDto>>;
 }
