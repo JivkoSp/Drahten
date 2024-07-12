@@ -14,11 +14,11 @@ UserService
 ├── src
 │   ├── UserService.Domain
 │   │   ├── Entities
-│   │   │   ├── [_README.txt](src/UserService.Domain/Entities/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── AggregateRoot.cs
 │   │   │   ├── User.cs
 │   │   ├── Events
-│   │   │   ├── [_README.txt](src/UserService.Domain/Events/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── BannedUserAdded.cs
 │   │   │   ├── BannedUserRemoved.cs
 │   │   │   ├── ContactRequestAdded.cs
@@ -26,18 +26,18 @@ UserService
 │   │   │   ├── IDomainEvent.cs
 │   │   │   ├── UserTrackingAuditAdded.cs
 │   │   ├── Exceptions
-│   │   │   ├── [_README.txt](src/UserService.Domain/Exceptions/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── CustomDomainLayerExceptions.cs
 │   │   ├── Factories
 │   │   │   ├── Interfaces
 │   │   │   │   ├── IUserFactory.cs
-│   │   │   ├── [_README.txt](src/UserService.Domain/Factories/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── UserFactory.cs
 │   │   ├── Repositories
-│   │   │   ├── [_README.txt](src/UserService.Domain/Repositories/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── IUserRepository.cs
 │   │   ├── ValueObjects
-│   │   │   ├── [_README.txt](src/UserService.Domain/ValueObjects/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── BannedUser.cs
 │   │   │   ├── ContactRequest.cs
 │   │   │   ├── UserEmailAddress.cs
@@ -53,7 +53,7 @@ UserService
 │   │   │   │   ├── ICommandDispatcher.cs
 │   │   │   │   ├── InMemoryCommandDispatcher.cs
 │   │   │   ├── Handlers
-│   │   │   │   ├── [_README.txt](src/UserService.Application/Commands/Handlers/_README.txt)
+│   │   │   │   ├── _README.txt
 │   │   │   │   ├── AddContactRequestHandler.cs
 │   │   │   │   ├── AddToAuditTrailHandler.cs
 │   │   │   │   ├── BanUserHandler.cs
@@ -63,7 +63,7 @@ UserService
 │   │   │   │   ├── RemoveReceivedContactRequestHandler.cs
 │   │   │   │   ├── UnbanUserHandler.cs
 │   │   │   │   ├── UpdateContactRequestMessageHandler.cs
-│   │   ├── [_README.txt](src/UserService.Application/Commands/_README.txt)
+│   │   ├── _README.txt
 │   │   ├── AddContactRequestCommand.cs
 │   │   ├── AddToAuditTrailCommand.cs
 │   │   ├── BanUserCommand.cs
@@ -74,7 +74,7 @@ UserService
 │   │   ├── UnbanUserCommand.cs
 │   │   ├── UpdateContactRequestMessageCommand.cs
 │   │   ├── Dtos
-│   │   │   ├── [_README.txt](src/UserService.Application/Dtos/_README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── IssuedBanByUserDto.cs
 │   │   │   ├── IssuedContactRequestByUserDto.cs
 │   │   │   ├── ReceivedBanByUserDto.cs
@@ -82,19 +82,19 @@ UserService
 │   │   │   ├── UserDto.cs
 │   │   │   ├── UserPublishedDto.cs
 │   │   ├── Exceptions
-│   │   │   ├── [README.txt](src/UserService.Application/Exceptions/README.txt)
+│   │   │   ├── _README.txt
 │   │   │   ├── CustomApplicationLayerExceptions.cs
 │   │   ├── Extensions
 │   │   │   ├── ServiceCollectionExtensions.cs
 │   │   ├── Queries
 │   │   │   ├── Dispatcher
-│   │   │   │   ├── [_README.txt](src/UserService.Application/Queries/Dispatcher/_README.txt)
+│   │   │   │   ├── _README.txt
 │   │   │   │   ├── InMemoryQueryDispatcher.cs
 │   │   │   │   ├── IQueryDispatcher.cs
 │   │   ├── Handlers
-│   │   │   │   ├── [_README.txt](src/UserService.Application/Queries/Handlers/_README.txt)
+│   │   │   │   ├── _README.txt
 │   │   │   │   ├── IQueryHandler.cs
-│   │   ├── [_README.txt](src/UserService.Application/Queries/_README.txt)
+│   │   ├── _README.txt
 │   │   ├── GetIssuedBansByUserQuery.cs
 │   │   ├── GetIssuedContactRequestsByUserQuery.cs
 │   │   ├── GetReceivedBansByUserQuery.cs
@@ -104,7 +104,7 @@ UserService
 │   │   ├── Services
 │   │   │   ├── ReadServices
 │   │   │   │   ├── IUserReadService.cs
-│   │   ├── [_README.txt](src/UserService.Application/Services/_README.txt)
+│   │   ├── _README.txt
 │   ├── UserService.Infrastructure
 │   │   ├── AsyncDataServices
 │   │   │   ├── MessageBusPublisher.cs
@@ -133,7 +133,7 @@ UserService
 │   │   │   │   ├── EntityFramework database migrations
 │   │   │   ├── ModelConfiguration
 │   │   │   │   ├── ReadConfiguration
-│   │   │   │   │   ├── [_README.txt](src/UserService.Infrastructure/EntityFramework/ModelConfiguration/ReadConfiguration/_README.txt)
+│   │   │   │   │   ├── _README.txt
 │   │   │   │   │   ├── BannedUserConfiguration.cs
 │   │   │   │   │   ├── ContactRequestConfiguration.cs
 │   │   │   │   │   ├── UserConfiguration.cs
