@@ -6,7 +6,7 @@ namespace TopicArticleService.Domain.ValueObjects
     {
         public ArticleCommentID ArticleCommentID { get; }
         public UserID UserID { get; }
-        public DateTimeOffset DateTime { get; }
+        internal DateTimeOffset DateTime { get; }
       
         private ArticleCommentLike()
         {
