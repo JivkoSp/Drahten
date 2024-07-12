@@ -7,7 +7,7 @@ namespace TopicArticleService.Domain.Entities
 {
     public class User : AggregateRoot<UserID>
     {
-        private List<UserTopic> _subscribedTopics;
+        private List<UserTopic> _subscribedTopics = new List<UserTopic>();
 
         public IReadOnlyCollection<UserTopic> SubscribedTopics
         {
@@ -18,8 +18,9 @@ namespace TopicArticleService.Domain.Entities
 
         internal User(UserID userId)
         {
+            ValidateConstructorParameters<NullUserParametersException>([userId]);
+
             Id = userId;
-            _subscribedTopics = new List<UserTopic>();
         }
         
         public void SubscribeToTopic(UserTopic userTopic)
