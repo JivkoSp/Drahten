@@ -4,7 +4,7 @@ namespace TopicArticleService.Domain.ValueObjects
 {
     public record ArticleCommentDateTime
     {
-        public DateTimeOffset DateTime { get; }
+        internal DateTimeOffset DateTime { get; }
 
         public ArticleCommentDateTime(DateTimeOffset dateTime)
         {
