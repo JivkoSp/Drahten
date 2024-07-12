@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Xml.Linq;
+﻿using System.Collections.ObjectModel;
 using TopicArticleService.Domain.Events;
 using TopicArticleService.Domain.Exceptions;
 using TopicArticleService.Domain.ValueObjects;
@@ -18,11 +16,6 @@ namespace TopicArticleService.Domain.Entities
         private TopicId _topicId;
         private HashSet<UserArticle> _userArticles = new HashSet<UserArticle>();
         private List<ArticleComment> _articleComments = new List<ArticleComment>();
-        //Reason to use HasHet<T> for ArticleLike and ArticleDislike:
-        //One of the domain requirements is to have unique user - article like and user - article dislike.
-        //That means that one user can have one like or one dislike for one article.
-        //In addition to that he HashSet offers constant-time performance for basic operations such as adding, removing,
-        //and checking for the existence of an element (Add, Remove, Contains). 
         private HashSet<ArticleLike> _articleLikes = new HashSet<ArticleLike>();
         private HashSet<ArticleDislike> _articleDislikes = new HashSet<ArticleDislike>();
 
@@ -53,6 +46,8 @@ namespace TopicArticleService.Domain.Entities
         internal Article(ArticleID id, ArticlePrevTitle prevTitle, ArticleTitle title, ArticleContent content,
             ArticlePublishingDate publishingDate, ArticleAuthor author, ArticleLink link, TopicId topicId)
         {
+            ValidateConstructorParameters<NullUserParametersException>([id, prevTitle, title, content, publishingDate, author, link, topicId]);
+
             Id = id;
             _prevTitle = prevTitle;
             _title = title;
