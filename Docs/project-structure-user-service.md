@@ -138,15 +138,48 @@ UserService
 │   │   │   │   │   ├── ContactRequestConfiguration.cs
 │   │   │   │   │   ├── UserConfiguration.cs
 │   │   │   │   │   ├── UserTrackingConfiguration.cs
+│   │   │   │   ├── WriteConfiguration
+│   │   │   │   │   ├── BannedUserConfiguration.cs
+│   │   │   │   │   ├── ContactRequestConfiguration.cs
+│   │   │   │   │   ├── UserConfiguration.cs
+│   │   │   │   │   ├── UserTrackingConfiguration.cs
 │   │   │   ├── Models
+│   │   │   │   ├── _README.txt
+│   │   │   │   ├── BannedUserReadModel.cs
+│   │   │   │   ├── ContactRequestReadModel.cs
+│   │   │   │   ├── UserReadModel.cs
+│   │   │   │   ├── UserTrackingReadModel.cs
 │   │   │   ├── Options
+│   │   │   │   ├── PostgresOptions.cs
 │   │   │   ├── Repositories
+│   │   │   │   ├── PostgresUserRepository.cs
 │   │   │   ├── Services
-│   ├── Exceptions
-│   ├── Extensions
-│   ├── Logging
-│   ├── Queries
-│   ├── UserRegistration
+│   │   │   │   ├── ReadServices
+│   │   │   │   │   ├── PostgresUserReadService.cs
+│   │   ├── Exceptions
+│   │   │   ├── Interfaces
+│   │   │   │   ├── IExceptionToResponseMapper.cs
+│   │   │   ├── ExceptionResponse.cs
+│   │   │   ├── ExceptionToResponseMapper.cs
+│   │   │   ├── InfrastructureException.cs
+│   │   │   ├── NullDbContextException.cs
+│   │   ├── Extensions
+│   │   │   ├── ServiceCollectionExtensions.cs
+│   │   │   ├── ConfigurationExtensions.cs
+│   │   ├── Logging
+│   │   │   ├── LoggingCommandHandlerDecorator.cs
+│   │   │   ├── Formatters
+│   │   │   │   ├── SerilogJsonFormatter.cs
+│   │   ├── Queries
+│   │   │   ├── Handlers
+│   │   │   │   ├── GetIssuedBansByUserHandler.cs
+│   │   │   │   ├── GetIssuedContactRequestsByUserHandler.cs
+│   │   │   │   ├── GetReceivedBansByUserHandler.cs
+│   │   │   │   ├── GetReceivedContactRequestByUserHandler.cs
+│   │   │   │   ├── GetUserHandler.cs
+│   │   ├── UserRegistration
+│   │   │   ├── IUserSynchronizer.cs
+│   │   │   ├── UserSynchronizer.cs
 │   ├── UserService.Presentation
 │   │   ├── Controllers
 │   │   ├── DTOs
