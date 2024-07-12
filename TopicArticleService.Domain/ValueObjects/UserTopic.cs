@@ -6,7 +6,7 @@ namespace TopicArticleService.Domain.ValueObjects
     {
         public UserID UserId { get; }
         public TopicId TopicId { get; }
-        public DateTimeOffset SubscriptionTime { get; }
+        internal DateTimeOffset SubscriptionTime { get; }
 
         private UserTopic() {}
 
