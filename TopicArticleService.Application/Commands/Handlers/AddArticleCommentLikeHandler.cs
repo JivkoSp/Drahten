@@ -48,7 +48,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             _messageBusPublisher.PublishLikedArticleComment(likedArticleCommentDto);
 
             var articleCommentLike = _articleCommentLikeFactory.Create(command.ArticleCommentId, command.UserId, 
-                command.DateTime.ToUtc());
+                command.DateTime.ToUniversalTime());
 
             articleComment.AddLike(articleCommentLike);
 

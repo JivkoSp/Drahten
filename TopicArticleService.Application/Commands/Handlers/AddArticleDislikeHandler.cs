@@ -41,7 +41,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about adding dislike for article with ID: ArticleId by user with ID: UserId.
             _messageBusPublisher.PublishDislikedArticle(dislikedArticleDto);
 
-            var articleDislike = _articleDislikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUtc());
+            var articleDislike = _articleDislikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
 
             article.AddDislike(articleDislike);
 
