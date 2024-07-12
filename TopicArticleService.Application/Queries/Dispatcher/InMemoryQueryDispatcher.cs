@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
-using TopicArticleService.Application.Commands.Handlers;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TopicArticleService.Application.Queries.Handlers;
 
 namespace TopicArticleService.Application.Queries.Dispatcher
@@ -24,10 +22,6 @@ namespace TopicArticleService.Application.Queries.Dispatcher
 
             return await (Task<TResult>)handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync))?
                 .Invoke(handler, new[] { query });
-
-            //var handler = scope.ServiceProvider.GetRequiredService<IQueryHandler<IQuery<TResult>, TResult>>();
-
-            //return await handler.HandleAsync(query);
         }
     }
 }
