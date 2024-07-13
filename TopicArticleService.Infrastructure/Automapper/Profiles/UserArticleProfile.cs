@@ -11,6 +11,8 @@ namespace TopicArticleService.Infrastructure.Automapper.Profiles
             CreateMap<UserArticleReadModel, UserArticleDto>()
                 .ForMember(dest => dest.UserDto, options => options.MapFrom(source => source.User))
                 .ForMember(dest => dest.ArticleDto, options => options.MapFrom(source => source.Article));
+
+            CreateMap<UserArticleReadModel, UserDto>();
         }
     }
 }
