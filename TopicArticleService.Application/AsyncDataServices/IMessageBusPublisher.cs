@@ -4,13 +4,12 @@ namespace TopicArticleService.Application.AsyncDataServices
 {
     public interface IMessageBusPublisher
     {
-        void PublishViewedArticle(ViewedArticleDto viewedArticleDto);
-        void PublishLikedArticle(LikedArticleDto likedArticleDto);
-        void PublishDislikedArticle(DislikedArticleDto dislikedArticleDto);
-        void PublishCommentedArticle(CommentedArticleDto commentedArticleDto);
-        void PublishLikedArticleComment(LikedArticleCommentDto likedArticleCommentDto);
-        void PublishDislikedArticleComment(DislikedArticleCommentDto dislikedArticleCommentDto);
-        void PublishTopicSubscription(TopicSubscriptionDto topicSubscriptionDto);
         Task PublishViewedArticleAsync(ViewedArticleDto viewedArticleDto);
+        Task PublishLikedArticleAsync(LikedArticleDto likedArticleDto);
+        Task PublishDislikedArticleAsync(DislikedArticleDto dislikedArticleDto);
+        Task PublishCommentedArticleAsync(CommentedArticleDto commentedArticleDto);
+        Task PublishLikedArticleCommentAsync(LikedArticleCommentDto likedArticleCommentDto);
+        Task PublishDislikedArticleCommentAsync(DislikedArticleCommentDto dislikedArticleCommentDto);
+        Task PublishTopicSubscriptionAsync(TopicSubscriptionDto topicSubscriptionDto);
     }
 }
