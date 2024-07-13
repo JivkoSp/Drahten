@@ -1,22 +1,19 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
     internal sealed class AddArticleDislikeHandler : ICommandHandler<AddArticleDislikeCommand>
     {
         private readonly IArticleRepository _articleRepository;
-        private readonly IArticleDislikeFactory _articleDislikeFactory;
         private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public AddArticleDislikeHandler(IArticleRepository articleRepository, IArticleDislikeFactory articleDislikeFactory,
-            IMessageBusPublisher messageBusPublisher)
+        public AddArticleDislikeHandler(IArticleRepository articleRepository, IMessageBusPublisher messageBusPublisher)
         {
             _articleRepository = articleRepository;
-            _articleDislikeFactory = articleDislikeFactory;
             _messageBusPublisher = messageBusPublisher;
         }
 
@@ -40,7 +37,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about adding dislike for article with ID: ArticleId by user with ID: UserId.
             await _messageBusPublisher.PublishDislikedArticleAsync(dislikedArticleDto);
 
-            var articleDislike = _articleDislikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
+            var articleDislike = new ArticleDislike(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
 
             article.AddDislike(articleDislike);
 
