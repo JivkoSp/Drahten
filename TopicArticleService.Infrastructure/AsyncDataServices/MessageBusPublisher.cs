@@ -2,7 +2,6 @@
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
-using System;
 using System.Text;
 using System.Text.Json;
 using TopicArticleService.Application.AsyncDataServices;
@@ -140,11 +139,6 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
             }
         }
 
-        public void PublishViewedArticle(ViewedArticleDto viewedArticleDto)
-        {
-
-        }
-
         public async Task PublishViewedArticleAsync(ViewedArticleDto viewedArticleDto)
         {
             try
@@ -165,142 +159,112 @@ namespace TopicArticleService.Infrastructure.AsyncDataServices
             }
         }
 
-        public void PublishLikedArticle(LikedArticleDto likedArticleDto)
+        public async Task PublishLikedArticleAsync(LikedArticleDto likedArticleDto)
         {
-            var message = JsonSerializer.Serialize(likedArticleDto);
+            try
+            {
+                var message = JsonSerializer.Serialize(likedArticleDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.liked-article");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+                await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
-        public void PublishDislikedArticle(DislikedArticleDto dislikedArticleDto)
+        public async Task PublishDislikedArticleAsync(DislikedArticleDto dislikedArticleDto)
         {
-            var message = JsonSerializer.Serialize(dislikedArticleDto);
+            try
+            {
+                var message = JsonSerializer.Serialize(dislikedArticleDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+                await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
-        public void PublishCommentedArticle(CommentedArticleDto commentedArticleDto)
+        public async Task PublishCommentedArticleAsync(CommentedArticleDto commentedArticleDto)
         {
             var message = JsonSerializer.Serialize(commentedArticleDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+            try
+            {
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.commented-article");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.commented-article");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+                await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
-        public void PublishLikedArticleComment(LikedArticleCommentDto likedArticleCommentDto)
+        public async Task PublishLikedArticleCommentAsync(LikedArticleCommentDto likedArticleCommentDto)
         {
-            var message = JsonSerializer.Serialize(likedArticleCommentDto);
+            try
+            {
+                var message = JsonSerializer.Serialize(likedArticleCommentDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article-comment");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.liked-article-comment");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+                await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
-        public void PublishDislikedArticleComment(DislikedArticleCommentDto dislikedArticleCommentDto)
+        public async Task PublishDislikedArticleCommentAsync(DislikedArticleCommentDto dislikedArticleCommentDto)
         {
-            var message = JsonSerializer.Serialize(dislikedArticleCommentDto);
+            try
+            {
+                var message = JsonSerializer.Serialize(dislikedArticleCommentDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article-comment");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article-comment");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+               await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
-        public void PublishTopicSubscription(TopicSubscriptionDto topicSubscriptionDto)
+        public async Task PublishTopicSubscriptionAsync(TopicSubscriptionDto topicSubscriptionDto)
         {
-            var message = JsonSerializer.Serialize(topicSubscriptionDto);
+            try
+            {
+                var message = JsonSerializer.Serialize(topicSubscriptionDto);
 
-            //if (_connection.IsOpen)
-            //{
-            //    //TODO: Log a message.
+                var messageDescriptor = new MessageDescriptor(message,
+                    exchange: "topic_article_service", routingKey: "topic_article_service.topic-subscription");
 
-            //    var messageDescriptor = new MessageDescriptor(message,
-            //        exchange: "topic_article_service", routingKey: "topic_article_service.topic-subscription");
-
-            //    SendMessage(messageDescriptor);
-            //}
-            //else
-            //{
-            //    //TODO: Retrying if the connection is not available.
-
-            //    //TODO: Log the message.
-
-            //    Console.WriteLine("--> TopicArticleService RabbitMQ connection is CLOSED!");
-            //}
+                await SendMessageAsync(messageDescriptor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                throw;
+            }
         }
 
         public void Dispose()
