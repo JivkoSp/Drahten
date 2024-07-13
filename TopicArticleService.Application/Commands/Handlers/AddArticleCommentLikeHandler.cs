@@ -1,10 +1,9 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Application.Extensions;
 using TopicArticleService.Application.Services.ReadServices;
-using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
@@ -12,15 +11,13 @@ namespace TopicArticleService.Application.Commands.Handlers
     {
         private readonly IArticleCommentRepository _articleCommentRepository;
         private readonly IArticleCommentReadService _articleCommentReadService;
-        private readonly IArticleCommentLikeFactory _articleCommentLikeFactory;
         private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public AddArticleCommentLikeHandler(IArticleCommentRepository articleCommentRepository, IArticleCommentReadService articleCommentReadService,
-                IArticleCommentLikeFactory articleCommentLikeFactory, IMessageBusPublisher messageBusPublisher)
+        public AddArticleCommentLikeHandler(IArticleCommentRepository articleCommentRepository, 
+            IArticleCommentReadService articleCommentReadService, IMessageBusPublisher messageBusPublisher)
         {
             _articleCommentRepository = articleCommentRepository;
             _articleCommentReadService = articleCommentReadService;
-            _articleCommentLikeFactory = articleCommentLikeFactory;
             _messageBusPublisher = messageBusPublisher;
         }
 
@@ -47,9 +44,9 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about adding like for article-comment with ID: ArticleCommentId by user with ID: UserId.
             await _messageBusPublisher.PublishLikedArticleCommentAsync(likedArticleCommentDto);
 
-            var articleCommentLike = _articleCommentLikeFactory.Create(command.ArticleCommentId, command.UserId, 
+            var articleCommentLike = new ArticleCommentLike(command.ArticleCommentId, command.UserId,
                 command.DateTime.ToUniversalTime());
-
+                
             articleComment.AddLike(articleCommentLike);
 
             await _articleCommentRepository.UpdateArticleCommentAsync(articleComment);
