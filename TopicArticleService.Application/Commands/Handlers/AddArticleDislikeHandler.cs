@@ -1,7 +1,6 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Application.Extensions;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
@@ -39,7 +38,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             };
 
             //Post message to the message broker about adding dislike for article with ID: ArticleId by user with ID: UserId.
-            _messageBusPublisher.PublishDislikedArticle(dislikedArticleDto);
+            await _messageBusPublisher.PublishDislikedArticleAsync(dislikedArticleDto);
 
             var articleDislike = _articleDislikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
 
