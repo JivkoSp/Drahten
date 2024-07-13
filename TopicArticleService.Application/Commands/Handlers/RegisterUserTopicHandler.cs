@@ -45,7 +45,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             };
 
             //Post message to the message broker about adding topic subscription for topic with ID: TopicId by user with ID: UserId.
-            _messageBusPublisher.PublishTopicSubscription(topicSubscriptionDto);
+            await _messageBusPublisher.PublishTopicSubscriptionAsync(topicSubscriptionDto);
 
             var userTopic = new UserTopic(command.UserId, command.TopicId, command.DateTime.ToUniversalTime());
 
