@@ -7,7 +7,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 
 namespace TopicArticleService.Infrastructure.Queries.Handlers
 {
-    internal sealed class GetUsersRelatedToArticleHandler : IQueryHandler<GetUsersRelatedToArticleQuery, List<UserArticleDto>>
+    internal sealed class GetUsersRelatedToArticleHandler : IQueryHandler<GetUsersRelatedToArticleQuery, List<UserDto>>
     {
         private readonly ReadDbContext _readDbContext;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
             _mapper = mapper;
         }
 
-        public async Task<List<UserArticleDto>> HandleAsync(GetUsersRelatedToArticleQuery query)
+        public async Task<List<UserDto>> HandleAsync(GetUsersRelatedToArticleQuery query)
         {
             var userArticleReadModels = await _readDbContext.UserArticles
                                         .Where(x => x.ArticleId == query.ArticleId)
@@ -27,7 +27,7 @@ namespace TopicArticleService.Infrastructure.Queries.Handlers
                                         .AsNoTracking()
                                         .ToListAsync();
 
-            return _mapper.Map<List<UserArticleDto>>(userArticleReadModels);
+            return _mapper.Map<List<UserDto>>(userArticleReadModels);
         }
     }
 }
