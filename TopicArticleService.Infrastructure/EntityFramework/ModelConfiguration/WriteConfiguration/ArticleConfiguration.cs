@@ -16,20 +16,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Primary key
             builder.HasKey(key => key.Id);
 
-            var prevTitleConverter = new ValueConverter<ArticlePrevTitle, string>(x => x.Value, x => new ArticlePrevTitle(x));
-
-            var titleConverter = new ValueConverter<ArticleTitle, string>(x => x.Value, x => new ArticleTitle(x));
-
-            var contentConverter = new ValueConverter<ArticleContent, string>(x => x.Value, x => new ArticleContent(x));
-
-            var publishingDateConverter = new ValueConverter<ArticlePublishingDate, string>(x => x.Value, x => new ArticlePublishingDate(x));
-
-            var authorConverter = new ValueConverter<ArticleAuthor, string>(x => x.Value, x => new ArticleAuthor(x));
-
-            var linkConverter = new ValueConverter<ArticleLink, string>(x => x.Value, x => new ArticleLink(x));
-
-            var topicIdConverter = new ValueConverter<TopicId, Guid>(x => x.Value, x => new TopicId(x));
-
             //Property config - Start
 
             #region ConversionToUUID
@@ -49,37 +35,37 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                 .HasColumnName("ArticleId");
 
             builder.Property(typeof(ArticlePrevTitle), "_prevTitle")
-                .HasConversion(prevTitleConverter)
+                .HasConversion(new ValueConverter<ArticlePrevTitle, string>(x => x, x => new ArticlePrevTitle(x)))
                 .HasColumnName("PrevTitle")
                 .IsRequired();
 
             builder.Property(typeof(ArticleTitle), "_title")
-                .HasConversion(titleConverter)
+                .HasConversion(new ValueConverter<ArticleTitle, string>(x => x, x => new ArticleTitle(x)))
                 .HasColumnName("Title")
                 .IsRequired();
 
             builder.Property(typeof(ArticleContent), "_content")
-                .HasConversion(contentConverter)
+                .HasConversion(new ValueConverter<ArticleContent, string>(x => x, x => new ArticleContent(x)))
                 .HasColumnName ("Content")
                 .IsRequired();
 
             builder.Property(typeof(ArticlePublishingDate), "_publishingDate")
-                .HasConversion(publishingDateConverter)
+                .HasConversion(new ValueConverter<ArticlePublishingDate, string>(x => x, x => new ArticlePublishingDate(x)))
                 .HasColumnName("PublishingDate")
                 .IsRequired();
 
             builder.Property(typeof(ArticleAuthor), "_author")
-                .HasConversion(authorConverter)
+                .HasConversion(new ValueConverter<ArticleAuthor, string>(x => x, x => new ArticleAuthor(x)))
                 .HasColumnName("Author")
                 .IsRequired();
 
             builder.Property(typeof(ArticleLink), "_link")
-                .HasConversion(linkConverter)
+                .HasConversion(new ValueConverter<ArticleLink, string>(x => x, x => new ArticleLink(x)))
                 .HasColumnName("Link")
                 .IsRequired();
 
             builder.Property(typeof(TopicId), "_topicId")
-                .HasConversion(topicIdConverter)
+                .HasConversion(new ValueConverter<TopicId, Guid>(x => x, x => new TopicId(x)))
                 .HasColumnName("TopicId")
                 .IsRequired();
 
