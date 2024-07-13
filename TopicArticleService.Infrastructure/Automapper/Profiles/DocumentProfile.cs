@@ -4,7 +4,7 @@ using TopicArticleService.Application.Dtos.SearchService;
 
 namespace TopicArticleService.Infrastructure.Automapper.Profiles
 {
-    internal class DocumentProfile : Profile
+    internal sealed class DocumentProfile : Profile
     {
         public DocumentProfile()
         {

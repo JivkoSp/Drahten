@@ -5,7 +5,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Models;
 
 namespace TopicArticleService.Infrastructure.Automapper.Profiles
 {
-    public class UserProfile : Profile
+    internal sealed class UserProfile : Profile
     {
         public UserProfile()
         {
