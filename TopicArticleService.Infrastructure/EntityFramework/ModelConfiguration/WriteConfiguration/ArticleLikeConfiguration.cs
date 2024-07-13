@@ -34,7 +34,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                .HasColumnName("UserId")
                .IsRequired();
 
-            builder.Property(p => p.DateTime)
+            builder.Property(typeof(DateTimeOffset), "DateTime")
              .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
              .IsRequired();
 
