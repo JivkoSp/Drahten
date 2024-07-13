@@ -24,7 +24,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             builder.HasKey(key => new { key.UserId, key.TopicId });
 
             //Property config
-            builder.Property(p => p.SubscriptionTime)
+            builder.Property(typeof(DateTimeOffset), "SubscriptionTime")
              .HasConversion(new EncryptedDateTimeOffsetConverter(_encryptionProvider))
              .IsRequired();
 
