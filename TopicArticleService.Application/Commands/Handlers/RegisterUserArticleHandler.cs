@@ -1,22 +1,19 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
     internal sealed class RegisterUserArticleHandler : ICommandHandler<RegisterUserArticleCommand>
     {
         private readonly IArticleRepository _articleRepository;
-        private readonly IUserArticleFactory _userArticleFactory;
         private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public RegisterUserArticleHandler(IArticleRepository articleRepository, IUserArticleFactory userArticleFactory,
-            IMessageBusPublisher messageBusPublisher)
+        public RegisterUserArticleHandler(IArticleRepository articleRepository, IMessageBusPublisher messageBusPublisher)
         {
             _articleRepository = articleRepository;
-            _userArticleFactory = userArticleFactory;
             _messageBusPublisher = messageBusPublisher;
         }
 
@@ -40,7 +37,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about visiting the article with ID: ArticleId.
             await _messageBusPublisher.PublishViewedArticleAsync(viewedArticleDto);
 
-            var userArticle = _userArticleFactory.Create(command.UserId, command.ArticleId);
+            var userArticle = new UserArticle(command.UserId, command.ArticleId); 
 
             article.AddUserArticle(userArticle);
 
