@@ -31,7 +31,7 @@ namespace TopicArticleService.Domain.Entities
         internal ArticleComment(ArticleCommentID id, ArticleCommentValue commentValue, ArticleCommentDateTime dateTime, UserID userId,
                 ArticleCommentID parentId)
         {
-            ValidateConstructorParameters<NullUserParametersException>([id, commentValue, dateTime, userId, parentId]);
+            ValidateConstructorParameters<NullUserParametersException>([id, commentValue, dateTime, userId]);
 
             Id = id;
             _commentValue = commentValue;
