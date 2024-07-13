@@ -45,7 +45,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             };
 
             //Post message to the message broker about adding like for article-comment with ID: ArticleCommentId by user with ID: UserId.
-            _messageBusPublisher.PublishLikedArticleComment(likedArticleCommentDto);
+            await _messageBusPublisher.PublishLikedArticleCommentAsync(likedArticleCommentDto);
 
             var articleCommentLike = _articleCommentLikeFactory.Create(command.ArticleCommentId, command.UserId, 
                 command.DateTime.ToUniversalTime());
