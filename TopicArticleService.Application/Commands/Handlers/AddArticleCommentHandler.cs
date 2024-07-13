@@ -1,7 +1,6 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Application.Extensions;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
 
@@ -40,7 +39,7 @@ namespace TopicArticleService.Application.Commands.Handlers
             };
 
             //Post message to the message broker about adding comment for article with ID: ArticleId by user with ID: UserId.
-            _messageBusPublisher.PublishCommentedArticle(commentedArticleDto);
+            await _messageBusPublisher.PublishCommentedArticleAsync(commentedArticleDto);
 
             var articleComment = _articleCommentFactory.Create(command.ArticleCommentId, command.CommentValue, 
                 command.DateTime.ToUniversalTime(), command.UserId, command.ParentArticleCommentId);
