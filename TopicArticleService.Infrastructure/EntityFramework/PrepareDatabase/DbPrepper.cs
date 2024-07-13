@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection.Metadata;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
@@ -9,8 +8,10 @@ using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 
 namespace TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase
 {
+    // Responsible for preparing and seeding the database with initial data. 
     internal sealed class DbPrepper : IHostedService
     {
+        // Private field to hold the service provider for resolving dependencies.
         private readonly IServiceProvider _serviceProvider;
 
         public DbPrepper(IServiceProvider serviceProvider)
@@ -39,6 +40,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase
             }
         }
 
+        // Method called when the hosted service starts.
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             var scope = _serviceProvider.CreateScope();
@@ -58,6 +60,7 @@ namespace TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase
             await SeedData(articleReadService, topicReadService, articleRepository, articleFactory, documentTopic);
         }
 
+        // Method called when the hosted service stops.
         public Task StopAsync(CancellationToken cancellationToken)
             => Task.CompletedTask;
     }
