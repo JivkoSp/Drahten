@@ -1,22 +1,19 @@
 ﻿using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Application.Exceptions;
-using TopicArticleService.Domain.Factories;
 using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.ValueObjects;
 
 namespace TopicArticleService.Application.Commands.Handlers
 {
     internal sealed class AddArticleLikeHandler : ICommandHandler<AddArticleLikeCommand>
     {
         private readonly IArticleRepository _articleRepository;
-        private readonly IArticleLikeFactory _articleLikeFactory;
         private readonly IMessageBusPublisher _messageBusPublisher;
 
-        public AddArticleLikeHandler(IArticleRepository articleRepository, IArticleLikeFactory articleLikeFactory,
-            IMessageBusPublisher messageBusPublisher)
+        public AddArticleLikeHandler(IArticleRepository articleRepository, IMessageBusPublisher messageBusPublisher)
         {
             _articleRepository = articleRepository;
-            _articleLikeFactory = articleLikeFactory;
             _messageBusPublisher = messageBusPublisher;
         }
 
@@ -40,8 +37,8 @@ namespace TopicArticleService.Application.Commands.Handlers
             //Post message to the message broker about adding like for article with ID: ArticleId by user with ID: UserId.
             await _messageBusPublisher.PublishLikedArticleAsync(likedArticleDto);
 
-            var articleLike = _articleLikeFactory.Create(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
-
+            var articleLike = new ArticleLike(command.ArticleId, command.UserId, command.DateTime.ToUniversalTime());
+                
             article.AddLike(articleLike);
 
             await _articleRepository.UpdateArticleAsync(article);
