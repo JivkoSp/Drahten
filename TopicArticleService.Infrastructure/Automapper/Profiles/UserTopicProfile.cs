@@ -4,7 +4,7 @@ using TopicArticleService.Infrastructure.EntityFramework.Models;
 
 namespace TopicArticleService.Infrastructure.Automapper.Profiles
 {
-    public class UserTopicProfile : Profile
+    internal sealed class UserTopicProfile : Profile
     {
         public UserTopicProfile()
         {
