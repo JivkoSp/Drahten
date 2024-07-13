@@ -16,12 +16,6 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
             //Private key
             builder.HasKey(key => key.Id);
 
-            var nameConverter = new ValueConverter<TopicName, string>(x => x.Value, x => new TopicName(x));
-
-            var fullNameConverter = new ValueConverter<TopicFullName, string>(x => x.Value, x => new TopicFullName(x));
-
-            var parentTopicIdConverter = new ValueConverter<TopicId, Guid>(x => x.Value, x => new TopicId(x));
-
             //Property config - Start
 
             builder.Property(p => p.Id)
@@ -29,17 +23,17 @@ namespace TopicArticleService.Infrastructure.EntityFramework.ModelConfiguration.
                 .HasColumnName("TopicId");
 
             builder.Property(typeof(TopicName), "_topicName")
-                .HasConversion(nameConverter)
+                .HasConversion(new ValueConverter<TopicName, string>(x => x, x => new TopicName(x)))
                 .HasColumnName("TopicName")
                 .IsRequired();
 
             builder.Property(typeof(TopicFullName), "_topicFullName")
-               .HasConversion(fullNameConverter)
+               .HasConversion(new ValueConverter<TopicFullName, string>(x => x, x => new TopicFullName(x)))
                .HasColumnName("TopicFullName")
                .IsRequired();
 
             builder.Property(typeof(TopicId), "_parentTopicId")
-                .HasConversion(parentTopicIdConverter)
+                .HasConversion(new ValueConverter<TopicId, Guid>(x => x.Value, x => new TopicId(x)))
                 .HasColumnName("ParentTopicId");
 
             //Property config - End
