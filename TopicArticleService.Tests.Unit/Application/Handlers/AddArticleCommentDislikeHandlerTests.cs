@@ -8,6 +8,11 @@ using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
 using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Application.Services.ReadServices;
+using TopicArticleService.Application.AsyncDataServices;
+using TopicArticleService.Application.Dtos;
+using TopicArticleService.Application.Dtos.PrivateHistoryService;
+
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -16,7 +21,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         #region GLOBAL ARRANGE
 
         private readonly IArticleCommentRepository _articleCommentRepository;
-        private readonly IArticleCommentDislikeFactory _articleCommentDislikeMockFactory;
+        private readonly IArticleCommentReadService _articleCommentReadService;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly IArticleCommentFactory _articleCommentConcreteFactory;
         private readonly ICommandHandler<AddArticleCommentDislikeCommand> _handler;
 
@@ -30,9 +36,10 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         public AddArticleCommentDislikeHandlerTests()
         {
             _articleCommentRepository = Substitute.For<IArticleCommentRepository>();
-            _articleCommentDislikeMockFactory = Substitute.For<IArticleCommentDislikeFactory>();
+            _articleCommentReadService = Substitute.For<IArticleCommentReadService>();
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();  
             _articleCommentConcreteFactory = new ArticleCommentFactory();
-            //_handler = new AddArticleCommentDislikeHandler(_articleCommentRepository, _articleCommentDislikeMockFactory);
+            _handler = new AddArticleCommentDislikeHandler(_articleCommentRepository, _articleCommentReadService, _messageBusPublisher);
         }
 
         #endregion
@@ -76,10 +83,18 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
                 Guid.NewGuid(), null);
 
+            var articleCommentDto = new ArticleCommentDto
+            {
+                ArticleDto = new ArticleDto { ArticleId = Guid.NewGuid().ToString() }
+            };
+
             var addArticleCommentDislikeCommand = GetAddArticleCommentDislikeCommand(articleComment.Id);
 
             _articleCommentRepository.GetArticleCommentByIdAsync(addArticleCommentDislikeCommand.ArticleCommentId)
                 .Returns(articleComment);
+
+            _articleCommentReadService.GetArticleCommentByIdAsync(addArticleCommentDislikeCommand.ArticleCommentId)
+                .Returns(articleCommentDto);
 
             //ACT
             var exception = await Record.ExceptionAsync(async () => await Act(addArticleCommentDislikeCommand));
@@ -87,8 +102,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ASSERT
             exception.ShouldBeNull();
 
-            _articleCommentDislikeMockFactory.Received(1).Create(addArticleCommentDislikeCommand.ArticleCommentId,
-                addArticleCommentDislikeCommand.UserId, addArticleCommentDislikeCommand.DateTime);
+            _messageBusPublisher.Received(1);
 
             await _articleCommentRepository.Received(1).UpdateArticleCommentAsync(articleComment);
         }
