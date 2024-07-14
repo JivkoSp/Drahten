@@ -13,13 +13,10 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         #region GLOBAL ARRANGE
 
         private readonly ArticleCommentFactory _articleCommentFactory;
-        private readonly ArticleCommentLikeFactory _articleCommentLikeFactory;
-        private readonly ArticleCommentDislikeFactory _articleCommentDislikeFactory;
 
         private ArticleComment GetArticleComment()
         {
-            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now,
-                    Guid.NewGuid(), null);
+            var articleComment = _articleCommentFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, Guid.NewGuid(), null);
 
             articleComment.ClearEvents();
 
@@ -30,7 +27,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleCommentLike = _articleCommentLikeFactory.Create(articleCommentId, userId, DateTimeOffset.Now);
+            var articleCommentLike = new ArticleCommentLike(articleCommentId, userId, DateTimeOffset.Now);
 
             return articleCommentLike;
         }
@@ -39,7 +36,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleCommentDislike = _articleCommentDislikeFactory.Create(articleCommentId, userId, DateTimeOffset.Now);
+            var articleCommentDislike = new ArticleCommentDislike(articleCommentId, userId, DateTimeOffset.Now);
 
             return articleCommentDislike;
         }
@@ -47,8 +44,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         public AddDislike()
         {
             _articleCommentFactory = new ArticleCommentFactory();
-            _articleCommentLikeFactory = new ArticleCommentLikeFactory();
-            _articleCommentDislikeFactory = new ArticleCommentDislikeFactory();
         }
 
         #endregion
