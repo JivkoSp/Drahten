@@ -8,6 +8,7 @@ using TopicArticleService.Application.Exceptions;
 using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
+using TopicArticleService.Application.AsyncDataServices;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -17,7 +18,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleFactory _articleConcreteFactory;
-        private readonly IArticleDislikeFactory _articleDislikeMockFactory;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<AddArticleDislikeCommand> _handler;
 
         private AddArticleDislikeCommand GetAddArticleDislikeCommand(ArticleID articleId)
@@ -31,8 +32,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         {
             _articleRepository = Substitute.For<IArticleRepository>();
             _articleConcreteFactory = new ArticleFactory();
-            _articleDislikeMockFactory = Substitute.For<IArticleDislikeFactory>();
-            //_handler = new AddArticleDislikeHandler(_articleRepository, _articleDislikeMockFactory);
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();
+            _handler = new AddArticleDislikeHandler(_articleRepository, _messageBusPublisher);
         }
 
         #endregion
@@ -84,8 +85,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ASSERT
             exception.ShouldBeNull();
 
-            _articleDislikeMockFactory.Received(1).Create(addArticleDislikeCommand.ArticleId,
-                addArticleDislikeCommand.UserId, addArticleDislikeCommand.DateTime);
+            _messageBusPublisher.Received(1);
 
             await _articleRepository.Received(1).UpdateArticleAsync(article);
         }
