@@ -47,13 +47,8 @@ namespace TopicArticleService.Application.Extensions
         internal static IServiceCollection AddFactories(this IServiceCollection services)
         {
             services.AddSingleton<IArticleFactory, ArticleFactory>();
-            services.AddSingleton<IArticleLikeFactory, ArticleLikeFactory>();
-            services.AddSingleton<IArticleDislikeFactory, ArticleDislikeFactory>();
             services.AddSingleton<IArticleCommentFactory, ArticleCommentFactory>();
             services.AddSingleton<ITopicFactory, TopicFactory>();
-            services.AddSingleton<IUserArticleFactory, UserArticleFactory>();
-            services.AddSingleton<IArticleCommentLikeFactory, ArticleCommentLikeFactory>();
-            services.AddSingleton<IArticleCommentDislikeFactory, ArticleCommentDislikeFactory>();
             services.AddSingleton<IUserFactory, UserFactory>();
 
             return services;
