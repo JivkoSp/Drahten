@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using Shouldly;
+using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Commands.Handlers;
 using TopicArticleService.Application.Exceptions;
@@ -18,6 +19,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         private readonly IUserFactory _userConcreteFactory;
         private readonly ITopicReadService _topicReadService;
         private readonly IUserRepository _userRepository;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<RegisterUserTopicCommand> _handler;
 
         private RegisterUserTopicCommand GetRegisterUserTopicCommand()
@@ -32,7 +34,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _userConcreteFactory = new UserFactory();
             _topicReadService = Substitute.For<ITopicReadService>();
             _userRepository = Substitute.For<IUserRepository>();
-            //_handler = new RegisterUserTopicHandler(_topicReadService, _userRepository);
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();
+            _handler = new RegisterUserTopicHandler(_topicReadService, _userRepository, _messageBusPublisher);
         }
 
         #endregion
