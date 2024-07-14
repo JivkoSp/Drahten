@@ -8,6 +8,7 @@ using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
 using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Application.AsyncDataServices;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -17,7 +18,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleFactory _articleConcreteFactory;
-        private readonly IArticleLikeFactory _articleLikeMockFactory;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<AddArticleLikeCommand> _handler;
 
         private AddArticleLikeCommand GetAddArticleLikeCommand(ArticleID articleId)
@@ -31,8 +32,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         {
             _articleRepository = Substitute.For<IArticleRepository>();
             _articleConcreteFactory = new ArticleFactory();
-            _articleLikeMockFactory = Substitute.For<IArticleLikeFactory>();
-            //_handler = new AddArticleLikeHandler(_articleRepository, _articleLikeMockFactory);
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();
+            _handler = new AddArticleLikeHandler(_articleRepository, _messageBusPublisher);
         }
 
         #endregion
@@ -84,8 +85,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ASSERT
             exception.ShouldBeNull();
 
-            _articleLikeMockFactory.Received(1).Create(addArticleLikeCommand.ArticleId, 
-                addArticleLikeCommand.UserId, addArticleLikeCommand.DateTime);
+            _messageBusPublisher.Received(1);
 
             await _articleRepository.Received(1).UpdateArticleAsync(article);
         }
