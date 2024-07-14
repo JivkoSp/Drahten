@@ -1,14 +1,11 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Dtos;
-using TopicArticleService.Application.Extensions;
-using TopicArticleService.Domain.ValueObjects;
+using TopicArticleService.Presentation.Dtos;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TopicArticleService.Tests.EndToEnd.Sync
 {
@@ -21,7 +18,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         private async Task<AddArticleLikeCommand> PrepareAddArticleLikeCommandAsync()
         {
             var createArticleCommand = new CreateArticleCommand(Guid.NewGuid(), "prev title TEST", "title TEST", "content TEST",
-                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"));
+                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"));
 
             await Post(createArticleCommand, "/topic-article-service/articles");
 
@@ -30,7 +27,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(registerUserCommand, "/topic-article-service/users");
 
             var addArticleLikeCommand = new AddArticleLikeCommand(createArticleCommand.ArticleId,
-                DateTimeOffset.Now.ToUtc(), registerUserCommand.UserId);
+                DateTimeOffset.Now, registerUserCommand.UserId);
 
             return addArticleLikeCommand;
         }
@@ -72,7 +69,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(addArticleLikeCommand, $"/topic-article-service/articles/{addArticleLikeCommand.ArticleId}/likes/");
 
             //ACT
-            var response = await Get($"/topic-article-service/articles/{addArticleLikeCommand.ArticleId}");
+            var response = await Get($"/topic-article-service/articles/{addArticleLikeCommand.ArticleId.ToString("N")}");
 
             //ASSERT
             response.ShouldNotBeNull();
@@ -81,7 +78,15 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var articleDto = JsonConvert.DeserializeObject<ArticleDto>(responseSerializedContent);
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
+
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var articleDto = JsonConvert.DeserializeObject<ArticleDto>(Convert.ToString(responseDto.Result));
+
+            articleDto.ShouldNotBeNull();
 
             //Comparing the values of the addArticleLikeCommand object that is send to the
             // /topic-article-service/articles/{ArticleId}/likes/ POST endpoint with the values of the ArticleDto object
@@ -91,7 +96,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             //and identified by {ArticleId}.
             //The values of this ArticleLike object must correspond to the values of the addArticleLikeCommand object.
 
-            articleDto.ArticleId.ShouldBe(addArticleLikeCommand.ArticleId.ToString());
+            articleDto.ArticleId.ShouldBe(addArticleLikeCommand.ArticleId.ToString("N"));
 
             var articleLike = articleDto.ArticleLikeDtos.FirstOrDefault();
 
