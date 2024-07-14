@@ -8,6 +8,7 @@ using TopicArticleService.Application.Exceptions;
 using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
+using TopicArticleService.Application.AsyncDataServices;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -19,6 +20,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         private readonly IArticleFactory _articleConcreteFactory;
         private readonly IArticleCommentFactory _articleCommentConcreteFactory;
         private readonly IArticleCommentFactory _articleCommentMockFactory;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<AddArticleCommentCommand> _handler;
 
         private AddArticleCommentCommand GetAddArticleCommentCommand(ArticleID articleId)
@@ -35,7 +37,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             _articleConcreteFactory = new ArticleFactory();
             _articleCommentConcreteFactory = new ArticleCommentFactory();
             _articleCommentMockFactory = Substitute.For<IArticleCommentFactory>();
-            //_handler = new AddArticleCommentHandler(_articleRepository, _articleCommentMockFactory);
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();  
+            _handler = new AddArticleCommentHandler(_articleRepository, _articleCommentMockFactory, _messageBusPublisher);
         }
 
         #endregion
@@ -94,6 +97,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
             //ASSERT
             exception.ShouldBeNull();
+
+            _messageBusPublisher.Received(1);
 
             _articleCommentMockFactory.Received(1).Create(addArticleCommentCommand.ArticleCommentId,
                 addArticleCommentCommand.CommentValue, addArticleCommentCommand.DateTime, addArticleCommentCommand.UserId,
