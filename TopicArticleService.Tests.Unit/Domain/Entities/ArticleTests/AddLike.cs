@@ -13,8 +13,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
         #region GLOBAL ARRANGE
 
         private readonly IArticleFactory _articleFactory;
-        private readonly ArticleLikeFactory _articleLikeFactory;
-        private readonly ArticleDislikeFactory _articleDislikeFactory;
 
         private Article GetArticle()
         {
@@ -30,23 +28,21 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleLike = _articleLikeFactory.Create(articleId, userId, DateTimeOffset.Now);
+            var articleLike = new ArticleLike(articleId, userId, DateTimeOffset.Now); 
 
             return articleLike;
         }
 
         private ArticleDislike GetArticleDislike(ArticleID articleId)
         {
-            var articleDislike = _articleDislikeFactory.Create(articleId, Guid.NewGuid(), DateTimeOffset.Now);
-
+            var articleDislike = new ArticleDislike(articleId, Guid.NewGuid(), DateTimeOffset.Now); 
+    
             return articleDislike;
         }
 
         public AddLike()
         {
             _articleFactory = new ArticleFactory();
-            _articleLikeFactory = new ArticleLikeFactory();
-            _articleDislikeFactory = new ArticleDislikeFactory();
         }
 
         #endregion
