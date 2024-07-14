@@ -3,6 +3,7 @@ using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Dtos;
+using TopicArticleService.Presentation.Dtos;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(registerUserCommand, "/topic-article-service/users");
 
             var registerUserTopicCommand = new RegisterUserTopicCommand(registerUserCommand.UserId, 
-                Guid.Parse("a3c436bc-9dda-4e33-80fe-0a888a18f5bb"), DateTimeOffset.Now);
+                Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"), DateTimeOffset.Now);
    
             return registerUserTopicCommand;
         }
@@ -71,7 +72,13 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var userTopicDto = JsonConvert.DeserializeObject<List<UserTopicDto>>(responseSerializedContent).FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
+
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var userTopicDto = JsonConvert.DeserializeObject<List<UserTopicDto>>(Convert.ToString(responseDto.Result)).FirstOrDefault();
 
             userTopicDto.ShouldNotBeNull();
 
