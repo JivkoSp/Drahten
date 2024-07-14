@@ -7,8 +7,7 @@ using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
 using TopicArticleService.Application.Exceptions;
-using System.Reflection;
-using TopicArticleService.Domain.ValueObjects;
+using TopicArticleService.Application.AsyncDataServices;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -18,7 +17,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleFactory _articleConcreteFactory;
-        private readonly IUserArticleFactory _userArticleFactory;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<RegisterUserArticleCommand> _handler;
 
         private CreateArticleCommand GetCreateArticleCommand()
@@ -40,8 +39,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         {
             _articleRepository = Substitute.For<IArticleRepository>();
             _articleConcreteFactory = new ArticleFactory();
-            _userArticleFactory = Substitute.For<IUserArticleFactory>();
-            //_handler = new RegisterUserArticleHandler(_articleRepository, _userArticleFactory);
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();
+            _handler = new RegisterUserArticleHandler(_articleRepository, _messageBusPublisher);
         }
 
         #endregion
@@ -92,8 +91,6 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
             //ASSERT
             exception.ShouldBeNull();
-
-            _userArticleFactory.Received(1).Create(registerUserArticleCommand.UserId, registerUserArticleCommand.ArticleId);
 
             await _articleRepository.Received(1).UpdateArticleAsync(article);
         }
