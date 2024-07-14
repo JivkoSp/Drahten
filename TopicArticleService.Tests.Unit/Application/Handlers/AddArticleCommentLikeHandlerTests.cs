@@ -8,6 +8,9 @@ using TopicArticleService.Application.Exceptions;
 using Xunit;
 using TopicArticleService.Domain.Entities;
 using Shouldly;
+using TopicArticleService.Application.Services.ReadServices;
+using TopicArticleService.Application.AsyncDataServices;
+using TopicArticleService.Application.Dtos;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -16,7 +19,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         #region GLOBAL ARRANGE
 
         private readonly IArticleCommentRepository _articleCommentRepository;
-        private readonly IArticleCommentLikeFactory _articleCommentLikeMockFactory;
+        private readonly IArticleCommentReadService _articleCommentReadService;
+        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly IArticleCommentFactory _articleCommentConcreteFactory;
         private readonly ICommandHandler<AddArticleCommentLikeCommand> _handler;
 
@@ -30,9 +34,10 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         public AddArticleCommentLikeHandlerTests()
         {
             _articleCommentRepository = Substitute.For<IArticleCommentRepository>();
-            _articleCommentLikeMockFactory = Substitute.For<IArticleCommentLikeFactory>();
+            _articleCommentReadService = Substitute.For<IArticleCommentReadService>();
+            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();  
             _articleCommentConcreteFactory = new ArticleCommentFactory();
-            //_handler = new AddArticleCommentLikeHandler(_articleCommentRepository, _articleCommentLikeMockFactory);
+            _handler = new AddArticleCommentLikeHandler(_articleCommentRepository, _articleCommentReadService, _messageBusPublisher);
         }
 
         #endregion
@@ -50,6 +55,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ARRANGE
             var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
                 Guid.NewGuid(), null);
+
+            
 
             var addArticleCommentLikeCommand = GetAddArticleCommentLikeCommand(articleComment.Id);
 
@@ -76,10 +83,18 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             var articleComment = _articleCommentConcreteFactory.Create(Guid.NewGuid(), "some comment", DateTimeOffset.Now, 
                 Guid.NewGuid(), null);
 
+            var articleCommentDto = new ArticleCommentDto
+            {
+                ArticleDto = new ArticleDto { ArticleId = Guid.NewGuid().ToString() }
+            };
+
             var addArticleCommentLikeCommand = GetAddArticleCommentLikeCommand(articleComment.Id);
 
             _articleCommentRepository.GetArticleCommentByIdAsync(addArticleCommentLikeCommand.ArticleCommentId)
                 .Returns(articleComment);
+
+            _articleCommentReadService.GetArticleCommentByIdAsync(addArticleCommentLikeCommand.ArticleCommentId)
+               .Returns(articleCommentDto);
 
             //ACT
             var exception = await Record.ExceptionAsync(async () => await Act(addArticleCommentLikeCommand));
@@ -87,8 +102,7 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
             //ASSERT
             exception.ShouldBeNull();
 
-            _articleCommentLikeMockFactory.Received(1).Create(addArticleCommentLikeCommand.ArticleCommentId, 
-                addArticleCommentLikeCommand.UserId, addArticleCommentLikeCommand.DateTime);
+            _messageBusPublisher.Received(1);
 
             await _articleCommentRepository.Received(1).UpdateArticleCommentAsync(articleComment);
         }
