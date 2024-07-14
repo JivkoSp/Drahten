@@ -13,7 +13,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
         #region GLOBAL ARRANGE
 
         private readonly IArticleFactory _articleFactory;
-        private readonly UserArticleFactory _userArticleFactory;
 
         private Article GetArticle()
         {
@@ -27,7 +26,7 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
 
         private UserArticle GetUserArticle()
         {
-            var userArticle = _userArticleFactory.Create(Guid.NewGuid(), Guid.NewGuid());
+            var userArticle = new UserArticle(Guid.NewGuid(), Guid.NewGuid());
 
             return userArticle;
         }
@@ -35,7 +34,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleTests
         public AddUserArticle()
         {
             _articleFactory = new ArticleFactory();
-            _userArticleFactory = new UserArticleFactory();
         }
 
         #endregion
