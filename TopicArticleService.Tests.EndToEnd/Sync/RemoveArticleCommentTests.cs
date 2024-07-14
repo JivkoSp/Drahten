@@ -1,7 +1,6 @@
 ﻿using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
-using TopicArticleService.Application.Extensions;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         private async Task<AddArticleCommentCommand> PrepareAddArticleCommentCommandAsync()
         {
             var createArticleCommand = new CreateArticleCommand(Guid.NewGuid(), "prev title TEST", "title TEST", "content TEST",
-                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"));
+                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"));
 
             await Post(createArticleCommand, "/topic-article-service/articles");
 
@@ -25,7 +24,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(registerUserCommand, "/topic-article-service/users");
 
             var addArticleCommentCommand = new AddArticleCommentCommand(createArticleCommand.ArticleId, Guid.NewGuid(),
-                "TEST comment", DateTimeOffset.Now.ToUtc(), registerUserCommand.UserId, null);
+                "TEST comment", DateTimeOffset.Now, registerUserCommand.UserId, null);
 
             return addArticleCommentCommand;
         }
@@ -34,7 +33,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         {
             var addArticleCommentCommand = await PrepareAddArticleCommentCommandAsync();
 
-            await Post(addArticleCommentCommand, $"/topic-article-service/articles/{addArticleCommentCommand.ArticleId}/comments/");
+            await Post(addArticleCommentCommand, $"/topic-article-service/articles/{addArticleCommentCommand.ArticleId.ToString("N")}/comments/");
 
             var removeArticleCommentCommand = new RemoveArticleCommentCommand(addArticleCommentCommand.ArticleId, 
                 addArticleCommentCommand.ArticleCommentId);
