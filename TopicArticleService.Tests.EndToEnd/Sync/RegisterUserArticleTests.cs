@@ -3,6 +3,7 @@ using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Dtos;
+using TopicArticleService.Presentation.Dtos;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         private async Task<RegisterUserArticleCommand> PrepareRegisterUserArticleCommandAsync()
         {
             var createArticleCommand = new CreateArticleCommand(Guid.NewGuid(), "prev title TEST", "title TEST", "content TEST",
-                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"));
+                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"));
 
             await Post(createArticleCommand, "/topic-article-service/articles");
 
@@ -64,27 +65,31 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         public async Task Register_UserArticle_Endpoint_Should_Add_UserArticle_With_Given_ArticleId_And_UserId_To_The_Database()
         {
             //ARRANGE
-            //var registerUserArticleCommand = await PrepareRegisterUserArticleCommandAsync();
+            var registerUserArticleCommand = await PrepareRegisterUserArticleCommandAsync();
 
-            //await Post(registerUserArticleCommand, $"/topic-article-service/users/{registerUserArticleCommand.UserId}/articles/");
+            await Post(registerUserArticleCommand, $"/topic-article-service/users/{registerUserArticleCommand.UserId}/articles/");
 
-            ////ACT
-            //var response = await Get($"/topic-article-service/users/articles/{registerUserArticleCommand.ArticleId}");
+            //ACT
+            var response = await Get($"/topic-article-service/users/articles/{registerUserArticleCommand.ArticleId.ToString("N")}");
 
-            ////ASSERT
-            //response.ShouldNotBeNull();
+            //ASSERT
+            response.ShouldNotBeNull();
 
-            //response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            //var responseSerializedContent = await response.Content.ReadAsStringAsync();
+            var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            //var userArticleDto = JsonConvert.DeserializeObject<List<UserArticleDto>>(responseSerializedContent).FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
 
-            //userArticleDto.ShouldNotBeNull();
+            responseDto.ShouldNotBeNull();
 
-            //userArticleDto.ArticleDto.ArticleId.ShouldBe(registerUserArticleCommand.ArticleId.ToString());
+            responseDto.IsSuccess.ShouldBeTrue();
 
-            //userArticleDto.UserDto.UserId.ShouldBe(registerUserArticleCommand.UserId.ToString());
+            var userDto = JsonConvert.DeserializeObject<List<UserDto>>(Convert.ToString(responseDto.Result)).FirstOrDefault();
+
+            userDto.ShouldNotBeNull();
+
+            userDto.UserId.ShouldBe(registerUserArticleCommand.UserId);
         }
     }
 }
