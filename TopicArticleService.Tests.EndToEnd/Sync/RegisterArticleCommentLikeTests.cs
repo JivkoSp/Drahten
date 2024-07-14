@@ -3,7 +3,7 @@ using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Dtos;
-using TopicArticleService.Application.Extensions;
+using TopicArticleService.Presentation.Dtos;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -20,7 +20,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         private async Task<AddArticleCommentCommand> PrepareAddArticleCommentCommandAsync()
         {
             var createArticleCommand = new CreateArticleCommand(Guid.NewGuid(), "prev title TEST", "title TEST", "content TEST",
-                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"));
+                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"));
 
             await Post(createArticleCommand, "/topic-article-service/articles");
 
@@ -29,7 +29,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(registerUserCommand, "/topic-article-service/users");
 
             var addArticleCommentCommand = new AddArticleCommentCommand(createArticleCommand.ArticleId, Guid.NewGuid(),
-                "TEST comment", DateTimeOffset.Now.ToUtc(), registerUserCommand.UserId, null);
+                "TEST comment", DateTimeOffset.Now, registerUserCommand.UserId, null);
 
             return addArticleCommentCommand;
         }
@@ -41,7 +41,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(AddArticleCommentCommand, $"/topic-article-service/articles/{AddArticleCommentCommand.ArticleId}/comments/");
 
             var addArticleCommentLikeCommand = new AddArticleCommentLikeCommand(AddArticleCommentCommand.ArticleCommentId,
-                DateTimeOffset.Now.ToUtc(), AddArticleCommentCommand.UserId);
+                DateTimeOffset.Now, AddArticleCommentCommand.UserId);
 
             return addArticleCommentLikeCommand;
         }
@@ -61,7 +61,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
 
              //ACT
              var response = await Post(addArticleCommentLikeCommand,
-                $"/topic-article-service/articles/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
+                $"/topic-article-service/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
 
             //ASSERT
             response.ShouldNotBeNull();
@@ -71,7 +71,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             response.Headers.Location.ShouldNotBeNull();
 
             response.Headers.Location.ToString()
-                .ShouldBe($"/topic-article-service/articles/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
+                .ShouldBe($"/topic-article-service/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
         }
 
         //Should return http status code 200 when the previously created ArticleCommentLike is successfully received from the database.
@@ -82,10 +82,10 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             var addArticleCommentLikeCommand = await PrepareAddArticleCommentLikeCommandAsync();
 
             await Post(addArticleCommentLikeCommand,
-                $"/topic-article-service/articles/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
+                $"/topic-article-service/comments/{addArticleCommentLikeCommand.ArticleCommentId}/likes/");
 
             //ACT
-            var response = await Get($"/topic-article-service/articles/{AddArticleCommentCommand.ArticleId}/comments/");
+            var response = await Get($"/topic-article-service/articles/{AddArticleCommentCommand.ArticleId.ToString("N")}/comments/");
 
             //ASSERT
             response.ShouldNotBeNull();
@@ -94,9 +94,17 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var articleCommentDto = JsonConvert.DeserializeObject<List<ArticleCommentDto>>(responseSerializedContent).FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
 
-            articleCommentDto.ShouldNotBeNull();
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var responseResult = JsonConvert.DeserializeObject<List<ArticleCommentDto>>(Convert.ToString(responseDto.Result));
+
+            responseResult.ShouldNotBeNull();
+
+            var articleCommentDto = responseResult.FirstOrDefault().ShouldNotBeNull();
 
             //Comparing the values of the addArticleCommentLikeCommand object that is send to the
             // /topic-article-service/articles/comments/{ArticleCommentId}/likes/ POST endpoint with the values of the
