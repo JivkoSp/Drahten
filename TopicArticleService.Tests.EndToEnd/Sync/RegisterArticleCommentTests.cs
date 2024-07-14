@@ -3,7 +3,7 @@ using Shouldly;
 using System.Net;
 using TopicArticleService.Application.Commands;
 using TopicArticleService.Application.Dtos;
-using TopicArticleService.Application.Extensions;
+using TopicArticleService.Presentation.Dtos;
 using TopicArticleService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -16,7 +16,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
         private async Task<AddArticleCommentCommand> PrepareAddArticleCommentCommandAsync()
         {
             var createArticleCommand = new CreateArticleCommand(Guid.NewGuid(), "prev title TEST", "title TEST", "content TEST",
-                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("888a5c96-7c7c-4f98-90b6-91a0c2d401b0"));
+                "2022-10-10T14:38:00", "no author", "no link", Guid.Parse("e0e68a89-8cb2-4602-a10b-2be1a78a9be5"));
 
             await Post(createArticleCommand, "/topic-article-service/articles");
 
@@ -25,7 +25,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(registerUserCommand, "/topic-article-service/users");
 
             var addArticleCommentCommand = new AddArticleCommentCommand(createArticleCommand.ArticleId, Guid.NewGuid(),
-                "TEST comment", DateTimeOffset.Now.ToUtc(), registerUserCommand.UserId, null);
+                "TEST comment", DateTimeOffset.Now, registerUserCommand.UserId, null);
 
             return addArticleCommentCommand;
         }
@@ -69,7 +69,7 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
             await Post(addArticleCommentCommand, $"/topic-article-service/articles/{addArticleCommentCommand.ArticleId}/comments/");
 
             //ACT
-            var response = await Get($"/topic-article-service/articles/{addArticleCommentCommand.ArticleId}/comments/");
+            var response = await Get($"/topic-article-service/articles/{addArticleCommentCommand.ArticleId.ToString("N")}/comments/");
 
             //ASSERT
             response.ShouldNotBeNull();
@@ -78,13 +78,23 @@ namespace TopicArticleService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var articleCommentDto = JsonConvert.DeserializeObject<List<ArticleCommentDto>>(responseSerializedContent).FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
+
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var responseResult = JsonConvert.DeserializeObject<List<ArticleCommentDto>>(Convert.ToString(responseDto.Result));
+
+            responseResult.ShouldNotBeNull();
+
+            var articleCommentDto = responseResult.FirstOrDefault().ShouldNotBeNull();
 
             //Comparing the values of the addArticleCommentCommand object that is send to the
             // /topic-article-service/articles/{ArticleId}/comments/ POST endpoint with the values of the ArticleCommentDto object
             //that is received by the /topic-article-service/articles/{ArticleId}/comments/ GET endpoint.
 
-            articleCommentDto.ArticleDto.ArticleId.ShouldBe(addArticleCommentCommand.ArticleId.ToString());
+            articleCommentDto.ArticleDto.ArticleId.ShouldBe(addArticleCommentCommand.ArticleId.ToString("N"));
 
             articleCommentDto.ArticleCommentId.ShouldBe(addArticleCommentCommand.ArticleCommentId);
 
