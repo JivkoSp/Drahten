@@ -11,7 +11,6 @@ using TopicArticleService.Application.Exceptions;
 using TopicArticleService.Application.Services.ReadServices;
 using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos;
-using TopicArticleService.Application.Dtos.PrivateHistoryService;
 
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
