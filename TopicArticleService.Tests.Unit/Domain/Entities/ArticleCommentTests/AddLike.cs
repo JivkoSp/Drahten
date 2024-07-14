@@ -13,8 +13,6 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         #region GLOBAL ARRANGE
 
         private readonly ArticleCommentFactory _articleCommentFactory;
-        private readonly ArticleCommentLikeFactory _articleCommentLikeFactory;
-        private readonly ArticleCommentDislikeFactory _articleCommentDislikeFactory;
 
         private ArticleComment GetArticleComment()
         {
@@ -30,23 +28,21 @@ namespace TopicArticleService.Tests.Unit.Domain.Entities.ArticleCommentTests
         {
             userId = userId ?? Guid.NewGuid();
 
-            var articleCommentLike = _articleCommentLikeFactory.Create(articleCommentId, userId, DateTimeOffset.Now);
-
+            var articleCommentLike = new ArticleCommentLike(articleCommentId, userId, DateTimeOffset.Now); 
+     
             return articleCommentLike;
         }
 
         private ArticleCommentDislike GetArticleCommentDislike(ArticleCommentID articleCommentId)
         {
-            var articleCommentDislike = _articleCommentDislikeFactory.Create(articleCommentId, Guid.NewGuid(), DateTimeOffset.Now);
-
+            var articleCommentDislike = new ArticleCommentDislike(articleCommentId, Guid.NewGuid(), DateTimeOffset.Now); 
+              
             return articleCommentDislike;
         }
 
         public AddLike()
         {
             _articleCommentFactory = new ArticleCommentFactory();
-            _articleCommentLikeFactory = new ArticleCommentLikeFactory();
-            _articleCommentDislikeFactory = new ArticleCommentDislikeFactory();
         }
 
         #endregion
