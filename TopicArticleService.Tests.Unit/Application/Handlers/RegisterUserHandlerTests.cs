@@ -6,6 +6,9 @@ using TopicArticleService.Application.Services.WriteServices;
 using Xunit;
 using Shouldly;
 using TopicArticleService.Application.Exceptions;
+using TopicArticleService.Domain.Repositories;
+using TopicArticleService.Domain.Factories;
+using TopicArticleService.Domain.Entities;
 
 namespace TopicArticleService.Tests.Unit.Application.Handlers
 {
@@ -14,7 +17,8 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         #region GLOBAL ARRANGE
 
         private readonly IUserReadService _userReadService;
-        private readonly IUserWriteService _userWriteService;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserFactory _userFactory;
         private readonly ICommandHandler<RegisterUserCommand> _handler;
 
         private RegisterUserCommand GetRegisterUserCommand()
@@ -27,8 +31,9 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
         public RegisterUserHandlerTests()
         {
             _userReadService = Substitute.For<IUserReadService>();
-            _userWriteService = Substitute.For<IUserWriteService>();
-            //_handler = new RegisterUserHandler(_userReadService, _userWriteService);
+            _userRepository = Substitute.For<IUserRepository>();
+            _userFactory = Substitute.For<IUserFactory>();
+            _handler = new RegisterUserHandler(_userReadService, _userRepository, _userFactory);
         }
 
         #endregion
@@ -67,13 +72,15 @@ namespace TopicArticleService.Tests.Unit.Application.Handlers
 
             _userReadService.ExistsByIdAsync(command.UserId).Returns(false);
 
+            _userFactory.Create(command.UserId).Returns(default(User));
+
             //ACT
             var exception = await Record.ExceptionAsync(async () => await Act(command));
 
             //ASSERT
             exception.ShouldBeNull();
 
-            await _userWriteService.Received(1).AddUserAsync(command.UserId);
+            await _userRepository.Received(1).AddUserAsync(default(User));
         }
     }
 }
