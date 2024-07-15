@@ -3,6 +3,7 @@ using Shouldly;
 using System.Net;
 using UserService.Application.Commands;
 using UserService.Application.Dtos;
+using UserService.Presentation.Dtos;
 using UserService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -78,9 +79,17 @@ namespace UserService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await issuedUserBansResponse.Content.ReadAsStringAsync();
 
-            var issuedBanByUserDto = JsonConvert.DeserializeObject<List<IssuedBanByUserDto>>(responseSerializedContent)?.FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
 
-            issuedBanByUserDto.ShouldNotBeNull();
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var responseResult = JsonConvert.DeserializeObject<List<IssuedBanByUserDto>>(Convert.ToString(responseDto.Result));
+
+            responseResult.ShouldNotBeNull();
+
+            var issuedBanByUserDto = responseResult.FirstOrDefault().ShouldNotBeNull();
 
             issuedBanByUserDto.IssuerDto.UserId.ShouldBe(banUserCommand.IssuerUserId.ToString());
 
