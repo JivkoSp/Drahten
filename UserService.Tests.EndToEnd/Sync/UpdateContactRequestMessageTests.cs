@@ -3,6 +3,7 @@ using Shouldly;
 using System.Net;
 using UserService.Application.Commands;
 using UserService.Application.Dtos;
+using UserService.Presentation.Dtos;
 using UserService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -91,10 +92,17 @@ namespace UserService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var issuedContactRequestByUserDto = JsonConvert.DeserializeObject<List<IssuedContactRequestByUserDto>>(responseSerializedContent)
-                ?.FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
 
-            issuedContactRequestByUserDto.ShouldNotBeNull();
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var responseResult = JsonConvert.DeserializeObject<List<IssuedContactRequestByUserDto>>(Convert.ToString(responseDto.Result));
+
+            responseResult.ShouldNotBeNull();
+
+            var issuedContactRequestByUserDto = responseResult.FirstOrDefault().ShouldNotBeNull();
 
             issuedContactRequestByUserDto.IssuerDto.UserId.ShouldBe(updateContactRequestMessageCommand.IssuerUserId.ToString());
 
@@ -131,10 +139,17 @@ namespace UserService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var receivedContactRequestByUserDto = JsonConvert.DeserializeObject<List<ReceivedContactRequestByUserDto>>(responseSerializedContent)
-                ?.FirstOrDefault();
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
 
-            receivedContactRequestByUserDto.ShouldNotBeNull();
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var responseResult = JsonConvert.DeserializeObject<List<ReceivedContactRequestByUserDto>>(Convert.ToString(responseDto.Result));
+
+            responseResult.ShouldNotBeNull();
+
+            var receivedContactRequestByUserDto = responseResult.FirstOrDefault().ShouldNotBeNull();
 
             receivedContactRequestByUserDto.ReceiverDto.UserId.ShouldBe(updateContactRequestMessageCommand.ReceiverUserId.ToString());
 
