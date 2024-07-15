@@ -4,7 +4,7 @@ using UserService.Infrastructure.EntityFramework.Models;
 
 namespace UserService.Infrastructure.Automapper.Profiles
 {
-    internal class ContactRequestProfile : Profile
+    internal sealed class ContactRequestProfile : Profile
     {
         public ContactRequestProfile()
         {
