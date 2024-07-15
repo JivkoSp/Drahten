@@ -3,6 +3,7 @@ using Shouldly;
 using System.Net;
 using UserService.Application.Commands;
 using UserService.Application.Dtos;
+using UserService.Presentation.Dtos;
 using UserService.Tests.EndToEnd.Factories;
 using Xunit;
 
@@ -57,11 +58,17 @@ namespace UserService.Tests.EndToEnd.Sync
 
             var responseSerializedContent = await response.Content.ReadAsStringAsync();
 
-            var userDto = JsonConvert.DeserializeObject<UserDto>(responseSerializedContent);
+            var responseDto = JsonConvert.DeserializeObject<ResponseDto>(responseSerializedContent);
+
+            responseDto.ShouldNotBeNull();
+
+            responseDto.IsSuccess.ShouldBeTrue();
+
+            var userDto = JsonConvert.DeserializeObject<UserDto>(Convert.ToString(responseDto.Result));
 
             userDto.ShouldNotBeNull();
 
-            userDto.UserId.ShouldBe(createUserCommand.UserId.ToString());
+            Guid.Parse(userDto.UserId).ShouldBe(createUserCommand.UserId);
 
             userDto.UserFullName.ShouldBe(createUserCommand.UserFullName);
 
