@@ -29,6 +29,7 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.ReadConf
                 .IsRequired();
 
             builder.Property(p => p.UserNickName)
+                .HasConversion(new EncryptedStringConverter(_encryptionProvider))
                 .IsRequired();
 
             builder.Property(p => p.UserEmailAddress)
