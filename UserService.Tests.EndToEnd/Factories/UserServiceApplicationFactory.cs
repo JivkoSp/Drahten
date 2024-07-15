@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
+using UserService.Application.AsyncDataServices;
 using UserService.Infrastructure.EntityFramework.Contexts;
 using UserService.Tests.EndToEnd.Extensions;
 using Xunit;
@@ -26,9 +27,9 @@ namespace UserService.Tests.EndToEnd.Factories
             //Configure dependency injection ONLY for tests that are using this custom factory (e.g DrahtenApplicationFactory).
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveDbContext<ReadDbContext>();
+                services.Remove<DbContextOptions<ReadDbContext>>();
 
-                services.RemoveDbContext<WriteDbContext>();
+                services.Remove<DbContextOptions<WriteDbContext>>();
 
                 services.AddDbContext<ReadDbContext>(options =>
                 {
@@ -39,6 +40,8 @@ namespace UserService.Tests.EndToEnd.Factories
                 {
                     options.UseNpgsql(_dbContainer.GetConnectionString());
                 });
+
+                services.Remove<IMessageBusPublisher>();
             });
         }
 
