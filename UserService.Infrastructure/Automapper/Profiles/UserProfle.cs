@@ -4,7 +4,7 @@ using UserService.Infrastructure.EntityFramework.Models;
 
 namespace UserService.Infrastructure.Automapper.Profiles
 {
-    internal class UserProfle : Profile
+    internal sealed class UserProfle : Profile
     {
         public UserProfle()
         {

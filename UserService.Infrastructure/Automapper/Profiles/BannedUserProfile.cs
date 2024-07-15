@@ -4,7 +4,7 @@ using UserService.Infrastructure.EntityFramework.Models;
 
 namespace UserService.Infrastructure.Automapper.Profiles
 {
-    internal class BannedUserProfile : Profile
+    internal sealed class BannedUserProfile : Profile
     {
         public BannedUserProfile()
         {
