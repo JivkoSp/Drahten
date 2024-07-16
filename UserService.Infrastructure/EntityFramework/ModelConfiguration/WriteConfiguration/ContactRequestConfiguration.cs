@@ -24,16 +24,14 @@ namespace UserService.Infrastructure.EntityFramework.ModelConfiguration.WriteCon
             //Composite primary key
             builder.HasKey(key => new { key.IssuerUserId, key.ReceiverUserId });
 
-            var userIdConverter = new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x)));
-
             //Property config
             builder.Property(p => p.IssuerUserId)
-                .HasConversion(userIdConverter)
+                .HasConversion(new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x))))
                 .HasColumnName("IssuerUserId")
                 .IsRequired();
 
             builder.Property(p => p.ReceiverUserId)
-               .HasConversion(userIdConverter)
+               .HasConversion(new ValueConverter<UserID, string>(x => x.Value.ToString(), x => new UserID(Guid.Parse(x))))
                .HasColumnName("ReceiverUserId")
                .IsRequired();
 
