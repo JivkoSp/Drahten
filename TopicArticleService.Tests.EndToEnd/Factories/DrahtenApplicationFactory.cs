@@ -61,6 +61,15 @@ namespace TopicArticleService.Tests.EndToEnd.Factories
                     var uri = _rabbitMqContainer.GetConnectionString();
                     return new RabbitMqMessageBusPublisher(uri);
                 });
+
+                services.AddSingleton(sp =>
+                {
+                    var uri = _rabbitMqContainer.GetConnectionString();
+                    var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                    return new RabbitMqMessageBusSubscriber(uri, scopeFactory);
+                });
+
+                services.AddHostedService(sp => sp.GetRequiredService<RabbitMqMessageBusSubscriber>());
             });
         }
 
