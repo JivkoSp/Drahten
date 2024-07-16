@@ -20,7 +20,6 @@ namespace UserService.Tests.Unit.Application.Handlers
         private readonly IUserFactory _userMockFactory;
         private readonly IUserRepository _userRepository;
         private readonly IUserReadService _userReadService;
-        private readonly IMessageBusPublisher _messageBusPublisher;
         private readonly ICommandHandler<CreateUserCommand> _handler;
 
         private CreateUserCommand GetCreateUserCommand()
@@ -36,8 +35,7 @@ namespace UserService.Tests.Unit.Application.Handlers
             _userMockFactory = Substitute.For<IUserFactory>();
             _userRepository = Substitute.For<IUserRepository>();
             _userReadService = Substitute.For<IUserReadService>();
-            _messageBusPublisher = Substitute.For<IMessageBusPublisher>();
-            _handler = new CreateUserHandler(_userRepository, _userMockFactory, _userReadService, _messageBusPublisher);
+            _handler = new CreateUserHandler(_userRepository, _userMockFactory, _userReadService);
         }
 
         #endregion
