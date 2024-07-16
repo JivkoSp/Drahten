@@ -74,7 +74,7 @@ namespace TopicArticleService.Tests.EndToEnd.Services
                 //TODO: Log a message.
 
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.viewed-article");
+                    exchange: "test_exchange", routingKey: "topic_article_service.viewed-article");
 
                 SendMessage(messageDescriptor);
             }
