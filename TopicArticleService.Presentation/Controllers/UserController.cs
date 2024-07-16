@@ -49,8 +49,7 @@ namespace TopicArticleService.Presentation.Controllers
         {
             await _commandDispatcher.DispatchAsync(registerUserArticleCommand);
 
-            return CreatedAtAction(actionName: nameof(GetUsersRelatedToArticle), 
-                routeValues: new { ArticleId = registerUserArticleCommand.ArticleId }, null);
+            return Created(HttpContext.Request.Path, null);
         }
 
         [HttpPost("{UserId:guid}/topics/")]
