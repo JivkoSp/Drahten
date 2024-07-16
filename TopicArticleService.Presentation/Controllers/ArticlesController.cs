@@ -144,7 +144,7 @@ namespace TopicArticleService.Presentation.Controllers
         {
             await _commandDispatcher.DispatchAsync(createArticleCommand);
 
-            return CreatedAtAction(actionName: nameof(GetArticle), routeValues: new { ArticleId = createArticleCommand .ArticleId}, null);
+            return Created(HttpContext.Request.Path, null);
         }
 
         [HttpPost("articles/{ArticleId:guid}/likes/")]
