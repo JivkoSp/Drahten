@@ -1,8 +1,11 @@
 ﻿
+using TopicArticleService.Tests.Integration.Events;
+
 namespace TopicArticleService.Tests.Integration.EventProcessing
 {
-    internal interface IEventProcessor
+    public interface IEventProcessor
     {
-        Task ProcessEventAsync(string message);
+        static List<ITestEvent> Events = new List<ITestEvent>();
+        void ProcessEvent(string message);
     }
 }
