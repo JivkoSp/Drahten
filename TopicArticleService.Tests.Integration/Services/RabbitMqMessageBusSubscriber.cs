@@ -1,11 +1,9 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
-using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using Microsoft.Extensions.Hosting;
-using TopicArticleService.Tests.Integration.Events;
+using TopicArticleService.Tests.Integration.EventProcessing;
 
 namespace TopicArticleService.Tests.Integration.Services
 {
@@ -15,13 +13,14 @@ namespace TopicArticleService.Tests.Integration.Services
         private IModel _channel;
         private readonly string _uri;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IEventProcessor _eventProcessor;
         private readonly string _queueName = "test_queue";
-        public List<ITestEvent> Events = new List<ITestEvent>();
 
-        public RabbitMqMessageBusSubscriber(string uri, IServiceScopeFactory scopeFactory)
+        public RabbitMqMessageBusSubscriber(string uri, IServiceScopeFactory scopeFactory, IEventProcessor eventProcessor)
         {
             _uri = uri;
             _scopeFactory = scopeFactory;
+            _eventProcessor = eventProcessor;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -29,35 +28,30 @@ namespace TopicArticleService.Tests.Integration.Services
             var factory = new ConnectionFactory() { Uri = new Uri(_uri) };
 
             _connection = factory.CreateConnection();
+
             _channel = _connection.CreateModel();
 
             _channel.ExchangeDeclare(exchange: "test_exchange", type: ExchangeType.Direct);
+
             _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
             _channel.QueueBind(queue: _queueName, exchange: "test_exchange", routingKey: "topic_article_service.viewed-article");
+            _channel.QueueBind(queue: _queueName, exchange: "test_exchange", routingKey: "topic_article_service.liked-article");
 
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += async (sender, e) =>
+
+            consumer.Received += (sender, e) =>
             {
                 var body = e.Body.ToArray();
+
                 var message = Encoding.UTF8.GetString(body);
-                await ProcessMessageAsync(message);
+
+                _eventProcessor.ProcessEvent(message);
             };
 
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
-        }
-
-        private Task ProcessMessageAsync(string message)
-        {
-            var viewedArticleDto = JsonSerializer.Deserialize<ViewedArticleDto>(message);
-
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                Events.Add(new ViewedArticleAdded(viewedArticleDto.ArticleId));
-
-                return Task.CompletedTask;
-            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
