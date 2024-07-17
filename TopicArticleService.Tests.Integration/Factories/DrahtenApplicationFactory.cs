@@ -1,0 +1,64 @@
+﻿using DotNet.Testcontainers.Builders;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Testcontainers.RabbitMq;
+using TopicArticleService.Application.AsyncDataServices;
+using TopicArticleService.Infrastructure.AsyncDataServices;
+using TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase;
+using TopicArticleService.Tests.Integration.Extensions;
+using TopicArticleService.Tests.Integration.Services;
+using Xunit;
+
+namespace TopicArticleService.Tests.Integration.Factories
+{
+    public sealed class DrahtenApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
+    {
+        private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder()
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5672))
+            .Build();
+
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            base.ConfigureWebHost(builder);
+
+            //Configure dependency injection ONLY for tests that are using this custom factory (e.g DrahtenApplicationFactory).
+            builder.ConfigureTestServices(services =>
+            {
+                services.Remove<IMessageBusPublisher>();
+
+                services.RemoveHostedService<MessageBusSubscriber>();
+
+                services.RemoveHostedService<DbPrepper>();
+
+                services.AddSingleton<IMessageBusPublisher>(sp =>
+                {
+                    var uri = _rabbitMqContainer.GetConnectionString();
+                    return new RabbitMqMessageBusPublisher(uri);
+                });
+
+                services.AddSingleton(sp =>
+                {
+                    var uri = _rabbitMqContainer.GetConnectionString();
+                    var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                    return new RabbitMqMessageBusSubscriber(uri, scopeFactory);
+                });
+
+                services.AddHostedService(sp => sp.GetRequiredService<RabbitMqMessageBusSubscriber>());
+            });
+        }
+
+        public async Task InitializeAsync()
+        {
+            await _rabbitMqContainer.StartAsync();
+        }
+
+        Task IAsyncLifetime.DisposeAsync()
+        {
+            return Task.WhenAll(
+                _rabbitMqContainer.StopAsync()
+            );
+        }
+    }
+}
