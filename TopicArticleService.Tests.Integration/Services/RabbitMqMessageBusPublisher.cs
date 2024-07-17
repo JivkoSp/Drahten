@@ -93,7 +93,7 @@ namespace TopicArticleService.Tests.Integration.Services
                 var message = JsonSerializer.Serialize(likedArticleDto);
 
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article");
+                    exchange: "test_exchange", routingKey: "topic_article_service.liked-article");
 
                 SendMessage(messageDescriptor);
             }
