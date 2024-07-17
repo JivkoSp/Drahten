@@ -10,6 +10,7 @@ using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Infrastructure.AsyncDataServices;
 using TopicArticleService.Infrastructure.EntityFramework.Contexts;
 using TopicArticleService.Infrastructure.EntityFramework.PrepareDatabase;
+using TopicArticleService.Infrastructure.EventProcessing;
 using TopicArticleService.Tests.Integration.Extensions;
 using TopicArticleService.Tests.Integration.Services;
 using Xunit;
@@ -56,6 +57,10 @@ namespace TopicArticleService.Tests.Integration.Factories
 
                 services.RemoveHostedService<DbPrepper>();
 
+                services.Remove<IEventProcessor>();
+
+                services.AddSingleton<EventProcessing.IEventProcessor, EventProcessing.EventProcessor>();
+
                 services.AddSingleton<IMessageBusPublisher>(sp =>
                 {
                     var uri = _rabbitMqContainer.GetConnectionString();
@@ -65,8 +70,12 @@ namespace TopicArticleService.Tests.Integration.Factories
                 services.AddSingleton(sp =>
                 {
                     var uri = _rabbitMqContainer.GetConnectionString();
+                    
                     var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-                    return new RabbitMqMessageBusSubscriber(uri, scopeFactory);
+
+                    var eventProcessing = sp.GetRequiredService<EventProcessing.IEventProcessor>();
+
+                    return new RabbitMqMessageBusSubscriber(uri, scopeFactory, eventProcessing);
                 });
 
                 services.AddHostedService(sp => sp.GetRequiredService<RabbitMqMessageBusSubscriber>());
