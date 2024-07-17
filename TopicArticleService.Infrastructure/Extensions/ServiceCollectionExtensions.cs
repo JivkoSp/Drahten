@@ -25,6 +25,7 @@ using TopicArticleService.Infrastructure.SyncDataServices.Grpc;
 using TopicArticleService.Infrastructure.UserRegistration;
 
 [assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.EndToEnd")]
+[assembly: InternalsVisibleTo(assemblyName: "TopicArticleService.Tests.Integration")]
 namespace TopicArticleService.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
