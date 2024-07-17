@@ -2,9 +2,9 @@
 using Shouldly;
 using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
+using TopicArticleService.Tests.Integration.EventProcessing;
 using TopicArticleService.Tests.Integration.Events;
 using TopicArticleService.Tests.Integration.Factories;
-using TopicArticleService.Tests.Integration.Services;
 using Xunit;
 
 
@@ -15,7 +15,6 @@ namespace TopicArticleService.Tests.Integration.Async
         #region GLOBAL ARRANGE
 
         private readonly IMessageBusPublisher _messageBusPublisher;
-        private readonly RabbitMqMessageBusSubscriber _rabbitMqMessageBusSubscriber;
 
         private ViewedArticleDto GetViewedArticleDto()
         {
@@ -34,7 +33,6 @@ namespace TopicArticleService.Tests.Integration.Async
         {
             factory.Server.AllowSynchronousIO = true;
             _messageBusPublisher = factory.Services.GetRequiredService<IMessageBusPublisher>();
-            _rabbitMqMessageBusSubscriber = factory.Services.GetRequiredService<RabbitMqMessageBusSubscriber>();
         }
 
         #endregion
@@ -52,9 +50,8 @@ namespace TopicArticleService.Tests.Integration.Async
 
             //ASSERT
 
-            var viewedArticleAddedEvent = _rabbitMqMessageBusSubscriber.Events.FirstOrDefault(
+            var viewedArticleAddedEvent = IEventProcessor.Events.FirstOrDefault(
                 x => x.GetType() == typeof(ViewedArticleAdded)) as ViewedArticleAdded;
-
 
             viewedArticleAddedEvent.ShouldNotBeNull();
 
