@@ -22,4 +22,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Factories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TopicArticleService.Infrastructure\TopicArticleService.Infrastructure.csproj" />
+    <ProjectReference Include="..\TopicArticleService.Presentation\TopicArticleService.Presentation.csproj" />
+  </ItemGroup>
+
 </Project>
