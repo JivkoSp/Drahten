@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using Testcontainers.RabbitMq;
 using TopicArticleService.Application.AsyncDataServices;
 using TopicArticleService.Application.Dtos.PrivateHistoryService;
 using TopicArticleService.Tests.Integration.EventProcessing;
 using TopicArticleService.Tests.Integration.Events;
 using TopicArticleService.Tests.Integration.Factories;
+using TopicArticleService.Tests.Integration.Services;
 using Xunit;
 
 
@@ -15,6 +17,7 @@ namespace TopicArticleService.Tests.Integration.Async
         #region GLOBAL ARRANGE
 
         private readonly IMessageBusPublisher _messageBusPublisher;
+        private readonly RabbitMqContainer _rabbitMqContainer;
 
         private ViewedArticleDto GetViewedArticleDto()
         {
@@ -33,6 +36,7 @@ namespace TopicArticleService.Tests.Integration.Async
         {
             factory.Server.AllowSynchronousIO = true;
             _messageBusPublisher = factory.Services.GetRequiredService<IMessageBusPublisher>();
+            _rabbitMqContainer = factory.RabbitMqContainer;
         }
 
         #endregion
@@ -56,6 +60,54 @@ namespace TopicArticleService.Tests.Integration.Async
             viewedArticleAddedEvent.ShouldNotBeNull();
 
             viewedArticleAddedEvent.ArticleId.ShouldBe(viewedArticleDto.ArticleId);
+        }
+
+        [Fact]
+        public async Task Publish_Multiple_ViewedArticles_Should_Handle_Concurrency()
+        {
+            //ARRANGE
+            var viewedArticleDtos = Enumerable.Range(0, 10).Select(_ => GetViewedArticleDto()).ToList();
+
+            //ACT
+            var tasks = viewedArticleDtos.Select(dto => _messageBusPublisher.PublishViewedArticleAsync(dto));
+
+            await Task.WhenAll(tasks);
+
+            await Task.Delay(2000);
+
+            //ASSERT
+            foreach (var viewedArticleDto in viewedArticleDtos)
+            {
+                var viewedArticleAddedEvent = IEventProcessor.Events.FirstOrDefault(
+                    x => x is ViewedArticleAdded added && added.ArticleId == viewedArticleDto.ArticleId) as ViewedArticleAdded;
+
+                viewedArticleAddedEvent.ShouldNotBeNull();
+            }
+        }
+
+        [Fact]
+        public async Task Publish_ViewedArticles_Should_Handle_RabbitMq_Down()
+        {
+            //ARRANGE
+            var viewedArticleDto = GetViewedArticleDto();
+
+            // Simulate RabbitMQ down
+            await _rabbitMqContainer.StopAsync();
+
+            // Capture console output
+            using (var consoleOutput = new ConsoleOutput())
+            {
+                //ACT
+                await _messageBusPublisher.PublishViewedArticleAsync(viewedArticleDto);
+
+                //ASSERT
+                var output = consoleOutput.GetOutput();
+
+                output.ShouldContain("Unhandled exception during message sending");
+            }
+
+            // Restart RabbitMQ for other tests
+            await _rabbitMqContainer.StartAsync();
         }
     }
 }
