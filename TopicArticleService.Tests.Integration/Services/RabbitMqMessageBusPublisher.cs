@@ -118,7 +118,7 @@ namespace TopicArticleService.Tests.Integration.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unhandled exception during message publishing {ex}.");
+                Console.WriteLine($"Unhandled exception during message sending");
             }
 
             return Task.CompletedTask;
