@@ -131,7 +131,7 @@ namespace TopicArticleService.Tests.Integration.Services
             try
             {
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.commented-article");
+                    exchange: "test_exchange", routingKey: "topic_article_service.commented-article");
 
                 SendMessage(messageDescriptor);
             }
