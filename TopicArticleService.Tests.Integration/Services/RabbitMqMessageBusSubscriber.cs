@@ -37,6 +37,7 @@ namespace TopicArticleService.Tests.Integration.Services
 
             _channel.QueueBind(queue: _queueName, exchange: "test_exchange", routingKey: "topic_article_service.viewed-article");
             _channel.QueueBind(queue: _queueName, exchange: "test_exchange", routingKey: "topic_article_service.liked-article");
+            _channel.QueueBind(queue: _queueName, exchange: "test_exchange", routingKey: "topic_article_service.disliked-article");
 
             var consumer = new EventingBasicConsumer(_channel);
 
