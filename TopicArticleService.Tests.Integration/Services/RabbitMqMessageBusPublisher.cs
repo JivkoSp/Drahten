@@ -112,7 +112,7 @@ namespace TopicArticleService.Tests.Integration.Services
                 var message = JsonSerializer.Serialize(dislikedArticleDto);
 
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.disliked-article");
+                    exchange: "test_exchange", routingKey: "topic_article_service.disliked-article");
 
                 SendMessage(messageDescriptor);
             }
