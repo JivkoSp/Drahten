@@ -150,7 +150,7 @@ namespace TopicArticleService.Tests.Integration.Services
                 var message = JsonSerializer.Serialize(likedArticleCommentDto);
 
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.liked-article-comment");
+                    exchange: "test_exchange", routingKey: "topic_article_service.liked-article-comment");
 
                 SendMessage(messageDescriptor);
             }
