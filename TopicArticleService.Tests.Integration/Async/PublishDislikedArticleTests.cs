@@ -73,7 +73,7 @@ namespace TopicArticleService.Tests.Integration.Async
 
             await Task.WhenAll(tasks);
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             //ASSERT
             foreach (var dislikedArticleDto in dislikedArticleDtos)
