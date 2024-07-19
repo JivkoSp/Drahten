@@ -75,6 +75,13 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
             IEventProcessor.Events.Add(new CommentedArticleAdded(commentedArticleDto.ArticleId));
         }
 
+        private void WriteLikedArticleComment(string message)
+        {
+            var likedArticleCommentDto = JsonSerializer.Deserialize<LikedArticleCommentDto>(message);
+
+            IEventProcessor.Events.Add(new LikedArticleCommentAdded(likedArticleCommentDto.ArticleCommentId));
+        }
+
         public void ProcessEvent(string message)
         {
             var eventType = DetermineEvent(message);
@@ -94,7 +101,7 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
                     WriteCommentedArticle(message);
                     break;
                 case EventType.LikedArticleComment:
-
+                    WriteLikedArticleComment(message);
                     break;
                 case EventType.DislikedArticleComment:
 
