@@ -30,6 +30,8 @@ namespace TopicArticleService.Tests.Integration.Factories
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5672))
             .Build();
 
+        public RabbitMqContainer RabbitMqContainer => _rabbitMqContainer;
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             base.ConfigureWebHost(builder);
