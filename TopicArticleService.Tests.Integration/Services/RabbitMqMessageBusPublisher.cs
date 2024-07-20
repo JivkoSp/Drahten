@@ -188,7 +188,7 @@ namespace TopicArticleService.Tests.Integration.Services
                 var message = JsonSerializer.Serialize(topicSubscriptionDto);
 
                 var messageDescriptor = new MessageDescriptor(message,
-                    exchange: "topic_article_service", routingKey: "topic_article_service.topic-subscription");
+                    exchange: "test_exchange", routingKey: "topic_article_service.topic-subscription");
 
                 SendMessage(messageDescriptor);
             }
