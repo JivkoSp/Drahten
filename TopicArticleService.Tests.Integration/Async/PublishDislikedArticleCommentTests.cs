@@ -50,12 +50,11 @@ namespace TopicArticleService.Tests.Integration.Async
             //ACT
             await _messageBusPublisher.PublishDislikedArticleCommentAsync(dislikedArticleCommentDto);
 
-            await Task.Delay(7000);
+            await Task.Delay(1000);
 
             //ASSERT
-
             var dislikedArticleCommentAddedEvent = IEventProcessor.Events.FirstOrDefault(
-                x => x.GetType() == typeof(DislikedArticleCommentAdded)) as DislikedArticleCommentAdded;
+                    x => x is DislikedArticleCommentAdded added && added.ArticleCommentId == dislikedArticleCommentDto.ArticleCommentId) as DislikedArticleCommentAdded;
 
             dislikedArticleCommentAddedEvent.ShouldNotBeNull();
 
@@ -73,7 +72,7 @@ namespace TopicArticleService.Tests.Integration.Async
 
             await Task.WhenAll(tasks);
 
-            await Task.Delay(5000);
+            await Task.Delay(2000);
 
             //ASSERT
             foreach (var dislikedArticleCommentDto in dislikedArticleCommentDtos)
