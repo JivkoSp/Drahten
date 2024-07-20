@@ -53,9 +53,8 @@ namespace TopicArticleService.Tests.Integration.Async
             await Task.Delay(1000);
 
             //ASSERT
-
             var commentedArticleAddedEvent = IEventProcessor.Events.FirstOrDefault(
-                x => x.GetType() == typeof(CommentedArticleAdded)) as CommentedArticleAdded;
+                    x => x is CommentedArticleAdded added && added.ArticleId == commentedArticleDto.ArticleId) as CommentedArticleAdded;
 
             commentedArticleAddedEvent.ShouldNotBeNull();
 
