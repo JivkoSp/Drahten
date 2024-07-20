@@ -14,7 +14,6 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
         LikedArticleComment,
         DislikedArticleComment,
         TopicSubscription,
-        SearchedArticleData,
         Undetermined
     }
 
@@ -40,8 +39,6 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
                     return EventType.DislikedArticleComment;
                 case "TopicSubscription":
                     return EventType.TopicSubscription;
-                case "SearchedArticleData":
-                    return EventType.SearchedArticleData;
                 default:
                     return EventType.Undetermined;
             }
@@ -89,6 +86,13 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
             IEventProcessor.Events.Add(new DislikedArticleCommentAdded(dislikedArticleCommentDto.ArticleCommentId));
         }
 
+        private void WriteTopicSubscription(string message)
+        {
+            var topicSubscriptionDto = JsonSerializer.Deserialize<TopicSubscriptionDto>(message);
+
+            IEventProcessor.Events.Add(new TopicSubscriptionAdded(topicSubscriptionDto.TopicId));
+        }
+
         public void ProcessEvent(string message)
         {
             var eventType = DetermineEvent(message);
@@ -114,10 +118,7 @@ namespace TopicArticleService.Tests.Integration.EventProcessing
                     WriteDislikedArticleComment(message);
                     break;
                 case EventType.TopicSubscription:
-
-                    break;
-                case EventType.SearchedArticleData:
-
+                    WriteTopicSubscription(message);
                     break;
             }
         }
