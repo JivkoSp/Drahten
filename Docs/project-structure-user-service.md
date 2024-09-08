@@ -265,25 +265,50 @@ UserService
 
 ## Directory/File Descriptions
 
-| Layer          | Directory/File                                                    | Description                                                   |
-|----------------|-------------------------------------------------------------------|---------------------------------------------------------------|
-| Domain         | `UserService/src/UserService.Domain/Entities/`                    | Contains domain entities representing core business concepts. |
-| Domain         | `UserService/src/UserService.Domain/Events/`                      | Includes domain events capturing significant changes or actions. |
-| Domain         | `UserService/src/UserService.Domain/Exceptions/`                  | Houses custom exceptions specific to domain logic.             |
-| Domain         | `UserService/src/UserService.Domain/Factories/`                   | Provides factories for creating domain entities.               |
-| Domain         | `UserService/src/UserService.Domain/Repositories/`                | Defines interfaces or base classes for data access operations. |
-| Domain         | `UserService/src/UserService.Domain/ValueObjects/`                | Contains immutable value objects used within the domain.       |
-| Application    | `UserService/src/UserService.Application/AsyncDataServices/`      | TODO     |
-| Application    | `UserService/src/UserService.Application/Commands/`               | TODO     |
-| Application    | `UserService/src/UserService.Application/Dtos/`                   | TODO     |
-| Application    | `UserService/src/UserService.Application/Exceptions/`             | TODO     |
-| Application    | `UserService/src/UserService.Application/Extensions/`             | TODO     |
-| Application    | `UserService/src/UserService.Application/Queries/`                | TODO     |
-| Application    | `UserService/src/UserService.Application/Services/`               | Implements application services containing business logic.     |
-| Infrastructure | `UserService/src/UserService.Infrastructure/AsyncDataServices/`   | TODO |
-| Presentation   | `UserService/src/UserService.Presentation/Controllers/`           | Contains API controllers handling HTTP requests and responses. |
-| Presentation   | `UserService/src/UserService.Presentation/DTOs/`                  | Provides Data Transfer Objects (DTOs) for API input and output. |
-
+| Layer          | Directory/File                                                                                        | Description                                                   |
+|----------------|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| Domain         | `UserService/src/UserService.Domain/Entities/`                                                        | Contains domain entities representing core business concepts. |
+| Domain         | `UserService/src/UserService.Domain/Events/`                                                          | Includes domain events capturing significant changes or actions. |
+| Domain         | `UserService/src/UserService.Domain/Exceptions/`                                                      | Houses custom exceptions specific to domain logic.             |
+| Domain         | `UserService/src/UserService.Domain/Factories/`                                                       | Provides factories for creating domain entities.               |
+| Domain         | `UserService/src/UserService.Domain/Repositories/`                                                    | Defines interfaces or base classes for data access operations. |
+| Domain         | `UserService/src/UserService.Domain/ValueObjects/`                                                    | Contains immutable value objects used within the domain.       |
+| Application    | `UserService/src/UserService.Application/AsyncDataServices/`                                          | Defines interfaces for asynchronous operations. |
+| Application    | `UserService/src/UserService.Application/Commands/`                                                   | Contains command types and serves as the central location for defining and organizing commands. |
+| Application    | `UserService/src/UserService.Application/Commands/Dispatcher/`                                        | Contains command dispatcher type and serves as the central component responsible for 
+routing commands to their respective command handlers. |
+| Application    | `UserService/src/UserService.Application/Commands/Handlers/`                                          | Contains command handler types that implement ICommandHandler<T> interface and plays a crucial role in implementing 
+Command Query Responsibility Segregation (CQRS). |
+| Application    | `UserService/src/UserService.Application/Dtos/`                                                       | Contains Data Transfer Objects (DTOs). |
+| Application    | `UserService/src/UserService.Application/Exceptions/`                                                 | Contains Application layer specific custom exception types. |
+| Application    | `UserService/src/UserService.Application/Extensions/`                                                 | Contains custom extension methods. |
+| Application    | `UserService/src/UserService.Application/Queries/`                                                    | Contains query types and serves as the central location for defining and organizing queries. |
+  | Application    | `UserService/src/UserService.Application/Queries/Dispatcher/`                                       | Contains query dispatcher type that implements IQueryDispatcher interface and serves as the central component responsible for 
+routing queries to their respective query handlers for execution and data retrieval. |
+| Application    | `UserService/src/UserService.Application/Queries/Handlers/`                                           | Contains the definition of the IQueryHandler<TQuery, TResult> interface, which serves as a contract for all query handlers 
+responsible for executing queries and retrieving data from the application's read-side or queryable data sources. |
+| Application    | `UserService/src/UserService.Application/Services/`                                                   | Implements application services containing business logic.     |
+| Infrastructure | `UserService/src/UserService.Infrastructure/AsyncDataServices/`                                       | Defines implementations of interfaces for asynchronous operations. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/Automapper/`                                              | Contains types, that are inheriting the Profile type from AutoMapper library. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Contexts/`                                | Contains two EntityFramework DbContext classes - ReadDbContext and WriteDbContext. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Encryption/`                              | Contains custom EntityFramework encryption converters and encryption provider. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Initialization/`                          | Contains DbInitializer class that applies entity framework migrations. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Migrations/`                              | Contains EntityFramework migrations. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/ModelConfiguration/ReadConfiguration/`    | Contains classes that implement IEntityTypeConfiguration<T> and are containing configuration for the database models. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/ModelConfiguration/WriteConfiguration/`   | Contains classes that implement IEntityTypeConfiguration<T> and are containing configuration for DOMAIN entities and value objects. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Models/`                                  | Contains classes for the database models that represent the database tables and the overall database schema. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Options/`                                 | Contains class that is used for the OPTIONS pattern. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Repositories/`                            | Contains implementations of interfaces for data access operations. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/EntityFramework/Services/`                                | Contains implementations of interfaces for services containing business logic. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/Exceptions/`                                              | Contains Infrastructure layer specific custom exception types. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/Extensions/`                                              | Contains custom extension methods. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/Logging/`                                                 | Contains logging decorators and formatters. The purpose of the decorators is to wrap the behaviour of a Command Handler or other part of the application and to enrich it's capabilities with the ability to log information. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/Queries/`                                                 | Contains query handlers that work with the queries from the Command Query Responsibility Segregation (CQRS) approach. |
+| Infrastructure | `UserService/src/UserService.Infrastructure/UserRegistration/`                                        | Contains UserSynchronizer that synchronizes a user with this service. |
+| Presentation   | `UserService/src/UserService.Presentation/Properties/`                                                | Contains the application properties related to port and protocol configuration. |
+| Presentation   | `UserService/src/UserService.Presentation/Controllers/`                                               | Contains API controllers handling HTTP requests and responses. |
+| Presentation   | `UserService/src/UserService.Presentation/DTOs/`                                                      | Provides Data Transfer Objects (DTOs) for API input and output. |
+| Presentation   | `UserService/src/UserService.Presentation/Middlewares/`                                               | Contains custom middlewares. |
 
 
 
