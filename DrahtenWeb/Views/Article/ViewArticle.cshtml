@@ -200,10 +200,11 @@
 
                                         if (response != null) {
 
-                                            const highlightedText = highlightMatchingText(response.document.article_data, 
+                                            console.log(response);
+
+                                            const highlightedText = highlightMatchingText(response.document.articleData, 
                                                                                           response.context,
                                                                                           response.answer);
-
                                             $("#article-data").html(highlightedText);
                                         }
                                     },
@@ -254,7 +255,7 @@
 
                         if (response != null) {
 
-                            const highlightedText = highlightMatchingText(response.document.article_data,
+                            const highlightedText = highlightMatchingText(response.document.articleData,
                                 response.context,
                                 response.answer);
 
