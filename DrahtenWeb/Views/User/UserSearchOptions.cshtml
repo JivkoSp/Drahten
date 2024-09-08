@@ -44,32 +44,27 @@
        
         function subscribeToTopic(topicId) {
 
-            console.log("subscribed");
+            //Send async POST http request to /User/UserTopicSubscription
+            $.ajax({
+                type: 'POST',
+                url: '/User/UserTopicSubscription',
+                data: {
+                    'topicId': topicId
+                },
+                //TODO: Log the messages for success, failure or error to logging service.
+                success: (response) => {
 
-            //TODO: Uncomment the ajax call when finished with the development of this page.
-            //It is commented for now just for testing purposes.
+                    console.log("success", response);
+                },
+                failure: (reponse) => {
 
-            // //Send async POST http request to /User/UserTopicSubscription
-            // $.ajax({
-            //     type: 'POST',
-            //     url: '/User/UserTopicSubscription',
-            //     data: {
-            //         'topicId': topicId
-            //     },
-            //     //TODO: Log the messages for success, failure or error to logging service.
-            //     success: (response) => {
+                    console.log("failure", response);
+                },
+                error: (response) => {
 
-            //         console.log("success", response);
-            //     },
-            //     failure: (reponse) => {
-
-            //         console.log("failure", response);
-            //     },
-            //     error: (response) => {
-
-            //         console.log("error", response);
-            //     }
-            // });
+                    console.log("error", response);
+                }
+            });
         }
 
     </script>
