@@ -444,8 +444,8 @@ TopicArticleService
 
 ## Directory/File Descriptions
 
-| Layer          | Directory/File                                                                                        | Description                                                   |
-|----------------|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| Layer          | Directory/File                                                                                                        | Description                                                   |
+|----------------|-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
 | Domain         | `TopicArticleService/src/TopicArticleService.Domain/Entities/`                                                        | Contains domain entities representing core business concepts. |
 | Domain         | `TopicArticleService/src/TopicArticleService.Domain/Events/`                                                          | Includes domain events capturing significant changes or actions. |
 | Domain         | `TopicArticleService/src/TopicArticleService.Domain/Exceptions/`                                                      | Houses custom exceptions specific to domain logic.             |
@@ -462,7 +462,7 @@ Command Query Responsibility Segregation (CQRS). |
 | Application    | `TopicArticleService/src/TopicArticleService.Application/Exceptions/`                                                 | Contains Application layer specific custom exception types. |
 | Application    | `TopicArticleService/src/TopicArticleService.Application/Extensions/`                                                 | Contains custom extension methods. |
 | Application    | `TopicArticleService/src/TopicArticleService.Application/Queries/`                                                    | Contains query types and serves as the central location for defining and organizing queries. |
-| Application    | `TopicArticleService/src/TopicArticleService.Application/Queries/Dispatcher/`                                       | Contains query dispatcher type that implements IQueryDispatcher interface and serves as the central component responsible for 
+| Application    | `TopicArticleService/src/TopicArticleService.Application/Queries/Dispatcher/`                                         | Contains query dispatcher type that implements IQueryDispatcher interface and serves as the central component responsible for 
 routing queries to their respective query handlers for execution and data retrieval. |
 | Application    | `TopicArticleService/src/TopicArticleService.Application/Queries/Handlers/`                                           | Contains the definition of the IQueryHandler<TQuery, TResult> interface, which serves as a contract for all query handlers 
 responsible for executing queries and retrieving data from the application's read-side or queryable data sources. |
