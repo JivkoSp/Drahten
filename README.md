@@ -65,6 +65,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [Log Collection Service](Docs/design-logcollection-service.md)
 * **Project Structure** 📂
     - [User Service Project Structure](Docs/project-structure-user-service.md)
+    - [Topic Article Service Project Structure](Docs/project-structure-topic-article-service.md)
 * **Usage** 🚀
    - [How to Run](Docs/usage-how-to-run.md)
    - [API Documentation](Docs/usage-api-documentation.md)
