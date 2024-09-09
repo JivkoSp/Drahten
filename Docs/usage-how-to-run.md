@@ -29,6 +29,7 @@ After this stop the following containers:
  - search_service_grpc_servoce
  - search_service_consumer_server
  - search_service
+
 Run the stopped containers once the `setup-1` container has stopped. This signals that the elasticsearch containers are started properly.
 The stoping of the above containers is needed because if the elasticsearch containers are not fully started the services would not be able to make proper connection with the elasticsearch instancies and would not work.
 
@@ -36,9 +37,9 @@ The stoping of the above containers is needed because if the elasticsearch conta
 Remember that the elasticsearch and postgresql containers would need TSL certificates and local variables for passwords and other user information. In the docker-compose.yml file there are `env_file` sections.
 Generate the following files (the names of the files are not important and you can replace them if you want, just make shure that the docker-compose.yml will point to the new names):
  - database-privatehistory-service.dev.env - Must contain: POSTGRES_DB: - this is the database name; POSTGRES_USER: - this is the database user name; POSTGRES_PASSWORD: - this is the database user password
-    - Example configuration: `POSTGRES_DB: PrivateHistoryServiceDb #The database name
-                              POSTGRES_USER: PrivateHistoryServiceAdmin #The database user name
-                              POSTGRES_PASSWORD: password #The database user password`
+    - Example configuration: `POSTGRES_DB: PrivateHistoryServiceDb
+                              POSTGRES_USER: PrivateHistoryServiceAdmin
+                              POSTGRES_PASSWORD: password`
 
 
 
