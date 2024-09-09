@@ -40,9 +40,9 @@ Generate the following files (the names of the files are not important and you c
      ```html
         < Example configuration >
      
-       POSTGRES_DB: PrivateHistoryServiceDb #the database name
-       POSTGRES_USER: PrivateHistoryServiceAdmin #the database user name
-       POSTGRES_PASSWORD: password #the database user password
+       POSTGRES_DB: PrivateHistoryServiceDb --> the database name
+       POSTGRES_USER: PrivateHistoryServiceAdmin --> the database user name
+       POSTGRES_PASSWORD: password --> the database user password
      ```
 - sss
 
