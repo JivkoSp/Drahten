@@ -1,4 +1,4 @@
- Run locally
+# Run locally
 
 * The whole system contains a lot of components, despite that everything can be ran locally on a machine powerful enough, mainly one having lots of RAM
 * For local development it is more convenient to use the Docker deployment with a selection of components from the integration, data storage and observability categories, while the .NET services could be ran in the IDE
