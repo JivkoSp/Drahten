@@ -40,11 +40,89 @@ Generate the following files (the names of the files are not important and you c
      ```html
         < Example configuration >
      
-       POSTGRES_DB: PrivateHistoryServiceDb --> the database name
-       POSTGRES_USER: PrivateHistoryServiceAdmin --> the database user name
-       POSTGRES_PASSWORD: password --> the database user password
+       POSTGRES_DB: PrivateHistoryServiceDb --> The database name
+       POSTGRES_USER: PrivateHistoryServiceAdmin --> The database user name
+       POSTGRES_PASSWORD: password --> The database user password
      ```
-- sss
-
-
-
+- database-publichistory-service.dev.env
+  ```html
+     < Example configuration >
+     
+       POSTGRES_DB: PublicHistoryServiceDb --> The database name
+       POSTGRES_USER: PublicHistoryServiceAdmin --> The database user name
+       POSTGRES_PASSWORD: password --> The database user password
+  ```
+- database-topic-article-service.dev.env
+   ```html
+     < Example configuration >
+     
+       POSTGRES_DB: TopicArticleServiceDb --> The database name
+       POSTGRES_USER: TopicArticleServiceAdmin --> The database user name
+       POSTGRES_PASSWORD: password --> The database user password
+  ```
+- database-user-service.dev.env
+  ```html
+     < Example configuration >
+     
+       POSTGRES_DB: UserServiceDb --> The database name
+       POSTGRES_USER: UserServiceAdmin --> The database user name
+       POSTGRES_PASSWORD: password --> The database user password
+  ```
+- database.dev.env
+  ```html
+     < Example configuration >
+     
+       PGADMIN_DEFAULT_EMAIL: admin@admin.com --> PG_ADMIN username
+       PGADMIN_DEFAULT_PASSWORD: root --> PG_ADMIN password
+  ```
+- django_restapi.dev.env
+  ```html
+     < Example configuration >
+     
+      CERT_FILE=/certs/server.crt --> The locally generated TLS certificate
+      KEY_FILE=/certs/server.key --> The certificate key
+  ```
+- keycloak_database.dev.env
+   ```html
+     < Example configuration >
+     
+      POSTGRES_DB: keycloack_db --> The database name
+      POSTGRES_USER: keycloak_admin --> The database user name
+      POSTGRES_PASSWORD: password --> The database user password
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com 
+      PGADMIN_DEFAULT_PASSWORD: root
+  ```
+- keycloak.dev.env
+  ```html
+     < Example configuration >
+     
+     KC_DB: postgres --> Defines the database provider.
+     KC_DB_URL_HOST: keycloak_postgres --> Defines the postgres container, that will be used by keycloak
+     KC_DB_URL_DATABASE: keycloack_db --> The name of the postgres database
+     KC_DB_PASSWORD: password --> The database passwod
+     KC_DB_USERNAME: keycloak_admin --> The database username
+     KC_DB_SCHEMA: public
+     KEYCLOAK_ADMIN: root 
+     KEYCLOAK_ADMIN_PASSWORD: root
+  ```
+- logstash.conf
+    ```html
+     < Example configuration >
+     
+      input {
+          http {
+              port => 5000
+              additional_codecs => { "application/json" => "json_lines" }
+          }
+      }
+      
+      output {
+          elasticsearch {
+              index => "logstash-%{+YYYY.MM.dd}"
+              hosts=> "${ELASTIC_HOSTS}"
+              user=> "${ELASTIC_USER}"
+              password=> "${ELASTIC_PASSWORD}"
+              cacert=> "certs/ca/ca.crt"
+          }
+      }
+  ```
