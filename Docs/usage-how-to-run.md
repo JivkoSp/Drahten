@@ -42,7 +42,8 @@ Generate the following files (the names of the files are not important and you c
      
        POSTGRES_DB: PrivateHistoryServiceDb
        POSTGRES_USER: PrivateHistoryServiceAdmin
-       POSTGRES_PASSWORD: password```
+       POSTGRES_PASSWORD: password
+     ```
 - sss
 
 
