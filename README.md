@@ -67,6 +67,7 @@ In this project, "sufficient security" is accomplished through the following mea
     - [User Service Project Structure](Docs/project-structure-user-service.md)
     - [Topic Article Service Project Structure](Docs/project-structure-topic-article-service.md)
     - [Private History Service Project Structure](Docs/project-structure-private-history-service.md)
+    - [Public History Service Project Structure](Docs/project-structure-public-history-service.md)
 * **Usage** 🚀
    - [How to Run](Docs/usage-how-to-run.md)
    - [API Documentation](Docs/usage-api-documentation.md)
