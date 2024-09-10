@@ -30,13 +30,13 @@ OR in the headers:
 ## Endpoints description
 
 #### Get all news related to cybersecurity from Europe
-**Endpoint**: GET search_service/news/cybersecurity/europe/
+**Endpoint**: GET ``` search_service/news/cybersecurity/europe/ ```
 
 #### Get sumarization of a document related to cybersecurity news from Europe
-**Endpoint**: GET search_service/news/cybersecurity/europe/sumarization/documents/{document_id}
+**Endpoint**: GET ``` search_service/news/cybersecurity/europe/sumarization/documents/{document_id} ```
 
 #### Get questions generated from the semantic meaning of a document related to cybersecurity news from Europe
-**Endpoint**: GET search_service/news/cybersecurity/europe/questions/documents/{document_id}
+**Endpoint**: GET ``` search_service/news/cybersecurity/europe/questions/documents/{document_id} ```
 
 #### Retrieves information with SEMANTIC query from a document related to cybersecurity news from Europe, stored in the Elasticsearch instance that the API is using.
-**Endpoint**: GET search_service/news/cybersecurity/europe/semantic_search/documents/data/{'document_id': '', 'query': ''}
+**Endpoint**: GET ``` search_service/news/cybersecurity/europe/semantic_search/documents/data/{'document_id': '', 'query': ''} ```
