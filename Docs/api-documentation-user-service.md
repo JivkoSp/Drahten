@@ -1,6 +1,6 @@
 # User Service API Documentation
 
-This REST API is designed to provide more broad user functionalities and data related to user activities to the **Drahten** application.
+This REST API is designed to provide a wide range of user functionalities and data related to user activities for the **Drahten** application.
 
 ## Authentication
 
@@ -32,38 +32,38 @@ OR in the headers:
 #### Get user information like username, email etc.
 **Endpoint**: GET ``` user_service/users/{UserId} ```
 
-#### Get issued ban-requests by a user.
+#### Get ban-requests issued by a user.
 **Endpoint**: GET ``` user_service/users/{IssuerUserId}/issued-bans-by-user ```
 
-#### Get received ban-requests for a user.
+#### Get ban-requests received by a user.
 **Endpoint**: GET ``` user_service/users/{ReceiverUserId}/received-bans-by-user ```
 
-#### Get issued contact-requests by a user.
+#### Get contact-requests issued by a user.
 **Endpoint**: GET ``` user_service/users/{IssuerUserId}/issued-contact-requests-by-user ```
 
-#### Get received contact-requests for a user.
+#### Get contact-requests received by a user.
 **Endpoint**: GET ``` user_service/users/{ReceiverUserId}/issued-contact-requests-by-user ```
 
-#### Register user.
+#### Register a user.
 **Endpoint**: POST ``` user_service/users/ ```
 
 #### Ban a user.
 **Endpoint**: POST ``` user_service/users/{IssuerUserId}/banned-users/{ReceiverUserId}/ ```
 
-#### Remove banned user (unbann the user).
+#### Unban a user (remove banned user).
 **Endpoint**: DELETE ``` user_service/users/{IssuerUserId}/banned-users/{ReceiverUserId}/ ```
 
-#### Register contact request to a user.
+#### Register a contact request for a user.
 **Endpoint**: POST ``` user_service/users/{IssuerUserId}/contact-requests/{ReceiverUserId}/ ```
 
 #### Register user tracking information.
 **Endpoint**: POST ``` user_service/users/{UserId}/user-tracking/ ```
 
-#### Partially update a contact-request message.
+#### Partially update a contact request message.
 **Endpoint**: PUT ``` user_service/users/{IssuerUserId}/update-contact-request-message/{ReceiverUserId}/ ```
 
-#### Remove issued contact-request.
+#### Remove an issued contact request.
 **Endpoint**: DELETE ``` user_service/users/{IssuerUserId}/issued-contact-requests/{ReceiverUserId}/ ```
 
-#### Remove received contact-request.
+#### Remove a received contact request.
 **Endpoint**: DELETE ``` user_service/users/{ReceiverUserId}/received-contact-requests/{IssuerUserId}/ ```
