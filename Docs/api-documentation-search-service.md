@@ -4,7 +4,7 @@ This REST API is designed to provide search functionality and semantic search ca
 
 ## Authentication
 
-This API uses a JWT token provided by the **Authentication Service** for authentication and authorization. The token must be included in every request routed to this API, typically in the **Authorization** header.
+This API uses a JWT token provided by the **Authentication Service** for authentication and authorization. The token must be included in every request routed to this API, typically in the ``` Authorization ``` header.
 The request must have structure similar to the following:
 
 ```json
