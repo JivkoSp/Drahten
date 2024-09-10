@@ -22,14 +22,14 @@ The request must have structure similar to the following:
 
 ## Endpoints description
 
-### Get all news related to cybersecurity from Europe
-#### Endpoint: GET search_service/news/cybersecurity/europe/
+#### Get all news related to cybersecurity from Europe
+Endpoint: GET search_service/news/cybersecurity/europe/
 
-### Get sumarization of a document related to news to cybersecurity from Europe
-#### Endpoint: GET search_service/news/cybersecurity/europe/sumarization/documents/{document_id}
+#### Get sumarization of a document related to news to cybersecurity from Europe
+Endpoint: GET search_service/news/cybersecurity/europe/sumarization/documents/{document_id}
 
-### Get questions generated from the semantic meaning of a document related to news to cybersecurity from Europe
-#### Endpoint: GET search_service/news/cybersecurity/europe/questions/documents/{document_id}
+#### Get questions generated from the semantic meaning of a document related to news to cybersecurity from Europe
+Endpoint: GET search_service/news/cybersecurity/europe/questions/documents/{document_id}
 
-### Retrieves information with SEMANTIC query from document related to news to cybersecurity from Europe, stored in the Elasticsearch instance that the API is using.
-#### Endpoint: GET search_service/news/cybersecurity/europe/semantic_search/documents/data/{'document_id': '', 'query': ''}
+#### Retrieves information with SEMANTIC query from document related to news to cybersecurity from Europe, stored in the Elasticsearch instance that the API is using.
+Endpoint: GET search_service/news/cybersecurity/europe/semantic_search/documents/data/{'document_id': '', 'query': ''}
